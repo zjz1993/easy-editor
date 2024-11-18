@@ -1,0 +1,19 @@
+{
+	"name": "easy-editor",
+	"version": "1.0.0",
+  "main": "src/index.ts",
+  "scripts": {
+		"build": "rspack build"
+	},
+  "description": "基于tiptap的编辑器",
+	"dependencies": {
+		"@easy-editor/editor-toolbar": "workspace:^",
+		"@tiptap/pm": "^2.9.1",
+		"@tiptap/react": "^2.9.1",
+		"@tiptap/starter-kit": "^2.9.1"
+	},
+	"devDependencies": {
+		"@rspack/cli": "^1.1.1",
+		"@rspack/core": "^1.1.1"
+	}
+}
