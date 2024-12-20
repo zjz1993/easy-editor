@@ -1,4 +1,4 @@
-import Editor from 'easy-editor'
+import Editor from '@easy-editor/editor'
 
 function App() {
 

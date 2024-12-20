@@ -1,2 +1,2 @@
-import TiptapEditor from './tiptap';
-export default TiptapEditor;
+import Editor from './root.tsx';
+export default Editor;

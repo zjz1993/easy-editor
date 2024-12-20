@@ -1,9 +1,17 @@
-const createBuildConfig = ({entry,mode}) => {
+const {resolve} = require("node:path");
+const createBuildConfig = ({entry,mode, dirname}) => {
+  /** @type {import('@rspack/cli').Configuration} */
   return {
+    experiments: {
+      css: true,
+    },
     entry,
     mode,
     resolve: {
-      extensions: ['.ts', '.js', '.tsx'],
+      alias:{
+        "@": resolve(__dirname, './src'),
+      },
+      extensions: ['.ts', '.js', '.tsx','.scss'],
     },
     target: 'web',
     module: {
@@ -50,6 +58,21 @@ const createBuildConfig = ({entry,mode}) => {
             },
           },
           type: 'javascript/auto',
+        },
+        {
+          test: /\.(sass|scss)$/,
+          use: [
+            {
+              loader: 'sass-loader',
+              options: {
+                // 同时使用 `modern-compiler` 和 `sass-embedded` 可以显著提升构建性能
+                // 需要 `sass-loader >= 14.2.1`
+                api: 'modern-compiler',
+                implementation: require.resolve('sass-embedded'),
+              },
+            },
+          ],
+          type: "css",
         },
       ],
     },

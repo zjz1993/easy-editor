@@ -1,6 +1,6 @@
 
 
-> easy-editor@1.0.0 build /Users/zhaojunzhe/easy-editor/packages/editor-main
+> @easy-editor/editor@0.0.1 build /Users/zhaojunzhe/easy-editor/packages/editor-main
 > rspack build
 
-Rspack compiled [1m[32msuccessfully[39m[22m in 487 ms
+Rspack compiled [1m[32msuccessfully[39m[22m in 1.03 s

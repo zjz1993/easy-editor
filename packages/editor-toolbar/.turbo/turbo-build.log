@@ -1,6 +1,6 @@
 
 
-> @easy-editor/editor-toolbar@1.0.0 build /Users/zhaojunzhe/easy-editor/packages/editor-toolbar
+> @easy-editor/editor-toolbar@0.0.1 build /Users/zhaojunzhe/easy-editor/packages/editor-toolbar
 > rspack build
 
-Rspack compiled [1m[32msuccessfully[39m[22m in 203 ms
+Rspack compiled [1m[32msuccessfully[39m[22m in 41 ms
