@@ -2,20 +2,28 @@
 	"name": "@easy-editor/editor-toolbar",
 	"version": "0.0.1",
 	"description": "",
-	"main": "src/index.ts",
-	"scripts": {
-		"build": "rspack build"
-	},
+  "main": "dist/main.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/types/index.d.ts",
+  "scripts": {
+    "dev": "rollup -c rollup.config.js -w",
+    "build": "rollup -c rollup.config.js",
+    "lint": "TIMING=1 eslint \"**/*.ts\"",
+    "clear": "rm -rf dist"
+  },
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@tiptap/pm": "^2.10.4",
-		"@tiptap/react": "^2.10.4",
-		"@tiptap/starter-kit": "^2.10.4"
+    "@easy-editor/editor-common": "workspace:^",
+    "@easy-editor/extension-bold": "workspace:^",
+		"@tiptap/pm": "^2.11.2",
+		"@tiptap/react": "^2.11.2",
+    "@tiptap/core": "^2.11.2",
+		"@tiptap/starter-kit": "^2.11.2"
 	},
-	"devDependencies": {
-		"@rspack/cli": "^1.1.1",
-		"@rspack/core": "^1.1.1"
-	}
+  "peerDependencies": {
+    "react": "^16.14.0 || ^17.0.0 || ^18.0.0",
+    "react-dom": "^16.14.0 || ^17.0.0 || ^18.0.0"
+  }
 }

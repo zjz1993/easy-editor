@@ -1,0 +1,11 @@
+
+
+> @easy-editor/editor-common@0.0.1 build /Users/zhaojunzhe/easy-editor/packages/editor-common
+> rollup -c rollup.config.js
+
+[36m
+[1msrc/index.ts[22m → [1mdist/main.js[22m...[39m
+[32mcreated [1mdist/main.js[22m in [1m6.7s[22m[39m
+[36m
+[1msrc/index.ts[22m → [1mdist/index.esm.js[22m...[39m
+[32mcreated [1mdist/index.esm.js[22m in [1m5.7s[22m[39m

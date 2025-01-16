@@ -13,7 +13,7 @@ const createBuildConfig = ({entry,mode, dirname}) => {
       },
       extensions: ['.ts', '.js', '.tsx','.scss'],
     },
-    target: 'web',
+    target: 'es[X]',
     module: {
       rules: [
         {

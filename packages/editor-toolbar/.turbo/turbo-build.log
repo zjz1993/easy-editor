@@ -1,6 +1,19 @@
 
 
 > @easy-editor/editor-toolbar@0.0.1 build /Users/zhaojunzhe/easy-editor/packages/editor-toolbar
-> rspack build
+> rollup -c rollup.config.js
 
-Rspack compiled [1m[32msuccessfully[39m[22m in 41 ms
+[36m
+[1msrc/index.ts[22m → [1mdist/main.js[22m...[39m
+[33m[1mDeprecation Warning[0m: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+[32mcreated [1mdist/main.js[22m in [1m4.1s[22m[39m
+[36m
+[1msrc/index.ts[22m → [1mdist/index.esm.js[22m...[39m
+[33m[1mDeprecation Warning[0m: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+[32mcreated [1mdist/index.esm.js[22m in [1m1.3s[22m[39m
