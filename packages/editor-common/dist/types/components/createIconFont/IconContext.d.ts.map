@@ -1,1 +1,0 @@
-{"version":3,"file":"IconContext.d.ts","sourceRoot":"","sources":["../../../../src/components/createIconFont/IconContext.ts"],"names":[],"mappings":"AAEA,MAAM,WAAW,gBAAgB;IAC/B,SAAS,CAAC,EAAE,MAAM,CAAC;IACnB,aAAa,CAAC,EAAE,MAAM,CAAC;IACvB,GAAG,CAAC,EAAE;QAAE,KAAK,CAAC,EAAE,MAAM,CAAA;KAAE,CAAC;CAC1B;AAED,QAAA,MAAM,WAAW,2CAAsC,CAAC;AAExD,eAAe,WAAW,CAAC"}
