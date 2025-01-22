@@ -1,0 +1,12 @@
+{
+	"name": "@easy-editor/styles",
+	"version": "0.0.1",
+  "main": "src/index.scss",
+  "exports": {
+    "sass": "./src/index.scss"
+  },
+  "files": ["src"],
+  "peerDependencies": {
+    "sass": "^1.64.0"
+  }
+}

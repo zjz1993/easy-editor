@@ -5,8 +5,8 @@
 	"description": "",
 	"scripts": {
 		"start": "turbo run dev",
-		"build": "turbo run build --filter=@easy-editor/*",
-    "preinstall": "npx only-allow pnpm",
+		"build": "turbo run build --filter=@easy-editor/* && node scripts/mergeCss.js",
+		"preinstall": "npx only-allow pnpm",
 		"init:tiptap": "pnpm recursive install @tiptap/react @tiptap/pm @tiptap/starter-kit --filter='!@easy-editor/dev'"
 	},
 	"keywords": [],
@@ -26,6 +26,7 @@
 		"core-js": "3",
 		"only-allow": "^1.2.1",
 		"rollup": "2.78.0",
+		"rollup-plugin-alias": "^2.2.0",
 		"rollup-plugin-postcss": "^4.0.2",
 		"rollup-plugin-sourcemaps": "^0.6.3",
 		"rollup-plugin-typescript2": "^0.36.0",

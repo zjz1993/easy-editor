@@ -10,7 +10,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "rollup -c rollup.config.js -w",
-    "build": "rollup -c rollup.config.js",
+    "build": "NODE_ENV=production rollup -c rollup.config.js",
     "lint": "TIMING=1 eslint \"**/*.ts\"",
     "clear": "rm -rf dist"
   },

@@ -6,23 +6,23 @@
 	"types": "dist/types/index.d.ts",
 	"scripts": {
 		"dev": "rollup -c rollup.config.js -w",
-		"build": "rollup -c rollup.config.js",
+		"build": "NODE_ENV=production rollup -c rollup.config.js",
 		"lint": "TIMING=1 eslint \"**/*.ts\"",
 		"clear": "rm -rf dist"
 	},
 	"description": "基于tiptap的编辑器",
 	"dependencies": {
+    "@easy-editor/editor-common": "workspace:^",
 		"@easy-editor/editor-toolbar": "workspace:^",
 		"@easy-editor/extension-bold": "workspace:^",
 		"@tiptap/core": "^2.11.2",
+		"@tiptap/extension-placeholder": "^2.11.2",
 		"@tiptap/pm": "^2.11.2",
 		"@tiptap/react": "^2.11.2",
-		"@tiptap/starter-kit": "^2.11.2",
-		"lodash-es": "^4.17.21"
+		"@tiptap/starter-kit": "^2.11.2"
 	},
 	"devDependencies": {
 		"@babel/runtime-corejs3": "^7.26.0",
-		"@types/lodash-es": "^4.17.12",
 		"rollup-plugin-copy": "^3.5.0"
 	},
 	"peerDependencies": {

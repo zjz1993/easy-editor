@@ -1,6 +1,6 @@
+import { isUndefined } from '@easy-editor/editor-common';
 import { Extension } from '@tiptap/core';
 import { Plugin } from '@tiptap/pm/state';
-import { isUndefined } from 'lodash-es';
 
 const MaxLengthExtension = Extension.create({
   name: 'maxLength',

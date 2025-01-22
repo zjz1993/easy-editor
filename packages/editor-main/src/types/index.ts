@@ -5,4 +5,6 @@ export type TEasyEditorProps = {
   content?: string | JSONContent;
   maxCount?: number;
   onChange?: (data: string | JSONContent) => void;
+  placeholder?: string;
+  autoFocus?: boolean;
 };

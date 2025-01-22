@@ -1,31 +1,33 @@
 import type { FC } from 'react';
 import './styles/root.scss';
-import { Iconfont, Tooltip } from '@easy-editor/editor-common';
 import type { Editor } from '@tiptap/core';
+import type { IToolbarCommonProps } from 'src/types/index.ts';
+import { ToolBarItemDivider } from './components/ToolBarItemDivider.tsx';
+import { Redo } from './components/toolbarItem/Redo.tsx';
+import { Undo } from './components/toolbarItem/Undo.tsx';
+import ToolbarContext from './context/toolbarContext.ts';
 
-interface IToolbarProps {
+export interface IToolbarProps {
   editor: Editor | null;
 }
 
 const Toolbar: FC<IToolbarProps> = props => {
   const { editor } = props;
+  const editorView = editor.view;
+  const commonProps: IToolbarCommonProps = {
+    dispatch: editorView.dispatch,
+    value: editorView.state,
+    view: editorView,
+    editor,
+  };
   return (
-    <div className="easy-editor-toolbar">
-      <div className="easy-editor-toolbar__item">
-        <div className="easy-editor-toolbar__btn">123</div>
+    <ToolbarContext.Provider value={{ ...commonProps }}>
+      <div className="easy-editor-toolbar">
+        <Undo />
+        <Redo />
+        <ToolBarItemDivider />
       </div>
-      <div className="easy-editor-toolbar__item">
-        <Tooltip text="aaa">
-          <div
-            onClick={() => {
-              // editor?.chain().focus().toggleBold().run();
-            }}
-          >
-            <Iconfont type="add" />
-          </div>
-        </Tooltip>
-      </div>
-    </div>
+    </ToolbarContext.Provider>
   );
 };
 export default Toolbar;

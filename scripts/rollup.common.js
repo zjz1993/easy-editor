@@ -10,6 +10,7 @@ import sourcemaps from 'rollup-plugin-sourcemaps';
 import postcss from 'rollup-plugin-postcss';
 // import NpmImport from 'less-plugin-npm-import';
 import {visualizer} from 'rollup-plugin-visualizer';
+import alias from "rollup-plugin-alias";
 
 const extensions = [...DEFAULT_EXTENSIONS, '.ts', '.tsx'];
 
@@ -41,7 +42,7 @@ const getPlugins = ({ projectPath, tsconfigPath }) => {
     postcss({
       extract: 'styles.css',  // 将所有样式提取到一个 CSS 文件
       minimize: true,      // 压缩 CSS
-      sourceMap: true,     // 生成 SourceMap
+      // sourceMap: true,     // 生成 SourceMap
       use: ['sass'],       // 使用 SASS 处理器
     }),
     visualizer({
@@ -101,7 +102,14 @@ export const createRollupConfig = (opts) => {
       return {
         ...o,
         external: external ? external : defaultExternals,
-        plugins: [...getPlugins({ projectPath, tsconfigPath }), ...plugins],
+        plugins: [...getPlugins({ projectPath, tsconfigPath }), ...plugins, alias({
+          entries: [
+            {
+              find: '@easy-editor/styles',
+              replacement: path.resolve(__dirname, '../packages/editor-style/src'), // 样式包路径
+            },
+          ],
+        }),],
       };
     });
   }

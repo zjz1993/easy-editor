@@ -1,27 +1,29 @@
 {
-	"name": "@easy-editor/editor-toolbar",
-	"version": "0.0.1",
-	"description": "",
+  "name": "@easy-editor/editor-toolbar",
+  "version": "0.0.1",
+  "description": "",
   "main": "dist/main.js",
   "module": "dist/index.esm.js",
   "types": "dist/types/index.d.ts",
   "scripts": {
     "dev": "rollup -c rollup.config.js -w",
-    "build": "rollup -c rollup.config.js",
+    "build": "NODE_ENV=production rollup -c rollup.config.js",
     "lint": "TIMING=1 eslint \"**/*.ts\"",
     "clear": "rm -rf dist"
   },
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"dependencies": {
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
     "@easy-editor/editor-common": "workspace:^",
     "@easy-editor/extension-bold": "workspace:^",
-		"@tiptap/pm": "^2.11.2",
-		"@tiptap/react": "^2.11.2",
+    "@easy-editor/styles": "workspace:*",
     "@tiptap/core": "^2.11.2",
-		"@tiptap/starter-kit": "^2.11.2"
-	},
+    "@tiptap/pm": "^2.11.2",
+    "@tiptap/react": "^2.11.2",
+    "@tiptap/starter-kit": "^2.11.2",
+    "classnames": "^2.5.1"
+  },
   "peerDependencies": {
     "react": "^16.14.0 || ^17.0.0 || ^18.0.0",
     "react-dom": "^16.14.0 || ^17.0.0 || ^18.0.0"

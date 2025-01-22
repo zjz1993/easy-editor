@@ -1,28 +1,68 @@
-import React, { type FC } from 'react';
-import createIconFont from '../createIconFont/index';
-// 使用本地字体
-const createFontIcon = (
-  url = new URL('./iconfont.js', import.meta.url).href,
-  // url = '//at.alicdn.com/t/c/font_4437062_evksm2pcl4d.js',
-) => {
-  return createIconFont({
-    scriptUrl: [url],
-  });
+import cs from 'classnames';
+import type React from 'react';
+import { type PropsWithChildren, forwardRef } from 'react';
+import { createFromIconfont } from './createFrontIconfont';
+import './index.scss';
+
+type BaseIconProps = {
+  className?: string;
+  style?: React.CSSProperties;
+  size?: string | string[];
+  spin?: boolean;
 };
 
-export interface IIconfontProps {
-  url?: string;
-  type: string;
-}
+export type IconProps = BaseIconProps &
+  Omit<React.SVGAttributes<SVGElement>, keyof BaseIconProps>;
 
-const IconFont: FC<IIconfontProps> = props => {
-  const { url } = props;
-  const OnlineFontIcon = createFontIcon(url);
-
-  let type = props.type || '';
-  if (!type.startsWith('icon-')) {
-    type = `icon-${type}`;
+export const getSize = (size: IconProps['size']) => {
+  if (Array.isArray(size) && size.length === 2) {
+    return size as string[];
   }
-  return <OnlineFontIcon {...props} type={type} />;
+
+  const width = (size as string) || '1em';
+  const height = (size as string) || '1em';
+
+  return [width, height];
 };
-export default IconFont;
+
+export const Icon = forwardRef<SVGSVGElement, PropsWithChildren<IconProps>>(
+  (props, ref) => {
+    const { style, className, spin, size = '1em', children, ...rest } = props;
+
+    const [width, height] = getSize(size);
+
+    const cn = cs(
+      'icon',
+      {
+        'icon-spin': spin,
+      },
+      className,
+    );
+
+    return (
+      <svg
+        ref={ref}
+        className={cn}
+        style={style}
+        width={width}
+        height={height}
+        fill="currentColor"
+        {...rest}
+      >
+        {children}
+      </svg>
+    );
+  },
+);
+const IconFont = createFromIconfont(
+  '//at.alicdn.com/t/c/font_4437062_evksm2pcl4d.js',
+);
+const IconComponent: React.FC<{ type: string }> = props => {
+  const { type } = props;
+  return (
+    <span className="anticon">
+      <IconFont type={type} />
+    </span>
+  );
+};
+export default IconComponent;

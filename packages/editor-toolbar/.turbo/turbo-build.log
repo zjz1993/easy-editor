@@ -1,7 +1,7 @@
 
 
 > @easy-editor/editor-toolbar@0.0.1 build /Users/zhaojunzhe/easy-editor/packages/editor-toolbar
-> rollup -c rollup.config.js
+> NODE_ENV=production rollup -c rollup.config.js
 
 [36m
 [1msrc/index.ts[22m → [1mdist/main.js[22m...[39m
@@ -9,11 +9,225 @@
 
 More info: https://sass-lang.com/d/legacy-js-api
 
-[32mcreated [1mdist/main.js[22m in [1m4.1s[22m[39m
+[33m[1mDeprecation Warning[0m: Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+[34m    ╷[0m
+[34m20  │[0m [34m┌[0m       &--active{
+[34m21  │[0m [34m│[0m         color: styles.$primary-color;
+[34m22  │[0m [34m│[0m         background-color: rgba(styles.$primary-color,0.6);
+[34m23  │[0m [34m│[0m       }
+[34m    │[0m [34m└[0m[34m───[0m[34m nested rule[0m
+[34m... │[0m
+[34m28  │[0m         [31mdisplay: inline-block[0m;
+[34m    │[0m   [31m      ^^^^^^^^^^^^^^^^^^^^^[0m[31m declaration[0m
+[34m    ╵[0m
+    src/styles/root.scss 28:7  root stylesheet
+
+[33m[1mDeprecation Warning[0m: Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+[34m   ╷[0m
+[34m24 │[0m [34m┌[0m       &--disabled{
+[34m25 │[0m [34m│[0m         cursor: not-allowed;
+[34m26 │[0m [34m│[0m         opacity: 0.3;
+[34m27 │[0m [34m│[0m       }
+[34m   │[0m [34m└[0m[34m───[0m[34m nested rule[0m
+[34m28 │[0m         [31mdisplay: inline-block[0m;
+[34m   │[0m   [31m      ^^^^^^^^^^^^^^^^^^^^^[0m[31m declaration[0m
+[34m   ╵[0m
+    src/styles/root.scss 28:7  root stylesheet
+
+[33m[1mDeprecation Warning[0m: Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+[34m    ╷[0m
+[34m20  │[0m [34m┌[0m       &--active{
+[34m21  │[0m [34m│[0m         color: styles.$primary-color;
+[34m22  │[0m [34m│[0m         background-color: rgba(styles.$primary-color,0.6);
+[34m23  │[0m [34m│[0m       }
+[34m    │[0m [34m└[0m[34m───[0m[34m nested rule[0m
+[34m... │[0m
+[34m29  │[0m         [31mwidth: 24px[0m;
+[34m    │[0m   [31m      ^^^^^^^^^^^[0m[31m declaration[0m
+[34m    ╵[0m
+    src/styles/root.scss 29:7  root stylesheet
+
+[33m[1mDeprecation Warning[0m: Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+[34m    ╷[0m
+[34m24  │[0m [34m┌[0m       &--disabled{
+[34m25  │[0m [34m│[0m         cursor: not-allowed;
+[34m26  │[0m [34m│[0m         opacity: 0.3;
+[34m27  │[0m [34m│[0m       }
+[34m    │[0m [34m└[0m[34m───[0m[34m nested rule[0m
+[34m... │[0m
+[34m29  │[0m         [31mwidth: 24px[0m;
+[34m    │[0m   [31m      ^^^^^^^^^^^[0m[31m declaration[0m
+[34m    ╵[0m
+    src/styles/root.scss 29:7  root stylesheet
+
+[33m[1mDeprecation Warning[0m: Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+[34m    ╷[0m
+[34m20  │[0m [34m┌[0m       &--active{
+[34m21  │[0m [34m│[0m         color: styles.$primary-color;
+[34m22  │[0m [34m│[0m         background-color: rgba(styles.$primary-color,0.6);
+[34m23  │[0m [34m│[0m       }
+[34m    │[0m [34m└[0m[34m───[0m[34m nested rule[0m
+[34m... │[0m
+[34m30  │[0m         [31mheight: 24px[0m;
+[34m    │[0m   [31m      ^^^^^^^^^^^^[0m[31m declaration[0m
+[34m    ╵[0m
+    src/styles/root.scss 30:7  root stylesheet
+
+[33m[1mWarning[0m: 17 repetitive deprecation warnings omitted.
+
+[1m[33m(!) Unresolved dependencies[39m[22m
+[90mhttps://rollupjs.org/guide/en/#warning-treating-module-as-external-dependency[39m
+[1m@babel/runtime-corejs3/core-js-stable/object/get-own-property-symbols[22m (imported by src/toolbar.tsx)
+[1m@babel/runtime-corejs3/core-js-stable/object/keys[22m (imported by src/toolbar.tsx)
+[1m@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor[22m (imported by src/toolbar.tsx)
+[1m@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptors[22m (imported by src/toolbar.tsx)
+[1m@babel/runtime-corejs3/core-js-stable/object/define-properties[22m (imported by src/toolbar.tsx)
+[1m@babel/runtime-corejs3/core-js-stable/object/define-property[22m (imported by src/toolbar.tsx)
+[1m@babel/runtime-corejs3/core-js-stable/instance/filter[22m (imported by src/toolbar.tsx)
+[1m@babel/runtime-corejs3/core-js-stable/instance/for-each[22m (imported by src/toolbar.tsx)
+[1m@babel/runtime-corejs3/helpers/defineProperty[22m (imported by src/toolbar.tsx)
+[32mcreated [1mdist/main.js[22m in [1m6.8s[22m[39m
 [36m
 [1msrc/index.ts[22m → [1mdist/index.esm.js[22m...[39m
 [33m[1mDeprecation Warning[0m: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
 
 More info: https://sass-lang.com/d/legacy-js-api
 
-[32mcreated [1mdist/index.esm.js[22m in [1m1.3s[22m[39m
+[33m[1mDeprecation Warning[0m: Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+[34m    ╷[0m
+[34m20  │[0m [34m┌[0m       &--active{
+[34m21  │[0m [34m│[0m         color: styles.$primary-color;
+[34m22  │[0m [34m│[0m         background-color: rgba(styles.$primary-color,0.6);
+[34m23  │[0m [34m│[0m       }
+[34m    │[0m [34m└[0m[34m───[0m[34m nested rule[0m
+[34m... │[0m
+[34m28  │[0m         [31mdisplay: inline-block[0m;
+[34m    │[0m   [31m      ^^^^^^^^^^^^^^^^^^^^^[0m[31m declaration[0m
+[34m    ╵[0m
+    src/styles/root.scss 28:7  root stylesheet
+
+[33m[1mDeprecation Warning[0m: Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+[34m   ╷[0m
+[34m24 │[0m [34m┌[0m       &--disabled{
+[34m25 │[0m [34m│[0m         cursor: not-allowed;
+[34m26 │[0m [34m│[0m         opacity: 0.3;
+[34m27 │[0m [34m│[0m       }
+[34m   │[0m [34m└[0m[34m───[0m[34m nested rule[0m
+[34m28 │[0m         [31mdisplay: inline-block[0m;
+[34m   │[0m   [31m      ^^^^^^^^^^^^^^^^^^^^^[0m[31m declaration[0m
+[34m   ╵[0m
+    src/styles/root.scss 28:7  root stylesheet
+
+[33m[1mDeprecation Warning[0m: Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+[34m    ╷[0m
+[34m20  │[0m [34m┌[0m       &--active{
+[34m21  │[0m [34m│[0m         color: styles.$primary-color;
+[34m22  │[0m [34m│[0m         background-color: rgba(styles.$primary-color,0.6);
+[34m23  │[0m [34m│[0m       }
+[34m    │[0m [34m└[0m[34m───[0m[34m nested rule[0m
+[34m... │[0m
+[34m29  │[0m         [31mwidth: 24px[0m;
+[34m    │[0m   [31m      ^^^^^^^^^^^[0m[31m declaration[0m
+[34m    ╵[0m
+    src/styles/root.scss 29:7  root stylesheet
+
+[33m[1mDeprecation Warning[0m: Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+[34m    ╷[0m
+[34m24  │[0m [34m┌[0m       &--disabled{
+[34m25  │[0m [34m│[0m         cursor: not-allowed;
+[34m26  │[0m [34m│[0m         opacity: 0.3;
+[34m27  │[0m [34m│[0m       }
+[34m    │[0m [34m└[0m[34m───[0m[34m nested rule[0m
+[34m... │[0m
+[34m29  │[0m         [31mwidth: 24px[0m;
+[34m    │[0m   [31m      ^^^^^^^^^^^[0m[31m declaration[0m
+[34m    ╵[0m
+    src/styles/root.scss 29:7  root stylesheet
+
+[33m[1mDeprecation Warning[0m: Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+[34m    ╷[0m
+[34m20  │[0m [34m┌[0m       &--active{
+[34m21  │[0m [34m│[0m         color: styles.$primary-color;
+[34m22  │[0m [34m│[0m         background-color: rgba(styles.$primary-color,0.6);
+[34m23  │[0m [34m│[0m       }
+[34m    │[0m [34m└[0m[34m───[0m[34m nested rule[0m
+[34m... │[0m
+[34m30  │[0m         [31mheight: 24px[0m;
+[34m    │[0m   [31m      ^^^^^^^^^^^^[0m[31m declaration[0m
+[34m    ╵[0m
+    src/styles/root.scss 30:7  root stylesheet
+
+[33m[1mWarning[0m: 17 repetitive deprecation warnings omitted.
+
+[1m[33m(!) Unresolved dependencies[39m[22m
+[90mhttps://rollupjs.org/guide/en/#warning-treating-module-as-external-dependency[39m
+[1m@babel/runtime-corejs3/core-js-stable/object/get-own-property-symbols[22m (imported by src/toolbar.tsx)
+[1m@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptors[22m (imported by src/toolbar.tsx)
+[1m@babel/runtime-corejs3/core-js-stable/object/keys[22m (imported by src/toolbar.tsx)
+[1m@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor[22m (imported by src/toolbar.tsx)
+[1m@babel/runtime-corejs3/core-js-stable/object/define-property[22m (imported by src/toolbar.tsx)
+[1m@babel/runtime-corejs3/core-js-stable/object/define-properties[22m (imported by src/toolbar.tsx)
+[1m@babel/runtime-corejs3/core-js-stable/instance/for-each[22m (imported by src/toolbar.tsx)
+[1m@babel/runtime-corejs3/core-js-stable/instance/filter[22m (imported by src/toolbar.tsx)
+[1m@babel/runtime-corejs3/helpers/defineProperty[22m (imported by src/toolbar.tsx)
+[32mcreated [1mdist/index.esm.js[22m in [1m3s[22m[39m
