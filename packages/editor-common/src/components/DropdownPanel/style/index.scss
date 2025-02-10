@@ -1,0 +1,14 @@
+.easy-editor-dropdown-container {
+  cursor: pointer;
+}
+
+.easy-editor-dropdown-container-same-width.easy-editor-dropdown-container {
+  width: 100%;
+}
+
+.easy-editor-dropdown-panel {
+  padding: 6px;
+  background: white;
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 8%), 0 3px 6px -4px rgba(0, 0, 0, 12%),
+    0 9px 28px 8px rgba(0, 0, 0, 5%);
+}

@@ -15,8 +15,8 @@
     "clear": "rm -rf dist"
   },
   "dependencies": {
-    "@tiptap/extension-bold": "^2.11.2",
-    "@tiptap/core": "^2.11.2"
+    "@tiptap/extension-bold": "^2.11.5",
+    "@tiptap/core": "^2.11.5"
   },
   "devDependencies": {
     "@rspack/cli": "^1.1.1",

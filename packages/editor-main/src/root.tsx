@@ -1,4 +1,8 @@
-import { Intl, Language_ZhCN, isUndefined } from '@easy-editor/editor-common';
+import {
+  IntlComponent,
+  Language_ZhCN,
+  isUndefined,
+} from '@easy-editor/editor-common';
 import EditorToolbar from '@easy-editor/editor-toolbar';
 import { Bold } from '@easy-editor/extension-bold';
 import { EditorContent, useEditor } from '@tiptap/react';
@@ -17,20 +21,11 @@ const Editor: FC<TEasyEditorProps> = props => {
     autofocus: !isUndefined(autoFocus) ? 'end' : undefined,
     extensions: [
       ...extensions,
+      // Paragraph,
+      // Text,
       Placeholder.configure({
-        // Use a placeholder:
         placeholder,
-        // Use different placeholders depending on the node type:
-        // placeholder: ({ node }) => {
-        //   if (node.type.name === 'heading') {
-        //     return 'What’s the title?'
-        //   }
-
-        //   return 'Can you add some further context?'
-        // },
       }),
-      //PasteExtension,
-      //MaxLengthExtension.configure({ maxLength: maxCount }),
     ],
     content,
     onUpdate: ({ editor }) => {
@@ -42,7 +37,7 @@ const Editor: FC<TEasyEditorProps> = props => {
       'zh-CN': Language_ZhCN,
       zh_cn: Language_ZhCN,
     };
-    Intl.init({
+    IntlComponent.init({
       locales,
       currentLocale: 'zh_cn',
       escapeHtml: false,

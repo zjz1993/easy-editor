@@ -1,0 +1,59 @@
+@use "~@easy-editor/styles";
+.easy-editor-header-dropdown{
+  width: 200px;
+  cursor: pointer;
+  border-radius: 4px;
+  &__item{
+    cursor: pointer;
+    color: #141f38;
+    display: flex;
+    align-items: center;
+    padding: 6px 16px 6px 17px;
+    .header-name{
+      flex:1;
+    }
+    .header-keys {
+      font-weight: 400;
+      font-size: 12px;
+      color: #98a0b1;
+    }
+    &.header-h1 {
+      font-weight: bold;
+      font-size: 26px;
+      line-height: 36px;
+    }
+
+    &.header-h2 {
+      font-weight: bold;
+      font-size: 22px;
+      line-height: 31px;
+    }
+
+    &.header-h3 {
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 25px;
+    }
+
+    &.header-h4 {
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 22px;
+    }
+
+    &.header-h5 {
+      font-weight: bold;
+      font-size: 15px;
+      line-height: 20px;
+    }
+    &.header-h6 {
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    &:hover{
+      background: styles.$hover-grey;
+    }
+  }
+}

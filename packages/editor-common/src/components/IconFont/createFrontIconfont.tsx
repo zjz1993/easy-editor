@@ -17,7 +17,7 @@ export function createFromIconfont(scriptUrl: string) {
     loaded.add(scriptUrl);
   }
 
-  const Iconfont = React.forwardRef<SVGSVGElement, IconProps>((props, ref) => {
+  return React.forwardRef<SVGSVGElement, IconProps>((props, ref) => {
     const { type, ...rest } = props;
 
     return (
@@ -26,6 +26,4 @@ export function createFromIconfont(scriptUrl: string) {
       </Icon>
     );
   });
-
-  return Iconfont;
 }
