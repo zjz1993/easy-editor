@@ -1,6 +1,6 @@
 @use "~@easy-editor/styles";
 .easy-editor-header-dropdown{
-  width: 200px;
+  width: 250px;
   cursor: pointer;
   border-radius: 4px;
   &__item{
@@ -11,6 +11,11 @@
     padding: 6px 16px 6px 17px;
     .header-name{
       flex:1;
+    }
+    .icon-selected {
+      width: 22px;
+      color: #0068ff;
+      margin-right: 9px;
     }
     .header-keys {
       font-weight: 400;

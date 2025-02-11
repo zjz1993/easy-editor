@@ -95,6 +95,16 @@ declare module '@tiptap/core' {
        */
       setHorizontalRule: () => ReturnType;
     };
+    heading: {
+      /**
+       * Set a heading node
+       */
+      setHeading: (attributes: { level: number }) => ReturnType;
+      /**
+       * Toggle a heading node
+       */
+      toggleHeading: (attributes: { level: number }) => ReturnType;
+    };
   }
 }
 

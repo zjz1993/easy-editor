@@ -2,7 +2,7 @@ export const BLOCK_TYPES = {
   DOC: 'doc',
   T: 'title',
   P: 'paragraph',
-  QT: 'quote',
+  QUOTE: 'quote',
   HR: 'divider',
   TL: 'table',
   TR: 'table_row',
@@ -29,12 +29,14 @@ export const headers = [
   {
     name: 'paragraph',
     type: BLOCK_TYPES.P,
-    attrs: {},
+    attrs: { level: 0 },
     keys: 'paragraph',
   },
   {
+    name: 'hr',
     type: BLOCK_TYPES.HR,
     keys: 'toolbar.header.h1',
+    attrs: { level: 0 },
   },
   {
     name: 'h1',
@@ -72,10 +74,10 @@ export const headers = [
     attrs: { level: 6 },
     keys: 'toolbar.header.h6',
   },
-  {
-    name: 'quote',
-    type: BLOCK_TYPES.QT,
-    attrs: {},
-    keys: 'toolbar.quote',
-  },
+  //{
+  //  name: 'quote',
+  //  type: BLOCK_TYPES.QT,
+  //  attrs: { level: 0 },
+  //  keys: 'toolbar.quote',
+  //},
 ];

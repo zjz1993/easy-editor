@@ -39,6 +39,8 @@
 .divider-horizontal.easy-editor__divider {
   width: 100%;
   height: 1px;
+  display: flex;
+  clear: both;
 }
 .divider-vertical.easy-editor__divider {
   width: 1px;
