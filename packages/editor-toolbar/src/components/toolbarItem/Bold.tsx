@@ -10,22 +10,24 @@ export type UndoProps = {
   title?: string;
 };
 
-export const Redo: FC<UndoProps> = ({ className, style, title }) => {
+const Bold: FC<UndoProps> = ({ className, style, title }) => {
   const { editor, disabled } = useContext(ToolbarContext);
   return (
     <ToolbarItemButtonWrapper
-      intlStr="toolbar.redo"
+      intlStr="bold"
       className={className}
       style={style}
     >
       <Button
+        isActive={editor.isActive('bold')}
         onClick={() => {
-          editor?.chain().focus().redo?.().run();
+          editor.chain().focus().toggleBold().run();
         }}
-        disabled={disabled || !editor.can().chain().focus().redo?.().run()}
+        disabled={disabled || !editor.can().chain().focus().toggleBold().run()}
       >
-        <Iconfont type="icon-redo" />
+        <Iconfont type="icon-bold" />
       </Button>
     </ToolbarItemButtonWrapper>
   );
 };
+export default Bold;

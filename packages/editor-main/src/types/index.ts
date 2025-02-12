@@ -7,4 +7,5 @@ export type TEasyEditorProps = {
   onChange?: (data: string | JSONContent) => void;
   placeholder?: string;
   autoFocus?: boolean;
+  editable?: boolean;
 };

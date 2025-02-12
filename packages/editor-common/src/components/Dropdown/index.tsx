@@ -21,16 +21,27 @@ const Dropdown = forwardRef<
     visible?: boolean;
     children: ReactElement;
     popup: ReactNode;
+    className?: string;
+    disabled?: boolean;
   }
 >((props, ref) => {
-  const { children, popup } = props;
+  const { disabled, children, popup, className } = props;
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const handleVisibleChange = useCallback((isOpen: boolean) => {
-    setIsOpen(isOpen);
-  }, []);
+  const handleVisibleChange = useCallback(
+    (isOpen: boolean) => {
+      if (disabled) {
+        return;
+      }
+      setIsOpen(isOpen);
+    },
+    [disabled],
+  );
   useImperativeHandle(ref, () => {
     return {
       toggleVisible: (outerVisible: boolean) => {
+        if (disabled) {
+          return;
+        }
         setIsOpen(outerVisible);
       },
     };
@@ -38,7 +49,7 @@ const Dropdown = forwardRef<
 
   return (
     <DropdownPanel
-      className="easy-editor-toolbar__item"
+      className={cx('easy-editor-toolbar__item', className)}
       popup={popup}
       popupVisible={isOpen}
       onPopupVisibleChange={handleVisibleChange}

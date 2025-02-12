@@ -30,7 +30,7 @@ export const headers = [
     name: 'paragraph',
     type: BLOCK_TYPES.P,
     attrs: { level: 0 },
-    keys: 'paragraph',
+    keys: 'toolbar.paragraph',
   },
   {
     name: 'hr',
@@ -74,10 +74,16 @@ export const headers = [
     attrs: { level: 6 },
     keys: 'toolbar.header.h6',
   },
-  //{
-  //  name: 'quote',
-  //  type: BLOCK_TYPES.QT,
-  //  attrs: { level: 0 },
-  //  keys: 'toolbar.quote',
-  //},
+  {
+    name: 'hr',
+    type: BLOCK_TYPES.HR,
+    keys: 'toolbar.header.h1',
+    attrs: { level: 0 },
+  },
+  {
+    name: 'quote',
+    type: BLOCK_TYPES.QUOTE,
+    attrs: { level: 0 },
+    keys: 'toolbar.header.quote',
+  },
 ];

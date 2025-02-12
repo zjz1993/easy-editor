@@ -10,6 +10,9 @@
   box-sizing: border-box;
   &__item{
     display: flex;
+    &__dropdown{
+      width: 70px;
+    }
     &__btn{
       display: inline-block;
       width: 24px;
@@ -23,8 +26,7 @@
       padding: 4px;
       cursor: pointer;
       &--active{
-        color: styles.$primary-color;
-        background-color: rgba(styles.$primary-color,0.6);
+        background-color: styles.$background-grey;
       }
       &--disabled{
         cursor: not-allowed;

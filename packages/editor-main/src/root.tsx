@@ -10,13 +10,20 @@ import StarterKit from '@tiptap/starter-kit';
 import { type FC, useEffect } from 'react';
 import type { TEasyEditorProps } from './types/index.ts';
 import './styles/root.scss';
+import { Blockquote } from '@tiptap/extension-blockquote';
 import { Placeholder } from '@tiptap/extension-placeholder';
 //import MaxLengthExtension from './extension/maxLength/index.ts';
 //import PasteExtension from './extension/paste/index.tsx';
 
 const Editor: FC<TEasyEditorProps> = props => {
-  const { content, onChange, placeholder = '请输入', autoFocus } = props;
-  const extensions = [StarterKit.configure({ bold: false }), Bold];
+  const {
+    editable = true,
+    content,
+    onChange,
+    placeholder = '请输入',
+    autoFocus,
+  } = props;
+  const extensions = [StarterKit.configure({ bold: false }), Bold, Blockquote];
   const editor = useEditor({
     autofocus: !isUndefined(autoFocus) ? 'end' : undefined,
     extensions: [
@@ -28,6 +35,7 @@ const Editor: FC<TEasyEditorProps> = props => {
       }),
     ],
     content,
+    editable,
     onUpdate: ({ editor }) => {
       onChange?.(editor.state.doc.toJSON());
     },

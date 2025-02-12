@@ -11,7 +11,7 @@ export type UndoProps = {
 };
 
 export const Undo: FC<UndoProps> = ({ className, style, title }) => {
-  const { editor } = useContext(ToolbarContext);
+  const { editor, disabled } = useContext(ToolbarContext);
   return (
     <ToolbarItemButtonWrapper
       intlStr="toolbar.undo"
@@ -20,10 +20,11 @@ export const Undo: FC<UndoProps> = ({ className, style, title }) => {
     >
       <Button
         onClick={() => {
-          // @ts-ignore
           editor?.chain().focus().undo?.().run();
         }}
-        disabled={!(editor.can().chain().focus() as any).undo?.().run()}
+        disabled={
+          disabled || !(editor.can().chain().focus() as any).undo?.().run()
+        }
       >
         <Iconfont type="icon-undo" />
       </Button>

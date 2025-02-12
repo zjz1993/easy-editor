@@ -1,6 +1,5 @@
 import { type FC, useCallback, useContext } from 'react';
 import './index.scss';
-import { isUndefined } from '@easy-editor/editor-common';
 import IconFont from '@easy-editor/editor-common/src/components/IconFont/index.tsx';
 import {
   BLOCK_TYPES,
@@ -28,17 +27,41 @@ const HeaderButtonDropdown: FC<{ onClick?: () => void }> = props => {
               onClick?.();
             }}
           >
-            {editor.isActive(name) ? (
+            {editor.isActive('paragraph') && !editor.isActive('blockquote') ? (
               <div className="icon-selected">
                 <IconFont type="icon-gou-cu" />
               </div>
             ) : (
               <div className="icon-selected" />
             )}
-            <div className="header-name">正文</div>
+            <div className="header-name">{IntlComponent.get('paragraph')}</div>
+            <div className="header-keys">
+              {IntlComponent.get(keys, { option, command })}
+            </div>
           </div>
         ),
-        [BLOCK_TYPES.QUOTE]: <div key="quote">引用</div>,
+        [BLOCK_TYPES.QUOTE]: (
+          <div
+            key="header_quote"
+            className={cx('easy-editor-header-dropdown__item')}
+            onClick={() => {
+              editor.chain().focus().toggleBlockquote().run();
+              onClick?.();
+            }}
+          >
+            {editor.isActive('blockquote') ? (
+              <div className="icon-selected">
+                <IconFont type="icon-gou-cu" />
+              </div>
+            ) : (
+              <div className="icon-selected" />
+            )}
+            <div className="header-name">{IntlComponent.get('quote')}</div>
+            <div className="header-keys">
+              {IntlComponent.get(keys, { option, command })}
+            </div>
+          </div>
+        ),
         [BLOCK_TYPES.H]: (
           <div
             key={`header_${index}`}
@@ -63,8 +86,7 @@ const HeaderButtonDropdown: FC<{ onClick?: () => void }> = props => {
               <div className="icon-selected" />
             )}
             <div className="header-name">
-              {IntlComponent.get('header')}
-              {!isUndefined(attrs) && <span>{attrs.level}</span>}
+              {IntlComponent.get('header.level', { level: attrs.level })}
             </div>
             <div className="header-keys">
               {IntlComponent.get(keys, { option, command })}

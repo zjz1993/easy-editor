@@ -8,6 +8,11 @@
   height: 100%;
   background: white;
   box-sizing: border-box;
+  blockquote {
+    border-left: 3px solid rgba(61, 37, 20, .12);
+    margin: 1.5rem 0;
+    padding-left: 1rem;
+  }
   &-body{
     display: flex;
     overflow: auto;

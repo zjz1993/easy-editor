@@ -4,6 +4,7 @@ import type { Editor } from '@tiptap/core';
 import type { IToolbarCommonProps } from 'src/types/index.ts';
 import HeaderButton from './components/HeaderButton/index.tsx';
 import { ToolBarItemDivider } from './components/ToolBarItemDivider.tsx';
+import Bold from './components/toolbarItem/Bold.tsx';
 import { Redo } from './components/toolbarItem/Redo.tsx';
 import { Undo } from './components/toolbarItem/Undo.tsx';
 import ToolbarContext from './context/toolbarContext.ts';
@@ -120,6 +121,7 @@ const Toolbar: FC<IToolbarProps> = props => {
     value: editorView.state,
     view: editorView,
     editor,
+    disabled: !editor.isEditable,
   };
   return (
     <ToolbarContext.Provider value={{ ...commonProps }}>
@@ -128,6 +130,7 @@ const Toolbar: FC<IToolbarProps> = props => {
         <Redo />
         <ToolBarItemDivider />
         <HeaderButton />
+        <Bold />
       </div>
     </ToolbarContext.Provider>
   );

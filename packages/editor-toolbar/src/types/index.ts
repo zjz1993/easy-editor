@@ -96,4 +96,5 @@ export interface IToolbarCommonProps {
   value: EditorState;
   view: EditorView;
   editor: Editor;
+  disabled?: boolean;
 }
