@@ -12,6 +12,7 @@ import type { TEasyEditorProps } from './types/index.ts';
 import './styles/root.scss';
 import { Blockquote } from '@tiptap/extension-blockquote';
 import { Placeholder } from '@tiptap/extension-placeholder';
+import { Strike } from '@tiptap/extension-strike';
 import Underline from '@tiptap/extension-underline';
 //import MaxLengthExtension from './extension/maxLength/index.ts';
 //import PasteExtension from './extension/paste/index.tsx';
@@ -29,6 +30,7 @@ const Editor: FC<TEasyEditorProps> = props => {
     Bold,
     Blockquote,
     Underline,
+    Strike,
   ];
   const editor = useEditor({
     autofocus: !isUndefined(autoFocus) ? 'end' : undefined,

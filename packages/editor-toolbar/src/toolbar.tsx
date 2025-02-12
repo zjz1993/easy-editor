@@ -7,6 +7,7 @@ import { ToolBarItemDivider } from './components/ToolBarItemDivider.tsx';
 import Bold from './components/toolbarItem/Bold.tsx';
 import Italic from './components/toolbarItem/Italic.tsx';
 import { Redo } from './components/toolbarItem/Redo.tsx';
+import Strike from './components/toolbarItem/Strike.tsx';
 import Underline from './components/toolbarItem/Underline.tsx';
 import { Undo } from './components/toolbarItem/Undo.tsx';
 import ToolbarContext from './context/toolbarContext.ts';
@@ -152,6 +153,7 @@ const Toolbar: FC<IToolbarProps> = props => {
         <Bold />
         <Italic />
         <Underline />
+        <Strike />
       </div>
     </ToolbarContext.Provider>
   );
