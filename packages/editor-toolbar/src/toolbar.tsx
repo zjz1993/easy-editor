@@ -5,6 +5,7 @@ import type { IToolbarCommonProps } from 'src/types/index.ts';
 import HeaderButton from './components/HeaderButton/index.tsx';
 import { ToolBarItemDivider } from './components/ToolBarItemDivider.tsx';
 import Bold from './components/toolbarItem/Bold.tsx';
+import Italic from './components/toolbarItem/Italic.tsx';
 import { Redo } from './components/toolbarItem/Redo.tsx';
 import { Undo } from './components/toolbarItem/Undo.tsx';
 import ToolbarContext from './context/toolbarContext.ts';
@@ -131,6 +132,7 @@ const Toolbar: FC<IToolbarProps> = props => {
         <ToolBarItemDivider />
         <HeaderButton />
         <Bold />
+        <Italic />
       </div>
     </ToolbarContext.Provider>
   );
