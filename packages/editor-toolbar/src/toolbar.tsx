@@ -7,6 +7,7 @@ import { ToolBarItemDivider } from './components/ToolBarItemDivider.tsx';
 import Bold from './components/toolbarItem/Bold.tsx';
 import Italic from './components/toolbarItem/Italic.tsx';
 import { Redo } from './components/toolbarItem/Redo.tsx';
+import Underline from './components/toolbarItem/Underline.tsx';
 import { Undo } from './components/toolbarItem/Undo.tsx';
 import ToolbarContext from './context/toolbarContext.ts';
 
@@ -33,6 +34,23 @@ declare module '@tiptap/core' {
        * Toggle a bold mark
        */
       toggleBold: () => ReturnType;
+    };
+    underline: {
+      /**
+       * Set an underline mark
+       * @example editor.commands.setUnderline()
+       */
+      setUnderline: () => ReturnType;
+      /**
+       * Toggle an underline mark
+       * @example editor.commands.toggleUnderline()
+       */
+      toggleUnderline: () => ReturnType;
+      /**
+       * Unset an underline mark
+       * @example editor.commands.unsetUnderline()
+       */
+      unsetUnderline: () => ReturnType;
     };
     strike: {
       /**
@@ -133,6 +151,7 @@ const Toolbar: FC<IToolbarProps> = props => {
         <HeaderButton />
         <Bold />
         <Italic />
+        <Underline />
       </div>
     </ToolbarContext.Provider>
   );

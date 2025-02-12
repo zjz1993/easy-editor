@@ -12,6 +12,7 @@ import type { TEasyEditorProps } from './types/index.ts';
 import './styles/root.scss';
 import { Blockquote } from '@tiptap/extension-blockquote';
 import { Placeholder } from '@tiptap/extension-placeholder';
+import Underline from '@tiptap/extension-underline';
 //import MaxLengthExtension from './extension/maxLength/index.ts';
 //import PasteExtension from './extension/paste/index.tsx';
 
@@ -23,7 +24,12 @@ const Editor: FC<TEasyEditorProps> = props => {
     placeholder = '请输入',
     autoFocus,
   } = props;
-  const extensions = [StarterKit.configure({ bold: false }), Bold, Blockquote];
+  const extensions = [
+    StarterKit.configure({ bold: false }),
+    Bold,
+    Blockquote,
+    Underline,
+  ];
   const editor = useEditor({
     autofocus: !isUndefined(autoFocus) ? 'end' : undefined,
     extensions: [

@@ -7,6 +7,7 @@ export default {
   quote: '引用',
   bold: '加粗 {command} + B',
   italic: '斜体 {command} + I',
+  underline: '下划线 {command} + U',
   'toolbar.paragraph': '{command} + {option} + 0',
   'toolbar.header.h1': '{command} + {option} + 1',
   'toolbar.header.h2': '{command} + {option} + 2',
