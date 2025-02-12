@@ -23,9 +23,10 @@ const Dropdown = forwardRef<
     popup: ReactNode;
     className?: string;
     disabled?: boolean;
+    getPopupContainer?: (node: HTMLElement) => HTMLElement;
   }
 >((props, ref) => {
-  const { disabled, children, popup, className } = props;
+  const { getPopupContainer, disabled, children, popup, className } = props;
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const handleVisibleChange = useCallback(
     (isOpen: boolean) => {
@@ -53,6 +54,7 @@ const Dropdown = forwardRef<
       popup={popup}
       popupVisible={isOpen}
       onPopupVisibleChange={handleVisibleChange}
+      getPopupContainer={getPopupContainer}
     >
       <div className="easy-editor-dropdown">
         {children}

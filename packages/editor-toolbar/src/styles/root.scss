@@ -10,6 +10,8 @@
   box-sizing: border-box;
   &__item{
     display: flex;
+    height: 24px;
+    align-items: center;
     &__dropdown{
       width: 70px;
     }

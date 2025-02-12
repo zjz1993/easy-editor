@@ -11,8 +11,10 @@ import { type FC, useEffect } from 'react';
 import type { TEasyEditorProps } from './types/index.ts';
 import './styles/root.scss';
 import { Blockquote } from '@tiptap/extension-blockquote';
+import { Color } from '@tiptap/extension-color';
 import { Placeholder } from '@tiptap/extension-placeholder';
 import { Strike } from '@tiptap/extension-strike';
+import { TextStyle } from '@tiptap/extension-text-style';
 import Underline from '@tiptap/extension-underline';
 //import MaxLengthExtension from './extension/maxLength/index.ts';
 //import PasteExtension from './extension/paste/index.tsx';
@@ -31,6 +33,8 @@ const Editor: FC<TEasyEditorProps> = props => {
     Blockquote,
     Underline,
     Strike,
+    TextStyle,
+    Color,
   ];
   const editor = useEditor({
     autofocus: !isUndefined(autoFocus) ? 'end' : undefined,

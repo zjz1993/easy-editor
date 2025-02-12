@@ -3,6 +3,7 @@ import './styles/root.scss';
 import type { Editor } from '@tiptap/core';
 import type { IToolbarCommonProps } from 'src/types/index.ts';
 import HeaderButton from './components/HeaderButton/index.tsx';
+import TextColorPicker from './components/TextColorPicker/index.tsx';
 import { ToolBarItemDivider } from './components/ToolBarItemDivider.tsx';
 import Bold from './components/toolbarItem/Bold.tsx';
 import Italic from './components/toolbarItem/Italic.tsx';
@@ -154,6 +155,7 @@ const Toolbar: FC<IToolbarProps> = props => {
         <Italic />
         <Underline />
         <Strike />
+        <TextColorPicker />
       </div>
     </ToolbarContext.Provider>
   );
