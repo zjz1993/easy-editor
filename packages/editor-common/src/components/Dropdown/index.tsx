@@ -24,14 +24,19 @@ const Dropdown = forwardRef<
     className?: string;
     disabled?: boolean;
     getPopupContainer?: (node: HTMLElement) => HTMLElement;
+    onClick?: () => void;
   }
 >((props, ref) => {
-  const { getPopupContainer, disabled, children, popup, className } = props;
+  const { onClick, getPopupContainer, disabled, children, popup, className } =
+    props;
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const handleVisibleChange = useCallback(
     (isOpen: boolean) => {
       if (disabled) {
         return;
+      }
+      if (isOpen) {
+        onClick?.();
       }
       setIsOpen(isOpen);
     },

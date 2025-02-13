@@ -12,17 +12,19 @@ export type UndoProps = {
 
 export const Redo: FC<UndoProps> = ({ className, style, title }) => {
   const { editor, disabled } = useContext(ToolbarContext);
+  const btnDisabled = disabled || !editor.can().chain().focus().redo?.().run();
   return (
     <ToolbarItemButtonWrapper
       intlStr="toolbar.redo"
       className={className}
       style={style}
+      disabled={btnDisabled}
     >
       <Button
         onClick={() => {
           editor?.chain().focus().redo?.().run();
         }}
-        disabled={disabled || !editor.can().chain().focus().redo?.().run()}
+        disabled={btnDisabled}
       >
         <Iconfont type="icon-redo" />
       </Button>

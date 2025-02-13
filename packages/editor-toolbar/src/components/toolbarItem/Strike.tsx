@@ -12,20 +12,21 @@ export type UndoProps = {
 
 const Strike: FC<UndoProps> = ({ className, style, title }) => {
   const { editor, disabled } = useContext(ToolbarContext);
+  const btnDisabled =
+    disabled || !editor.can().chain().focus().toggleStrike().run();
   return (
     <ToolbarItemButtonWrapper
       intlStr="strike"
       className={className}
       style={style}
+      disabled={btnDisabled}
     >
       <Button
         isActive={editor.isActive('strike')}
         onClick={() => {
           editor.chain().focus().toggleStrike().run();
         }}
-        disabled={
-          disabled || !editor.can().chain().focus().toggleStrike().run()
-        }
+        disabled={btnDisabled}
       >
         <Iconfont type="icon-strike" />
       </Button>

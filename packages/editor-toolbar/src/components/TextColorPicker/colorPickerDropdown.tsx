@@ -1,8 +1,23 @@
+import { chunk } from '@easy-editor/editor-common';
 import type { FC } from 'react';
+import { useContext } from 'react';
 import './index.scss';
 import { Iconfont } from '@easy-editor/editor-common/src/index.ts';
+import ToolbarContext from '../../context/toolbarContext.ts';
 
-const colorArray = [
+export const colorArray = [
+  '#222e4d',
+  'rgba(0, 0, 0, 0.2)',
+  'rgba(0, 0, 0, 0.4)',
+  'rgba(0, 0, 0, 0.6)',
+  'rgba(0, 0, 0, 0.8)',
+  '#000000',
+  '#FFEDEA',
+  '#FFF7EB',
+  '#FCFAEA',
+  '#EDF6E8',
+  '#EBF6FE',
+  '#F0F0F8',
   '#EF3638',
   '#FA6400',
   '#FAAD14',
@@ -12,34 +27,32 @@ const colorArray = [
 ];
 
 const ColorPickerDropdown: FC = () => {
+  const { editor } = useContext(ToolbarContext);
   return (
     <div className="easy-editor-color-picker">
-      <div className="easy-editor-color-picker__title">字体颜色</div>
-      <div className="easy-editor-color-picker__color_row">
-        {colorArray.map(color => {
-          return (
-            <div
-              className="color-item"
-              key={color}
-              style={{ border: `1px solid ${color}` }}
-            >
-              <Iconfont type="icon-font-color" />
-            </div>
-          );
-        })}
-      </div>
-      <div className="easy-editor-color-picker__title">背景颜色</div>
-      <div className="easy-editor-color-picker__color_row">
-        {colorArray.map(color => {
+      {chunk(colorArray, 6).map((colorTempArray, index) => {
+        const array = colorTempArray.map(color => {
           return (
             <div
               className="color-item"
               key={color}
               style={{ background: color }}
-            ></div>
+              onClick={() => {
+                editor.chain().focus().setColor(color).run();
+              }}
+            >
+              {editor.isActive('textStyle', { color }) && (
+                <Iconfont type="icon-gou-cu" style={{ color: 'white' }} />
+              )}
+            </div>
           );
-        })}
-      </div>
+        });
+        return (
+          <div className="easy-editor-color-picker__color_row" key={index}>
+            {array}
+          </div>
+        );
+      })}
     </div>
   );
 };

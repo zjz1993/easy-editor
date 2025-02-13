@@ -1,18 +1,18 @@
 import cs from 'classnames';
-import type React from 'react';
+import type { CSSProperties, SVGAttributes } from 'react';
 import { type PropsWithChildren, forwardRef } from 'react';
 import { createFromIconfont } from './createFrontIconfont';
 import './index.scss';
 
 type BaseIconProps = {
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   size?: string | string[];
   spin?: boolean;
 };
 
 export type IconProps = BaseIconProps &
-  Omit<React.SVGAttributes<SVGElement>, keyof BaseIconProps>;
+  Omit<SVGAttributes<SVGElement>, keyof BaseIconProps>;
 
 export const getSize = (size: IconProps['size']) => {
   if (Array.isArray(size) && size.length === 2) {
@@ -57,11 +57,14 @@ export const Icon = forwardRef<SVGSVGElement, PropsWithChildren<IconProps>>(
 const IconFont = createFromIconfont(
   '//at.alicdn.com/t/c/font_4437062_evksm2pcl4d.js',
 );
-const IconComponent: React.FC<{ type: string }> = props => {
-  const { type } = props;
+const IconComponent: React.FC<{
+  type: string;
+  style?: CSSProperties;
+}> = props => {
+  const { type, style } = props;
   return (
     <span className="anticon">
-      <IconFont type={type} />
+      <IconFont type={type} style={style} />
     </span>
   );
 };

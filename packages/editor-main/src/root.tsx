@@ -1,22 +1,16 @@
-import {
-  IntlComponent,
-  Language_ZhCN,
-  isUndefined,
-} from '@easy-editor/editor-common';
+import { isUndefined } from '@easy-editor/editor-common';
 import EditorToolbar from '@easy-editor/editor-toolbar';
 import { Bold } from '@easy-editor/extension-bold';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { type FC, useEffect } from 'react';
+import type { FC } from 'react';
 import type { TEasyEditorProps } from './types/index.ts';
 import './styles/root.scss';
-import { Blockquote } from '@tiptap/extension-blockquote';
 import { Color } from '@tiptap/extension-color';
 import { Placeholder } from '@tiptap/extension-placeholder';
-import { Strike } from '@tiptap/extension-strike';
 import { TextStyle } from '@tiptap/extension-text-style';
 import Underline from '@tiptap/extension-underline';
-//import MaxLengthExtension from './extension/maxLength/index.ts';
+import useIntlLoaded from './hooks/useIntlLoaded.ts';
 //import PasteExtension from './extension/paste/index.tsx';
 
 const Editor: FC<TEasyEditorProps> = props => {
@@ -27,12 +21,13 @@ const Editor: FC<TEasyEditorProps> = props => {
     placeholder = '请输入',
     autoFocus,
   } = props;
+  const { intlInit } = useIntlLoaded();
   const extensions = [
     StarterKit.configure({ bold: false }),
     Bold,
-    Blockquote,
+    // Blockquote,
     Underline,
-    Strike,
+    // Strike,
     TextStyle,
     Color,
   ];
@@ -52,20 +47,10 @@ const Editor: FC<TEasyEditorProps> = props => {
       onChange?.(editor.state.doc.toJSON());
     },
   });
-  useEffect(() => {
-    const locales = {
-      'zh-CN': Language_ZhCN,
-      zh_cn: Language_ZhCN,
-    };
-    IntlComponent.init({
-      locales,
-      currentLocale: 'zh_cn',
-      escapeHtml: false,
-    });
-  }, []);
+
   return (
     <div className="easy-editor">
-      <EditorToolbar editor={editor} />
+      {intlInit && <EditorToolbar editor={editor} />}
       <EditorContent editor={editor} className="easy-editor-body" />
       {/*<BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu>*/}
     </div>

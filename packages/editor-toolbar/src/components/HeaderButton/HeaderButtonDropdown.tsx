@@ -94,7 +94,7 @@ const HeaderButtonDropdown: FC<{ onClick?: () => void }> = props => {
           </div>
         ),
         [BLOCK_TYPES.HR]: (
-          <span key="divider">
+          <span key={`divider_${index}`}>
             <ToolBarItemDivider direction="horizontal" />
           </span>
         ),

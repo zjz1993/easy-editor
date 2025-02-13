@@ -8,10 +8,11 @@ const ToolbarItemButtonWrapper: FC<{
   children: ReactElement;
   className?: string;
   style?: CSSProperties;
+  disabled?: boolean;
 }> = props => {
-  const { children, intlStr, className, style } = props;
+  const { children, intlStr, className, style, disabled } = props;
   return (
-    <ToolBarItem className={className} style={style}>
+    <ToolBarItem className={className} style={style} disabled={disabled}>
       <Tooltip text={IntlComponent.get(intlStr, { command, option })}>
         {children}
       </Tooltip>

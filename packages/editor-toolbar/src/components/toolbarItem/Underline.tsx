@@ -12,20 +12,21 @@ export type UndoProps = {
 
 const Underline: FC<UndoProps> = ({ className, style, title }) => {
   const { editor, disabled } = useContext(ToolbarContext);
+  const btnDisabled =
+    disabled || !editor.can().chain().focus().toggleUnderline().run();
   return (
     <ToolbarItemButtonWrapper
       intlStr="underline"
       className={className}
       style={style}
+      disabled={btnDisabled}
     >
       <Button
         isActive={editor.isActive('underline')}
         onClick={() => {
           editor.chain().focus().toggleUnderline().run();
         }}
-        disabled={
-          disabled || !editor.can().chain().focus().toggleUnderline().run()
-        }
+        disabled={btnDisabled}
       >
         <Iconfont type="icon-underline" />
       </Button>

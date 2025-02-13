@@ -15,6 +15,20 @@ import ToolbarContext from './context/toolbarContext.ts';
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
+    color: {
+      /**
+       * Set the text color
+       * @param color The color to set
+       * @example editor.commands.setColor('red')
+       */
+      setColor: (color: string) => ReturnType;
+
+      /**
+       * Unset the text color
+       * @example editor.commands.unsetColor()
+       */
+      unsetColor: () => ReturnType;
+    };
     collaboration: {
       /**
        * Undo recent changes

@@ -6,13 +6,13 @@ export type ButtonProps = {
   disabled?: boolean;
   isActive?: boolean;
   children: ReactNode;
-  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (e: MouseEvent<HTMLDivElement>) => void;
 };
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+export const Button = forwardRef<HTMLDivElement, ButtonProps>(
   ({ disabled, isActive, children, onClick }, ref) => {
     return (
-      <button
+      <div
         ref={ref}
         onClick={e => {
           e.stopPropagation();
@@ -27,7 +27,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         })}
       >
         {children}
-      </button>
+      </div>
     );
   },
 );
