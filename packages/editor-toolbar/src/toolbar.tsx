@@ -1,7 +1,7 @@
-import type { FC } from 'react';
+import { type FC, cloneElement, useContext, useRef } from 'react';
 import './styles/root.scss';
+import { useSize } from '@easy-editor/editor-common';
 import type { Editor } from '@tiptap/core';
-import type { IToolbarCommonProps } from 'src/types/index.ts';
 import HeaderButton from './components/HeaderButton/index.tsx';
 import TextColorPicker from './components/TextColorPicker/index.tsx';
 import { ToolBarItemDivider } from './components/ToolBarItemDivider.tsx';
@@ -12,6 +12,7 @@ import Strike from './components/toolbarItem/Strike.tsx';
 import Underline from './components/toolbarItem/Underline.tsx';
 import { Undo } from './components/toolbarItem/Undo.tsx';
 import ToolbarContext from './context/toolbarContext.ts';
+import type { IToolbarCommonProps } from './types/index.ts';
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
@@ -149,7 +150,10 @@ export interface IToolbarProps {
 }
 
 const Toolbar: FC<IToolbarProps> = props => {
+  const toolbarRef = useRef<HTMLDivElement>();
   const { editor } = props;
+  const { disabled } = useContext(ToolbarContext);
+  const toolbarSize = useSize(toolbarRef);
   const editorView = editor.view;
   const commonProps: IToolbarCommonProps = {
     dispatch: editorView.dispatch,
@@ -158,18 +162,70 @@ const Toolbar: FC<IToolbarProps> = props => {
     editor,
     disabled: !editor.isEditable,
   };
+  const menuArray = [
+    {
+      key: 'undo',
+      component: <Undo />,
+      intlStr: 'toolbar.undo',
+      disabled: disabled || !editor.can().chain().focus().undo?.().run(),
+    },
+    {
+      key: 'redo',
+      component: <Redo />,
+      intlStr: 'toolbar.redo',
+      disabled: disabled || !editor.can().chain().focus().redo?.().run(),
+    },
+    {
+      key: 'divider',
+      component: <ToolBarItemDivider />,
+    },
+    {
+      key: 'HeaderButton',
+      component: <HeaderButton />,
+      intlStr: 'header',
+      disabled: disabled,
+    },
+    {
+      key: 'bold',
+      component: <Bold />,
+      intlStr: 'bold',
+      disabled: disabled || !editor.can().chain().focus().toggleBold().run(),
+    },
+    {
+      key: 'italic',
+      component: <Italic />,
+      intlStr: 'italic',
+      disabled: disabled || !editor.can().chain().focus().toggleItalic().run(),
+    },
+    {
+      key: 'underline',
+      component: <Underline />,
+      intlStr: 'underline',
+      disabled:
+        disabled || !editor.can().chain().focus().toggleUnderline().run(),
+    },
+    {
+      key: 'strike',
+      component: <Strike />,
+      intlStr: 'strike',
+      disabled: disabled || !editor.can().chain().focus().toggleStrike().run(),
+    },
+    {
+      key: 'textColorPicker',
+      component: <TextColorPicker />,
+      intlStr: 'header',
+    },
+  ];
   return (
     <ToolbarContext.Provider value={{ ...commonProps }}>
-      <div className="easy-editor-toolbar">
-        <Undo />
-        <Redo />
-        <ToolBarItemDivider />
-        <HeaderButton />
-        <Bold />
-        <Italic />
-        <Underline />
-        <Strike />
-        <TextColorPicker />
+      <div className="easy-editor-toolbar" ref={toolbarRef}>
+        {menuArray.map(item => {
+          return cloneElement(item.component, {
+            key: item.key,
+            disabled: item.disabled,
+            intlStr: item.intlStr,
+          });
+        })}
       </div>
     </ToolbarContext.Provider>
   );

@@ -3,10 +3,11 @@ import type { FC } from 'react';
 import { useContext } from 'react';
 import ToolbarItemButtonWrapper from '../toolbarItem/ToolbarItemButtonWrapper.tsx';
 import './index.scss';
+import type { TToolbarWrapperProps } from 'src/types/index.ts';
 import ToolbarContext from '../../context/toolbarContext.ts';
 import ColorPickerDropdown, { colorArray } from './colorPickerDropdown.tsx';
 
-const TextColorPicker: FC = () => {
+const TextColorPicker: FC<TToolbarWrapperProps> = ({ intlStr }) => {
   const { editor } = useContext(ToolbarContext);
   const getActiveColor = () => {
     const res = colorArray.find(color =>
@@ -25,7 +26,7 @@ const TextColorPicker: FC = () => {
       // getPopupContainer={triggerNode => triggerNode.parentElement}
       popup={<ColorPickerDropdown />}
     >
-      <ToolbarItemButtonWrapper intlStr="header">
+      <ToolbarItemButtonWrapper intlStr={intlStr}>
         <div
           className="toolbar-color-btn"
           //onClick={e => {

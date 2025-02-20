@@ -6,14 +6,15 @@ import {
 import cx from 'classnames';
 import type { FC } from 'react';
 import { useContext, useRef } from 'react';
+import type { TToolbarWrapperProps } from 'src/types/index.ts';
 import ToolbarItemButtonWrapper from '../../components/toolbarItem/ToolbarItemButtonWrapper.tsx';
 import ToolbarContext from '../../context/toolbarContext.ts';
 import HeaderButtonDropdown from './HeaderButtonDropdown.tsx';
 
 const headingLevels = [1, 2, 3, 4, 5, 6];
 
-const HeaderButton: FC = () => {
-  const { editor, disabled } = useContext(ToolbarContext);
+const HeaderButton: FC<TToolbarWrapperProps> = ({ disabled, intlStr }) => {
+  const { editor } = useContext(ToolbarContext);
   const ref = useRef<TDropDownRefProps>();
   const getHeadingText = () => {
     if (editor.isActive('paragraph') && !editor.isActive('blockquote')) {
@@ -46,7 +47,7 @@ const HeaderButton: FC = () => {
         />
       }
     >
-      <ToolbarItemButtonWrapper intlStr="header">
+      <ToolbarItemButtonWrapper intlStr={intlStr}>
         <div>{getHeadingText()}</div>
       </ToolbarItemButtonWrapper>
     </Dropdown>

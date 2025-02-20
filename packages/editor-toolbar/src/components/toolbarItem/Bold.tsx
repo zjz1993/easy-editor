@@ -1,23 +1,21 @@
 import { Iconfont } from '@easy-editor/editor-common';
-import { type CSSProperties, type FC, useContext } from 'react';
+import { type FC, useContext } from 'react';
 import ToolbarItemButtonWrapper from '../../components/toolbarItem/ToolbarItemButtonWrapper.tsx';
 import ToolbarContext from '../../context/toolbarContext.ts';
+import type { TToolbarWrapperProps } from '../../types/index.ts';
 import { setTextSelectionAfterChange } from '../../utils/index.ts';
 import { Button } from '../Button.tsx';
 
-export type UndoProps = {
-  className?: string;
-  style?: CSSProperties;
-  title?: string;
-};
-
-const Bold: FC<UndoProps> = ({ className, style, title }) => {
-  const { editor, disabled } = useContext(ToolbarContext);
-  const btnDisabled =
-    disabled || !editor.can().chain().focus().toggleBold().run();
+const Bold: FC<TToolbarWrapperProps> = ({
+  intlStr,
+  className,
+  style,
+  disabled,
+}) => {
+  const { editor } = useContext(ToolbarContext);
   return (
     <ToolbarItemButtonWrapper
-      intlStr="bold"
+      intlStr={intlStr}
       className={className}
       style={style}
       disabled={disabled}
@@ -29,7 +27,7 @@ const Bold: FC<UndoProps> = ({ className, style, title }) => {
             editor.chain().focus().toggleBold().run();
           })
         }
-        disabled={btnDisabled}
+        disabled={disabled}
       >
         <Iconfont type="icon-bold" />
       </Button>

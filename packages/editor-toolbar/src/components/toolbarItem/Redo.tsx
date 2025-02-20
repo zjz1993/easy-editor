@@ -1,30 +1,29 @@
 import { Iconfont } from '@easy-editor/editor-common';
-import { type CSSProperties, type FC, useContext } from 'react';
+import { type FC, useContext } from 'react';
+import type { TToolbarWrapperProps } from 'src/types/index.ts';
 import ToolbarItemButtonWrapper from '../../components/toolbarItem/ToolbarItemButtonWrapper.tsx';
 import ToolbarContext from '../../context/toolbarContext.ts';
 import { Button } from '../Button.tsx';
 
-export type UndoProps = {
-  className?: string;
-  style?: CSSProperties;
-  title?: string;
-};
-
-export const Redo: FC<UndoProps> = ({ className, style, title }) => {
-  const { editor, disabled } = useContext(ToolbarContext);
-  const btnDisabled = disabled || !editor.can().chain().focus().redo?.().run();
+export const Redo: FC<TToolbarWrapperProps> = ({
+  className,
+  style,
+  disabled,
+  intlStr,
+}) => {
+  const { editor } = useContext(ToolbarContext);
   return (
     <ToolbarItemButtonWrapper
-      intlStr="toolbar.redo"
+      intlStr={intlStr}
       className={className}
       style={style}
-      disabled={btnDisabled}
+      disabled={disabled}
     >
       <Button
         onClick={() => {
           editor?.chain().focus().redo?.().run();
         }}
-        disabled={btnDisabled}
+        disabled={disabled}
       >
         <Iconfont type="icon-redo" />
       </Button>

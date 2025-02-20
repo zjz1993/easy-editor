@@ -21,19 +21,25 @@ More info: https://sass-lang.com/d/legacy-js-api
 [90mhttps://rollupjs.org/guide/en/#warning-treating-module-as-external-dependency[39m
 [1m@babel/runtime-corejs3/core-js-stable/set-timeout[22m (imported by src/utils/index.ts)
 [1m@babel/runtime-corejs3/helpers/defineProperty[22m (imported by src/components/HeaderButton/HeaderButtonDropdown.tsx, src/toolbar.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/instance/for-each[22m (imported by src/components/HeaderButton/HeaderButtonDropdown.tsx, src/toolbar.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/instance/find[22m (imported by src/components/HeaderButton/index.tsx, src/components/TextColorPicker/index.tsx)
 [1m@babel/runtime-corejs3/core-js-stable/instance/keys[22m (imported by src/components/HeaderButton/HeaderButtonDropdown.tsx)
+[1m@babel/runtime-corejs3/core-js-stable/instance/find[22m (imported by src/components/HeaderButton/index.tsx, src/components/TextColorPicker/index.tsx)
+[1m@babel/runtime-corejs3/core-js-stable/instance/for-each[22m (imported by src/components/HeaderButton/HeaderButtonDropdown.tsx, src/toolbar.tsx)
 [1m@babel/runtime-corejs3/core-js-stable/instance/map[22m (imported by src/components/TextColorPicker/colorPickerDropdown.tsx)
 [1m@babel/runtime-corejs3/core-js-stable/instance/filter[22m (imported by src/toolbar.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/object/keys[22m (imported by src/toolbar.tsx)
 [1m@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor[22m (imported by src/toolbar.tsx)
 [1m@babel/runtime-corejs3/core-js-stable/object/get-own-property-symbols[22m (imported by src/toolbar.tsx)
 [1m@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptors[22m (imported by src/toolbar.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/object/define-property[22m (imported by src/toolbar.tsx)
+[1m@babel/runtime-corejs3/core-js-stable/object/keys[22m (imported by src/toolbar.tsx)
 [1m@babel/runtime-corejs3/core-js-stable/object/define-properties[22m (imported by src/toolbar.tsx)
+[1m@babel/runtime-corejs3/core-js-stable/object/define-property[22m (imported by src/toolbar.tsx)
 [1m[33m(!) `this` has been rewritten to `undefined`[39m[22m
 [90mhttps://rollupjs.org/guide/en/#error-this-is-undefined[39m
+[1m../../node_modules/.pnpm/intl-messageformat@7.8.4/node_modules/intl-messageformat/lib/formatters.js[22m
+[90m1: var __extends = (this && this.__extends) || (function () {
+                    ^
+2:     var extendStatics = function (d, b) {
+3:         extendStatics = Object.setPrototypeOf ||[39m
+...and 3 other occurrences
 [1m../../node_modules/.pnpm/intl-messageformat@7.8.4/node_modules/intl-messageformat/lib/core.js[22m
 [90m4: See the accompanying LICENSE file for terms.
 5: */
@@ -42,12 +48,6 @@ More info: https://sass-lang.com/d/legacy-js-api
 7:     __assign = Object.assign || function(t) {
 8:         for (var s, i = 1, n = arguments.length; i < n; i++) {[39m
 ...and 1 other occurrence
-[1m../../node_modules/.pnpm/intl-messageformat@7.8.4/node_modules/intl-messageformat/lib/formatters.js[22m
-[90m1: var __extends = (this && this.__extends) || (function () {
-                    ^
-2:     var extendStatics = function (d, b) {
-3:         extendStatics = Object.setPrototypeOf ||[39m
-...and 3 other occurrences
 [1m../../node_modules/.pnpm/intl-format-cache@4.3.1/node_modules/intl-format-cache/lib/index.js[22m
 [90m4: See the accompanying LICENSE file for terms.
 5: */
@@ -58,7 +58,7 @@ More info: https://sass-lang.com/d/legacy-js-api
 ...and 1 other occurrence
 
 ...and 3 other files
-[32mcreated [1mdist/main.js[22m in [1m14.6s[22m[39m
+[32mcreated [1mdist/main.js[22m in [1m18.5s[22m[39m
 [36m
 [1msrc/index.ts[22m → [1mdist/index.esm.js[22m...[39m
 [33m[1mDeprecation Warning[0m: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
@@ -76,20 +76,26 @@ More info: https://sass-lang.com/d/legacy-js-api
 [1m[33m(!) Unresolved dependencies[39m[22m
 [90mhttps://rollupjs.org/guide/en/#warning-treating-module-as-external-dependency[39m
 [1m@babel/runtime-corejs3/core-js-stable/set-timeout[22m (imported by src/utils/index.ts)
-[1m@babel/runtime-corejs3/helpers/defineProperty[22m (imported by src/components/HeaderButton/HeaderButtonDropdown.tsx, src/toolbar.tsx)
 [1m@babel/runtime-corejs3/core-js-stable/instance/keys[22m (imported by src/components/HeaderButton/HeaderButtonDropdown.tsx)
 [1m@babel/runtime-corejs3/core-js-stable/instance/find[22m (imported by src/components/HeaderButton/index.tsx, src/components/TextColorPicker/index.tsx)
 [1m@babel/runtime-corejs3/core-js-stable/instance/for-each[22m (imported by src/components/HeaderButton/HeaderButtonDropdown.tsx, src/toolbar.tsx)
+[1m@babel/runtime-corejs3/helpers/defineProperty[22m (imported by src/components/HeaderButton/HeaderButtonDropdown.tsx, src/toolbar.tsx)
 [1m@babel/runtime-corejs3/core-js-stable/instance/map[22m (imported by src/components/TextColorPicker/colorPickerDropdown.tsx)
 [1m@babel/runtime-corejs3/core-js-stable/instance/filter[22m (imported by src/toolbar.tsx)
 [1m@babel/runtime-corejs3/core-js-stable/object/keys[22m (imported by src/toolbar.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptors[22m (imported by src/toolbar.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor[22m (imported by src/toolbar.tsx)
 [1m@babel/runtime-corejs3/core-js-stable/object/get-own-property-symbols[22m (imported by src/toolbar.tsx)
+[1m@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor[22m (imported by src/toolbar.tsx)
 [1m@babel/runtime-corejs3/core-js-stable/object/define-property[22m (imported by src/toolbar.tsx)
+[1m@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptors[22m (imported by src/toolbar.tsx)
 [1m@babel/runtime-corejs3/core-js-stable/object/define-properties[22m (imported by src/toolbar.tsx)
 [1m[33m(!) `this` has been rewritten to `undefined`[39m[22m
 [90mhttps://rollupjs.org/guide/en/#error-this-is-undefined[39m
+[1m../../node_modules/.pnpm/intl-messageformat@7.8.4/node_modules/intl-messageformat/lib/formatters.js[22m
+[90m1: var __extends = (this && this.__extends) || (function () {
+                    ^
+2:     var extendStatics = function (d, b) {
+3:         extendStatics = Object.setPrototypeOf ||[39m
+...and 3 other occurrences
 [1m../../node_modules/.pnpm/intl-messageformat@7.8.4/node_modules/intl-messageformat/lib/core.js[22m
 [90m4: See the accompanying LICENSE file for terms.
 5: */
@@ -98,12 +104,6 @@ More info: https://sass-lang.com/d/legacy-js-api
 7:     __assign = Object.assign || function(t) {
 8:         for (var s, i = 1, n = arguments.length; i < n; i++) {[39m
 ...and 1 other occurrence
-[1m../../node_modules/.pnpm/intl-messageformat@7.8.4/node_modules/intl-messageformat/lib/formatters.js[22m
-[90m1: var __extends = (this && this.__extends) || (function () {
-                    ^
-2:     var extendStatics = function (d, b) {
-3:         extendStatics = Object.setPrototypeOf ||[39m
-...and 3 other occurrences
 [1m../../node_modules/.pnpm/intl-format-cache@4.3.1/node_modules/intl-format-cache/lib/index.js[22m
 [90m4: See the accompanying LICENSE file for terms.
 5: */
@@ -114,4 +114,4 @@ More info: https://sass-lang.com/d/legacy-js-api
 ...and 1 other occurrence
 
 ...and 3 other files
-[32mcreated [1mdist/index.esm.js[22m in [1m12.2s[22m[39m
+[32mcreated [1mdist/index.esm.js[22m in [1m12.5s[22m[39m
