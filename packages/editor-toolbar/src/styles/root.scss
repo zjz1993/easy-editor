@@ -9,6 +9,21 @@
     align-items: center;
     height: 40px;
     box-sizing: border-box;
+
+
+    .rc-overflow{
+      display: flex;
+      flex-wrap: nowrap;
+      position: relative;
+      width: 100%;
+
+      &-item {
+        flex: none;
+        max-width: 100%;
+        // margin-right: 100px;
+      }
+    }
+
     .disabled.easy-editor-toolbar__item{
       &:hover{
         background: none;
@@ -19,6 +34,7 @@
       height: 24px;
       align-items: center;
       border-radius: 4px;
+      margin-right: 8px;
       &__dropdown{
         width: 70px;
       }
@@ -44,9 +60,6 @@
       }
       &:hover{
         background: styles.$hover-grey;
-      }
-      &:not(:first-child){
-        margin-left: 8px;
       }
     }
   }

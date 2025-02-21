@@ -1,7 +1,10 @@
 import { type FC, cloneElement, useContext, useRef } from 'react';
 import './styles/root.scss';
 import { useSize } from '@easy-editor/editor-common';
+import DropdownPanel from '@easy-editor/editor-common/src/components/DropdownPanel/index.tsx';
+import { Iconfont } from '@easy-editor/editor-common/src/index.ts';
 import type { Editor } from '@tiptap/core';
+import Overflow from 'rc-overflow';
 import HeaderButton from './components/HeaderButton/index.tsx';
 import TextColorPicker from './components/TextColorPicker/index.tsx';
 import { ToolBarItemDivider } from './components/ToolBarItemDivider.tsx';
@@ -219,13 +222,38 @@ const Toolbar: FC<IToolbarProps> = props => {
   return (
     <ToolbarContext.Provider value={{ ...commonProps }}>
       <div className="easy-editor-toolbar" ref={toolbarRef}>
-        {menuArray.map(item => {
-          return cloneElement(item.component, {
-            key: item.key,
-            disabled: item.disabled,
-            intlStr: item.intlStr,
-          });
-        })}
+        <Overflow
+          data={menuArray}
+          renderRest={restArray => {
+            return (
+              <DropdownPanel
+                getPopupContainer={trigger => trigger.parentNode as HTMLElement}
+                action={['hover']}
+                popup={
+                  <div>
+                    {restArray.map(item => {
+                      return cloneElement(item.component, {
+                        key: item.key,
+                        disabled: item.disabled,
+                        intlStr: item.intlStr,
+                      });
+                    })}
+                  </div>
+                }
+              >
+                <Iconfont type="icon-zhankai-circle-line" />
+              </DropdownPanel>
+            );
+          }}
+          maxCount="responsive"
+          renderItem={item => {
+            return cloneElement(item.component, {
+              key: item.key,
+              disabled: item.disabled,
+              intlStr: item.intlStr,
+            });
+          }}
+        />
       </div>
     </ToolbarContext.Provider>
   );
