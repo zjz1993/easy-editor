@@ -5,6 +5,7 @@ import DropdownPanel from '@easy-editor/editor-common/src/components/DropdownPan
 import { Iconfont } from '@easy-editor/editor-common/src/index.ts';
 import type { Editor } from '@tiptap/core';
 import Overflow from 'rc-overflow';
+import AlignButton from './components/AlignButton/index.tsx';
 import HeaderButton from './components/HeaderButton/index.tsx';
 import TextColorPicker from './components/TextColorPicker/index.tsx';
 import { ToolBarItemDivider } from './components/ToolBarItemDivider.tsx';
@@ -129,6 +130,19 @@ declare module '@tiptap/core' {
        */
       toggleBlockquote: () => ReturnType;
     };
+    textAlign: {
+      /**
+       * Set the text align attribute
+       * @param alignment The alignment
+       * @example editor.commands.setTextAlign('left')
+       */
+      setTextAlign: (alignment: string) => ReturnType;
+      /**
+       * Unset the text align attribute
+       * @example editor.commands.unsetTextAlign()
+       */
+      unsetTextAlign: () => ReturnType;
+    };
     horizontalRule: {
       /**
        * Add a horizontal rule
@@ -217,6 +231,11 @@ const Toolbar: FC<IToolbarProps> = props => {
       key: 'textColorPicker',
       component: <TextColorPicker />,
       intlStr: 'header',
+    },
+    {
+      key: 'align',
+      component: <AlignButton />,
+      intlStr: 'align',
     },
   ];
   return (

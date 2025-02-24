@@ -8,6 +8,7 @@ import type { TEasyEditorProps } from './types/index.ts';
 import './styles/root.scss';
 import { Color } from '@tiptap/extension-color';
 import { Placeholder } from '@tiptap/extension-placeholder';
+import { TextAlign } from '@tiptap/extension-text-align';
 import { TextStyle } from '@tiptap/extension-text-style';
 import Underline from '@tiptap/extension-underline';
 import useIntlLoaded from './hooks/useIntlLoaded.ts';
@@ -30,6 +31,9 @@ const Editor: FC<TEasyEditorProps> = props => {
     // Strike,
     TextStyle,
     Color,
+    TextAlign.configure({
+      types: ['heading', 'paragraph'],
+    }),
   ];
   const editor = useEditor({
     autofocus: !isUndefined(autoFocus) ? 'end' : undefined,

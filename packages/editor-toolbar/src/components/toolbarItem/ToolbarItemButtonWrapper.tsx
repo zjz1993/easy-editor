@@ -13,7 +13,7 @@ const ToolbarItemButtonWrapper: FC<{
   const { children, intlStr, className, style, disabled } = props;
   return (
     <ToolBarItem className={className} style={style} disabled={disabled}>
-      <Tooltip text={IntlComponent.get(intlStr, { command, option })}>
+      <Tooltip content={IntlComponent.get(intlStr, { command, option })}>
         {children}
       </Tooltip>
     </ToolBarItem>

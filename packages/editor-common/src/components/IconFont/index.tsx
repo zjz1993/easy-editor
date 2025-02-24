@@ -1,5 +1,5 @@
-import cs from 'classnames';
-import type { CSSProperties, SVGAttributes } from 'react';
+import cx from 'classnames';
+import type { CSSProperties, FC, SVGAttributes } from 'react';
 import { type PropsWithChildren, forwardRef } from 'react';
 import { createFromIconfont } from './createFrontIconfont';
 import './index.scss';
@@ -31,7 +31,7 @@ export const Icon = forwardRef<SVGSVGElement, PropsWithChildren<IconProps>>(
 
     const [width, height] = getSize(size);
 
-    const cn = cs(
+    const cn = cx(
       'icon',
       {
         'icon-spin': spin,
@@ -57,13 +57,14 @@ export const Icon = forwardRef<SVGSVGElement, PropsWithChildren<IconProps>>(
 const IconFont = createFromIconfont(
   '//at.alicdn.com/t/c/font_4437062_evksm2pcl4d.js',
 );
-const IconComponent: React.FC<{
+const IconComponent: FC<{
   type: string;
   style?: CSSProperties;
+  className?: string;
 }> = props => {
-  const { type, style } = props;
+  const { type, style, className } = props;
   return (
-    <span className="anticon">
+    <span className={cx(className, 'anticon')}>
       <IconFont type={type} style={style} />
     </span>
   );

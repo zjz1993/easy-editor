@@ -1,6 +1,5 @@
 import { isWindows } from '@easy-editor/editor-common';
 import type { Editor } from '@tiptap/core';
-import { TextSelection } from '@tiptap/pm/state';
 
 export const command = isWindows() ? 'Ctrl' : '⌘';
 
@@ -15,12 +14,13 @@ export const setTextSelectionAfterChange = (
 
   const { state, view } = editor;
   const { from, to } = state.selection; // 记录当前选区位置
+  console.log('from', from, to);
   fun?.();
-  setTimeout(() => {
-    const newState = editor.state; // 重新获取最新 state
-    const transaction = newState.tr.setSelection(
-      TextSelection.create(newState.doc, from, to),
-    );
-    view.dispatch(transaction); // 重新设置选区
-  }, 0);
+  //setTimeout(() => {
+  //  const newState = editor.state; // 重新获取最新 state
+  //  const transaction = newState.tr.setSelection(
+  //    TextSelection.create(newState.doc, from, to),
+  //  );
+  //  view.dispatch(transaction); // 重新设置选区
+  //}, 0);
 };

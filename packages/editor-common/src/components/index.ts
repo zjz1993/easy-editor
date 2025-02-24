@@ -1,5 +1,5 @@
 import Dropdown from './Dropdown/index.tsx';
 import Iconfont from './IconFont/index';
-import Tooltip from './Tooltip/Tooltip';
+import Tooltip from './Tooltip/index.tsx';
 
-export { Tooltip, Iconfont, Dropdown };
+export { Iconfont, Dropdown, Tooltip };
