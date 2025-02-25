@@ -1,12 +1,12 @@
 import { type FC, cloneElement, useContext, useRef } from 'react';
 import './styles/root.scss';
-import { useSize } from '@easy-editor/editor-common';
+import { BLOCK_TYPES, Iconfont, useSize } from '@easy-editor/editor-common';
 import DropdownPanel from '@easy-editor/editor-common/src/components/DropdownPanel/index.tsx';
-import { Iconfont } from '@easy-editor/editor-common/src/index.ts';
 import type { Editor } from '@tiptap/core';
 import Overflow from 'rc-overflow';
 import AlignButton from './components/AlignButton/index.tsx';
 import HeaderButton from './components/HeaderButton/index.tsx';
+import ListButton from './components/ListButton/index.tsx';
 import TextColorPicker from './components/TextColorPicker/index.tsx';
 import { ToolBarItemDivider } from './components/ToolBarItemDivider.tsx';
 import Bold from './components/toolbarItem/Bold.tsx';
@@ -237,6 +237,10 @@ const Toolbar: FC<IToolbarProps> = props => {
       component: <AlignButton />,
       intlStr: 'align',
     },
+    {
+      key: BLOCK_TYPES.OL,
+      component: <ListButton />,
+    },
   ];
   return (
     <ToolbarContext.Provider value={{ ...commonProps }}>
@@ -255,6 +259,7 @@ const Toolbar: FC<IToolbarProps> = props => {
                         key: item.key,
                         disabled: item.disabled,
                         intlStr: item.intlStr,
+                        type: item.key,
                       });
                     })}
                   </div>
@@ -270,6 +275,7 @@ const Toolbar: FC<IToolbarProps> = props => {
               key: item.key,
               disabled: item.disabled,
               intlStr: item.intlStr,
+              type: item.key,
             });
           }}
         />

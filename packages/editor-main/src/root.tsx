@@ -1,4 +1,4 @@
-import { isUndefined } from '@easy-editor/editor-common';
+import { BLOCK_TYPES, isUndefined } from '@easy-editor/editor-common';
 import EditorToolbar from '@easy-editor/editor-toolbar';
 import { Bold } from '@easy-editor/extension-bold';
 import { EditorContent, useEditor } from '@tiptap/react';
@@ -11,6 +11,8 @@ import { Placeholder } from '@tiptap/extension-placeholder';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { TextStyle } from '@tiptap/extension-text-style';
 import Underline from '@tiptap/extension-underline';
+import BulletList from './BulletList/bullet-list.ts';
+import { ListItem } from './BulletList/list-item.ts';
 import useIntlLoaded from './hooks/useIntlLoaded.ts';
 //import PasteExtension from './extension/paste/index.tsx';
 
@@ -23,6 +25,8 @@ const Editor: FC<TEasyEditorProps> = props => {
     autoFocus,
   } = props;
   const { intlInit } = useIntlLoaded();
+  const { CL, OL, UL } = BLOCK_TYPES;
+  const listGroup = `${UL}|${OL}|${CL}`;
   const extensions = [
     StarterKit.configure({ bold: false }),
     Bold,
@@ -33,6 +37,13 @@ const Editor: FC<TEasyEditorProps> = props => {
     Color,
     TextAlign.configure({
       types: ['heading', 'paragraph'],
+    }),
+    ListItem.extend({ name: BLOCK_TYPES.LI }),
+    BulletList.extend({ name: BLOCK_TYPES.UL }).configure({
+      keepMarks: true,
+      keepAttributes: true,
+      content: `(listItem|${listGroup}|checklistItem)+`,
+      itemTypeName: BLOCK_TYPES.LI,
     }),
   ];
   const editor = useEditor({

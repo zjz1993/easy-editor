@@ -8,7 +8,7 @@ export const BLOCK_TYPES = {
   TR: 'table_row',
   TD: 'table_cell',
   H: 'heading',
-  OL: 'ordered_list',
+  OL: 'orderedList',
   UL: 'unordered_list',
   CL: 'check_list',
   LI: 'list_item',
