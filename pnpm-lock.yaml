@@ -169,6 +169,9 @@ importers:
       '@rollup/plugin-replace':
         specifier: ^6.0.2
         version: 6.0.2(rollup@4.27.2)
+      '@tiptap/core':
+        specifier: ^2.11.5
+        version: 2.11.5(@tiptap/pm@2.11.5)
       '@types/lodash-es':
         specifier: ^4.17.12
         version: 4.17.12
@@ -190,6 +193,9 @@ importers:
       '@easy-editor/extension-bold':
         specifier: workspace:^
         version: link:../extension-bold
+      '@easy-editor/extension-task-item':
+        specifier: workspace:^
+        version: link:../extension-task-item
       '@easy-editor/styles':
         specifier: workspace:*
         version: link:../editor-style
@@ -303,6 +309,22 @@ importers:
       '@rspack/core':
         specifier: ^1.1.1
         version: 1.1.1
+
+  packages/extension-task-item:
+    dependencies:
+      '@babel/runtime-corejs3':
+        specifier: ^7.21.0
+        version: 7.26.0
+      '@easy-editor/editor-common':
+        specifier: workspace:^
+        version: link:../editor-common
+    devDependencies:
+      '@tiptap/core':
+        specifier: ^2.11.5
+        version: 2.11.5(@tiptap/pm@2.11.5)
+      '@tiptap/pm':
+        specifier: ^2.11.5
+        version: 2.11.5
 
 packages:
 

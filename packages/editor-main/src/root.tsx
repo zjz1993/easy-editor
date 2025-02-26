@@ -6,6 +6,7 @@ import StarterKit from '@tiptap/starter-kit';
 import type { FC } from 'react';
 import type { TEasyEditorProps } from './types/index.ts';
 import './styles/root.scss';
+import { TaskItem, TaskList } from '@easy-editor/extension-task-item';
 import { Color } from '@tiptap/extension-color';
 import { Placeholder } from '@tiptap/extension-placeholder';
 import { TextAlign } from '@tiptap/extension-text-align';
@@ -30,9 +31,7 @@ const Editor: FC<TEasyEditorProps> = props => {
   const extensions = [
     StarterKit.configure({ bold: false }),
     Bold,
-    // Blockquote,
     Underline,
-    // Strike,
     TextStyle,
     Color,
     TextAlign.configure({
@@ -45,13 +44,13 @@ const Editor: FC<TEasyEditorProps> = props => {
       content: `(listItem|${listGroup}|checklistItem)+`,
       itemTypeName: BLOCK_TYPES.LI,
     }),
+    TaskList,
+    TaskItem,
   ];
   const editor = useEditor({
     autofocus: !isUndefined(autoFocus) ? 'end' : undefined,
     extensions: [
       ...extensions,
-      // Paragraph,
-      // Text,
       Placeholder.configure({
         placeholder,
       }),

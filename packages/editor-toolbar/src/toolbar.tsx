@@ -240,6 +240,17 @@ const Toolbar: FC<IToolbarProps> = props => {
     {
       key: BLOCK_TYPES.OL,
       component: <ListButton />,
+      disabled: disabled,
+    },
+    {
+      key: BLOCK_TYPES.UL,
+      component: <ListButton />,
+      disabled: disabled,
+    },
+    {
+      key: BLOCK_TYPES.CL,
+      component: <ListButton />,
+      disabled: disabled,
     },
   ];
   return (
