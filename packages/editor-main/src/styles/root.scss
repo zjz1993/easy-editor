@@ -87,12 +87,41 @@
     }
 
     // 使用示例
-    @include ul-list-type-generator(0);
+    @include ul-list-type-generator();
     li.check-list-item {
       list-style-type: none;
     }
     p[data-first-indent='true'] {
       text-indent: 2em;
+    }
+
+
+    @for $i from 1 through 10 {
+      *:not(ul, ol, p)[data-indent='#{$i}'] {
+        padding-left: $i * 30px;
+        // text-indent: 2em;
+      }
+
+      p {
+        &[data-indent='#{$i}'] {
+          padding-left: 2em * $i;
+        }
+      }
+
+      ul,
+      ol {
+        &[data-indent='#{$i}'] {
+          padding-left: 40px + ($i - 1) * 30px;
+          // padding-left: 0;
+        }
+      }
+
+      //li {
+      //  &[data-indent='#{$i}'] {
+      //    margin-left: $i * 30px;
+      //    padding-left: 0;
+      //  }
+      //}
     }
   }
   blockquote {

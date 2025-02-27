@@ -1,3 +1,8 @@
+export const INDENT_TYPES = {
+  Inc: 'inc',
+  Desc: 'desc',
+};
+
 export const BLOCK_TYPES = {
   DOC: 'doc',
   T: 'title',

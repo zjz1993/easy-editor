@@ -1,11 +1,17 @@
 import { type FC, cloneElement, useContext, useRef } from 'react';
 import './styles/root.scss';
-import { BLOCK_TYPES, Iconfont, useSize } from '@easy-editor/editor-common';
+import {
+  BLOCK_TYPES,
+  INDENT_TYPES,
+  Iconfont,
+  useSize,
+} from '@easy-editor/editor-common';
 import DropdownPanel from '@easy-editor/editor-common/src/components/DropdownPanel/index.tsx';
 import type { Editor } from '@tiptap/core';
 import Overflow from 'rc-overflow';
 import AlignButton from './components/AlignButton/index.tsx';
 import HeaderButton from './components/HeaderButton/index.tsx';
+import IndentButton from './components/IndentButton/IndentButton.tsx';
 import ListButton from './components/ListButton/index.tsx';
 import TextColorPicker from './components/TextColorPicker/index.tsx';
 import { ToolBarItemDivider } from './components/ToolBarItemDivider.tsx';
@@ -20,6 +26,10 @@ import type { IToolbarCommonProps } from './types/index.ts';
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
+    indentation: {
+      indent: () => ReturnType;
+      outdent: () => ReturnType;
+    };
     color: {
       /**
        * Set the text color
@@ -250,6 +260,16 @@ const Toolbar: FC<IToolbarProps> = props => {
     {
       key: BLOCK_TYPES.CL,
       component: <ListButton />,
+      disabled: disabled,
+    },
+    {
+      key: INDENT_TYPES.Inc,
+      component: <IndentButton />,
+      disabled: disabled,
+    },
+    {
+      key: INDENT_TYPES.Desc,
+      component: <IndentButton />,
       disabled: disabled,
     },
   ];

@@ -6,6 +6,7 @@ import StarterKit from '@tiptap/starter-kit';
 import type { FC } from 'react';
 import type { TEasyEditorProps } from './types/index.ts';
 import './styles/root.scss';
+import { Indent } from '@easy-editor/extension-indent';
 import { TaskItem, TaskList } from '@easy-editor/extension-task-item';
 import { Color } from '@tiptap/extension-color';
 import { Placeholder } from '@tiptap/extension-placeholder';
@@ -26,7 +27,7 @@ const Editor: FC<TEasyEditorProps> = props => {
     autoFocus,
   } = props;
   const { intlInit } = useIntlLoaded();
-  const { CL, OL, UL } = BLOCK_TYPES;
+  const { CL, OL, UL, P, H, CLI, LI, QUOTE, HR } = BLOCK_TYPES;
   const listGroup = `${UL}|${OL}|${CL}`;
   const extensions = [
     StarterKit.configure({ bold: false }),
@@ -34,6 +35,12 @@ const Editor: FC<TEasyEditorProps> = props => {
     Underline,
     TextStyle,
     Color,
+    Indent.configure({
+      types: [P, H, CL, CLI, OL, UL, LI, QUOTE, HR],
+      itemTypeName: BLOCK_TYPES.CLI,
+      minLevel: 0,
+      maxLevel: 10,
+    }),
     TextAlign.configure({
       types: ['heading', 'paragraph'],
     }),
