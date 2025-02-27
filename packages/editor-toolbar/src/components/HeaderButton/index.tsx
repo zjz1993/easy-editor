@@ -38,6 +38,7 @@ const HeaderButton: FC<TToolbarWrapperProps> = ({ disabled, intlStr }) => {
         'easy-editor-toolbar__item__dropdown',
         disabled && 'dropdown-disabled',
       )}
+      getPopupContainer={node => node.parentNode as HTMLElement}
       ref={ref}
       popup={
         <HeaderButtonDropdown
