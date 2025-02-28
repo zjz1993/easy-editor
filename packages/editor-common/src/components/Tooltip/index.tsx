@@ -15,17 +15,18 @@ import {
 } from '@floating-ui/react'; // 样式文件，后面会提供
 import React, { type FC, type ReactNode, useRef } from 'react';
 import './index.scss';
-import useControllableValue from '../../hooks/useControlledValue.ts';
+import useControlledValue from '../../hooks/useControlledValue.ts';
 import type { TPopoverProps } from '../Popover/index.tsx';
 
 const NewTooltip: FC<TPopoverProps> = props => {
-  const { children, content, placement = 'top' as Placement } = props;
-  const [isOpen, setIsOpen] = useControllableValue<boolean>(props, {
+  const { open, children, content, placement = 'top' as Placement } = props;
+  const [isOpen, setIsOpen] = useControlledValue<boolean>({
+    value: open,
     defaultValue: false,
-    valuePropName: 'open',
+    // onChange: onOpenChange,
   });
   const arrowRef = useRef(null);
-  console.log('props中的open是', props.open, isOpen);
+  console.log('props中的open是', props.open);
 
   // 使用 floating-ui 的核心钩子
   const {

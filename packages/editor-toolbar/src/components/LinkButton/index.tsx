@@ -21,7 +21,7 @@ const LinkButton: FC<TToolbarWrapperProps> = props => {
           if (open) {
             setTooltipVisible(!open);
           } else {
-            setTooltipVisible(undefined);
+            setTooltipVisible(false);
           }
         }}
         placement="bottom-start"

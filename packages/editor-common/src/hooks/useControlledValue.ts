@@ -1,78 +1,42 @@
-import { useMemoizedFn, useUpdate } from 'ahooks';
-import { isFunction, isUndefined } from 'lodash-es';
-import type { SetStateAction } from 'react';
-import { useMemo, useRef } from 'react';
+import { useCallback, useState } from 'react';
 
-export interface Options<T> {
-  defaultValue?: T;
-  defaultValuePropName?: string;
-  valuePropName?: string;
-  trigger?: string;
+// Hook 的类型定义
+type UseControlledValueProps<T> = {
+  value?: T; // 受控模式的值
+  defaultValue?: T; // 非受控模式的默认值
+  onChange?: (value: T) => void; // 受控模式的值变更回调
+};
+function useControlledValue<T>({
+  value: controlledValue,
+  defaultValue,
+  onChange,
+}: UseControlledValueProps<T>): [T, (newValue: T) => void] {
+  // 判断是否为受控模式
+  const isControlled = controlledValue !== undefined;
+
+  // 非受控模式下的内部状态
+  const [internalValue, setInternalValue] = useState<T>(
+    defaultValue !== undefined ? defaultValue : (controlledValue as T),
+  );
+
+  // 统一的值
+  const value = isControlled ? controlledValue : internalValue;
+
+  // 更新值的函数
+  const setValue = useCallback(
+    (newValue: T) => {
+      if (isControlled) {
+        // 受控模式下调用外部 onChange
+        onChange?.(newValue);
+      } else {
+        // 非受控模式下更新内部状态
+        setInternalValue(newValue);
+      }
+    },
+    [isControlled, onChange],
+  );
+
+  return [value, setValue];
 }
 
-export type Props = Record<string, any>;
-
-export interface StandardProps<T> {
-  value: T;
-  defaultValue?: T;
-  onChange: (val: T) => void;
-}
-
-function useControllableValue<T = any>(
-  props: StandardProps<T>,
-): [T, (v: SetStateAction<T>) => void];
-function useControllableValue<T = any>(
-  props?: Props,
-  options?: Options<T>,
-): [T, (v: SetStateAction<T>, ...args: any[]) => void];
-function useControllableValue<T = any>(
-  defaultProps: Props,
-  options: Options<T> = {},
-) {
-  const props = defaultProps ?? {};
-
-  const {
-    defaultValue,
-    defaultValuePropName = 'defaultValue',
-    valuePropName = 'value',
-    trigger = 'onChange',
-  } = options;
-
-  const value = props[valuePropName] as T;
-  const isControlled =
-    Object.prototype.hasOwnProperty.call(props, valuePropName) &&
-    !isUndefined(props[defaultValuePropName]);
-
-  const initialValue = useMemo(() => {
-    if (isControlled) {
-      return value;
-    }
-    if (Object.prototype.hasOwnProperty.call(props, defaultValuePropName)) {
-      return props[defaultValuePropName];
-    }
-    return defaultValue;
-  }, []);
-
-  const stateRef = useRef(initialValue);
-  if (isControlled) {
-    stateRef.current = value;
-  }
-
-  const update = useUpdate();
-
-  function setState(v: SetStateAction<T>, ...args: any[]) {
-    const r = isFunction(v) ? v(stateRef.current) : v;
-
-    if (!isControlled) {
-      stateRef.current = r;
-      update();
-    }
-    if (props[trigger]) {
-      props[trigger](r, ...args);
-    }
-  }
-
-  return [stateRef.current, useMemoizedFn(setState)] as const;
-}
-
-export default useControllableValue;
+export default useControlledValue;
