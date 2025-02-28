@@ -9,11 +9,16 @@ const ToolbarItemButtonWrapper: FC<{
   className?: string;
   style?: CSSProperties;
   disabled?: boolean;
+  tooltipVisible?: boolean;
 }> = props => {
-  const { children, intlStr, className, style, disabled } = props;
+  const { tooltipVisible, children, intlStr, className, style, disabled } =
+    props;
   return (
     <ToolBarItem className={className} style={style} disabled={disabled}>
-      <Tooltip content={IntlComponent.get(intlStr, { command, option })}>
+      <Tooltip
+        content={IntlComponent.get(intlStr, { command, option })}
+        open={tooltipVisible}
+      >
         {children}
       </Tooltip>
     </ToolBarItem>

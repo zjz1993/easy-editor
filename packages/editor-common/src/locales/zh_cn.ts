@@ -13,6 +13,7 @@ export default {
   ol: '有序列表 ({command} + shift + 7)',
   ul: '无序列表 ({command} + shift + 8)',
   check: '待办列表 ({command} + shift + 9)',
+  'tool.link': '插入链接',
   'indent-desc': '减少缩进(Shift+Tab)',
   'indent-inc': '增加缩进(Tab)',
   'align.left': '左对齐',
