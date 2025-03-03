@@ -61,11 +61,20 @@ const IconComponent: FC<{
   type: string;
   style?: CSSProperties;
   className?: string;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
+  onClick?: () => void;
 }> = props => {
-  const { type, style, className } = props;
+  const { type, style, className, onMouseEnter, onMouseLeave, onClick } = props;
   return (
     <span className={cx(className, 'anticon')}>
-      <IconFont type={type} style={style} />
+      <IconFont
+        type={type}
+        style={style}
+        onClick={onClick}
+        onMouseLeave={onMouseLeave}
+        onMouseEnter={onMouseEnter}
+      />
     </span>
   );
 };

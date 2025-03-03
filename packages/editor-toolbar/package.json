@@ -24,7 +24,8 @@
     "@tiptap/react": "^2.11.5",
     "@tiptap/starter-kit": "^2.11.5",
     "classnames": "^2.5.1",
-    "rc-overflow": "^1.4.1"
+    "rc-overflow": "^1.4.1",
+    "react-hook-form": "^7.54.2"
   },
   "peerDependencies": {
     "react": "^16.14.0 || ^17.0.0 || ^18.0.0",

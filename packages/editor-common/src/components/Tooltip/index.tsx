@@ -26,7 +26,6 @@ const NewTooltip: FC<TPopoverProps> = props => {
     // onChange: onOpenChange,
   });
   const arrowRef = useRef(null);
-  console.log('props中的open是', props.open);
 
   // 使用 floating-ui 的核心钩子
   const {
@@ -40,7 +39,6 @@ const NewTooltip: FC<TPopoverProps> = props => {
   } = useFloating({
     open: isOpen,
     onOpenChange: tempOpen => {
-      console.log('onOpenChange触发', tempOpen);
       setIsOpen(tempOpen);
     },
     placement,

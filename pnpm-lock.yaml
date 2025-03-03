@@ -290,6 +290,9 @@ importers:
       react-dom:
         specifier: ^16.14.0 || ^17.0.0 || ^18.0.0
         version: 18.3.1(react@18.3.1)
+      react-hook-form:
+        specifier: ^7.54.2
+        version: 7.54.2(react@18.3.1)
 
   packages/extension-bold:
     dependencies:
@@ -3825,6 +3828,12 @@ packages:
 
   react-fast-compare@3.2.2:
     resolution: {integrity: sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ==}
+
+  react-hook-form@7.54.2:
+    resolution: {integrity: sha512-eHpAUgUjWbZocoQYUHposymRb4ZP6d0uwUnooL2uOybA9/3tPUvoAKqEWK1WaSiTxxOfTpffNZP7QwlnM3/gEg==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18 || ^19
 
   react-intl-universal@2.12.0:
     resolution: {integrity: sha512-sR6XKKV+TA/tpJ10gsFhuzJldlH62IwFOIfzy6/AaqdEIHFxvegbWExsfg25rU/lHG35NLD/H0rgDq2JA9jedA==}
@@ -8355,6 +8364,10 @@ snapshots:
       scheduler: 0.23.2
 
   react-fast-compare@3.2.2: {}
+
+  react-hook-form@7.54.2(react@18.3.1):
+    dependencies:
+      react: 18.3.1
 
   react-intl-universal@2.12.0(react@18.3.1):
     dependencies:
