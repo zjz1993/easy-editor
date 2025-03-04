@@ -30,6 +30,22 @@ export const BLOCK_TYPES = {
   HARD_BREAK: 'hard_break',
 };
 
+export const MARK_TYPES = {
+  B: 'bold',
+  I: 'italic',
+  U: 'underlined',
+  S: 'strike',
+  BK: 'background',
+  C: 'color',
+  SUP: 'superscript',
+  SUB: 'subscript',
+  LK: 'link',
+  AN: 'annotation',
+  ANNOTATION: 'annotation',
+  MARK_TEXT_SELECTION: 'mark_text_selection',
+  ANNOTATION_PLACEHOLDER: 'annotation_placeholder',
+} as const;
+
 export const headers = [
   {
     name: 'paragraph',

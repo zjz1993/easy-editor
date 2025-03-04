@@ -7,6 +7,7 @@ import type { FC } from 'react';
 import type { TEasyEditorProps } from './types/index.ts';
 import './styles/root.scss';
 import { Indent } from '@easy-editor/extension-indent';
+import { CustomLink } from '@easy-editor/extension-link';
 import { TaskItem, TaskList } from '@easy-editor/extension-task-item';
 import { Color } from '@tiptap/extension-color';
 import { Placeholder } from '@tiptap/extension-placeholder';
@@ -35,6 +36,7 @@ const Editor: FC<TEasyEditorProps> = props => {
     Underline,
     TextStyle,
     Color,
+    CustomLink,
     Indent.configure({
       types: [P, H, CL, CLI, OL, UL, LI, QUOTE, HR],
       itemTypeName: BLOCK_TYPES.CLI,
