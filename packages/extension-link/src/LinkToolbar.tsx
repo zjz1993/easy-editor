@@ -1,3 +1,4 @@
+import { Iconfont, MARK_TYPES, Popover } from '@easy-editor/editor-common';
 import { LinkPanelPopup } from '@easy-editor/editor-toolbar/src/components/LinkButton/LinkPanel.tsx';
 import {
   autoUpdate,
@@ -6,18 +7,20 @@ import {
   shift,
   useFloating,
 } from '@floating-ui/react';
-import { useEffect, useState } from 'react';
 
-const LinkToolbar = ({ editor, linkPos, referenceEl, onClose }) => {
-  const [href, setHref] = useState('');
-  const [text, setText] = useState('');
-
-  useEffect(() => {
-    const { from, to } = editor.state.selection;
-    const link = editor.getAttributes('link');
-    setHref(link.href || '');
-    setText(editor.state.doc.textBetween(from, to));
-  }, [editor, linkPos]);
+const LinkToolbar = ({
+  from,
+  to,
+  text,
+  href,
+  editor,
+  linkPos,
+  referenceEl,
+  onClose,
+}) => {
+  //const [href, setHref] = useState('');
+  //const [text, setText] = useState('');
+  //
 
   const { refs, floatingStyles } = useFloating({
     placement: 'top',
@@ -26,15 +29,19 @@ const LinkToolbar = ({ editor, linkPos, referenceEl, onClose }) => {
     elements: {
       reference: referenceEl,
     },
+    onOpenChange: open => {
+      console.log('open是', open);
+    },
   });
 
-  const handleUpdate = () => {
+  const handleUpdate = (params: { text: string; href: string }) => {
+    const { text, href } = params;
     editor
       .chain()
       .focus()
       .setTextSelection(linkPos)
-      .updateAttributes('link', { href })
-      .insertContent(text)
+      .updateAttributes(MARK_TYPES.LK, { href })
+      .insertContentAt({ from, to }, text)
       .run();
     onClose();
   };
@@ -57,12 +64,27 @@ const LinkToolbar = ({ editor, linkPos, referenceEl, onClose }) => {
         zIndex: 1000,
       }}
       className="link-toolbar"
+      onMouseLeave={() => {
+        onClose();
+      }}
     >
-      <LinkPanelPopup
-        onConfirm={({ text, href }) => {
-          console.log('text是', text, href);
-        }}
-      />
+      <div>
+        <Popover
+          content={
+            <LinkPanelPopup
+              text={text}
+              href={href}
+              onCancel={onClose}
+              onConfirm={({ text, href }) => {
+                handleUpdate({ text, href });
+              }}
+            />
+          }
+        >
+          <Iconfont type="icon-edit" />
+        </Popover>
+        <Iconfont type="icon-remove" />
+      </div>
     </div>
   );
 };

@@ -120,15 +120,6 @@ declare module '@tiptap/core' {
        */
       toggleTaskList: () => ReturnType;
     };
-    link: {
-      /**
-       * Toggle a link mark
-       */
-      toggleLink: (attributes: {
-        href: string;
-        target?: string | null;
-      }) => ReturnType;
-    };
     codeBlock: {
       /**
        * Toggle a code block
@@ -169,6 +160,36 @@ declare module '@tiptap/core' {
        * Toggle a heading node
        */
       toggleHeading: (attributes: { level: number }) => ReturnType;
+    };
+    customLink: {
+      /**
+       * Set a link mark
+       * @param attributes The link attributes
+       * @example editor.commands.setLink({ href: 'https://tiptap.dev' })
+       */
+      setLink: (attributes: {
+        href: string;
+        text: string;
+        target?: string | null;
+        rel?: string | null;
+        class?: string | null;
+      }) => ReturnType;
+      /**
+       * Toggle a link mark
+       * @param attributes The link attributes
+       * @example editor.commands.toggleLink({ href: 'https://tiptap.dev' })
+       */
+      toggleLink: (attributes: {
+        href: string;
+        target?: string | null;
+        rel?: string | null;
+        class?: string | null;
+      }) => ReturnType;
+      /**
+       * Unset a link mark
+       * @example editor.commands.unsetLink()
+       */
+      unsetLink: () => ReturnType;
     };
   }
 }

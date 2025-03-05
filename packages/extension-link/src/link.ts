@@ -136,6 +136,7 @@ declare module '@tiptap/core' {
        */
       setLink: (attributes: {
         href: string;
+        text: string;
         target?: string | null;
         rel?: string | null;
         class?: string | null;
@@ -342,23 +343,39 @@ export const Link = Mark.create<LinkOptions>({
     return {
       setLink:
         attributes =>
-        ({ chain }) => {
-          const { href } = attributes;
-
-          if (
-            !this.options.isAllowedUri(href, {
-              defaultValidate: url =>
-                !!isAllowedUri(url, this.options.protocols),
-              protocols: this.options.protocols,
-              defaultProtocol: this.options.defaultProtocol,
-            })
-          ) {
-            return false;
-          }
+        ({ chain, state }) => {
+          console.log('setLink执行了', attributes);
+          const { selection } = state;
+          const { from, to } = selection;
+          const { href, text } = attributes;
+          console.log('selection是空吗', selection.from, selection.to);
+          //if (
+          //  !this.options.isAllowedUri(href, {
+          //    defaultValidate: url =>
+          //      !!isAllowedUri(url, this.options.protocols),
+          //    protocols: this.options.protocols,
+          //    defaultProtocol: this.options.defaultProtocol,
+          //  })
+          //) {
+          //  return false;
+          //}
 
           return chain()
-            .setMark(this.name, attributes)
+            .focus()
+            .insertContent({
+              type: 'text',
+              text: text,
+              marks: [
+                {
+                  type: this.name,
+                  attrs: attributes,
+                },
+              ],
+            })
             .setMeta('preventAutolink', true)
+            .setTextSelection(
+              from === to ? from : { from, to: from + text.length },
+            )
             .run();
         },
 

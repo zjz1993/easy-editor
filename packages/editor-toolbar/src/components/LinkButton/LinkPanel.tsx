@@ -11,7 +11,7 @@ export type LinkEditPopupProps = {
 };
 
 export const LinkPanelPopup: React.FC<LinkEditPopupProps> = props => {
-  const { text, href, onCancel } = props;
+  const { text, href, onCancel, onConfirm } = props;
   const {
     register,
     handleSubmit,
@@ -19,7 +19,7 @@ export const LinkPanelPopup: React.FC<LinkEditPopupProps> = props => {
     formState: { errors },
   } = useForm<{ text: string; href: string }>();
   const onSubmit = data => {
-    console.log('data是', data);
+    onConfirm(data);
   };
 
   return (

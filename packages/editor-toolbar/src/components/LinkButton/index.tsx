@@ -1,4 +1,5 @@
 import { Iconfont, Popover } from '@easy-editor/editor-common';
+import { MARK_TYPES } from '@easy-editor/editor-common/src/index.ts';
 import { type FC, useContext, useState } from 'react';
 import ToolbarItemButtonWrapper from '../../components/toolbarItem/ToolbarItemButtonWrapper.tsx';
 import ToolbarContext from '../../context/toolbarContext.ts';
@@ -10,6 +11,19 @@ const LinkButton: FC<TToolbarWrapperProps> = props => {
   const { editor } = useContext(ToolbarContext);
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [popoverOpen, setPopoverOpen] = useState(false);
+  function getSelectionTextWithMarks() {
+    const { from, to } = editor.state.selection;
+    let text = '';
+    editor.state.doc.nodesBetween(from, to, (node, pos) => {
+      if (node.isText) {
+        const start = Math.max(from, pos);
+        const end = Math.min(to, pos + node.text.length);
+        text += node.text.slice(start - pos, end - pos);
+      }
+    });
+    return text;
+  }
+  const text = getSelectionTextWithMarks();
   return (
     <ToolbarItemButtonWrapper
       intlStr={intlStr}
@@ -17,6 +31,9 @@ const LinkButton: FC<TToolbarWrapperProps> = props => {
       style={style}
       disabled={disabled}
       tooltipVisible={tooltipVisible}
+      onClick={() => {
+        setPopoverOpen(true);
+      }}
     >
       <Popover
         open={popoverOpen}
@@ -31,6 +48,33 @@ const LinkButton: FC<TToolbarWrapperProps> = props => {
         placement="bottom-start"
         content={
           <LinkPanelPopup
+            text={text}
+            onConfirm={({ text, href }) => {
+              const { from, to } = editor.state.selection; // 保存当前选区
+              const isEmptySelection = from === to;
+              console.log('原来的from to', from, to);
+              editor
+                .chain()
+                .focus()
+                .insertContent({
+                  type: 'text',
+                  text: text,
+                  marks: [
+                    {
+                      type: MARK_TYPES.LK,
+                      attrs: { href },
+                    },
+                  ],
+                })
+                .setTextSelection(
+                  isEmptySelection
+                    ? to + text.length
+                    : { from: to, to: to + text.length },
+                )
+                .unsetMark(MARK_TYPES.LK) // 确保后续输入的文字不带链接
+                .run();
+              setPopoverOpen(false);
+            }}
             onCancel={() => {
               setPopoverOpen(false);
             }}
@@ -39,9 +83,9 @@ const LinkButton: FC<TToolbarWrapperProps> = props => {
       >
         <Iconfont
           type="icon-link"
-          onClick={() => {
-            setPopoverOpen(true);
-          }}
+          //onClick={() => {
+          //  setPopoverOpen(true);
+          //}}
           onMouseLeave={() => {
             setTooltipVisible(false);
           }}

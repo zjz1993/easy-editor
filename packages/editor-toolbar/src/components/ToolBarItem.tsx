@@ -6,6 +6,7 @@ export type MenuBarItemProps = {
   style?: CSSProperties;
   children: ReactNode;
   disabled?: boolean;
+  onclick?: () => void;
 };
 
 const ToolBarItem: FC<MenuBarItemProps> = ({
@@ -13,9 +14,11 @@ const ToolBarItem: FC<MenuBarItemProps> = ({
   className,
   style,
   children,
+  onclick,
 }) => {
   return (
     <span
+      onClick={onclick}
       className={classNames(
         'easy-editor-toolbar__item',
         disabled && 'disabled',

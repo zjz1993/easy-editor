@@ -10,11 +10,24 @@ const ToolbarItemButtonWrapper: FC<{
   style?: CSSProperties;
   disabled?: boolean;
   tooltipVisible?: boolean;
+  onClick?: () => void;
 }> = props => {
-  const { tooltipVisible, children, intlStr, className, style, disabled } =
-    props;
+  const {
+    onClick,
+    tooltipVisible,
+    children,
+    intlStr,
+    className,
+    style,
+    disabled,
+  } = props;
   return (
-    <ToolBarItem className={className} style={style} disabled={disabled}>
+    <ToolBarItem
+      onclick={onClick}
+      className={className}
+      style={style}
+      disabled={disabled}
+    >
       <Tooltip
         content={IntlComponent.get(intlStr, { command, option })}
         open={tooltipVisible}
