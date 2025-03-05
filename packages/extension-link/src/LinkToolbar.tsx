@@ -7,6 +7,7 @@ import {
   shift,
   useFloating,
 } from '@floating-ui/react';
+import './toolbar.scss';
 
 const LinkToolbar = ({
   from,
@@ -18,12 +19,8 @@ const LinkToolbar = ({
   referenceEl,
   onClose,
 }) => {
-  //const [href, setHref] = useState('');
-  //const [text, setText] = useState('');
-  //
-
   const { refs, floatingStyles } = useFloating({
-    placement: 'top',
+    placement: 'bottom-start',
     middleware: [offset(8), shift(), flip()],
     whileElementsMounted: autoUpdate,
     elements: {
@@ -42,6 +39,7 @@ const LinkToolbar = ({
       .setTextSelection(linkPos)
       .updateAttributes(MARK_TYPES.LK, { href })
       .insertContentAt({ from, to }, text)
+      .unsetMark(MARK_TYPES.LK)
       .run();
     onClose();
   };
@@ -56,35 +54,27 @@ const LinkToolbar = ({
       ref={refs.setFloating}
       style={{
         ...floatingStyles,
-        padding: '8px',
-        background: 'white',
-        border: '1px solid #ccc',
-        borderRadius: '4px',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-        zIndex: 1000,
       }}
-      className="link-toolbar"
+      className="easy-editor-link-toolbar"
       onMouseLeave={() => {
-        onClose();
+        // onClose();
       }}
     >
-      <div>
-        <Popover
-          content={
-            <LinkPanelPopup
-              text={text}
-              href={href}
-              onCancel={onClose}
-              onConfirm={({ text, href }) => {
-                handleUpdate({ text, href });
-              }}
-            />
-          }
-        >
-          <Iconfont type="icon-edit" />
-        </Popover>
-        <Iconfont type="icon-remove" />
-      </div>
+      <Popover
+        content={
+          <LinkPanelPopup
+            text={text}
+            href={href}
+            onCancel={onClose}
+            onConfirm={({ text, href }) => {
+              handleUpdate({ text, href });
+            }}
+          />
+        }
+      >
+        <Iconfont type="icon-edit" />
+      </Popover>
+      <Iconfont type="icon-remove" />
     </div>
   );
 };

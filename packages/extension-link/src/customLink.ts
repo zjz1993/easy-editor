@@ -29,7 +29,7 @@ function getLinkRange(doc, pos, linkMark) {
 
   return { from, to };
 }
-let container;
+let inToolbar = false;
 
 const CustomLink = Link.extend({
   name: MARK_TYPES.LK,
@@ -51,66 +51,77 @@ const CustomLink = Link.extend({
               node => node.nodeType === Node.TEXT_NODE,
             );
             if (!textNode) return false;
-            console.log('textNode是', textNode);
             // 计算 pos
             const pos = view.posAtDOM(textNode, 0);
             const resolvedPos = view.state.doc.resolve(pos);
-            console.log('resolvedPos.node', resolvedPos.node());
-            // 解决：检查 resolvedPos 位置是否正确
-            console.log('Node at pos:', resolvedPos.parent.type.name);
-            console.log(
-              'Marks at pos:',
-              resolvedPos.marks().map(m => m.type.name),
-            );
             // 获取 link mark
             const linkMark = resolvedPos
               .marks()
               .find(mark => mark.type.name === MARK_TYPES.LK);
-            console.log('linkMark是', linkMark);
             if (linkMark) {
               const { from, to } = getLinkRange(view.state.doc, pos, linkMark);
               // 创建容器并立即渲染工具栏
               console.log('linkMark是', linkMark);
-              if (!container) {
-                container = document.createElement('div');
-                document.body.appendChild(container);
+              const container = document.createElement('div');
+              document.body.appendChild(container);
 
-                const component = new ReactRenderer(LinkToolbar, {
+              const component = new ReactRenderer(LinkToolbar, {
+                editor: this.editor,
+                props: {
                   editor: this.editor,
-                  props: {
-                    editor: this.editor,
-                    linkPos: pos,
-                    referenceEl: target,
-                    href: linkMark.attrs.href,
-                    text: this.editor.state.doc.textBetween(from, to),
-                    from,
-                    to,
-                    onClose: () => {
-                      component.destroy();
-                      container.remove();
-                    },
+                  linkPos: pos,
+                  referenceEl: target,
+                  href: linkMark.attrs.href,
+                  text: this.editor.state.doc.textBetween(from, to),
+                  from,
+                  to,
+                  onClose: () => {
+                    component.destroy();
+                    container.remove();
+                    inToolbar = false;
+                    container.removeEventListener(
+                      'mouseenter',
+                      handleContainerMouseEnter,
+                    );
+                    target.removeEventListener('mouseleave', handleMouseOut);
                   },
-                });
+                },
+              });
 
-                // 立即将 React 组件渲染到容器中
-                container.appendChild(component.element);
+              // 立即将 React 组件渲染到容器中
+              container.appendChild(component.element);
 
-                //const handleMouseOut = (mouseoutEvent: MouseEvent) => {
-                //  const relatedTarget = mouseoutEvent.relatedTarget;
-                //  if (
-                //    relatedTarget instanceof Node &&
-                //    !container.contains(relatedTarget) &&
-                //    !target.contains(relatedTarget)
-                //  ) {
-                //    target.removeEventListener('mouseout', handleMouseOut);
-                //    // container.removeEventListener('mouseout', handleMouseOut);
-                //  }
-                //};
-                //
-                //// 为链接和工具栏都添加 mouseout 监听
-                // target.addEventListener('mouseout', handleMouseOut);
-                //container.addEventListener('mouseout', handleMouseOut);
-              }
+              const handleMouseOut = (mouseoutEvent: MouseEvent) => {
+                console.log('mouseleave触发');
+                const relatedTarget = mouseoutEvent.relatedTarget;
+                if (
+                  relatedTarget instanceof Node &&
+                  !target.contains(relatedTarget)
+                ) {
+                  setTimeout(() => {
+                    console.log('inToolbar有吗', inToolbar);
+                    if (!inToolbar) {
+                      container.remove();
+                      target.removeEventListener('mouseleave', handleMouseOut);
+                    }
+                    //if (!container.contains(relatedTarget)) {
+                    //  container.remove();
+                    //  target.removeEventListener('mouseleave', handleMouseOut);
+                    //}
+                  }, 500);
+                }
+              };
+              const handleContainerMouseEnter = (mouseoutEvent: MouseEvent) => {
+                console.log('在工具栏上');
+                inToolbar = true;
+              };
+              //
+              //// 为链接和工具栏都添加 mouseout 监听
+              target.addEventListener('mouseleave', handleMouseOut);
+              container.addEventListener(
+                'mouseenter',
+                handleContainerMouseEnter,
+              );
             }
 
             return false;
