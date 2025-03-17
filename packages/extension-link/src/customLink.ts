@@ -54,6 +54,12 @@ const CustomLink = Link.extend({
             // 计算 pos
             const pos = view.posAtDOM(textNode, 0);
             const resolvedPos = view.state.doc.resolve(pos);
+            console.log(
+              'resolvedPos是',
+              textNode,
+              resolvedPos,
+              resolvedPos.marks(),
+            );
             // 获取 link mark
             const linkMark = resolvedPos
               .marks()
@@ -99,7 +105,6 @@ const CustomLink = Link.extend({
                   !target.contains(relatedTarget)
                 ) {
                   setTimeout(() => {
-                    console.log('inToolbar有吗', inToolbar);
                     if (!inToolbar) {
                       container.remove();
                       target.removeEventListener('mouseleave', handleMouseOut);

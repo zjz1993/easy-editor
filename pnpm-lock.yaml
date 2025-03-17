@@ -343,6 +343,9 @@ importers:
       '@easy-editor/editor-toolbar':
         specifier: workspace:^
         version: link:../editor-toolbar
+      '@easy-editor/styles':
+        specifier: workspace:*
+        version: link:../editor-style
       '@floating-ui/react':
         specifier: ^0.27.4
         version: 0.27.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)

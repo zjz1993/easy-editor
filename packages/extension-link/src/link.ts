@@ -254,9 +254,9 @@ export const Link = Mark.create<LinkOptions>({
       protocols: [],
       defaultProtocol: 'http',
       HTMLAttributes: {
+        class: 'easy-editor-link',
         target: '_blank',
         rel: 'noopener noreferrer nofollow',
-        class: null,
       },
       isAllowedUri: (url, ctx) => !!isAllowedUri(url, ctx.protocols),
       validate: url => !!url,

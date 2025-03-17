@@ -1,3 +1,4 @@
+@use "~@easy-editor/styles";
 .easy-editor-link-toolbar{
   display: flex;
   padding: 8px;
@@ -8,4 +9,18 @@
   z-index: 1000;
   align-items: center;
   gap: 8px;
+  &-icon-edit{
+    cursor: pointer;
+    transition: all .3s;
+    &:hover{
+      color: styles.$primary-color;
+    }
+  }
+  &-icon-del{
+    cursor: pointer;
+    transition: all .3s;
+    &:hover{
+      color: styles.$primary-red;
+    }
+  }
 }

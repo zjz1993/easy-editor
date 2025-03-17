@@ -1,4 +1,4 @@
-import { Iconfont, MARK_TYPES, Popover } from '@easy-editor/editor-common';
+import { Iconfont, MARK_TYPES } from '@easy-editor/editor-common';
 import { LinkPanelPopup } from '@easy-editor/editor-toolbar/src/components/LinkButton/LinkPanel.tsx';
 import {
   autoUpdate,
@@ -7,7 +7,12 @@ import {
   shift,
   useFloating,
 } from '@floating-ui/react';
+import { useState } from 'react';
 import './toolbar.scss';
+import {
+  IntlComponent,
+  Tooltip,
+} from '@easy-editor/editor-common/src/index.ts';
 
 const LinkToolbar = ({
   from,
@@ -19,6 +24,7 @@ const LinkToolbar = ({
   referenceEl,
   onClose,
 }) => {
+  const [showEditPopup, setShowEditPopup] = useState(false);
   const { refs, floatingStyles } = useFloating({
     placement: 'bottom-start',
     middleware: [offset(8), shift(), flip()],
@@ -33,18 +39,30 @@ const LinkToolbar = ({
 
   const handleUpdate = (params: { text: string; href: string }) => {
     const { text, href } = params;
+    console.log('接收的参数是', params);
     editor
       .chain()
       .focus()
       .setTextSelection(linkPos)
-      .updateAttributes(MARK_TYPES.LK, { href })
-      .insertContentAt({ from, to }, text)
+      .insertContentAt(
+        { from, to },
+        {
+          type: 'text',
+          text,
+          marks: [{ type: MARK_TYPES.LK, attrs: { href } }],
+        },
+      )
       .unsetMark(MARK_TYPES.LK)
       .run();
     onClose();
   };
 
-  const handleRemove = () => {
+  const handleDeleteLink = () => {
+    editor.chain().focus().deleteRange({ from, to }).run();
+    onClose();
+  };
+
+  const handleRemoveLink = () => {
     editor.chain().focus().unsetLink().run();
     onClose();
   };
@@ -57,24 +75,45 @@ const LinkToolbar = ({
       }}
       className="easy-editor-link-toolbar"
       onMouseLeave={() => {
-        // onClose();
+        onClose();
       }}
     >
-      <Popover
-        content={
-          <LinkPanelPopup
-            text={text}
-            href={href}
-            onCancel={onClose}
-            onConfirm={({ text, href }) => {
-              handleUpdate({ text, href });
+      {showEditPopup ? (
+        <LinkPanelPopup
+          text={text}
+          href={href}
+          onCancel={() => {
+            setShowEditPopup(false);
+          }}
+          onConfirm={({ text, href }) => {
+            handleUpdate({ text, href });
+          }}
+        />
+      ) : (
+        <>
+          <Iconfont
+            type="icon-edit"
+            className="easy-editor-link-toolbar-icon-edit"
+            onClick={() => {
+              setShowEditPopup(true);
             }}
           />
-        }
-      >
-        <Iconfont type="icon-edit" />
-      </Popover>
-      <Iconfont type="icon-remove" />
+          <Tooltip content={IntlComponent.get('toolbar.link.unlink')}>
+            <Iconfont
+              type="icon-unlink"
+              className="easy-editor-link-toolbar-icon-del"
+              onClick={handleRemoveLink}
+            />
+          </Tooltip>
+          <Tooltip content={IntlComponent.get('delete')}>
+            <Iconfont
+              type="icon-remove"
+              className="easy-editor-link-toolbar-icon-del"
+              onClick={handleDeleteLink}
+            />
+          </Tooltip>
+        </>
+      )}
     </div>
   );
 };

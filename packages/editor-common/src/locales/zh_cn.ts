@@ -4,6 +4,7 @@ export default {
   header: '标题',
   'header.level': '标题{level}',
   paragraph: '正文',
+  delete: '删除',
   quote: '引用',
   bold: '加粗 ({command} + B)',
   italic: '斜体 ({command} + I)',
@@ -27,4 +28,5 @@ export default {
   'toolbar.header.h5': '{command} + {option} + 5',
   'toolbar.header.h6': '{command} + {option} + 6',
   'toolbar.header.quote': '{command} + {option} + 8',
+  'toolbar.link.unlink': '删除链接',
 };
