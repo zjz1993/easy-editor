@@ -309,6 +309,9 @@ const Toolbar: FC<IToolbarProps> = props => {
           renderRest={restArray => {
             return (
               <DropdownPanel
+                popupAlign={{
+                  points: ['tr', 'br'],
+                }}
                 getPopupContainer={trigger => trigger.parentNode as HTMLElement}
                 action={['hover']}
                 popup={
