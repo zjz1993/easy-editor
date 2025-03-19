@@ -52,22 +52,27 @@ const CustomLink = Link.extend({
             );
             if (!textNode) return false;
             // 计算 pos
-            const pos = view.posAtDOM(textNode, 0);
+            const pos = view.posAtDOM(linkElement, 0);
             const resolvedPos = view.state.doc.resolve(pos);
-            console.log(
-              'resolvedPos是',
-              textNode,
-              resolvedPos,
-              resolvedPos.marks(),
-            );
             // 获取 link mark
-            const linkMark = resolvedPos
+            let linkMark = resolvedPos
               .marks()
               .find(mark => mark.type.name === MARK_TYPES.LK);
+            if (!linkMark) {
+              view.state.doc.nodesBetween(
+                resolvedPos.start(),
+                resolvedPos.end(),
+                node => {
+                  linkMark = node.marks.find(
+                    mark => mark.type.name === MARK_TYPES.LK,
+                  );
+                  if (linkMark) return false;
+                },
+              );
+            }
             if (linkMark) {
               const { from, to } = getLinkRange(view.state.doc, pos, linkMark);
               // 创建容器并立即渲染工具栏
-              console.log('linkMark是', linkMark);
               const container = document.createElement('div');
               document.body.appendChild(container);
 
@@ -98,7 +103,6 @@ const CustomLink = Link.extend({
               container.appendChild(component.element);
 
               const handleMouseOut = (mouseoutEvent: MouseEvent) => {
-                console.log('mouseleave触发');
                 const relatedTarget = mouseoutEvent.relatedTarget;
                 if (
                   relatedTarget instanceof Node &&
@@ -117,7 +121,6 @@ const CustomLink = Link.extend({
                 }
               };
               const handleContainerMouseEnter = (mouseoutEvent: MouseEvent) => {
-                console.log('在工具栏上');
                 inToolbar = true;
               };
               //

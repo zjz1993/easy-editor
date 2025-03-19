@@ -309,6 +309,7 @@ const Toolbar: FC<IToolbarProps> = props => {
           renderRest={restArray => {
             return (
               <DropdownPanel
+                zIndex={1}
                 popupAlign={{
                   points: ['tr', 'br'],
                 }}
