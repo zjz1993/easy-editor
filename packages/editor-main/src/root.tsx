@@ -6,6 +6,7 @@ import StarterKit from '@tiptap/starter-kit';
 import type { FC } from 'react';
 import type { TEasyEditorProps } from './types/index.ts';
 import './styles/root.scss';
+import { CodeBlock } from '@easy-editor/extension-code-block';
 import { Indent } from '@easy-editor/extension-indent';
 import { CustomLink } from '@easy-editor/extension-link';
 import { TaskItem, TaskList } from '@easy-editor/extension-task-item';
@@ -31,12 +32,13 @@ const Editor: FC<TEasyEditorProps> = props => {
   const { CL, OL, UL, P, H, CLI, LI, QUOTE, HR } = BLOCK_TYPES;
   const listGroup = `${UL}|${OL}|${CL}`;
   const extensions = [
-    StarterKit.configure({ bold: false }),
+    StarterKit.configure({ bold: false, codeBlock: false }),
     Bold,
     Underline,
     TextStyle,
     Color,
     CustomLink,
+    CodeBlock,
     Indent.configure({
       types: [P, H, CL, CLI, OL, UL, LI, QUOTE, HR],
       itemTypeName: BLOCK_TYPES.CLI,

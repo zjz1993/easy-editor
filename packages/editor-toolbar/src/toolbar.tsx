@@ -10,6 +10,7 @@ import DropdownPanel from '@easy-editor/editor-common/src/components/DropdownPan
 import type { Editor } from '@tiptap/core';
 import Overflow from 'rc-overflow';
 import AlignButton from './components/AlignButton/index.tsx';
+import CodeButton from './components/CodeButton/index.tsx';
 import HeaderButton from './components/HeaderButton/index.tsx';
 import IndentButton from './components/IndentButton/IndentButton.tsx';
 import LinkButton from './components/LinkButton/index.tsx';
@@ -298,6 +299,12 @@ const Toolbar: FC<IToolbarProps> = props => {
       key: 'link',
       component: <LinkButton />,
       intlStr: 'tool.link',
+      disabled: disabled,
+    },
+    {
+      key: 'code',
+      component: <CodeButton />,
+      intlStr: 'code',
       disabled: disabled,
     },
   ];

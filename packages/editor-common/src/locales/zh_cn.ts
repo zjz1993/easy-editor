@@ -29,4 +29,5 @@ export default {
   'toolbar.header.h6': '{command} + {option} + 6',
   'toolbar.header.quote': '{command} + {option} + 8',
   'toolbar.link.unlink': '删除链接',
+  code: '插入代码',
 };

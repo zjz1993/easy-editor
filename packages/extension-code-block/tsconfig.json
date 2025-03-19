@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "declarationDir": "./dist/types",
+    "emitDeclarationOnly": true,
+    "downlevelIteration": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}

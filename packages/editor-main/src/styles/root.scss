@@ -13,6 +13,20 @@
     cursor: pointer;
   }
   .ProseMirror{
+    pre {
+      code{
+        display: block;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 16px;
+        background: none !important;
+        overflow: visible;
+        font-size: 100%;
+        line-height: inherit;
+        min-width: min-content;
+        white-space: inherit !important;
+      }
+    }
     p{
       color: styles.$primary-black;
     }
