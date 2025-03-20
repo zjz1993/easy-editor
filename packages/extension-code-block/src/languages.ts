@@ -239,22 +239,20 @@ export const languages = [
 ];
 
 export const getLanguageByValueOrAlias = (
-  valueOrAlias: string
+  valueOrAlias: string,
 ): LanguageItem | null => {
   if (!valueOrAlias) {
     return null;
   }
   const v = valueOrAlias.toLocaleLowerCase();
-  const language = languages.find(
-    (language) => language.value === v || language.alias.includes(v)
+  return languages.find(
+    language => language.value === v || language.alias.includes(v),
   );
-  return language;
 };
 
 export const getLanguageByValue = (value: string): LanguageItem | null => {
   if (!value) {
     return null;
   }
-  const language = languages.find((language) => language.value === value);
-  return language;
+  return languages.find(language => language.value === value);
 };

@@ -1,4 +1,8 @@
-import { BLOCK_TYPES, isUndefined } from '@easy-editor/editor-common';
+import {
+  BLOCK_TYPES,
+  MessageContainer,
+  isUndefined,
+} from '@easy-editor/editor-common';
 import EditorToolbar from '@easy-editor/editor-toolbar';
 import { Bold } from '@easy-editor/extension-bold';
 import { EditorContent, useEditor } from '@tiptap/react';
@@ -77,6 +81,7 @@ const Editor: FC<TEasyEditorProps> = props => {
     <div className="easy-editor">
       {intlInit && <EditorToolbar editor={editor} />}
       <EditorContent editor={editor} className="easy-editor-body" />
+      <MessageContainer />
       {/*<BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu>*/}
     </div>
   );
