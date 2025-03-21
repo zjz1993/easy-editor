@@ -93,7 +93,8 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
         singleQuote: false,
       });
     } catch (error) {
-      console.error('格式化失败:', error);
+      message.warning('格式化失败');
+      console.log('error', error);
       return code; // 失败时返回原代码
     }
   };
@@ -215,21 +216,27 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
           <button
             className="easy-editor-code-block__button_area__button"
             onClick={async () => {
-              focusToCodeBlock();
-              const formatCodeString = await formatCode(
-                pureCode,
-                selectedValue,
-              );
-              const range = getCurrentCodeBlockRange();
-              if (range) {
-                const { from, to } = range;
-                const newNode = editor.schema.nodes[BLOCK_TYPES.CODE].create(
-                  { language: selectedValue }, // attrs
-                  editor.schema.text(formatCodeString), // content
+              try {
+                focusToCodeBlock();
+                const formatCodeString = await formatCode(
+                  pureCode,
+                  selectedValue,
                 );
-                const tr = editor.state.tr.replaceWith(from - 1, to, newNode);
-                tr.setSelection(TextSelection.create(tr.doc, from + 1)); // 设置光标位置
-                editor.view.dispatch(tr);
+                const range = getCurrentCodeBlockRange();
+                if (range) {
+                  const { from, to } = range;
+                  const newNode = editor.schema.nodes[BLOCK_TYPES.CODE].create(
+                    { language: selectedValue }, // attrs
+                    editor.schema.text(formatCodeString), // content
+                  );
+                  const tr = editor.state.tr.replaceWith(from - 1, to, newNode);
+                  tr.setSelection(TextSelection.create(tr.doc, from + 1)); // 设置光标位置
+                  editor.view.dispatch(tr);
+                } else {
+                  message.warning('操作失败');
+                }
+              } catch (e) {
+                message.warning('操作失败');
               }
             }}
           >
@@ -239,7 +246,7 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
             className="easy-editor-code-block__button_area__button"
             onClick={() => {
               copy(pureCode as string);
-              message.success('成功');
+              message.success('复制成功');
             }}
           >
             复制
@@ -247,13 +254,17 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
           <button
             className="easy-editor-code-block__button_area__button"
             onClick={() => {
-              focusToCodeBlock();
-              const res = getCurrentCodeBlockRange();
-              editor
-                .chain()
-                .focus() // 确保编辑器聚焦
-                .deleteRange({ from: res.from, to: res.to }) // 删除指定范围
-                .run();
+              try {
+                focusToCodeBlock();
+                const res = getCurrentCodeBlockRange();
+                editor
+                  .chain()
+                  .focus() // 确保编辑器聚焦
+                  .deleteRange({ from: res.from, to: res.to }) // 删除指定范围
+                  .run();
+              } catch (e) {
+                message.success('操作失败');
+              }
             }}
           >
             清空代码块
@@ -261,14 +272,20 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
           <button
             className="easy-editor-code-block__button_area__button"
             onClick={() => {
-              focusToCodeBlock();
-              const res = getCurrentCodeBlockRange();
-              if (res) {
-                editor
-                  .chain()
-                  .focus() // 确保编辑器聚焦
-                  .deleteRange({ from: res.from - 1, to: res.to }) // 删除指定范围
-                  .run();
+              try {
+                focusToCodeBlock();
+                const res = getCurrentCodeBlockRange();
+                if (res) {
+                  editor
+                    .chain()
+                    .focus() // 确保编辑器聚焦
+                    .deleteRange({ from: res.from - 1, to: res.to }) // 删除指定范围
+                    .run();
+                } else {
+                  message.warning('操作失败');
+                }
+              } catch (e) {
+                message.warning('操作失败');
               }
             }}
           >
