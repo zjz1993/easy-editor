@@ -4,12 +4,12 @@ import {
   forwardRef,
   useCallback,
   useImperativeHandle,
-  useState,
 } from 'react';
 import { Iconfont } from '../../components';
 import DropdownPanel from '../DropdownPanel/index.tsx';
 import './index.scss';
 import cx from 'classnames';
+import useControlledValue from '../../hooks/useControlledValue.ts';
 
 export type TDropDownRefProps = {
   toggleVisible: (visible: boolean) => void;
@@ -24,21 +24,35 @@ const Dropdown = forwardRef<
     className?: string;
     disabled?: boolean;
     getPopupContainer?: (node: HTMLElement) => HTMLElement;
+    onVisibleChange?: (visible: boolean) => void;
     onClick?: () => void;
   }
 >((props, ref) => {
-  const { onClick, getPopupContainer, disabled, children, popup, className } =
-    props;
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const {
+    visible,
+    onClick,
+    getPopupContainer,
+    disabled,
+    children,
+    popup,
+    className,
+    onVisibleChange,
+  } = props;
+  const [isOpen, setIsOpen] = useControlledValue<boolean>({
+    value: visible,
+    defaultValue: false,
+    onChange: onVisibleChange,
+  });
   const handleVisibleChange = useCallback(
-    (isOpen: boolean) => {
+    (tempOpen: boolean) => {
+      console.log('handleVisibleChange触发', tempOpen);
       if (disabled) {
         return;
       }
-      if (isOpen) {
+      if (tempOpen) {
         onClick?.();
       }
-      setIsOpen(isOpen);
+      setIsOpen(tempOpen);
     },
     [disabled],
   );

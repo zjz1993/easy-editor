@@ -37,7 +37,7 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
   const inputRef = useRef<HTMLInputElement>();
   const [search, setSearch] = useState('');
   //const [toolbarVisible, setToolbarVisible] = useState(false);
-  //const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
 
   const language =
     node.attrs.language || extension?.options?.defaultLanguage || '';
@@ -159,6 +159,10 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
         contentEditable={false}
       >
         <Dropdown
+          visible={dropdownVisible}
+          onVisibleChange={visible => {
+            setDropdownVisible(visible);
+          }}
           popup={
             <div className="easy-editor-dropdown-menu easy-editor-code-block__dropdown">
               <div
@@ -176,7 +180,6 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
                       placeholder="搜索"
                       onChange={e => setSearch(e.target.value)}
                     />
-                    搜索
                   </div>
                 </div>
                 <div className="easy-editor-code-block__dropdown-list">
@@ -190,7 +193,7 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
                       onClick={() => {
                         setSelectedValue(lang.value);
                         updateAttributes({ language: lang.value });
-                        // setDropdownVisible(false);
+                        setDropdownVisible(false);
                       }}
                     >
                       {lang.name}
