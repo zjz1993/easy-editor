@@ -15,17 +15,23 @@ export type TDropDownRefProps = {
   toggleVisible: (visible: boolean) => void;
 };
 
-const Dropdown = forwardRef<
+const DropdownList = forwardRef<
   TDropDownRefProps,
   {
     visible?: boolean;
     children: ReactElement;
-    popup: ReactNode;
     className?: string;
     disabled?: boolean;
     getPopupContainer?: (node: HTMLElement) => HTMLElement;
     onVisibleChange?: (visible: boolean) => void;
     onClick?: () => void;
+    options: {
+      disabled?: boolean;
+      icon?: ReactNode;
+      label: ReactNode;
+      value: string;
+      onClick?: () => void;
+    }[];
   }
 >((props, ref) => {
   const {
@@ -34,11 +40,11 @@ const Dropdown = forwardRef<
     getPopupContainer,
     disabled,
     children,
-    popup,
     className,
     onVisibleChange,
+    options,
   } = props;
-  const [isOpen, setIsOpen] = useControlledValue<boolean>({
+  const [isOpen, setIsOpen, isControlled] = useControlledValue<boolean>({
     value: visible,
     defaultValue: false,
     onChange: onVisibleChange,
@@ -52,6 +58,7 @@ const Dropdown = forwardRef<
         onClick?.();
       }
       setIsOpen(tempOpen);
+      !isControlled && onVisibleChange?.(tempOpen);
     },
     [disabled],
   );
@@ -69,13 +76,41 @@ const Dropdown = forwardRef<
   return (
     <DropdownPanel
       className={cx('easy-editor-toolbar__item', className)}
-      popup={popup}
+      popup={
+        <div className="easy-editor-dropdown__content">
+          {options.map(item => (
+            <div
+              className={cx(
+                'easy-editor-dropdown__content__item',
+                item.disabled &&
+                  'easy-editor-dropdown__content__item__disabled',
+              )}
+              key={item.value}
+              onClick={() => {
+                if (item.disabled) {
+                  return;
+                }
+                item.onClick?.();
+                setIsOpen(false);
+              }}
+            >
+              {item.icon}
+              {item.label}
+            </div>
+          ))}
+        </div>
+      }
       popupVisible={isOpen}
       onPopupVisibleChange={handleVisibleChange}
       getPopupContainer={getPopupContainer}
     >
-      <div className="easy-editor-dropdown">
-        {children}
+      <div
+        className={cx(
+          'easy-editor-dropdown',
+          disabled && 'easy-editor-dropdown__disabled',
+        )}
+      >
+        <div className="easy-editor-toolbar__item">{children}</div>
         <div
           className={cx(
             'easy-editor-dropdown__icon',
@@ -88,4 +123,4 @@ const Dropdown = forwardRef<
     </DropdownPanel>
   );
 });
-export default Dropdown;
+export default DropdownList;

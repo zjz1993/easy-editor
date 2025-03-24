@@ -17,7 +17,7 @@ const ToolBarItem: FC<MenuBarItemProps> = ({
   onclick,
 }) => {
   return (
-    <span
+    <div
       onClick={onclick}
       className={classNames(
         'easy-editor-toolbar__item',
@@ -27,7 +27,7 @@ const ToolBarItem: FC<MenuBarItemProps> = ({
       style={style}
     >
       {children}
-    </span>
+    </div>
   );
 };
 export default ToolBarItem;

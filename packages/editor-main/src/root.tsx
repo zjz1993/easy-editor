@@ -2,6 +2,7 @@ import {
   BLOCK_TYPES,
   MessageContainer,
   isUndefined,
+  wrapBlockExtensions,
 } from '@easy-editor/editor-common';
 import EditorToolbar from '@easy-editor/editor-toolbar';
 import { Bold } from '@easy-editor/extension-bold';
@@ -33,7 +34,7 @@ const Editor: FC<TEasyEditorProps> = props => {
     autoFocus,
   } = props;
   const { intlInit } = useIntlLoaded();
-  const { CL, OL, UL, P, H, CLI, LI, QUOTE, HR } = BLOCK_TYPES;
+  const { CL, OL, UL, P, H, CLI, LI, QUOTE, HR, TL } = BLOCK_TYPES;
   const listGroup = `${UL}|${OL}|${CL}`;
   const extensions = [
     StarterKit.configure({ bold: false, codeBlock: false }),
@@ -65,7 +66,7 @@ const Editor: FC<TEasyEditorProps> = props => {
   const editor = useEditor({
     autofocus: !isUndefined(autoFocus) ? 'end' : undefined,
     extensions: [
-      ...extensions,
+      ...wrapBlockExtensions(extensions, [P, H, CL, OL, UL, QUOTE, HR, TL], ''),
       Placeholder.configure({
         placeholder,
       }),

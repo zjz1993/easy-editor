@@ -10,7 +10,7 @@ function useControlledValue<T>({
   value: controlledValue,
   defaultValue,
   onChange,
-}: UseControlledValueProps<T>): [T, (newValue: T) => void] {
+}: UseControlledValueProps<T>): [T, (newValue: T) => void, boolean] {
   // 判断是否为受控模式
   const isControlled = controlledValue !== undefined;
 
@@ -36,7 +36,7 @@ function useControlledValue<T>({
     [isControlled, onChange],
   );
 
-  return [value, setValue];
+  return [value, setValue, isControlled];
 }
 
 export default useControlledValue;

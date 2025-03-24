@@ -1,3 +1,4 @@
+import { BLOCK_TYPES } from '@easy-editor/editor-common/src/index.ts';
 import type { CodeBlockLowlightOptions } from '@tiptap/extension-code-block-lowlight';
 import { CodeBlockLowlight } from '@tiptap/extension-code-block-lowlight';
 import { TextSelection } from '@tiptap/pm/state';
@@ -12,8 +13,7 @@ export const backtickInputRegex = /^[`·]{3}([a-z]+)?[\s\n]$/;
 export const tildeInputRegex = /^[~～]{3}([a-z]+)?[\s\n]$/;
 
 export const CodeBlock = CodeBlockLowlight.extend<CodeBlockOptions>({
-  name: 'codeBlock',
-
+  name: BLOCK_TYPES.CODE,
   allowGapCursor: true,
 
   addOptions() {

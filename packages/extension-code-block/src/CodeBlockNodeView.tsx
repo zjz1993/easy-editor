@@ -21,6 +21,7 @@ import {
   get,
   message,
 } from '@easy-editor/editor-common';
+import { Iconfont } from '@easy-editor/editor-common/src/index.ts';
 import { TextSelection } from '@tiptap/pm/state';
 
 const CODE_BLOCK_DROPDOWN_MAX_HEIGHT = 245;
@@ -180,6 +181,13 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
                       placeholder="搜索"
                       onChange={e => setSearch(e.target.value)}
                     />
+                    {search.length > 0 && (
+                      <Iconfont
+                        type="icon-close-circle-fill"
+                        className="icon"
+                        onClick={() => setSearch('')}
+                      />
+                    )}
                   </div>
                 </div>
                 <div className="easy-editor-code-block__dropdown-list">

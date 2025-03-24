@@ -344,11 +344,9 @@ export const Link = Mark.create<LinkOptions>({
       setLink:
         attributes =>
         ({ chain, state }) => {
-          console.log('setLink执行了', attributes);
           const { selection } = state;
           const { from, to } = selection;
           const { href, text } = attributes;
-          console.log('selection是空吗', selection.from, selection.to);
           //if (
           //  !this.options.isAllowedUri(href, {
           //    defaultValidate: url =>

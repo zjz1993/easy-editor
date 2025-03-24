@@ -24,6 +24,7 @@ const LinkButton: FC<TToolbarWrapperProps> = props => {
     return text;
   }
   const text = getSelectionTextWithMarks();
+
   return (
     <ToolbarItemButtonWrapper
       intlStr={intlStr}
@@ -31,9 +32,6 @@ const LinkButton: FC<TToolbarWrapperProps> = props => {
       style={style}
       disabled={disabled}
       tooltipVisible={tooltipVisible}
-      onClick={() => {
-        setPopoverOpen(true);
-      }}
     >
       <Popover
         open={popoverOpen}
@@ -75,17 +73,18 @@ const LinkButton: FC<TToolbarWrapperProps> = props => {
                 .run();
               setPopoverOpen(false);
             }}
-            onCancel={() => {
-              setPopoverOpen(false);
-            }}
+            onCancel={() => setPopoverOpen(false)}
           />
         }
       >
         <Iconfont
           type="icon-link"
-          //onClick={() => {
-          //  setPopoverOpen(true);
-          //}}
+          onClick={() => {
+            if (disabled) {
+              return;
+            }
+            setPopoverOpen(true);
+          }}
           onMouseLeave={() => {
             setTooltipVisible(false);
           }}

@@ -1,6 +1,11 @@
-import { Iconfont } from '@easy-editor/editor-common/src/index.ts';
+import {
+  BLOCK_TYPES,
+  DropdownList,
+  Iconfont,
+  IntlComponent,
+} from '@easy-editor/editor-common/src/index.ts';
 import type { FC } from 'react';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import ToolbarItemButtonWrapper from '../../components/toolbarItem/ToolbarItemButtonWrapper.tsx';
 import ToolbarContext from '../../context/toolbarContext.ts';
 import type { TToolbarWrapperProps } from '../../types/index.ts';
@@ -8,19 +13,56 @@ import type { TToolbarWrapperProps } from '../../types/index.ts';
 const CodeButton: FC<TToolbarWrapperProps> = props => {
   const { intlStr, style, disabled } = props;
   const { editor } = useContext(ToolbarContext);
+  const [tooltipVisible, setTooltipVisible] = useState(false);
   return (
     <ToolbarItemButtonWrapper
       intlStr={intlStr}
       className={'easy-editor-toolbar__item__btn'}
       style={style}
       disabled={disabled}
-      // tooltipVisible={tooltipVisible}
-      onClick={() => {
-        editor.chain().focus().toggleCodeBlock().run();
-        // setPopoverOpen(true);
-      }}
+      tooltipVisible={tooltipVisible}
     >
-      <Iconfont type="icon-code" />
+      <DropdownList
+        onVisibleChange={open => {
+          if (open) {
+            setTooltipVisible(!open);
+          } else {
+            setTooltipVisible(false);
+          }
+        }}
+        options={[
+          {
+            disabled: !editor.can().chain().focus().toggleCodeBlock?.().run(),
+            label: editor.isActive(BLOCK_TYPES.CODE)
+              ? IntlComponent.get('codeBlock.inline.remove')
+              : IntlComponent.get('codeBlock.inline.insert'),
+            value: '1',
+            icon: <Iconfont type="icon-code" />,
+            onClick: () => {
+              editor.chain().focus().toggleCodeBlock().run();
+            },
+          },
+          {
+            disabled: !editor.can().chain().focus().toggleCode?.().run(),
+            label: editor.isActive(BLOCK_TYPES.CODE_INLINE)
+              ? IntlComponent.get('code.inline.remove')
+              : IntlComponent.get('code.inline.insert'),
+            value: '2',
+            icon: <Iconfont type="icon-code-inline" />,
+            onClick: () => editor?.chain().focus().toggleCode?.().run(),
+          },
+        ]}
+      >
+        <Iconfont
+          type="icon-code"
+          onMouseLeave={() => {
+            setTooltipVisible(false);
+          }}
+          onMouseEnter={() => {
+            setTooltipVisible(true);
+          }}
+        />
+      </DropdownList>
     </ToolbarItemButtonWrapper>
   );
 };

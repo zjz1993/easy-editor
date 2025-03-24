@@ -13,6 +13,13 @@
     cursor: pointer;
   }
   .ProseMirror{
+    code{
+      padding: 8px;
+      margin: 0;
+      font-size: 12px;
+      background: styles.$background-grey;
+      border-radius: 4px;
+    }
     pre {
       code{
         display: block;
@@ -154,6 +161,9 @@
     width: 100%;
     padding: 8px;
     box-sizing: border-box;
+    .easy-editor-block-container{
+      margin-bottom: 8px;
+    }
     .tiptap p.is-editor-empty:first-child::before {
       color: #adb5bd;
       content: attr(data-placeholder);

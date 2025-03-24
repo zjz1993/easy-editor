@@ -4,9 +4,12 @@ import {
   BLOCK_TYPES,
   INDENT_TYPES,
   Iconfont,
-  useSize,
 } from '@easy-editor/editor-common';
 import DropdownPanel from '@easy-editor/editor-common/src/components/DropdownPanel/index.tsx';
+import {
+  MARK_TYPES,
+  isSelectionInsideBlockByType,
+} from '@easy-editor/editor-common/src/index.ts';
 import type { Editor } from '@tiptap/core';
 import Overflow from 'rc-overflow';
 import AlignButton from './components/AlignButton/index.tsx';
@@ -203,7 +206,7 @@ const Toolbar: FC<IToolbarProps> = props => {
   const toolbarRef = useRef<HTMLDivElement>();
   const { editor } = props;
   const { disabled } = useContext(ToolbarContext);
-  const toolbarSize = useSize(toolbarRef);
+  const canIndent = editor.isActive('paragraph') || editor.isActive('heading');
   const editorView = editor.view;
   const commonProps: IToolbarCommonProps = {
     dispatch: editorView.dispatch,
@@ -233,79 +236,106 @@ const Toolbar: FC<IToolbarProps> = props => {
       key: 'HeaderButton',
       component: <HeaderButton />,
       intlStr: 'header',
-      disabled: disabled,
+      disabled:
+        disabled || isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
     },
     {
       key: 'bold',
       component: <Bold />,
       intlStr: 'bold',
-      disabled: disabled || !editor.can().chain().focus().toggleBold().run(),
+      disabled:
+        disabled ||
+        !editor.can().chain().focus().toggleBold().run() ||
+        isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
     },
     {
       key: 'italic',
       component: <Italic />,
       intlStr: 'italic',
-      disabled: disabled || !editor.can().chain().focus().toggleItalic().run(),
+      disabled:
+        disabled ||
+        !editor.can().chain().focus().toggleItalic().run() ||
+        isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
     },
     {
       key: 'underline',
       component: <Underline />,
       intlStr: 'underline',
       disabled:
-        disabled || !editor.can().chain().focus().toggleUnderline().run(),
+        disabled ||
+        !editor.can().chain().focus().toggleUnderline().run() ||
+        isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
     },
     {
       key: 'strike',
       component: <Strike />,
       intlStr: 'strike',
-      disabled: disabled || !editor.can().chain().focus().toggleStrike().run(),
+      disabled:
+        disabled ||
+        !editor.can().chain().focus().toggleStrike().run() ||
+        isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
     },
     {
       key: 'textColorPicker',
       component: <TextColorPicker />,
-      intlStr: 'header',
+      intlStr: 'color',
+      disabled:
+        disabled || isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
     },
     {
       key: 'align',
       component: <AlignButton />,
       intlStr: 'align',
+      disabled:
+        disabled || isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
     },
     {
       key: BLOCK_TYPES.OL,
       component: <ListButton />,
-      disabled: disabled,
+      disabled:
+        disabled || !editor.can().chain().focus().toggleBulletList?.().run(),
     },
     {
       key: BLOCK_TYPES.UL,
       component: <ListButton />,
-      disabled: disabled,
+      disabled:
+        disabled || !editor.can().chain().focus().toggleOrderedList?.().run(),
     },
     {
       key: BLOCK_TYPES.CL,
       component: <ListButton />,
-      disabled: disabled,
+      disabled:
+        disabled || !editor.can().chain().focus().toggleTaskList?.().run(),
     },
     {
       key: INDENT_TYPES.Inc,
       component: <IndentButton />,
-      disabled: disabled,
+      disabled: disabled || !editor.can().chain().focus().indent().run(),
     },
     {
       key: INDENT_TYPES.Desc,
       component: <IndentButton />,
-      disabled: disabled,
+      disabled:
+        disabled || !canIndent || !editor.can().chain().focus().outdent().run(),
     },
     {
       key: 'link',
       component: <LinkButton />,
       intlStr: 'tool.link',
-      disabled: disabled,
+      disabled:
+        disabled ||
+        !editor.state.schema.marks[MARK_TYPES.LK] ||
+        !editor.can().chain().focus().toggleMark(MARK_TYPES.LK).run() ||
+        isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
     },
     {
       key: 'code',
       component: <CodeButton />,
       intlStr: 'code',
-      disabled: disabled,
+      disabled:
+        disabled ||
+        !editor.can().chain().focus().toggleCodeBlock?.().run() ||
+        !editor.can().chain().focus().toggleCode?.().run(),
     },
   ];
   return (

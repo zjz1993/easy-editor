@@ -2,6 +2,8 @@ export default {
   'toolbar.undo': '撤销 ({command} + Z)',
   'toolbar.redo': '重做 ({command} + Y)',
   header: '标题',
+  search: '搜索',
+  color: '字体颜色',
   'header.level': '标题{level}',
   paragraph: '正文',
   delete: '删除',
@@ -30,4 +32,8 @@ export default {
   'toolbar.header.quote': '{command} + {option} + 8',
   'toolbar.link.unlink': '删除链接',
   code: '插入代码',
+  'code.inline.insert': '插入行内代码',
+  'code.inline.remove': '清除行内代码',
+  'codeBlock.inline.insert': '插入代码块',
+  'codeBlock.inline.remove': '移除代码块',
 };

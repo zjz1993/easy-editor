@@ -83,6 +83,7 @@ const LinkToolbar = ({
           text={text}
           href={href}
           onCancel={() => {
+            console.log('onCancel触发');
             setShowEditPopup(false);
           }}
           onConfirm={({ text, href }) => {

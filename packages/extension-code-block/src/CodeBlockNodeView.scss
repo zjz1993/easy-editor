@@ -226,7 +226,7 @@
   .easy-editor-dropdown-menu__item {
     clear: both;
     margin: 0;
-    padding: 6px 16px;
+    padding: 0 8px;
     font-weight: 400;
     font-size: 14px;
     line-height: 20px;
@@ -234,6 +234,9 @@
     transition: all 0.2s;
     &:hover {
       color: styles.$primary-color;
+    }
+    &:not(:last-child) {
+      margin-bottom: 8px;
     }
   }
   .easy-editor-dropdown-menu__content {
@@ -250,7 +253,9 @@
 
   &-input {
     position: relative;
-
+    .icon{
+      cursor: pointer;
+    }
     input {
       min-width: 0;
       outline: none;

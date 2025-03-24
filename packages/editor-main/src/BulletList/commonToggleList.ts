@@ -23,7 +23,6 @@ export function commonToggleList({
     if (node.type.name === P) {
       const indent = node.attrs.indent;
       childNodeIndent = indent;
-      console.log('原来的indent');
       // 去除原来p节点上的缩进
       const newTr = tr.setNodeMarkup(
         pos,
@@ -32,14 +31,10 @@ export function commonToggleList({
         node.marks,
       );
       dispatch?.(newTr);
-      // 把原来的缩进给添加到新的ul上
-      console.log(indent);
-      console.log(node);
     }
   });
 
   if (options.keepAttributes) {
-    console.log('执行了');
     return chain()
       .toggleList(name, options.itemTypeName, options.keepMarks, {
         indent: childNodeIndent,

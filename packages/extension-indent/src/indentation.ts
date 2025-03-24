@@ -1,3 +1,4 @@
+import { isUndefined } from '@easy-editor/editor-common';
 import { Extension, findParentNodeClosestToPos } from '@tiptap/core';
 import {
   AllSelection,
@@ -48,7 +49,7 @@ export const Indent = Extension.create<IndentationOptions>({
 
   addOptions() {
     return {
-      types: ['paragraph', 'heading'],
+      types: ['paragraph', 'heading', 'codeBlock'],
       disabledTypes: ['table'],
       disabledGroups: ['list'],
       minLevel: 0,
@@ -111,7 +112,6 @@ export const Indent = Extension.create<IndentationOptions>({
 
     const updateIndentLevel = (tr: Transaction, delta: number) => {
       const { doc, selection } = tr;
-
       if (
         doc &&
         selection &&
@@ -119,7 +119,6 @@ export const Indent = Extension.create<IndentationOptions>({
           selection instanceof AllSelection)
       ) {
         const { from, to } = selection;
-
         doc.nodesBetween(
           from,
           to,
@@ -152,16 +151,15 @@ export const Indent = Extension.create<IndentationOptions>({
         ({ delta = 1 } = {}) =>
         ({ tr, state, dispatch }) => {
           const { selection } = state;
-
           tr = tr.setSelection(selection);
-          tr = updateIndentLevel(tr, delta);
 
-          if (tr.docChanged && dispatch) {
-            dispatch(tr);
+          const newTr = updateIndentLevel(tr, delta);
+          if (newTr.docChanged) {
+            if (dispatch) dispatch(newTr);
             return true;
           }
 
-          return false;
+          return isUndefined(dispatch);
         },
       outdent:
         ({ delta = -1, backspace = false } = {}) =>
@@ -180,12 +178,12 @@ export const Indent = Extension.create<IndentationOptions>({
           tr = tr.setSelection(selection);
           tr = updateIndentLevel(tr, delta);
 
-          if (tr.docChanged && dispatch) {
-            dispatch(tr);
+          if (tr.docChanged) {
+            if (dispatch) dispatch(tr);
             return true;
           }
 
-          return false;
+          return isUndefined(dispatch);
         },
     };
   },

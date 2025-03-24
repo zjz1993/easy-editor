@@ -8,6 +8,7 @@ export const BLOCK_TYPES = {
   T: 'title',
   P: 'paragraph',
   QUOTE: 'quote',
+  CODE_INLINE: 'code',
   CODE: 'codeBlock',
   HR: 'divider',
   TL: 'table',

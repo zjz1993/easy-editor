@@ -16,7 +16,7 @@ import {
 import type React from 'react';
 import { useRef } from 'react';
 import './index.scss';
-import { useControllableValue } from 'ahooks';
+import useControlledValue from '../../hooks/useControlledValue.ts';
 
 // 自定义箭头组件
 interface ArrowProps {
@@ -37,10 +37,12 @@ const Popover = (props: TPopoverProps) => {
     children,
     content,
     placement = 'bottom' as Placement,
+    open,
   } = props;
-  const [isOpen, setIsOpen] = useControllableValue<boolean>(props, {
+  const [isOpen, setIsOpen] = useControlledValue<boolean>({
+    value: open,
     defaultValue: false,
-    valuePropName: 'open',
+    onChange: onOpenChange,
   });
   // const [isOpen, setIsOpen] = useState(false);
   const arrowRef = useRef(null);

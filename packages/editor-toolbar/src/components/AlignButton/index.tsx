@@ -1,11 +1,13 @@
-import { Dropdown, Iconfont } from '@easy-editor/editor-common/src/index.ts';
-import cx from 'classnames';
+import {
+  DropdownList,
+  Iconfont,
+  IntlComponent,
+  Tooltip,
+} from '@easy-editor/editor-common/src/index.ts';
 import type { FC } from 'react';
 import { useContext } from 'react';
-import ToolbarItemButtonWrapper from '../../components/toolbarItem/ToolbarItemButtonWrapper.tsx';
 import ToolbarContext from '../../context/toolbarContext.ts';
 import type { TToolbarWrapperProps } from '../../types/index.ts';
-import AlignPopup from './alignPopup.tsx';
 
 const AlignButton: FC<TToolbarWrapperProps> = props => {
   const { editor } = useContext(ToolbarContext);
@@ -22,16 +24,21 @@ const AlignButton: FC<TToolbarWrapperProps> = props => {
   };
   const activeAlign = getActiveAlignBtn();
   return (
-    <Dropdown
+    <DropdownList
       disabled={disabled}
-      className={cx(disabled && 'dropdown-disabled')}
-      // ref={ref}
-      popup={<AlignPopup alignArray={alignArray} />}
+      options={alignArray.map(item => ({
+        label: IntlComponent.get(`align.${item}`),
+        value: `align_${item}`,
+        icon: <Iconfont type={`icon-align-${item}`} />,
+        onClick: () => {
+          editor.chain().focus().setTextAlign(item).run();
+        },
+      }))}
     >
-      <ToolbarItemButtonWrapper intlStr={intlStr}>
+      <Tooltip content={IntlComponent.get(intlStr)}>
         <Iconfont type={`icon-align-${activeAlign}`} />
-      </ToolbarItemButtonWrapper>
-    </Dropdown>
+      </Tooltip>
+    </DropdownList>
   );
 };
 export default AlignButton;
