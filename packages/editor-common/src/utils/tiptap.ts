@@ -5,6 +5,11 @@ import {
 } from '@tiptap/core';
 import { isEmpty } from 'lodash-es';
 
+// 生成唯一 ID
+const generateUniqueID = () => {
+  return Math.random().toString(36).substring(2, 9);
+};
+
 // 检查是否在某种节点里
 const isSelectionInsideBlockByType = (
   editor: Editor,

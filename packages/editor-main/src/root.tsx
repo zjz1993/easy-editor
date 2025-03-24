@@ -22,6 +22,7 @@ import { TextStyle } from '@tiptap/extension-text-style';
 import Underline from '@tiptap/extension-underline';
 import BulletList from './BulletList/bullet-list.ts';
 import { ListItem } from './BulletList/list-item.ts';
+import { UniqueIDExtension } from './extension/UniqueIDExtension/index.ts';
 import useIntlLoaded from './hooks/useIntlLoaded.ts';
 //import PasteExtension from './extension/paste/index.tsx';
 
@@ -62,6 +63,7 @@ const Editor: FC<TEasyEditorProps> = props => {
     }),
     TaskList,
     TaskItem,
+    UniqueIDExtension,
   ];
   const editor = useEditor({
     autofocus: !isUndefined(autoFocus) ? 'end' : undefined,
