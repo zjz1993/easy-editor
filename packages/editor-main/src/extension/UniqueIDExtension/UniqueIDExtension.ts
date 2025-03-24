@@ -46,81 +46,92 @@ const UniqueIDExtension = Extension.create({
 function UniqueId(): Plugin {
   return new Plugin({
     key: new PluginKey('uniqueId'),
+    //appendTransaction: (transactions, oldState, newState) => {
+    //  const tr = newState.tr;
+    //  let modified = false;
+    //
+    //  // 检查事务中的步骤
+    //  transactions.forEach(transaction => {
+    //    if (!transaction.docChanged) return;
+    //
+    //    // 遍历新状态的文档
+    //    newState.doc.descendants((node, pos) => {
+    //      if (node.isBlock) {
+    //        const existingIds = new Set();
+    //        newState.doc.descendants((n, p) => {
+    //          if (n !== node && n.attrs.id) existingIds.add(n.attrs.id);
+    //        });
+    //
+    //        if (!node.attrs.id || existingIds.has(node.attrs.id)) {
+    //          const newId = uuidv4();
+    //          tr.setNodeAttribute(pos, 'id', newId);
+    //          modified = true;
+    //        }
+    //      }
+    //    });
+    //  });
+    //
+    //  return modified ? tr : null;
+    //},
+
     appendTransaction: (transactions, oldState, newState) => {
+      if (!newState || !newState.doc) {
+        console.error('newState or newState.doc is undefined');
+        return null;
+      }
       const tr = newState.tr;
       let modified = false;
 
-      // 检查事务中的步骤
       transactions.forEach(transaction => {
         if (!transaction.docChanged) return;
 
-        // 遍历新状态的文档
-        newState.doc.descendants((node, pos) => {
-          if (node.isBlock) {
-            const existingIds = new Set();
-            newState.doc.descendants((n, p) => {
-              if (n !== node && n.attrs.id) existingIds.add(n.attrs.id);
-            });
+        transaction.steps.forEach((step, index) => {
+          if (step.constructor.name === '_ReplaceStep') {
+            const { from, to } = step as any;
+            const slice = (step as any).slice;
 
-            if (!node.attrs.id || existingIds.has(node.attrs.id)) {
-              const newId = uuidv4();
-              tr.setNodeAttribute(pos, 'id', newId);
-              modified = true;
+            if (slice?.content) {
+              const docSize = newState.doc.content.size;
+              const endPos = Math.min(to + slice.content.size, docSize);
+
+              if (from >= 0 && endPos <= docSize && from <= endPos) {
+                newState.doc.nodesBetween(from, endPos, (node, nodePos) => {
+                  if (node.isBlock) {
+                    const existingIds = new Set();
+                    newState.doc.descendants((n, p) => {
+                      if (n !== node && n.attrs.id) existingIds.add(n.attrs.id);
+                    });
+
+                    if (!node.attrs.id || existingIds.has(node.attrs.id)) {
+                      const newId = uuidv4();
+                      tr.setNodeAttribute(nodePos, 'id', newId);
+                      modified = true;
+                    }
+                  }
+                });
+              } else {
+                console.warn(
+                  `Invalid range: ${from} to ${endPos}, doc size: ${docSize}`,
+                );
+              }
             }
           }
         });
       });
 
+      // 为初始内容分配 ID
+      if (oldState.doc.content.size === 0 && newState.doc.content.size > 0) {
+        newState.doc.descendants((node, pos) => {
+          if (node.isBlock && !node.attrs.id) {
+            const newId = uuidv4();
+            tr.setNodeAttribute(pos, 'id', newId);
+            modified = true;
+          }
+        });
+      }
+
       return modified ? tr : null;
     },
-    //appendTransaction: (transactions, oldState, newState) => {
-    //  const tr = newState.tr;
-    //  let modified = false;
-    //
-    //  // 遍历所有事务
-    //  transactions.forEach(transaction => {
-    //    if (!transaction.docChanged) return;
-    //
-    //    // 遍历步骤
-    //    transaction.steps.forEach((step, index) => {
-    //      // 检查是否是 ReplaceStep（通常用于插入新内容）
-    //      console.log(step.constructor.name);
-    //      if (step instanceof ReplaceStep) {
-    //        const { from, to } = step;
-    //        const slice = step.slice; // 获取插入的内容
-    //        console.log('执行了');
-    //        // 检查 slice 中的节点
-    //        slice.content.descendants((node, posWithinSlice) => {
-    //          if (node.isBlock && !node.attrs.id) {
-    //            // 计算节点在文档中的实际位置
-    //            const map = step.getMap();
-    //            const resolvedPos = map.map(from + posWithinSlice, 1); // 映射到新状态中的位置
-    //            const newId = uuidv4();
-    //            console.log(
-    //              `Assigning ID: ${newId} to new node at pos ${resolvedPos}`,
-    //            );
-    //            tr.setNodeAttribute(resolvedPos, 'id', newId);
-    //            modified = true;
-    //          }
-    //        });
-    //      }
-    //    });
-    //  });
-    //
-    //  // 为初始内容分配 ID（可选）
-    //  if (oldState.doc.content.size === 0 && newState.doc.content.size > 0) {
-    //    newState.doc.descendants((node, pos) => {
-    //      if (node.isBlock && !node.attrs.id) {
-    //        const newId = uuidv4();
-    //        console.log(`Assigning ID: ${newId} to initial node at pos ${pos}`);
-    //        tr.setNodeAttribute(pos, 'id', newId);
-    //        modified = true;
-    //      }
-    //    });
-    //  }
-    //
-    //  return modified ? tr : null;
-    //},
   });
 }
 

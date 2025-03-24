@@ -151,6 +151,7 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
 
   return (
     <NodeViewWrapper
+      data-id={node.attrs.id}
       className={classNames(node.attrs.className, 'easy-editor-code-block')}
       //onMouseEnter={() => setToolbarVisible(true)}
       //onMouseLeave={() => setToolbarVisible(false)}
