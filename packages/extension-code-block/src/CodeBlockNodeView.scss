@@ -8,6 +8,16 @@
   background: #f5f6f8;
   border-radius: 4px;
   overflow: hidden;
+  &__line-numbers{
+    position: absolute;
+    left: 0;
+    top: 23px;
+    font-size: 14px;
+    line-height: 25px;
+    width: 15px;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.3);
+  }
 
   &__toolbar {
     position: absolute;
@@ -34,7 +44,7 @@
       border-radius: 0 !important;
 
       code {
-        padding: 23px 16px !important;
+        padding: 23px !important;
       }
     }
   }

@@ -1,5 +1,5 @@
-import type { NodeViewProps } from '@tiptap/core';
-import { NodeViewContent, NodeViewWrapper } from '@tiptap/react';
+import type {NodeViewProps} from '@tiptap/core';
+import {NodeViewContent, NodeViewWrapper} from '@tiptap/react';
 import classNames from 'classnames';
 import copy from 'copy-to-clipboard';
 import prettier from 'prettier';
@@ -8,21 +8,12 @@ import estreePlugin from 'prettier/plugins/estree';
 import htmlPlugin from 'prettier/plugins/html';
 import typescriptPlugin from 'prettier/plugins/typescript';
 import type React from 'react';
-import { useCallback, useMemo, useRef, useState } from 'react';
-import {
-  getLanguageByValue,
-  getLanguageByValueOrAlias,
-  languages,
-} from './languages';
+import {useCallback, useMemo, useRef, useState} from 'react';
+import {getLanguageByValue, getLanguageByValueOrAlias, languages,} from './languages';
 import './CodeBlockNodeView.scss';
-import {
-  BLOCK_TYPES,
-  Dropdown,
-  get,
-  message,
-} from '@easy-editor/editor-common';
-import { Iconfont } from '@easy-editor/editor-common/src/index.ts';
-import { TextSelection } from '@tiptap/pm/state';
+import {BLOCK_TYPES, Dropdown, get, message,} from '@easy-editor/editor-common';
+import {Iconfont} from '@easy-editor/editor-common/src/index.ts';
+import {TextSelection} from '@tiptap/pm/state';
 
 const CODE_BLOCK_DROPDOWN_MAX_HEIGHT = 245;
 
@@ -148,6 +139,9 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
       .setTextSelection(from + 1) // 设置光标到内容开头
       .run();
   }, [editor, getPos, node]);
+  const lineNumbers = useMemo(() => {
+    return pureCode.split('\n').map((_, index) => index + 1);
+  }, [pureCode]);
 
   return (
     <NodeViewWrapper
@@ -304,6 +298,13 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
             删除代码块
           </button>
         </div>
+      </div>
+      <div className="easy-editor-code-block__line-numbers">
+        {lineNumbers.map(num => (
+          <div key={num} className="easy-editor-code-block__line-numbers-row">
+            {num}
+          </div>
+        ))}
       </div>
       <div className="easy-editor-code-block__content">
         <pre className={classNames('hljs')} ref={$container}>
