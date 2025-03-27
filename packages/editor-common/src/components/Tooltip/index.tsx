@@ -1,10 +1,10 @@
 import {
-  FloatingPortal,
-  type Placement,
   arrow,
   autoUpdate,
   flip,
+  FloatingPortal,
   offset,
+  type Placement,
   shift,
   useDismiss,
   useFloating,
@@ -13,10 +13,10 @@ import {
   useInteractions,
   useRole,
 } from '@floating-ui/react'; // 样式文件，后面会提供
-import React, { type FC, type ReactNode, useRef } from 'react';
+import React, {type FC, type ReactNode, useRef} from 'react';
 import './index.scss';
 import useControlledValue from '../../hooks/useControlledValue.ts';
-import type { TPopoverProps } from '../Popover/index.tsx';
+import type {TPopoverProps} from '../Popover/index.tsx';
 
 const NewTooltip: FC<TPopoverProps> = props => {
   const { open, children, content, placement = 'top' as Placement } = props;
@@ -101,13 +101,9 @@ const NewTooltip: FC<TPopoverProps> = props => {
   return (
     <>
       {/* 触发元素 */}
-      <span
-        ref={refs.setReference}
-        {...getReferenceProps()}
-        style={{ display: 'inline-block' }}
-      >
+      <div ref={refs.setReference} {...getReferenceProps()}>
         {children}
-      </span>
+      </div>
 
       {/* 提示内容 */}
       {isOpen && (

@@ -11,6 +11,7 @@ import {Indent} from '@easy-editor/extension-indent';
 import {CustomLink} from '@easy-editor/extension-link';
 import {TaskItem, TaskList} from '@easy-editor/extension-task-item';
 import {Color} from '@tiptap/extension-color';
+import Image from '@easy-editor/extension-image';
 import {Placeholder} from '@tiptap/extension-placeholder';
 import {TextAlign} from '@tiptap/extension-text-align';
 import {TextStyle} from '@tiptap/extension-text-style';
@@ -59,6 +60,7 @@ const Editor: FC<TEasyEditorProps> = props => {
     TaskList,
     TaskItem,
     UniqueIDExtension,
+    Image,
     // CustomParagraph,
   ];
   const editor = useEditor({

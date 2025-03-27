@@ -1,16 +1,9 @@
-import { type FC, cloneElement, useContext, useRef } from 'react';
+import {cloneElement, type FC, useContext, useRef} from 'react';
 import './styles/root.scss';
-import {
-  BLOCK_TYPES,
-  INDENT_TYPES,
-  Iconfont,
-} from '@easy-editor/editor-common';
+import {BLOCK_TYPES, Iconfont, INDENT_TYPES,} from '@easy-editor/editor-common';
 import DropdownPanel from '@easy-editor/editor-common/src/components/DropdownPanel/index.tsx';
-import {
-  MARK_TYPES,
-  isSelectionInsideBlockByType,
-} from '@easy-editor/editor-common/src/index.ts';
-import type { Editor } from '@tiptap/core';
+import {isSelectionInsideBlockByType, MARK_TYPES,} from '@easy-editor/editor-common/src/index.ts';
+import type {Editor} from '@tiptap/core';
 import Overflow from 'rc-overflow';
 import AlignButton from './components/AlignButton/index.tsx';
 import CodeButton from './components/CodeButton/index.tsx';
@@ -19,15 +12,16 @@ import IndentButton from './components/IndentButton/IndentButton.tsx';
 import LinkButton from './components/LinkButton/index.tsx';
 import ListButton from './components/ListButton/index.tsx';
 import TextColorPicker from './components/TextColorPicker/index.tsx';
-import { ToolBarItemDivider } from './components/ToolBarItemDivider.tsx';
+import {ToolBarItemDivider} from './components/ToolBarItemDivider.tsx';
 import Bold from './components/toolbarItem/Bold.tsx';
 import Italic from './components/toolbarItem/Italic.tsx';
-import { Redo } from './components/toolbarItem/Redo.tsx';
+import {Redo} from './components/toolbarItem/Redo.tsx';
 import Strike from './components/toolbarItem/Strike.tsx';
 import Underline from './components/toolbarItem/Underline.tsx';
-import { Undo } from './components/toolbarItem/Undo.tsx';
+import {Undo} from './components/toolbarItem/Undo.tsx';
 import ToolbarContext from './context/toolbarContext.ts';
-import type { IToolbarCommonProps } from './types/index.ts';
+import type {IToolbarCommonProps} from './types/index.ts';
+import ImageButton from "./components/ImageButton/index.tsx";
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
@@ -336,6 +330,12 @@ const Toolbar: FC<IToolbarProps> = props => {
         disabled ||
         !editor.can().chain().focus().toggleCodeBlock?.().run() ||
         !editor.can().chain().focus().toggleCode?.().run(),
+    },
+    {
+      key: BLOCK_TYPES.IMG,
+      component: <ImageButton />,
+      intlStr: 'image',
+      disabled: disabled,
     },
   ];
   return (

@@ -4,7 +4,7 @@
 	"private": "true",
 	"description": "",
 	"scripts": {
-		"start": "turbo run dev",
+		"start": "turbo run dev --concurrency=11",
 		"build": "turbo run build --filter=@easy-editor/* && node scripts/mergeCss.js",
 		"preinstall": "npx only-allow pnpm",
 		"init:tiptap": "pnpm recursive install @tiptap/react @tiptap/pm @tiptap/starter-kit --filter='!@easy-editor/dev'"

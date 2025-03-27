@@ -36,4 +36,5 @@ export default {
   'code.inline.remove': '清除行内代码',
   'codeBlock.inline.insert': '插入代码块',
   'codeBlock.inline.remove': '移除代码块',
+  image: '图片',
 };

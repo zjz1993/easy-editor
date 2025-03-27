@@ -1,7 +1,8 @@
 import type React from 'react';
-import { useForm } from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import './index.scss';
 import cx from 'classnames';
+import {Button} from "@easy-editor/editor-common";
 
 export type LinkEditPopupProps = {
   text?: string;
@@ -24,7 +25,7 @@ export const LinkPanelPopup: React.FC<LinkEditPopupProps> = props => {
 
   return (
     <div className="easy-editor-link-panel">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={e => e.preventDefault()}>
         <div
           className={cx(
             'easy-editor-link-panel__row',
@@ -67,16 +68,10 @@ export const LinkPanelPopup: React.FC<LinkEditPopupProps> = props => {
           </div>
         </div>
         <div className={cx('submit_row', 'easy-editor-link-panel__row')}>
-          <div className={cx('easy-editor-link-panel__btn')} onClick={onCancel}>
-            取消
-          </div>
-          <input
-            className={cx(
-              'easy-editor-link-panel__btn',
-              'easy-editor-link-panel__btn__submit',
-            )}
-            type="submit"
-          />
+          <Button onClick={onCancel}>取消</Button>
+          <Button type="primary" onClick={handleSubmit(onSubmit)}>
+            提交
+          </Button>
         </div>
       </form>
     </div>

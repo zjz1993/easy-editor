@@ -14,26 +14,6 @@
       font-size: 12px;
     }
   }
-  .easy-editor-link-panel__btn__submit.easy-editor-link-panel__btn{
-    background: styles.$primary-color;
-    border: 1px solid styles.$primary-color;
-    color: styles.$primary-white;
-    transition: all .3s;
-    &:hover{
-      background: #4096ff;
-    }
-  }
-  &__btn{
-    width: 68px;
-    height: 32px;
-    outline: 0;
-    border-radius: 4px;
-    cursor: pointer;
-    border: 1px solid styles.$border-color;
-    background: styles.$primary-white;
-    line-height: 32px;
-    text-align: center;
-  }
   &__row{
     margin-bottom: 8px;
     &__inner{

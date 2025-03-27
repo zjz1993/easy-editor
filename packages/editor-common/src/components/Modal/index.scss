@@ -1,0 +1,75 @@
+// Modal.module.scss
+.easy-editor-modal{
+  &-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  &-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+  }
+
+  &-container {
+    position: relative;
+    background: white;
+    border-radius: 8px;
+    padding: 20px 24px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);;
+    .easy-editor-modal-close {
+      position: absolute;
+      top: calc((calc(calc(1.5 * 16px) + calc(16px * 2)) - 32px) / 2);
+      inset-inline-end: calc((calc(calc(1.5 * 16px) + calc(16px * 2)) - 32px) / 2);
+      z-index: calc(1000 + 10);
+      padding: 0;
+      color: rgba(0,0,0,0.45);
+      font-weight: 600;
+      line-height: 1;
+      text-decoration: none;
+      background: transparent;
+      border-radius: 4px;
+      width: 32px;
+      height: 32px;
+      border: 0;
+      outline: 0;
+      cursor: pointer;
+      transition: color 0.2s, background-color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &:hover {
+        color: rgba(0,0,0,0.88);
+        background-color: rgba(0,0,0,0.06);
+        text-decoration: none;
+      }
+    }
+    .easy-editor-modal-header{
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .easy-editor-modal-body{
+      font-size: 14px;
+      line-height: 1.5;
+      word-wrap: break-word;
+      padding: 0;
+    }
+    .easy-editor-modal-footer{
+      background: transparent;
+      margin-top: 12px;
+      padding: 0;
+      border-top: none;
+      border-radius: 0;
+      gap: 8px;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}

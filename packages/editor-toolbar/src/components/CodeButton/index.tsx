@@ -1,14 +1,9 @@
-import {
-  BLOCK_TYPES,
-  DropdownList,
-  Iconfont,
-  IntlComponent,
-} from '@easy-editor/editor-common/src/index.ts';
-import type { FC } from 'react';
-import { useContext, useState } from 'react';
+import {BLOCK_TYPES, DropdownList, Iconfont, IntlComponent,} from '@easy-editor/editor-common/src/index.ts';
+import type {FC} from 'react';
+import {useContext, useState} from 'react';
 import ToolbarItemButtonWrapper from '../../components/toolbarItem/ToolbarItemButtonWrapper.tsx';
 import ToolbarContext from '../../context/toolbarContext.ts';
-import type { TToolbarWrapperProps } from '../../types/index.ts';
+import type {TToolbarWrapperProps} from '../../types/index.ts';
 
 const CodeButton: FC<TToolbarWrapperProps> = props => {
   const { intlStr, style, disabled } = props;
@@ -17,7 +12,6 @@ const CodeButton: FC<TToolbarWrapperProps> = props => {
   return (
     <ToolbarItemButtonWrapper
       intlStr={intlStr}
-      className={'easy-editor-toolbar__item__btn'}
       style={style}
       disabled={disabled}
       tooltipVisible={tooltipVisible}

@@ -1,0 +1,45 @@
+.easy-editor-network-image-modal{
+  &_panel{
+    &__inner{
+      display: flex;
+      &__part{
+        flex: 1;
+      }
+      .preview-image{
+        width: 260px;
+        height: 240px;
+        background: #eee;
+        margin-left: 20px;
+      }
+    }
+  }
+  .row{
+    margin-bottom: 8px;
+    &__inner{
+      display: flex;
+      align-items: flex-start;
+    }
+    &__label{
+      height: 32px;
+      line-height: 32px;
+      &:after{
+        content:"："
+      }
+    }
+    &__input-wrapper{
+      flex:1;
+    }
+    &__input{
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 7px 8px;
+      height: 32px;
+      background: #fff;
+      border-radius: 3px;
+      border: 1px solid #dadee3;
+      color: inherit;
+      outline: 0;
+    }
+  }
+}
