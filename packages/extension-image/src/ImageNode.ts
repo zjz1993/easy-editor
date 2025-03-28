@@ -1,4 +1,14 @@
 import {mergeAttributes, Node, nodeInputRule} from '@tiptap/core';
+import {ReactNodeViewRenderer} from '@tiptap/react';
+import ImageView from "./ImageView.tsx";
+
+export interface ImageNodeAttributes {
+  src: string;
+  alt?: string;
+  title?: string;
+  width?: number;
+  height?: number;
+}
 
 export interface ImageOptions {
   inline: boolean;
@@ -6,16 +16,13 @@ export interface ImageOptions {
   allowBase64: boolean;
 
   HTMLAttributes: Record<string, any>;
+  minWidth: number;
 }
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     image: {
-      setImage: (options: {
-        src: string;
-        alt?: string;
-        title?: string;
-      }) => ReturnType;
+      setImage: (obj: ImageNodeAttributes) => ReturnType;
     };
   }
 }
@@ -30,7 +37,7 @@ export const inputRegex =
  * This extension allows you to insert images.
  * @see https://www.tiptap.dev/api/nodes/image
  */
-export const Image = Node.create<ImageOptions>({
+export const ImageNode = Node.create<ImageOptions>({
   name: 'image',
 
   addOptions() {
@@ -38,6 +45,7 @@ export const Image = Node.create<ImageOptions>({
       inline: false,
       allowBase64: false,
       HTMLAttributes: {},
+      minWidth: 50,
     };
   },
 
@@ -53,8 +61,14 @@ export const Image = Node.create<ImageOptions>({
     return this.editor.isEditable;
   },
 
-  addAttributes() {
+  addAttributes(): Record<keyof ImageNodeAttributes, any> {
     return {
+      width: {
+        default: null,
+      },
+      height: {
+        default: null,
+      },
       src: {
         default: null,
       },
@@ -89,10 +103,7 @@ export const Image = Node.create<ImageOptions>({
       setImage:
         options =>
         ({ commands }) => {
-          return commands.insertContent({
-            type: this.name,
-            attrs: options,
-          });
+          return commands.insertContent({ type: this.name, attrs: options });
         },
     };
   },
@@ -109,5 +120,9 @@ export const Image = Node.create<ImageOptions>({
         },
       }),
     ];
+  },
+
+  addNodeView() {
+    return ReactNodeViewRenderer(ImageView);
   },
 });

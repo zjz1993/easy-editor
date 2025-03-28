@@ -1,14 +1,6 @@
-import {
-  type AnyExtension,
-  type Editor,
-  getExtensionField,
-} from '@tiptap/core';
-import { isEmpty } from 'lodash-es';
-
-// 生成唯一 ID
-const generateUniqueID = () => {
-  return Math.random().toString(36).substring(2, 9);
-};
+import {type AnyExtension, type Editor, getExtensionField,} from '@tiptap/core';
+import {isEmpty} from 'lodash-es'; // 检查是否在某种节点里
+import type {EditorView} from '@tiptap/pm/view'; // 检查是否在某种节点里
 
 // 检查是否在某种节点里
 const isSelectionInsideBlockByType = (
@@ -100,4 +92,8 @@ const wrapBlockExtensions = (
     })
     .filter(extension => extension);
 };
-export { isSelectionInsideBlockByType, wrapBlockExtensions };
+const isViewEditable = (view: EditorView) => {
+  return !!view.editable;
+};
+
+export { isSelectionInsideBlockByType, wrapBlockExtensions, isViewEditable };

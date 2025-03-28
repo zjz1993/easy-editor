@@ -21,7 +21,8 @@ import Underline from './components/toolbarItem/Underline.tsx';
 import {Undo} from './components/toolbarItem/Undo.tsx';
 import ToolbarContext from './context/toolbarContext.ts';
 import type {IToolbarCommonProps} from './types/index.ts';
-import ImageButton from "./components/ImageButton/index.tsx";
+import ImageButton from './components/ImageButton/index.tsx';
+import type {ImageNodeAttributes} from '@easy-editor/extension-image';
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
@@ -117,6 +118,9 @@ declare module '@tiptap/core' {
        * Toggle a task list
        */
       toggleTaskList: () => ReturnType;
+    };
+    image: {
+      setImage: (options: ImageNodeAttributes) => ReturnType;
     };
     codeBlock: {
       /**

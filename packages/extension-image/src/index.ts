@@ -1,5 +1,5 @@
-import {Image} from './Image.ts'
+import {ImageNode} from './ImageNode.ts';
 
-export * from './Image.ts';
+export * from './ImageNode.ts';
 
-export default Image;
+export default ImageNode;

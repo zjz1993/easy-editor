@@ -1,39 +1,35 @@
-import {Button, Modal} from '@easy-editor/editor-common/src/index.ts';
+import {Modal} from '@easy-editor/editor-common/src/index.ts';
 import type {FC} from 'react';
 import './index.scss';
+import '../InputNumber/index.scss';
 import cx from 'classnames';
-import {type Control, useForm, useWatch} from 'react-hook-form';
+import InputNumber from 'rc-input-number';
+import {Controller, useForm} from 'react-hook-form';
 
-type FormInputs = { src: string; href: string };
+type FormInputs = { src: string; width: number; height: number };
 
 type TUploadNetworkImageModalProps = {
   open: boolean;
   onClose: () => void;
+  onSubmit?: (data: FormInputs) => void;
 };
 
-function FirstNameWatched({ control }: { control: Control<FormInputs> }) {
-  const firstName = useWatch({
-    control,
-    name: 'src', // without supply name will watch the entire form, or ['firstName', 'lastName'] to watch both
-    defaultValue: 'default', // default value before the render
-  });
-
-  return <p>Watch: {firstName}</p>; // only re-render at the custom hook level, when firstName changes
-}
-
 const UploadNetworkImageModal: FC<TUploadNetworkImageModalProps> = props => {
-  const { open, onClose } = props;
+  const { open, onClose, onSubmit: sendData } = props;
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
     control,
+    setValue,
   } = useForm<FormInputs>();
-  const onSubmit = data => {
-    console.log('触发了', onSubmit);
-    console.log(data);
+  const onSubmit = (data: FormInputs) => {
+    console.log('data是', data);
+    sendData(data);
+    onClose();
   };
+
   return (
     <Modal
       wrapperClassName="easy-editor-network-image-modal"
@@ -41,8 +37,7 @@ const UploadNetworkImageModal: FC<TUploadNetworkImageModalProps> = props => {
       onClose={onClose}
       title="插入图片"
       onSubmit={() => {
-        console.log('触发');
-        handleSubmit(onSubmit);
+        handleSubmit(onSubmit)();
       }}
     >
       <form
@@ -67,20 +62,81 @@ const UploadNetworkImageModal: FC<TUploadNetworkImageModalProps> = props => {
         </div>
         <div className="easy-editor-network-image-modal_panel__inner">
           <div className="easy-editor-network-image-modal_panel__inner__part">
-            456
+            <div
+              className={cx(
+                'row',
+                errors.width && 'easy-editor-link-panel__error',
+              )}
+            >
+              <div className="row__inner">
+                <label className="row__label">图片高度</label>
+                <div className="row__input-wrapper">
+                  <Controller
+                    name="width"
+                    control={control}
+                    rules={{ required: '请输入图片宽度' }}
+                    render={({ field }) => (
+                      <InputNumber
+                        {...field}
+                        suffix="px"
+                        min={1}
+                        className="easy-editor-input-number"
+                      />
+                    )}
+                  />
+                  <div className="easy-editor-link-panel__error__tips">
+                    {errors?.width?.message}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              className={cx(
+                'row',
+                errors.height && 'easy-editor-link-panel__error',
+              )}
+            >
+              <div className="row__inner">
+                <label className="row__label">图片高度</label>
+                <div className="row__input-wrapper">
+                  <Controller
+                    name="height"
+                    control={control}
+                    rules={{ required: '请输入图片高度' }}
+                    render={({ field }) => (
+                      <InputNumber
+                        {...field}
+                        suffix="px"
+                        className="easy-editor-input-number"
+                        min={1}
+                      />
+                    )}
+                  />
+                  <div className="easy-editor-link-panel__error__tips">
+                    {errors?.width?.message}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="preview-image">
-            <Button
-              onClick={e => {
-                // e.stopPropagation();
-                handleSubmit(onSubmit)();
+            <img
+              src={watch('src')}
+              alt=""
+              width={260}
+              onError={() => {
+                setValue('width', undefined);
+                setValue('height', undefined);
               }}
-            >
-              测试
-            </Button>
+              onLoad={event => {
+                const img = event.target as HTMLImageElement;
+                setValue('width', img.naturalWidth);
+                setValue('height', img.naturalHeight);
+              }}
+            />
           </div>
         </div>
-        <FirstNameWatched control={control} />
       </form>
     </Modal>
   );

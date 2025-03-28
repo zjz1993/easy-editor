@@ -31,7 +31,7 @@ const Editor: FC<TEasyEditorProps> = props => {
     autoFocus,
   } = props;
   const { intlInit } = useIntlLoaded();
-  const { CL, OL, UL, P, H, CLI, LI, QUOTE, HR, TL } = BLOCK_TYPES;
+  const { CL, OL, UL, P, H, CLI, LI, QUOTE, HR, TL, IMG } = BLOCK_TYPES;
   const listGroup = `${UL}|${OL}|${CL}`;
   const extensions = [
     StarterKit.configure({ bold: false, codeBlock: false }),
@@ -48,7 +48,7 @@ const Editor: FC<TEasyEditorProps> = props => {
       maxLevel: 10,
     }),
     TextAlign.configure({
-      types: ['heading', 'paragraph'],
+      types: [BLOCK_TYPES.H, BLOCK_TYPES.P, BLOCK_TYPES.IMG],
     }),
     ListItem.extend({ name: BLOCK_TYPES.LI }),
     BulletList.extend({ name: BLOCK_TYPES.UL }).configure({
@@ -66,7 +66,11 @@ const Editor: FC<TEasyEditorProps> = props => {
   const editor = useEditor({
     autofocus: !isUndefined(autoFocus) ? 'end' : undefined,
     extensions: [
-      ...wrapBlockExtensions(extensions, [P, H, CL, OL, UL, QUOTE, HR, TL], ''),
+      ...wrapBlockExtensions(
+        extensions,
+        [P, H, CL, OL, UL, QUOTE, HR, TL, IMG],
+        '',
+      ),
       Placeholder.configure({
         placeholder,
       }),

@@ -15,8 +15,9 @@
     "clear": "rm -rf dist"
   },
   "dependencies": {
+    "@babel/runtime-corejs3": "^7.21.0",
     "@easy-editor/editor-common": "workspace:^",
-    "@babel/runtime-corejs3": "^7.21.0"
+    "@tiptap/react": "^2.11.5"
   },
   "devDependencies": {
     "@tiptap/core": "^2.11.5",
