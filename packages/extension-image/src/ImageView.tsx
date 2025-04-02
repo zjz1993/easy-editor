@@ -1,6 +1,8 @@
 import {NodeViewWrapper} from '@tiptap/react';
 import type {NodeViewProps} from '@tiptap/core';
-import {type FC, useRef} from 'react';
+import cx from 'classnames';
+import {isNull, Popover} from '@easy-editor/editor-common';
+import {type FC, useRef, useState} from 'react';
 import type {ImageNodeAttributes} from './ImageNode.ts';
 import './index.scss';
 import useHandleChangeImageSize from './hooks/useHandleChangeImageSize.ts';
@@ -14,9 +16,11 @@ const ImageView: FC<
     };
   }
 > = props => {
+  const [toolbarVisible, setToolbarVisible] = useState(false);
   const { updateAttributes, node, selected, editor, view } = props;
   const { attrs } = node;
-  const { width, height, src } = attrs;
+  console.log('node是', node);
+  const { width, height, src, textAlign = 'left' } = attrs;
   const containerRef = useRef(null);
   const { handleMouseDown, size } = useHandleChangeImageSize({
     containerRef,
@@ -35,30 +39,52 @@ const ImageView: FC<
   return (
     <NodeViewWrapper
       ref={containerRef}
-      className="easy-editor-image-container"
+      className={cx(
+        isNull(textAlign)
+          ? 'easy-editor-image-left'
+          : `easy-editor-image-${textAlign}`,
+        'easy-editor-image-container',
+        'easy-editor-block-container',
+      )}
       onClick={handleClickImage}
     >
-      <img src={src} alt="" width={size.width} height={size.height} />
-      {selected && isViewEditable(view) && (
-        <>
-          <div
-            className="top-left easy-editor-image__resize-handle"
-            onMouseDown={e => handleMouseDown(e, 'top-left')}
+      <span className={cx('easy-editor-image')}>
+        <Popover
+          // open={toolbarVisible}
+          content={<div>123</div>}
+          triggerAction="hover"
+        >
+          <img
+            //onMouseEnter={() => {
+            //  setToolbarVisible(true);
+            //}}
+            src={src}
+            alt=""
+            width={size.width}
+            height={size.height}
           />
-          <div
-            className="top-right easy-editor-image__resize-handle"
-            onMouseDown={e => handleMouseDown(e, 'top-right')}
-          />
-          <div
-            className="bottom-left easy-editor-image__resize-handle"
-            onMouseDown={e => handleMouseDown(e, 'bottom-left')}
-          />
-          <div
-            className="bottom-right easy-editor-image__resize-handle"
-            onMouseDown={e => handleMouseDown(e, 'bottom-right')}
-          />
-        </>
-      )}
+        </Popover>
+        {selected && isViewEditable(view) && (
+          <>
+            <div
+              className="top-left easy-editor-image__resize-handle"
+              onMouseDown={e => handleMouseDown(e, 'top-left')}
+            />
+            <div
+              className="top-right easy-editor-image__resize-handle"
+              onMouseDown={e => handleMouseDown(e, 'top-right')}
+            />
+            <div
+              className="bottom-left easy-editor-image__resize-handle"
+              onMouseDown={e => handleMouseDown(e, 'bottom-left')}
+            />
+            <div
+              className="bottom-right easy-editor-image__resize-handle"
+              onMouseDown={e => handleMouseDown(e, 'bottom-right')}
+            />
+          </>
+        )}
+      </span>
     </NodeViewWrapper>
   );
 };

@@ -6,7 +6,12 @@ import cx from 'classnames';
 import InputNumber from 'rc-input-number';
 import {Controller, useForm} from 'react-hook-form';
 
-type FormInputs = { src: string; width: number; height: number };
+type FormInputs = {
+  src: string;
+  width: number;
+  height: number;
+  isLockRatio?: boolean;
+};
 
 type TUploadNetworkImageModalProps = {
   open: boolean;
@@ -116,6 +121,27 @@ const UploadNetworkImageModal: FC<TUploadNetworkImageModalProps> = props => {
                   <div className="easy-editor-link-panel__error__tips">
                     {errors?.width?.message}
                   </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={cx('row')}>
+              <div className="row__inner">
+                <label className="row__label">是否锁定宽高</label>
+                <div className="row__input-wrapper">
+                  <Controller
+                    name="isLockRatio"
+                    control={control}
+                    render={({ field }) => (
+                      <InputNumber
+                        {...field}
+                        suffix="px"
+                        className="easy-editor-input-number"
+                        min={1}
+                      />
+                    )}
+                  />
+                  <div>123</div>
                 </div>
               </div>
             </div>

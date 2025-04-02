@@ -8,6 +8,7 @@ export interface ImageNodeAttributes {
   title?: string;
   width?: number;
   height?: number;
+  textAlign?: 'center' | 'left' | 'right';
 }
 
 export interface ImageOptions {
@@ -61,7 +62,7 @@ export const ImageNode = Node.create<ImageOptions>({
     return this.editor.isEditable;
   },
 
-  addAttributes(): Record<keyof ImageNodeAttributes, any> {
+  addAttributes(): Partial<Record<keyof ImageNodeAttributes, any>> {
     return {
       width: {
         default: null,
