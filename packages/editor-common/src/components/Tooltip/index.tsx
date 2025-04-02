@@ -2,6 +2,7 @@ import {
   arrow,
   autoUpdate,
   flip,
+  FloatingArrow,
   FloatingPortal,
   offset,
   type Placement,
@@ -90,14 +91,7 @@ const NewTooltip: FC<TPopoverProps> = props => {
   };
   const title = getToolTipTitle(content);
 
-  // 计算箭头位置
-  const staticSide = {
-    top: 'bottom',
-    right: 'left',
-    bottom: 'top',
-    left: 'right',
-  }[placement.split('-')[0]];
-
+  const { x: arrowX, y: arrowY } = context.middlewareData.arrow || {};
   return (
     <>
       {/* 触发元素 */}
@@ -117,26 +111,20 @@ const NewTooltip: FC<TPopoverProps> = props => {
               zIndex: 1000,
             }}
             {...getFloatingProps()}
-            className="tooltip-container"
+            className="easy-editor-tooltip"
             data-placement={placement}
           >
             {title}
-            {/*<FloatingArrow*/}
-            {/*  ref={arrowRef}*/}
-            {/*  context={context}*/}
-            {/*  className="tooltip-arrow"*/}
-            {/*  style={{*/}
-            {/*    position: 'absolute',*/}
-            {/*    left: x != null ? `${x}px` : '',*/}
-            {/*    top: y != null ? `${y}px` : '',*/}
-            {/*    [staticSide]: '-6px', // 调整箭头与 tooltip 的距离*/}
-            {/*    width: '12px',*/}
-            {/*    height: '12px',*/}
-            {/*    background: '#333',*/}
-            {/*    transform: 'rotate(45deg)',*/}
-            {/*    zIndex: -1, // 确保箭头在 tooltip 下方*/}
-            {/*  }}*/}
-            {/*/>*/}
+            <FloatingArrow
+              ref={arrowRef}
+              context={context}
+              fill="#000"
+              style={{
+                position: 'absolute',
+                left: arrowX != null ? `${arrowX}px` : '',
+                top: arrowY != null ? `${arrowY}px` : '',
+              }}
+            />
           </div>
         </FloatingPortal>
       )}

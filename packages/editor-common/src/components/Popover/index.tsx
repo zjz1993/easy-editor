@@ -1,35 +1,38 @@
 import {
-  FloatingPortal,
-  type Placement,
   arrow,
   autoUpdate,
   flip,
+  FloatingArrow,
+  FloatingPortal,
   offset,
-  shift,
+  type Placement,
+  safePolygon,
   useClick,
   useDismiss,
   useFloating,
+  useHover,
   useInteractions,
   useRole,
   useTransitionStyles,
 } from '@floating-ui/react';
-import type React from 'react';
-import { useRef } from 'react';
+import type {MutableRefObject, PropsWithChildren, ReactNode} from 'react';
+import {useMemo, useRef} from 'react';
 import './index.scss';
-import useControlledValue from '../../hooks/useControlledValue.ts';
+import useControlledValue from '../../hooks/useControlledValue.ts'; // 自定义箭头组件
 
 // 自定义箭头组件
 interface ArrowProps {
-  ref?: React.MutableRefObject<null>;
+  ref?: MutableRefObject<null>;
 }
 
-export type TPopoverProps = {
-  children: React.ReactNode;
-  content: React.ReactNode;
+export interface TPopoverProps extends PropsWithChildren {
+  children: ReactNode;
+  content: ReactNode;
   placement?: Placement;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
-};
+  triggerAction?: 'click' | 'hover';
+}
 
 const Popover = (props: TPopoverProps) => {
   const {
@@ -38,6 +41,7 @@ const Popover = (props: TPopoverProps) => {
     content,
     placement = 'bottom' as Placement,
     open,
+    triggerAction = 'click',
   } = props;
   const [isOpen, setIsOpen] = useControlledValue<boolean>({
     value: open,
@@ -46,13 +50,13 @@ const Popover = (props: TPopoverProps) => {
   });
   // const [isOpen, setIsOpen] = useState(false);
   const arrowRef = useRef(null);
+  const popoverRef = useRef(null);
 
   const {
     x,
     y,
     strategy,
     refs,
-    middlewareData,
     context,
     placement: actualPlacement,
   } = useFloating({
@@ -65,7 +69,7 @@ const Popover = (props: TPopoverProps) => {
     middleware: [
       offset(8),
       flip(),
-      shift({ padding: 5 }), // 边界留白
+      // shift({ padding: 5 }), // 边界留白
       arrow({ element: arrowRef }),
     ],
     whileElementsMounted: autoUpdate,
@@ -73,17 +77,26 @@ const Popover = (props: TPopoverProps) => {
 
   // 交互方式
   const click = useClick(context);
+  const hover = useHover(context, {
+    handleClose: safePolygon(),
+  });
+
   const dismiss = useDismiss(context, {
     outsidePress: true, // 点击外部关闭
     escapeKey: true, // 按 Esc 键关闭
   });
   const role = useRole(context, { role: 'dialog' });
-
-  const { getReferenceProps, getFloatingProps } = useInteractions([
-    click,
-    dismiss,
-    role,
-  ]);
+  const interactionArray = useMemo(() => {
+    const res = [dismiss, role];
+    if (triggerAction === 'click') {
+      res.push(click);
+    } else {
+      res.push(hover);
+    }
+    return res;
+  }, [triggerAction]);
+  const { getReferenceProps, getFloatingProps } =
+    useInteractions(interactionArray);
 
   const { isMounted, styles } = useTransitionStyles(context, {
     duration: 200,
@@ -91,6 +104,7 @@ const Popover = (props: TPopoverProps) => {
     open: { opacity: 1, transform: 'scale(1)' },
     close: { opacity: 0, transform: 'scale(0.95)' },
   });
+  const { x: arrowX, y: arrowY } = context.middlewareData.arrow || {};
 
   return (
     <>
@@ -103,12 +117,29 @@ const Popover = (props: TPopoverProps) => {
       {isOpen && (
         <FloatingPortal>
           <div
-            ref={refs.setFloating}
-            className="popover-container"
+            ref={node => {
+              refs.setFloating(node);
+              popoverRef.current = node;
+            }}
+            className="easy-editor-popover-container"
             {...getFloatingProps()}
             style={{ ...styles, position: strategy, top: y ?? 0, left: x ?? 0 }}
           >
             {content}
+            <FloatingArrow
+              ref={arrowRef}
+              context={context}
+              fill="#fff"
+              stroke="#e5e7eb"
+              strokeWidth={1}
+              width={10} // 设置箭头宽度
+              height={5} // 设置箭头高度
+              style={{
+                position: 'absolute',
+                left: arrowX != null ? `${arrowX}px` : '',
+                top: arrowY != null ? `${arrowY}px` : '',
+              }}
+            />
           </div>
         </FloatingPortal>
       )}
