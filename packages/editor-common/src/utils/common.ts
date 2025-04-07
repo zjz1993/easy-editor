@@ -1,0 +1,13 @@
+import {KeyCode} from "../const";
+
+export const doDownloadByUrl = (tempUrl: string) => {
+    const linkNode = document.createElement('a');
+    linkNode.style.display = 'none';
+    linkNode.href = tempUrl;
+    document.body.appendChild(linkNode);
+    linkNode.click(); //模拟在按钮上的一次鼠标单击
+    document.body.removeChild(linkNode);
+};
+export const isEsc = ({ keyCode }: { keyCode: any }) => {
+    return keyCode === KeyCode.ESC;
+};

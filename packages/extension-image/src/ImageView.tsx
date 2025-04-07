@@ -1,7 +1,7 @@
 import {NodeViewWrapper} from '@tiptap/react';
 import type {NodeViewProps} from '@tiptap/core';
 import cx from 'classnames';
-import {isNull, Popover} from '@easy-editor/editor-common';
+import {isNull, Popover, IconFont} from '@easy-editor/editor-common';
 import {type FC, useRef, useState} from 'react';
 import type {ImageNodeAttributes} from './ImageNode.ts';
 import './index.scss';
@@ -49,6 +49,9 @@ const ImageView: FC<
       onClick={handleClickImage}
     >
       <span className={cx('easy-editor-image')}>
+          <div className="easy-editor-image-full-screen">
+          <IconFont type="enterfs" />
+        </div>
         <Popover
           // open={toolbarVisible}
           content={<div>123</div>}

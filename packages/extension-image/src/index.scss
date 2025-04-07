@@ -1,3 +1,4 @@
+@use "~@easy-editor/styles";
 .easy-editor-image-center.easy-editor-image-container{
   text-align: center;
 }
@@ -16,9 +17,35 @@
     position: relative;
     cursor: pointer;
     display: inline-block;
+    &-full-screen {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: none;
+      width: 30px;
+      height: 30px;
+      color: #fff;
+      line-height: 30px;
+      text-align: center;
+      background: rgba(0, 0, 0, 20%);
+      border-radius: 4px;
+      cursor: pointer;
+
+      > i {
+        font-size: 18px;
+      }
+
+      &:hover {
+        color: styles.$primary-color;
+      }
+    }
+
     &:hover{
       box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 20%);
       transition: all 0.3s;
+      &-full-screen{
+        display: block;
+      }
     }
     &__resize-handle {
       position: absolute;
