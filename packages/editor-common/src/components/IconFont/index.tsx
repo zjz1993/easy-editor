@@ -1,7 +1,7 @@
 import cx from 'classnames';
-import type { CSSProperties, FC, SVGAttributes } from 'react';
-import { type PropsWithChildren, forwardRef } from 'react';
-import { createFromIconfont } from './createFrontIconfont';
+import type {CSSProperties, FC, SVGAttributes} from 'react';
+import {forwardRef, type PropsWithChildren} from 'react';
+import {createFromIconfont} from './createFrontIconfont';
 import './index.scss';
 
 type BaseIconProps = {
@@ -69,7 +69,7 @@ const IconComponent: FC<{
   return (
     <span className={cx(className, 'anticon')}>
       <IconFont
-        type={type}
+        type={type.startsWith('icon') ? type : `icon-${type}`}
         style={style}
         onClick={onClick}
         onMouseLeave={onMouseLeave}

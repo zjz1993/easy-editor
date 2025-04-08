@@ -20,7 +20,13 @@ import useControlledValue from '../../hooks/useControlledValue.ts';
 import type {TPopoverProps} from '../Popover/index.tsx';
 
 const NewTooltip: FC<TPopoverProps> = props => {
-  const { open, children, content, placement = 'top' as Placement } = props;
+  const {
+    className,
+    open,
+    children,
+    content,
+    placement = 'top' as Placement,
+  } = props;
   const [isOpen, setIsOpen] = useControlledValue<boolean>({
     value: open,
     defaultValue: false,
@@ -95,7 +101,11 @@ const NewTooltip: FC<TPopoverProps> = props => {
   return (
     <>
       {/* 触发元素 */}
-      <div ref={refs.setReference} {...getReferenceProps()}>
+      <div
+        ref={refs.setReference}
+        {...getReferenceProps()}
+        className={className}
+      >
         {children}
       </div>
 

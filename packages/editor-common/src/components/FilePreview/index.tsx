@@ -1,19 +1,18 @@
 import IconFont from '../IconFont';
-import { doDownloadByUrl, isEsc } from '../../utils';
-import Tooltip from '../Tooltip';
-// import { Spin, Tooltip } from 'antd';
+import {doDownloadByUrl, isEsc} from '../../utils';
+import Tooltip from '../Tooltip'; // import { Spin, Tooltip } from 'antd';
 import ClassNames from 'classnames';
-import {CSSProperties, FC, ReactNode, useContext, useEffect, useRef, useState} from 'react';
-import { createPortal } from 'react-dom';
-// import { CSSTransition } from 'react-transition-group';
+import {type CSSProperties, type FC, type ReactNode, useEffect, useRef, useState,} from 'react';
+import {createPortal} from 'react-dom'; // import { CSSTransition } from 'react-transition-group';
 import './index.scss';
-import { motion, AnimatePresence } from 'framer-motion';
-import { some, isString, split, assign, size, isFunction } from 'lodash-es';
-import Spin from "../Spin";
+import {AnimatePresence, motion} from 'framer-motion';
+import {assign, isFunction, isString, size, some, split} from 'lodash-es';
+import Spin from '../Spin';
+import {IntlComponent} from '../../index.ts';
 
-const formatScaleVal = (val) => {
+const formatScaleVal = val => {
   if (!val) return '';
-  return Math.round(val * 100) + '%';
+  return `${Math.round(val * 100)}%`;
 };
 
 /**
@@ -39,7 +38,7 @@ const MIME = {
   pdf: 'application/pdf',
 };
 
-const judgeFileMIME = function judgeFileMIME(types, type) {
+const judgeFileMIME = function judgeFileMIME(types: string[], type: any) {
   return some(types, function (key) {
     return type && MIME[key] === type;
   });
@@ -50,7 +49,7 @@ const isImageFile = function isImageFile(file) {
     return true;
   }
 
-  const ext = getFileExt(file.name);
+  const ext = getFileExt(file.name || file.type);
   return /^(png|jpg|jpeg|gif)$/i.test(ext);
 };
 
@@ -94,21 +93,31 @@ export const getFileExt = function getFileExt(fileName) {
   return isString(fileName) ? split(fileName, '.').pop() || '' : '';
 };
 
-export interface IFilePreviewProps {
-    files: any[],
-    activeIndex?: number;
-    visible: boolean;
-    onClose?:() => void;
-    afterClose?:() => void;
-    className?: string;
-    style?: CSSProperties;
-    unsupportedFileRender?: ReactNode;
-    onSwitchFile?:(index?: number) => void;
-    rightButtons?: ReactNode;
-    renderControlBar?: (zoomIn: () => void,zoomOut: () => void) => ReactNode | ReactNode;
+export interface IFilePreviewFileProps {
+  type?: string;
+  downloadUrl?: string;
+  previewUrl?: string;
+  fileRender?: () => ReactNode;
+  name?: string;
+  clickOriginUrl?: string;
+  url?: string;
 }
 
-const FilePreview:FC<IFilePreviewProps> = ({
+export interface IFilePreviewProps {
+  files: IFilePreviewFileProps[];
+  activeIndex?: number;
+  visible: boolean;
+  onClose?: () => void;
+  afterClose?: () => void;
+  className?: string;
+  style?: CSSProperties;
+  unsupportedFileRender?: ReactNode;
+  onSwitchFile?: (index?: number) => void;
+  rightButtons?: ReactNode;
+  renderControlBar?: (zoomIn: () => void, zoomOut: () => void) => ReactNode;
+}
+
+const FilePreview: FC<IFilePreviewProps> = ({
   files = [],
   activeIndex,
   visible,
@@ -120,7 +129,7 @@ const FilePreview:FC<IFilePreviewProps> = ({
   onSwitchFile,
   rightButtons,
   renderControlBar,
-}) =>{
+}) => {
   // const { onFileDownload } = useContext(EditorContext);
   const [isLoading, setLoading] = useState(false);
   const [imageStyles, setImageStyles] = useState([]);
@@ -134,7 +143,7 @@ const FilePreview:FC<IFilePreviewProps> = ({
     }
   }, [visible]);
 
-  const adjustImageStyle = (index) => {
+  const adjustImageStyle = index => {
     let style = imageStyles[index];
 
     if (!style || !style.isAdjusted) {
@@ -153,7 +162,7 @@ const FilePreview:FC<IFilePreviewProps> = ({
       const newImageH = imageH * scale;
       const paddingLeft = (containerW - newImageW) / 2;
       const paddingTop = (containerH - newImageH) / 2;
-      const useOriginUrl = style && style.useOriginUrl;
+      const useOriginUrl = style?.useOriginUrl;
       style = {
         width: newImageW,
         height: newImageH,
@@ -185,7 +194,7 @@ const FilePreview:FC<IFilePreviewProps> = ({
           {rightButtons || (
             <div
               className="download-btn"
-              onClick={(event) => {
+              onClick={event => {
                 event.stopPropagation();
                 doDownloadByUrl(currentFile?.downloadUrl || currentFile?.url);
                 // if (onFileDownload) {
@@ -204,7 +213,7 @@ const FilePreview:FC<IFilePreviewProps> = ({
           )}
         </div>
         <div className="close-btn" onClick={onClose}>
-          <IconFont type="close" style={{ fontSize: 20 }} />
+          <IconFont type="icon-close" style={{ fontSize: 20 }} />
         </div>
       </div>
     );
@@ -212,6 +221,7 @@ const FilePreview:FC<IFilePreviewProps> = ({
 
   const createBody = () => {
     const currentFile = getCurrentFile();
+    console.log('currentFile是', currentFile);
 
     if (!currentFile) {
       return;
@@ -236,13 +246,14 @@ const FilePreview:FC<IFilePreviewProps> = ({
     // }
     if (isImageFile(currentFile)) {
       return createImagePreview();
-    } else if (isVideoFile(currentFile)) {
-      return createVideoPreview();
-    } else if (isAudioFile(currentFile)) {
-      return createAudioPreview();
-    } else {
-      return createOtherPreview();
     }
+    if (isVideoFile(currentFile)) {
+      return createVideoPreview();
+    }
+    if (isAudioFile(currentFile)) {
+      return createAudioPreview();
+    }
+    return createOtherPreview();
   };
 
   const createImagePreview = () => {
@@ -265,7 +276,7 @@ const FilePreview:FC<IFilePreviewProps> = ({
       width: style.width,
       marginLeft: style.marginLeft + style.offsetX,
       marginTop: style.marginTop + style.offsetY,
-      transform: 'rotate(' + style.rotate + 'deg)',
+      transform: `rotate(${style.rotate}deg)`,
     };
     const scaleVal = style.scale;
 
@@ -295,14 +306,14 @@ const FilePreview:FC<IFilePreviewProps> = ({
             ref={imageRef}
             onLoad={onImageLoaded(activeIndex)}
             onMouseDown={onMouseDown}
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation();
             }}
           />
         </Spin>
         <div
           className="preview-control"
-          onClick={(e) => {
+          onClick={e => {
             e.stopPropagation();
           }}
         >
@@ -310,7 +321,7 @@ const FilePreview:FC<IFilePreviewProps> = ({
             renderControlBar(onImageScale('enlarge'), onImageScale('shrink'))
           ) : (
             <div className="control-content">
-              <Tooltip content="放大" placement="top">
+              <Tooltip content={IntlComponent.get('zoom-in')} placement="top">
                 <IconFont
                   type="zoom-in"
                   className="enlarge"
@@ -318,7 +329,7 @@ const FilePreview:FC<IFilePreviewProps> = ({
                 />
               </Tooltip>
               <span className="scale-val">{formatScaleVal(scaleVal)}</span>
-              <Tooltip content="缩小" placement="top">
+              <Tooltip content={IntlComponent.get('zoom-out')} placement="top">
                 <IconFont
                   type="zoom-out"
                   className="shrink"
@@ -333,15 +344,6 @@ const FilePreview:FC<IFilePreviewProps> = ({
                   onClick={() => onImageRotate(true)}
                 />
               </Tooltip>
-              {/*{originUrl && (*/}
-              {/*  <Tooltip title="查看原图" placement="top">*/}
-              {/*    <IconFont*/}
-              {/*      className="origin-image"*/}
-              {/*      type="image"*/}
-              {/*      onClick={onViewOriginImage}*/}
-              {/*    />*/}
-              {/*  </Tooltip>*/}
-              {/*)}*/}
             </div>
           )}
         </div>
@@ -352,7 +354,7 @@ const FilePreview:FC<IFilePreviewProps> = ({
   const createSwitchBtns = () => {
     return (
       <div
-        onClick={(e) => {
+        onClick={e => {
           e.stopPropagation();
         }}
       >
@@ -430,7 +432,7 @@ const FilePreview:FC<IFilePreviewProps> = ({
    * 图片加载之后的回调
    * @param index
    */
-  const onImageLoaded = (index) => {
+  const onImageLoaded = index => {
     return function () {
       setLoading(false);
       const $image = imageRef.current;
@@ -525,14 +527,14 @@ const FilePreview:FC<IFilePreviewProps> = ({
       useOriginUrl: true,
     };
 
-    setImageStyles((imageStyles) => {
+    setImageStyles(imageStyles => {
       const newImageStyles = imageStyles.slice();
       newImageStyles.splice(activeIndex, 1, newStyle);
       return newImageStyles;
     });
   };
 
-  const onMouseDown = (e) => {
+  const onMouseDown = e => {
     const info = mouseInfo.current;
     info.dragging = true;
     info.beginX = e.clientX;
@@ -570,8 +572,8 @@ const FilePreview:FC<IFilePreviewProps> = ({
       ...oldStyle,
       offsetX: 0,
       offsetY: 0,
-      marginLeft: parseFloat($image.style.marginLeft),
-      marginTop: parseFloat($image.style.marginTop),
+      marginLeft: Number.parseFloat($image.style.marginLeft),
+      marginTop: Number.parseFloat($image.style.marginTop),
     };
     newImageStyles.splice(activeIndex, 1, style);
     setImageStyles(newImageStyles);
@@ -602,7 +604,7 @@ const FilePreview:FC<IFilePreviewProps> = ({
   const handleAfterExit = function () {
     // setLoading(true)
     setImageStyles([]);
-    afterClose && afterClose();
+    afterClose?.();
   };
 
   const createCustomPreview = function () {
@@ -633,34 +635,33 @@ const FilePreview:FC<IFilePreviewProps> = ({
   };
 
   return createPortal(
-      <AnimatePresence onExitComplete={handleAfterExit}>
-          {visible && (
-              <motion.div
-                  className="file-preview"
-                  initial={{ opacity: 0 }}      // 进入前的初始状态
-                  animate={{ opacity: 1 }}     // 进入时的动画
-                  exit={{ opacity: 0 }}        // 退出时的动画
-                  transition={{ duration: 0.2 }} // 对应 timeout={200}
-              >
-                  <div
-                      ref={bodyRef}
-                      className={ClassNames('x-file-preview', className)}
-                      style={style}
-                      tabIndex={0}
-                      onKeyDown={(e) => {
-                          if (isEsc(e) && visible) {
-                              onClose();
-                              e.stopPropagation();
-                          }
-                      }}
-                  >
-                      {createHeader()}
-                      {createBody()}
-                  </div>
-              </motion.div>
-          )}
-      </AnimatePresence>,
+    <AnimatePresence onExitComplete={handleAfterExit}>
+      {visible && (
+        <motion.div
+          className="file-preview"
+          initial={{ opacity: 0 }} // 进入前的初始状态
+          animate={{ opacity: 1 }} // 进入时的动画
+          exit={{ opacity: 0 }} // 退出时的动画
+          transition={{ duration: 0.2 }} // 对应 timeout={200}
+        >
+          <div
+            ref={bodyRef}
+            className={ClassNames('easy-editor-file-preview', className)}
+            style={style}
+            onKeyDown={e => {
+              if (isEsc(e) && visible) {
+                onClose();
+                e.stopPropagation();
+              }
+            }}
+          >
+            {createHeader()}
+            {createBody()}
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>,
     document.body,
   );
-}
+};
 export default FilePreview;

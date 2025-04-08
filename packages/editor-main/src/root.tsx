@@ -19,7 +19,8 @@ import Underline from '@tiptap/extension-underline';
 import BulletList from './BulletList/bullet-list.ts';
 import {ListItem} from './BulletList/list-item.ts';
 import {UniqueIDExtension} from './extension/UniqueIDExtension/index.ts';
-import useIntlLoaded from './hooks/useIntlLoaded.ts'; //import PasteExtension from './extension/paste/index.tsx';
+import useIntlLoaded from './hooks/useIntlLoaded.ts';
+import EditorFilePreview from './components/FilePreview/EditorFilePreview'; //import PasteExtension from './extension/paste/index.tsx';
 //import PasteExtension from './extension/paste/index.tsx';
 
 const Editor: FC<TEasyEditorProps> = props => {
@@ -87,6 +88,7 @@ const Editor: FC<TEasyEditorProps> = props => {
       {intlInit && <EditorToolbar editor={editor} />}
       <EditorContent editor={editor} className="easy-editor-body" />
       <MessageContainer />
+      <EditorFilePreview editor={editor} />
       {/*<BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu>*/}
     </div>
   );

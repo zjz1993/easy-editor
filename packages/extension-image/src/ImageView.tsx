@@ -1,12 +1,11 @@
 import {NodeViewWrapper} from '@tiptap/react';
 import type {NodeViewProps} from '@tiptap/core';
 import cx from 'classnames';
-import {isNull, Popover, IconFont} from '@easy-editor/editor-common';
+import {Iconfont, isNull, isViewEditable, Popover, PREVIEW_CLS,} from '@easy-editor/editor-common';
 import {type FC, useRef, useState} from 'react';
 import type {ImageNodeAttributes} from './ImageNode.ts';
 import './index.scss';
 import useHandleChangeImageSize from './hooks/useHandleChangeImageSize.ts';
-import {isViewEditable} from '@easy-editor/editor-common/src/index.ts';
 
 const ImageView: FC<
   NodeViewProps & {
@@ -16,7 +15,7 @@ const ImageView: FC<
     };
   }
 > = props => {
-  const [toolbarVisible, setToolbarVisible] = useState(false);
+  const [fileViewVisible, setFileViewVisible] = useState(false);
   const { updateAttributes, node, selected, editor, view } = props;
   const { attrs } = node;
   console.log('node是', node);
@@ -49,8 +48,14 @@ const ImageView: FC<
       onClick={handleClickImage}
     >
       <span className={cx('easy-editor-image')}>
-          <div className="easy-editor-image-full-screen">
-          <IconFont type="enterfs" />
+        <div
+          className={PREVIEW_CLS.FULL_SCREEN}
+          onClick={e => {
+            e.stopPropagation();
+            setFileViewVisible(true);
+          }}
+        >
+          <Iconfont type="icon-enterfs" />
         </div>
         <Popover
           // open={toolbarVisible}
@@ -88,6 +93,14 @@ const ImageView: FC<
           </>
         )}
       </span>
+      {/*<FilePreview*/}
+      {/*  activeIndex={0}*/}
+      {/*  files={[{ url: src, type: src.slice(src.lastIndexOf('.') + 1) }]}*/}
+      {/*  visible={fileViewVisible}*/}
+      {/*  onClose={() => {*/}
+      {/*    setFileViewVisible(false);*/}
+      {/*  }}*/}
+      {/*/>*/}
     </NodeViewWrapper>
   );
 };

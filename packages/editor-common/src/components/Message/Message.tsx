@@ -1,16 +1,10 @@
-import {
-  autoUpdate,
-  flip,
-  offset,
-  shift,
-  useFloating,
-} from '@floating-ui/react';
-import type { FC } from 'react';
-import { useEffect, useState } from 'react';
+import {autoUpdate, flip, offset, shift, useFloating,} from '@floating-ui/react';
+import type {FC} from 'react';
+import {useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
 import cx from 'classnames';
-import { Iconfont } from '../../components/index.ts';
+import Iconfont from '../IconFont';
 
 type MessageType = 'success' | 'warning' | 'error' | 'info';
 

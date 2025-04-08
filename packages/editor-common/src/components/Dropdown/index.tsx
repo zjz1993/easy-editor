@@ -1,11 +1,5 @@
-import {
-  type ReactElement,
-  type ReactNode,
-  forwardRef,
-  useCallback,
-  useImperativeHandle,
-} from 'react';
-import { Iconfont } from '../../components';
+import {forwardRef, type ReactElement, type ReactNode, useCallback, useImperativeHandle,} from 'react';
+import Iconfont from '../IconFont';
 import DropdownPanel from '../DropdownPanel/index.tsx';
 import './index.scss';
 import cx from 'classnames';

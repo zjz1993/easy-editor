@@ -1,19 +1,15 @@
 @use "~@easy-editor/styles" as styles;
 
-.x-file-preview {
+.easy-editor-file-preview {
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1040;
+  z-index: 999;
   color: darken(white, 10%);
   background: rgba(0, 0, 0, 70%);
   user-select: none;
-
-  &.file-preview-enter {
-    opacity: 0;
-  }
 
 
   .preview-header {
@@ -192,22 +188,20 @@
       text-align: center;
 
       .control-content {
-        display: inline-block;
+        display: inline-flex;
         height: 50px;
         overflow: hidden;
         line-height: 50px;
         background: rgba(0, 0, 0, 60%);
         border-radius: 6px;
 
-        > .anticon,
-        .scale-val {
+       .anticon, .scale-val {
           display: inline-block;
           width: 50px;
           text-align: center;
           vertical-align: top;
         }
-
-        > .anticon {
+        .anticon {
           font-size: 24px;
           height: 50px;
           cursor: pointer;

@@ -95,5 +95,59 @@ const wrapBlockExtensions = (
 const isViewEditable = (view: EditorView) => {
   return !!view.editable;
 };
+const isDomElement = (el: unknown): el is Element => {
+  return el instanceof Element;
+};
 
-export { isSelectionInsideBlockByType, wrapBlockExtensions, isViewEditable };
+const closest = (
+  $el: EventTarget | null,
+  selector: string | Element,
+): Element | null => {
+  if (!$el || !isDomElement($el)) {
+    return null;
+  }
+
+  // 到这里 $el 肯定是 Element 类型
+  const element = $el as Element;
+
+  if (isDomElement(selector)) {
+    let $element: Element | null = element;
+
+    while ($element) {
+      if ($element === selector) {
+        return $element;
+      }
+      $element = $element.parentElement;
+    }
+    return null;
+  }
+
+  if (element.closest) {
+    return element.closest(selector);
+  }
+
+  const matchesSelector = element.matches;
+
+  if (!matchesSelector) {
+    return null;
+  }
+
+  let $element: Element | null = element;
+
+  while ($element) {
+    if (matchesSelector.call($element, selector)) {
+      return $element;
+    }
+    $element = $element.parentElement;
+  }
+
+  return null;
+};
+
+export {
+  isDomElement,
+  closest,
+  isSelectionInsideBlockByType,
+  wrapBlockExtensions,
+  isViewEditable,
+};

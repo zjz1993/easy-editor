@@ -3,7 +3,8 @@ import {autoUpdate, offset, useClick, useDismiss, useFloating, useInteractions, 
 import {AnimatePresence, motion} from 'framer-motion';
 import {createPortal} from 'react-dom';
 import './index.scss';
-import {Button, Iconfont} from '../../components';
+import Button from '../Button';
+import Iconfont from '../IconFont';
 import cx from 'classnames';
 
 interface ModalProps {

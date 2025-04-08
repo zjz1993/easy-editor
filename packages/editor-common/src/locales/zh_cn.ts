@@ -37,4 +37,7 @@ export default {
   'codeBlock.inline.insert': '插入代码块',
   'codeBlock.inline.remove': '移除代码块',
   image: '图片',
+  'zoom-in': '放大',
+  'zoom-out': '缩小',
+  'image.not.support': '不支持预览超过20M的图片，请下载后查看',
 };
