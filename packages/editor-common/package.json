@@ -20,13 +20,14 @@
 		"react-dom": "^16.14.0 || ^17.0.0 || ^18.0.0"
 	},
 	"dependencies": {
-    "@tiptap/pm": "^2.11.5",
 		"@easy-editor/styles": "workspace:*",
 		"@floating-ui/react": "^0.27.4",
+		"@tiptap/pm": "^2.11.5",
 		"ahooks": "^3.8.4",
 		"classnames": "^2.5.1",
 		"framer-motion": "^12.6.2",
 		"lodash-es": "^4.17.21",
+		"rc-input-number": "^9.4.0",
 		"rc-trigger": "^5.3.4",
 		"react-intl-universal": "^2.12.0"
 	},

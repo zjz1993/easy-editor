@@ -1,12 +1,12 @@
-import { Dropdown, Iconfont } from '@easy-editor/editor-common/src/index.ts';
-import type { FC } from 'react';
-import { useContext } from 'react';
+import {Dropdown, Iconfont} from '@easy-editor/editor-common';
+import type {FC} from 'react';
+import {useContext} from 'react';
 import ToolbarItemButtonWrapper from '../toolbarItem/ToolbarItemButtonWrapper.tsx';
 import './index.scss';
 import cx from 'classnames';
-import type { TToolbarWrapperProps } from 'src/types/index.ts';
+import type {TToolbarWrapperProps} from 'src/types/index.ts';
 import ToolbarContext from '../../context/toolbarContext.ts';
-import ColorPickerDropdown, { colorArray } from './colorPickerDropdown.tsx';
+import ColorPickerDropdown, {colorArray} from './colorPickerDropdown.tsx';
 
 const TextColorPicker: FC<TToolbarWrapperProps> = ({ intlStr, disabled }) => {
   const { editor } = useContext(ToolbarContext);

@@ -1,12 +1,8 @@
-import {Modal, Switch} from '@easy-editor/editor-common';
+import {Iconfont, InputNumber, Modal, Switch, Tooltip} from '@easy-editor/editor-common';
 import {type FC, useEffect, useRef, useState} from 'react';
 import './index.scss';
-import '../InputNumber/index.scss';
 import cx from 'classnames';
-import InputNumber from 'rc-input-number';
 import {Controller, useForm} from 'react-hook-form';
-import IconFont from '@easy-editor/editor-common/src/components/IconFont/index.tsx';
-import {Tooltip} from '@easy-editor/editor-common/src/index.ts';
 
 type FormInputs = {
   src: string;
@@ -100,12 +96,7 @@ const UploadNetworkImageModal: FC<TUploadNetworkImageModalProps> = props => {
                       control={control}
                       rules={{ required: '请输入图片宽度' }}
                       render={({ field }) => (
-                        <InputNumber
-                          {...field}
-                          suffix="px"
-                          min={1}
-                          className="easy-editor-input-number"
-                        />
+                        <InputNumber {...field} suffix="px" min={1} />
                       )}
                     />
                     <div className="easy-editor-link-panel__error__tips">
@@ -132,7 +123,6 @@ const UploadNetworkImageModal: FC<TUploadNetworkImageModalProps> = props => {
                         <InputNumber
                           {...field}
                           suffix="px"
-                          className="easy-editor-input-number"
                           min={1}
                           disabled={isLockRatio}
                         />
@@ -148,7 +138,7 @@ const UploadNetworkImageModal: FC<TUploadNetworkImageModalProps> = props => {
               <div className={cx('row')}>
                 <div className="row__inner">
                   <label className="row__label">是否锁定宽高</label>
-                  <div className="row__input-wrapper">
+                  <div className="row__input-wrapper input-wrapper-flex">
                     <Controller
                       name="isLockRatio"
                       control={control}
@@ -164,7 +154,7 @@ const UploadNetworkImageModal: FC<TUploadNetworkImageModalProps> = props => {
                       className="icon"
                       content="锁定时，将根据当前设置的宽度自动计算图片的高度，用户无法输入高度"
                     >
-                      <IconFont type="icon-icon-question" />
+                      <Iconfont type="icon-icon-question" />
                     </Tooltip>
                   </div>
                 </div>

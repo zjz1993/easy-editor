@@ -12,14 +12,13 @@ export const EditorFilePreviewPlugin = ({
       handleClick(view, _pos, e) {
         // 图片附件预览
         const $target = e.target;
-        console.log('handleClick触发了', $target);
+
         if ($target) {
           const $imageFullScreen = closest(
             $target,
             `.${PREVIEW_CLS.FULL_SCREEN}`,
           );
           const $fileEl = closest($target, `.${PREVIEW_CLS.IMAGE}`);
-          console.log('$fileEl是', $fileEl);
           if (
             ($fileEl && $imageFullScreen) ||
             (!editor.isEditable && $fileEl)

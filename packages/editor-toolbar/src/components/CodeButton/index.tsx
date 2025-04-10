@@ -1,4 +1,4 @@
-import {BLOCK_TYPES, DropdownList, Iconfont, IntlComponent,} from '@easy-editor/editor-common/src/index.ts';
+import {BLOCK_TYPES, DropdownList, Iconfont, IntlComponent,} from '@easy-editor/editor-common';
 import type {FC} from 'react';
 import {useContext, useState} from 'react';
 import ToolbarItemButtonWrapper from '../../components/toolbarItem/ToolbarItemButtonWrapper.tsx';

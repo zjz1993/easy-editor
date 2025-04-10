@@ -1,12 +1,8 @@
-import type { TDropDownRefProps } from '@easy-editor/editor-common/src/components/Dropdown/index.tsx';
-import {
-  Dropdown,
-  IntlComponent,
-} from '@easy-editor/editor-common/src/index.ts';
+import {Dropdown, IntlComponent, type TDropDownRefProps} from '@easy-editor/editor-common';
 import cx from 'classnames';
-import type { FC } from 'react';
-import { useContext, useRef } from 'react';
-import type { TToolbarWrapperProps } from 'src/types/index.ts';
+import type {FC} from 'react';
+import {useContext, useRef} from 'react';
+import type {TToolbarWrapperProps} from 'src/types/index.ts';
 import ToolbarItemButtonWrapper from '../../components/toolbarItem/ToolbarItemButtonWrapper.tsx';
 import ToolbarContext from '../../context/toolbarContext.ts';
 import HeaderButtonDropdown from './HeaderButtonDropdown.tsx';

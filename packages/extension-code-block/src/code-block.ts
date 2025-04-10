@@ -1,11 +1,11 @@
-import { BLOCK_TYPES } from '@easy-editor/editor-common/src/index.ts';
-import type { CodeBlockLowlightOptions } from '@tiptap/extension-code-block-lowlight';
-import { CodeBlockLowlight } from '@tiptap/extension-code-block-lowlight';
-import { TextSelection } from '@tiptap/pm/state';
-import { ReactNodeViewRenderer } from '@tiptap/react';
-import { lowlight } from 'lowlight/lib/all';
-import { CodeBlockNodeView } from './CodeBlockNodeView';
-import { getSelectedLineRange } from './utils';
+import {BLOCK_TYPES} from '@easy-editor/editor-common';
+import type {CodeBlockLowlightOptions} from '@tiptap/extension-code-block-lowlight';
+import {CodeBlockLowlight} from '@tiptap/extension-code-block-lowlight';
+import {TextSelection} from '@tiptap/pm/state';
+import {ReactNodeViewRenderer} from '@tiptap/react';
+import {lowlight} from 'lowlight/lib/all';
+import {CodeBlockNodeView} from './CodeBlockNodeView';
+import {getSelectedLineRange} from './utils';
 
 export type CodeBlockOptions = CodeBlockLowlightOptions;
 

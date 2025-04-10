@@ -1,8 +1,13 @@
 import {cloneElement, type FC, useContext, useRef} from 'react';
 import './styles/root.scss';
-import {BLOCK_TYPES, Iconfont, INDENT_TYPES,} from '@easy-editor/editor-common';
-import DropdownPanel from '@easy-editor/editor-common/src/components/DropdownPanel/index.tsx';
-import {isSelectionInsideBlockByType, MARK_TYPES,} from '@easy-editor/editor-common/src/index.ts';
+import {
+  BLOCK_TYPES,
+  DropdownPanel,
+  Iconfont,
+  INDENT_TYPES,
+  isSelectionInsideBlockByType,
+  MARK_TYPES
+} from '@easy-editor/editor-common';
 import type {Editor} from '@tiptap/core';
 import Overflow from 'rc-overflow';
 import AlignButton from './components/AlignButton/index.tsx';

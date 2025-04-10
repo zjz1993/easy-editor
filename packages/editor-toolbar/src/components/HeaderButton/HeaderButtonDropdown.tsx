@@ -1,15 +1,10 @@
-import { type FC, useCallback, useContext } from 'react';
+import {type FC, useCallback, useContext} from 'react';
 import './index.scss';
-import IconFont from '@easy-editor/editor-common/src/components/IconFont/index.tsx';
-import {
-  BLOCK_TYPES,
-  IntlComponent,
-  headers,
-} from '@easy-editor/editor-common/src/index.ts';
+import {BLOCK_TYPES, headers, Iconfont, IntlComponent} from '@easy-editor/editor-common';
 import cx from 'classnames';
 import ToolbarContext from '../../context/toolbarContext.ts';
-import { command, option } from '../../utils/index.ts';
-import { ToolBarItemDivider } from '../ToolBarItemDivider.tsx';
+import {command, option} from '../../utils/index.ts';
+import {ToolBarItemDivider} from '../ToolBarItemDivider.tsx';
 
 const HeaderButtonDropdown: FC<{ onClick?: () => void }> = props => {
   const { onClick } = props;
@@ -29,7 +24,7 @@ const HeaderButtonDropdown: FC<{ onClick?: () => void }> = props => {
           >
             {editor.isActive('paragraph') && !editor.isActive('blockquote') ? (
               <div className="icon-selected">
-                <IconFont type="icon-gou-cu" />
+                <Iconfont type="icon-gou-cu" />
               </div>
             ) : (
               <div className="icon-selected" />
@@ -51,7 +46,7 @@ const HeaderButtonDropdown: FC<{ onClick?: () => void }> = props => {
           >
             {editor.isActive('blockquote') ? (
               <div className="icon-selected">
-                <IconFont type="icon-gou-cu" />
+                <Iconfont type="icon-gou-cu" />
               </div>
             ) : (
               <div className="icon-selected" />
@@ -80,7 +75,7 @@ const HeaderButtonDropdown: FC<{ onClick?: () => void }> = props => {
           >
             {editor.isActive('heading', { level: attrs.level }) ? (
               <div className="icon-selected">
-                <IconFont type="icon-gou-cu" />
+                <Iconfont type="icon-gou-cu" />
               </div>
             ) : (
               <div className="icon-selected" />

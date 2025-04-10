@@ -12,11 +12,15 @@
   position: relative;
   display: inline-block;
   width: 100%;
+  max-width: 100%;
   .easy-editor-image{
     width: fit-content;
     position: relative;
     cursor: pointer;
     display: inline-block;
+    img{
+      max-width: 100%;
+    }
     &-full-screen {
       position: absolute;
       top: 10px;
@@ -76,6 +80,35 @@
         right: -5px;
         cursor: nwse-resize;
       }
+    }
+  }
+}
+// 图片工具栏
+.easy-editor-image-toolbar{
+  height: 32px;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  &-item-width-fix{
+    width: 32px;
+  }
+  &-item{
+    height: 32px;
+    text-align: center;
+    line-height: 32px;
+    &:hover{
+      background: #f4f4f4;
+      .icon-delete .icon{
+        color: styles.$primary-red;
+      }
+    }
+    .icon{
+      cursor: pointer;
+      color: #000c;
+      transition: all .3s;
+    }
+    &:not(:last-child){
+      margin-right: 8px;
     }
   }
 }

@@ -1,8 +1,8 @@
-import { MARK_TYPES } from '@easy-editor/editor-common/src/index.ts';
-import { ReactRenderer } from '@tiptap/react';
-import { Plugin, PluginKey } from 'prosemirror-state';
+import {MARK_TYPES} from '@easy-editor/editor-common';
+import {ReactRenderer} from '@tiptap/react';
+import {Plugin, PluginKey} from 'prosemirror-state';
 import LinkToolbar from './LinkToolbar.tsx';
-import { Link } from './link.ts';
+import {Link} from './link.ts';
 
 function getLinkRange(doc, pos, linkMark) {
   let from = pos;

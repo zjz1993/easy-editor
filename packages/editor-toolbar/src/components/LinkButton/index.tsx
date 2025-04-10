@@ -1,10 +1,9 @@
-import { Iconfont, Popover } from '@easy-editor/editor-common';
-import { MARK_TYPES } from '@easy-editor/editor-common/src/index.ts';
-import { type FC, useContext, useState } from 'react';
+import {Iconfont, MARK_TYPES, Popover} from '@easy-editor/editor-common';
+import {type FC, useContext, useState} from 'react';
 import ToolbarItemButtonWrapper from '../../components/toolbarItem/ToolbarItemButtonWrapper.tsx';
 import ToolbarContext from '../../context/toolbarContext.ts';
-import type { TToolbarWrapperProps } from '../../types/index.ts';
-import { LinkPanelPopup } from './LinkPanel.tsx';
+import type {TToolbarWrapperProps} from '../../types/index.ts';
+import {LinkPanelPopup} from './LinkPanel.tsx';
 
 const LinkButton: FC<TToolbarWrapperProps> = props => {
   const { intlStr, className, style, disabled } = props;

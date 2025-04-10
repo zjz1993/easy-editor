@@ -6,7 +6,7 @@ import UnSupportFilePreview from './UnSupportImagePreview';
 import {collectImagePreviewFiles, getFileIndex} from './utils';
 import collectPreviewFiles from './collectPreviewFiles';
 import type {Editor} from '@tiptap/core';
-import {PluginKey} from "@tiptap/pm/state";
+import {PluginKey} from '@tiptap/pm/state';
 
 export interface EditorFilePreviewProps {
   editor: Editor;
@@ -90,7 +90,7 @@ const EditorFilePreview: FC<EditorFilePreviewProps> = ({
     });
 
     editor.registerPlugin(plugin);
-    console.log('plugin是', plugin);
+
     return () => {
       editor.unregisterPlugin(pluginKey);
     };

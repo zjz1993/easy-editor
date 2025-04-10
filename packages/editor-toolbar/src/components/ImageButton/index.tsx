@@ -1,4 +1,4 @@
-import {DropdownList, Iconfont, IntlComponent, Tooltip,} from '@easy-editor/editor-common/src/index.ts';
+import {DropdownList, Iconfont, IntlComponent, Tooltip,} from '@easy-editor/editor-common';
 import type {FC} from 'react';
 import {useContext, useState} from 'react';
 import type {TToolbarWrapperProps} from 'src/types/index.ts';

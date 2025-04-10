@@ -11,8 +11,7 @@ import type React from 'react';
 import {useCallback, useMemo, useRef, useState} from 'react';
 import {getLanguageByValue, getLanguageByValueOrAlias, languages,} from './languages';
 import './CodeBlockNodeView.scss';
-import {BLOCK_TYPES, Dropdown, get, message,} from '@easy-editor/editor-common';
-import {Iconfont} from '@easy-editor/editor-common/src/index.ts';
+import {BLOCK_TYPES, Dropdown, get, Iconfont, message,} from '@easy-editor/editor-common';
 import {TextSelection} from '@tiptap/pm/state';
 
 const CODE_BLOCK_DROPDOWN_MAX_HEIGHT = 245;

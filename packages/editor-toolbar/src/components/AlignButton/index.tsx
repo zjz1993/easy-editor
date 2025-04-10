@@ -1,13 +1,8 @@
-import {
-  DropdownList,
-  Iconfont,
-  IntlComponent,
-  Tooltip,
-} from '@easy-editor/editor-common/src/index.ts';
-import type { FC } from 'react';
-import { useContext } from 'react';
+import {DropdownList, Iconfont, IntlComponent, Tooltip,} from '@easy-editor/editor-common';
+import type {FC} from 'react';
+import {useContext} from 'react';
 import ToolbarContext from '../../context/toolbarContext.ts';
-import type { TToolbarWrapperProps } from '../../types/index.ts';
+import type {TToolbarWrapperProps} from '../../types/index.ts';
 
 const AlignButton: FC<TToolbarWrapperProps> = props => {
   const { editor } = useContext(ToolbarContext);

@@ -1,18 +1,8 @@
-import { Iconfont, MARK_TYPES } from '@easy-editor/editor-common';
-import { LinkPanelPopup } from '@easy-editor/editor-toolbar/src/components/LinkButton/LinkPanel.tsx';
-import {
-  autoUpdate,
-  flip,
-  offset,
-  shift,
-  useFloating,
-} from '@floating-ui/react';
-import { useState } from 'react';
+import {Iconfont, IntlComponent, MARK_TYPES, Tooltip} from '@easy-editor/editor-common';
+import {LinkPanelPopup} from '@easy-editor/editor-toolbar/src/components/LinkButton/LinkPanel.tsx';
+import {autoUpdate, flip, offset, shift, useFloating,} from '@floating-ui/react';
+import {useState} from 'react';
 import './toolbar.scss';
-import {
-  IntlComponent,
-  Tooltip,
-} from '@easy-editor/editor-common/src/index.ts';
 
 const LinkToolbar = ({
   from,

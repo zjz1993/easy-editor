@@ -6,6 +6,7 @@ import {type FC, useRef, useState} from 'react';
 import type {ImageNodeAttributes} from './ImageNode.ts';
 import './index.scss';
 import useHandleChangeImageSize from './hooks/useHandleChangeImageSize.ts';
+import ImageNodeToolbar from "./ImageNodeToolbar.tsx";
 
 const ImageView: FC<
   NodeViewProps & {
@@ -18,7 +19,7 @@ const ImageView: FC<
   const imgRef = useRef<HTMLImageElement>();
 
   const [imageRatio, setImageRatio] = useState<number | undefined>();
-  const { updateAttributes, node, selected, editor, view } = props;
+  const { updateAttributes, node, selected, editor, view, getPos } = props;
   const { attrs } = node;
   console.log('node是', node);
   const { width, height, src, textAlign = 'left', id } = attrs;
@@ -38,6 +39,14 @@ const ImageView: FC<
     const pos = editor.view.posAtDOM(node.dom as HTMLElement, 0);
     editor.chain().setNodeSelection(pos).run(); // 手动选中节点
   };
+  const handleRemove = () => {
+    const imagePos = getPos();
+    const imageNode = view.state.doc.nodeAt(imagePos);
+    const tr = view.state.tr;
+    tr.delete(imagePos, imagePos + 1);
+    view.dispatch(tr);
+    view.focus();
+  };
   return (
     <NodeViewWrapper
       ref={containerRef}
@@ -54,7 +63,11 @@ const ImageView: FC<
         <div className={PREVIEW_CLS.FULL_SCREEN}>
           <Iconfont type="icon-enterfs" />
         </div>
-        <Popover content={<div>123</div>} triggerAction="hover">
+        <Popover
+          open
+          content={<ImageNodeToolbar onRemove={handleRemove} />}
+          triggerAction="hover"
+        >
           <img
             onLoad={() => {
               const $image = imgRef.current;
