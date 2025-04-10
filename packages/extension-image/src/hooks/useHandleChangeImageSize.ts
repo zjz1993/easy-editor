@@ -73,6 +73,9 @@ function useHandleChangeImageSize(props: {
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
   };
-  return { handleMouseDown, size };
+  const changeSize = (width: number, height: number) => {
+    setSize({ width, height });
+  };
+  return { handleMouseDown, size, changeSize };
 }
 export default useHandleChangeImageSize;

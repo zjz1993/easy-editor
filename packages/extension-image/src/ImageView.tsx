@@ -24,7 +24,7 @@ const ImageView: FC<
   console.log('node是', node);
   const { width, height, src, textAlign = 'left', id } = attrs;
   const containerRef = useRef(null);
-  const { handleMouseDown, size } = useHandleChangeImageSize({
+  const { handleMouseDown, size, changeSize } = useHandleChangeImageSize({
     containerRef,
     initWidth: width,
     initHeight: height,
@@ -32,16 +32,12 @@ const ImageView: FC<
     onResizeEnd: data => updateAttributes(data),
   });
   const handleClickImage = () => {
-    // 点击时检查节点是否被选中
-    console.log('节点是否被选中:', selected);
-
     // 如果需要手动触发选中状态，可以使用 editor 的命令
     const pos = editor.view.posAtDOM(node.dom as HTMLElement, 0);
     editor.chain().setNodeSelection(pos).run(); // 手动选中节点
   };
   const handleRemove = () => {
     const imagePos = getPos();
-    const imageNode = view.state.doc.nodeAt(imagePos);
     const tr = view.state.tr;
     tr.delete(imagePos, imagePos + 1);
     view.dispatch(tr);
@@ -65,7 +61,20 @@ const ImageView: FC<
         </div>
         <Popover
           open
-          content={<ImageNodeToolbar onRemove={handleRemove} />}
+          content={
+            <ImageNodeToolbar
+              defaultWidth={width}
+              onRemove={handleRemove}
+              onWidthChange={value => {
+                console.log('onWidhChange触发', value, imageRatio);
+                if (imageRatio) {
+                  const newHeight = value / imageRatio;
+                  changeSize(value, newHeight);
+                  updateAttributes({ width: value, height: newHeight });
+                }
+              }}
+            />
+          }
           triggerAction="hover"
         >
           <img
