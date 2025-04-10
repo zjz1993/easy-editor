@@ -9,3 +9,4 @@ export { default as Tooltip } from './Tooltip';
 export { default as Popover } from './Popover';
 export { default as MessageContainer } from './Message/Message.tsx';
 export { message } from './Message';
+export { default as Switch } from './Switch';
