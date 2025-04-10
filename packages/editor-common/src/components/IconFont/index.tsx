@@ -55,7 +55,7 @@ export const Icon = forwardRef<SVGSVGElement, PropsWithChildren<IconProps>>(
   },
 );
 const IconFont = createFromIconfont(
-  '//at.alicdn.com/t/c/font_4437062_j4m5shxp0ym.js',
+  '//at.alicdn.com/t/c/font_4437062_f8f2fydfxer.js',
 );
 const IconComponent: FC<{
   type: string;

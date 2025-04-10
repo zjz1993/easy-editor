@@ -131,8 +131,8 @@ const NewTooltip: FC<TPopoverProps> = props => {
               fill="#000"
               style={{
                 position: 'absolute',
-                left: arrowX != null ? `${arrowX}px` : '',
-                top: arrowY != null ? `${arrowY}px` : '',
+                //left: arrowX != null ? `${arrowX}px` : '',
+                //top: arrowY != null ? `${arrowY}px` : '',
               }}
             />
           </div>
