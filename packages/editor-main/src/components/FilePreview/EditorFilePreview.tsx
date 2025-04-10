@@ -28,7 +28,7 @@ const EditorFilePreview: FC<EditorFilePreviewProps> = ({
   const [currentPreviewIndex, setCurrentPreviewIndex] = useState(0);
 
   const doFilePreview = $fileEl => {
-    console.log('doFilePreview触发');
+    console.log('doFilePreview触发', $fileEl);
     const imageDom = $fileEl.querySelector('img');
     const editorView = editor.view;
     if (!editorView) {
@@ -40,7 +40,7 @@ const EditorFilePreview: FC<EditorFilePreviewProps> = ({
     if (imageDom) {
       previewFiles = collectImagePreviewFiles(editorView.dom);
       const clickSrc = imageDom.getAttribute('src');
-      const clickFileKey = $fileEl.dataset.filekey;
+      const clickFileKey = $fileEl.dataset.id;
       const clickPreviewUrl = $fileEl.dataset.previewurl;
       const clickDownloadUrl = $fileEl.dataset.downloadurl;
       const clickOriginUrl = $fileEl.dataset.originurl;

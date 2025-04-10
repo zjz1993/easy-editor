@@ -1,10 +1,7 @@
-import { Extension } from '@tiptap/core';
-import { Plugin, PluginKey } from '@tiptap/pm/state';
-import { v4 as uuidv4 } from 'uuid';
-// 生成唯一 ID
-const generateUniqueID = () => {
-  return Math.random().toString(36).substring(2, 9);
-};
+import {Extension} from '@tiptap/core';
+import {Plugin, PluginKey} from '@tiptap/pm/state';
+import {v4 as uuidv4} from 'uuid';
+import {BLOCK_TYPES} from "@easy-editor/editor-common";
 
 const UniqueIDExtension = Extension.create({
   name: 'uniqueID',
@@ -13,7 +10,12 @@ const UniqueIDExtension = Extension.create({
   addGlobalAttributes() {
     return [
       {
-        types: ['paragraph', 'heading', 'blockquote', 'codeBlock'],
+        types: [
+          BLOCK_TYPES.P,
+          BLOCK_TYPES.H,
+          BLOCK_TYPES.CODE,
+          BLOCK_TYPES.IMG,
+        ],
         attributes: {
           id: {
             default: null,
@@ -25,12 +27,6 @@ const UniqueIDExtension = Extension.create({
         },
       },
     ];
-  },
-
-  addOptions() {
-    return {
-      generateID: () => generateUniqueID(),
-    };
   },
 
   addStorage() {
