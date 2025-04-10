@@ -1,6 +1,6 @@
 import {mergeAttributes, Node, nodeInputRule} from '@tiptap/core';
 import {ReactNodeViewRenderer} from '@tiptap/react';
-import ImageView from "./ImageView.tsx";
+import ImageView from './ImageView.tsx';
 
 export interface ImageNodeAttributes {
   src: string;
@@ -9,6 +9,7 @@ export interface ImageNodeAttributes {
   width?: number;
   height?: number;
   textAlign?: 'center' | 'left' | 'right';
+  id?: string;
 }
 
 export interface ImageOptions {
@@ -104,7 +105,14 @@ export const ImageNode = Node.create<ImageOptions>({
       setImage:
         options =>
         ({ commands }) => {
-          return commands.insertContent({ type: this.name, attrs: options });
+          return commands.insertContent([
+            { type: this.name, attrs: options },
+            // 插入图片后加个空行
+            {
+              type: 'paragraph',
+              content: [],
+            },
+          ]);
         },
     };
   },

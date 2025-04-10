@@ -15,16 +15,19 @@ const ImageView: FC<
     };
   }
 > = props => {
-  const [fileViewVisible, setFileViewVisible] = useState(false);
+  const imgRef = useRef<HTMLImageElement>();
+
+  const [imageRatio, setImageRatio] = useState<number | undefined>();
   const { updateAttributes, node, selected, editor, view } = props;
   const { attrs } = node;
   console.log('node是', node);
-  const { width, height, src, textAlign = 'left' } = attrs;
+  const { width, height, src, textAlign = 'left', id } = attrs;
   const containerRef = useRef(null);
   const { handleMouseDown, size } = useHandleChangeImageSize({
     containerRef,
     initWidth: width,
     initHeight: height,
+    ratio: imageRatio,
     onResizeEnd: data => updateAttributes(data),
   });
   const handleClickImage = () => {
@@ -47,25 +50,35 @@ const ImageView: FC<
       )}
       onClick={handleClickImage}
     >
-      <span className={cx('easy-editor-image')}>
-        <div
-          className={PREVIEW_CLS.FULL_SCREEN}
-          onClick={e => {
-            e.stopPropagation();
-            setFileViewVisible(true);
-          }}
-        >
+      <span className={cx('easy-editor-image')} data-id={id}>
+        <div className={PREVIEW_CLS.FULL_SCREEN}>
           <Iconfont type="icon-enterfs" />
         </div>
-        <Popover
-          // open={toolbarVisible}
-          content={<div>123</div>}
-          triggerAction="hover"
-        >
+        <Popover content={<div>123</div>} triggerAction="hover">
           <img
-            //onMouseEnter={() => {
-            //  setToolbarVisible(true);
-            //}}
+            onLoad={() => {
+              const $image = imgRef.current;
+              const checkImageShow = ($image: HTMLImageElement) => {
+                return new Promise((resolve, reject) => {
+                  if (!$image) {
+                    reject();
+                  }
+                  const checkImageSize = () => {
+                    if ($image.clientWidth > 0 && $image.clientHeight > 0) {
+                      resolve('');
+                    } else {
+                      requestAnimationFrame(checkImageSize);
+                    }
+                  };
+                  checkImageSize();
+                });
+              };
+              checkImageShow($image).then(() => {
+                const ratio = $image.clientWidth / $image.clientHeight;
+                setImageRatio(ratio);
+              });
+            }}
+            ref={imgRef}
             src={src}
             alt=""
             width={size.width}
@@ -93,14 +106,6 @@ const ImageView: FC<
           </>
         )}
       </span>
-      {/*<FilePreview*/}
-      {/*  activeIndex={0}*/}
-      {/*  files={[{ url: src, type: src.slice(src.lastIndexOf('.') + 1) }]}*/}
-      {/*  visible={fileViewVisible}*/}
-      {/*  onClose={() => {*/}
-      {/*    setFileViewVisible(false);*/}
-      {/*  }}*/}
-      {/*/>*/}
     </NodeViewWrapper>
   );
 };

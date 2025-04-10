@@ -1,4 +1,4 @@
-import type {MutableRefObject} from "react";
+import type {MutableRefObject} from 'react';
 import {useRef, useState} from 'react';
 
 function useHandleChangeImageSize(props: {
@@ -6,8 +6,9 @@ function useHandleChangeImageSize(props: {
   initHeight: number;
   containerRef: MutableRefObject<HTMLElement>;
   onResizeEnd: (data: { width: number; height: number }) => void;
+  ratio?: number;
 }) {
-  const { containerRef, onResizeEnd, initHeight, initWidth } = props;
+  const { containerRef, onResizeEnd, initHeight, initWidth, ratio } = props;
   const [size, setSize] = useState({ width: initWidth, height: initHeight });
   const isResizing = useRef(false);
   const handleMouseDown = (e, corner) => {
@@ -52,7 +53,10 @@ function useHandleChangeImageSize(props: {
       newWidth = Math.max(50, newWidth);
       newHeight = Math.max(50, newHeight);
 
-      setSize({ width: newWidth, height: newHeight });
+      setSize({
+        width: newWidth,
+        height: ratio ? newWidth / ratio : newHeight, // 拖动时保持宽高比
+      });
     };
 
     const handleMouseUp = () => {
