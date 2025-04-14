@@ -221,7 +221,6 @@ const FilePreview: FC<IFilePreviewProps> = ({
 
   const createBody = () => {
     const currentFile = getCurrentFile();
-    console.log('currentFile是', currentFile);
 
     if (!currentFile) {
       return;

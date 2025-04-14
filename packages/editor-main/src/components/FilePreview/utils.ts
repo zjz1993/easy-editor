@@ -12,7 +12,7 @@ export const collectImagePreviewFiles = $view => {
   const files = [];
   const $files = getViewImageNodes($view);
   forEach($files, ($file, index) => {
-    const fileKey = $file.dataset.filekey;
+    const fileKey = $file.dataset.id;
     const previewUrl = $file.dataset.previewurl;
     const src = $file.querySelector('img').getAttribute('src');
     const preview = {
