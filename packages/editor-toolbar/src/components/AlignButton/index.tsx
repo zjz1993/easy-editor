@@ -1,3 +1,4 @@
+import type {AlignType} from "@easy-editor/editor-common";
 import {DropdownList, Iconfont, IntlComponent, Tooltip,} from '@easy-editor/editor-common';
 import type {FC} from 'react';
 import {useContext} from 'react';
@@ -7,7 +8,7 @@ import type {TToolbarWrapperProps} from '../../types/index.ts';
 const AlignButton: FC<TToolbarWrapperProps> = props => {
   const { editor } = useContext(ToolbarContext);
   const { disabled, intlStr } = props;
-  const alignArray = ['left', 'center', 'right'];
+  const alignArray: AlignType[] = ['left', 'center', 'right'];
   const getActiveAlignBtn = () => {
     const activeAlign = alignArray.find(item =>
       editor.isActive({ textAlign: item }),

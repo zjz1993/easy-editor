@@ -740,3 +740,4 @@ export const headers = [
     keys: 'toolbar.header.quote',
   },
 ];
+export type AlignType = 'left' | 'center' | 'right';

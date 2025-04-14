@@ -1,12 +1,12 @@
 import {NodeViewWrapper} from '@tiptap/react';
 import type {NodeViewProps} from '@tiptap/core';
 import cx from 'classnames';
-import {Iconfont, isNull, isViewEditable, Popover, PREVIEW_CLS,} from '@easy-editor/editor-common';
-import {type FC, useRef, useState} from 'react';
+import {Iconfont, isViewEditable, Popover, PREVIEW_CLS,} from '@easy-editor/editor-common';
+import {type FC, useEffect, useRef, useState} from 'react';
 import type {ImageNodeAttributes} from './ImageNode.ts';
 import './index.scss';
 import useHandleChangeImageSize from './hooks/useHandleChangeImageSize.ts';
-import ImageNodeToolbar from "./ImageNodeToolbar.tsx";
+import ImageNodeToolbar from './ImageNodeToolbar.tsx';
 
 const ImageView: FC<
   NodeViewProps & {
@@ -17,12 +17,11 @@ const ImageView: FC<
   }
 > = props => {
   const imgRef = useRef<HTMLImageElement>();
-
+  const popoverRef = useRef<any>();
   const [imageRatio, setImageRatio] = useState<number | undefined>();
   const { updateAttributes, node, selected, editor, view, getPos } = props;
   const { attrs } = node;
-  console.log('node是', node);
-  const { width, height, src, textAlign = 'left', id } = attrs;
+  const { width, height, src, textAlign, id, hasBorder } = attrs;
   const containerRef = useRef(null);
   const { handleMouseDown, size, changeSize } = useHandleChangeImageSize({
     containerRef,
@@ -33,7 +32,7 @@ const ImageView: FC<
   });
   const handleClickImage = () => {
     // 如果需要手动触发选中状态，可以使用 editor 的命令
-    const pos = editor.view.posAtDOM(node.dom as HTMLElement, 0);
+    const pos = getPos();
     editor.chain().setNodeSelection(pos).run(); // 手动选中节点
   };
   const handleRemove = () => {
@@ -43,30 +42,79 @@ const ImageView: FC<
     view.dispatch(tr);
     view.focus();
   };
+  useEffect(() => {
+    const editorDom = editor.view.dom;
+
+    const handleDragOver = (event: DragEvent) => {
+      event.preventDefault();
+    };
+
+    const handleDrop = (event: DragEvent) => {
+      const pos = editor.view.posAtCoords({
+        left: event.clientX,
+        top: event.clientY,
+      });
+
+      const currentPos = getPos?.();
+      if (!pos || typeof currentPos !== 'number') return;
+
+      event.preventDefault();
+
+      const insertPos = pos.pos > currentPos ? pos.pos - 1 : pos.pos;
+
+      const tr = editor.view.state.tr
+        .delete(currentPos, currentPos + 1)
+        .insert(insertPos, node);
+
+      editor.view.dispatch(tr);
+    };
+
+    editorDom.addEventListener('dragover', handleDragOver);
+    editorDom.addEventListener('drop', handleDrop);
+
+    return () => {
+      editorDom.removeEventListener('dragover', handleDragOver);
+      editorDom.removeEventListener('drop', handleDrop);
+    };
+  }, [editor, getPos, node]);
   return (
     <NodeViewWrapper
+      draggable="true"
       ref={containerRef}
       className={cx(
-        isNull(textAlign)
-          ? 'easy-editor-image-left'
-          : `easy-editor-image-${textAlign}`,
+        `easy-editor-image-${textAlign}`,
         'easy-editor-image-container',
         'easy-editor-block-container',
       )}
+      as="div"
       onClick={handleClickImage}
     >
-      <span className={cx('easy-editor-image')} data-id={id}>
+      <span
+        className={cx(
+          'easy-editor-image',
+          hasBorder && 'easy-editor-image-border',
+        )}
+        data-id={id}
+      >
         <div className={PREVIEW_CLS.FULL_SCREEN}>
           <Iconfont type="icon-enterfs" />
         </div>
         <Popover
-          open
+          ref={popoverRef}
           content={
             <ImageNodeToolbar
+              onAlignChange={align => {
+                updateAttributes({ textAlign: align });
+                // popoverRef.current.update();
+              }}
+              align={textAlign}
+              hasBorder={hasBorder}
               defaultWidth={width}
               onRemove={handleRemove}
+              onBorder={() => {
+                updateAttributes({ hasBorder: !hasBorder });
+              }}
               onWidthChange={value => {
-                console.log('onWidhChange触发', value, imageRatio);
                 if (imageRatio) {
                   const newHeight = value / imageRatio;
                   changeSize(value, newHeight);
@@ -105,6 +153,7 @@ const ImageView: FC<
             alt=""
             width={size.width}
             height={size.height}
+            draggable={false} // 禁止原生拖动
           />
         </Popover>
         {selected && isViewEditable(view) && (

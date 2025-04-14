@@ -17,9 +17,10 @@
   "dependencies": {
     "@babel/runtime-corejs3": "^7.21.0",
     "@easy-editor/editor-common": "workspace:^",
+    "@easy-editor/styles": "workspace:*",
     "@tiptap/react": "^2.11.5",
     "classnames": "^2.5.1",
-    "@easy-editor/styles": "workspace:*"
+    "prosemirror-state": "^1.4.3"
   },
   "devDependencies": {
     "@tiptap/core": "^2.11.5",

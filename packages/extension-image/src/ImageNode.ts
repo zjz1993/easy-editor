@@ -10,6 +10,7 @@ export interface ImageNodeAttributes {
   height?: number;
   textAlign?: 'center' | 'left' | 'right';
   id?: string;
+  hasBorder?: boolean;
 }
 
 export interface ImageOptions {
@@ -62,9 +63,16 @@ export const ImageNode = Node.create<ImageOptions>({
   draggable() {
     return this.editor.isEditable;
   },
+  selectable() {
+    return this.editor.isEditable;
+  },
 
   addAttributes(): Partial<Record<keyof ImageNodeAttributes, any>> {
     return {
+      textAlign: {
+        default: 'left',
+      },
+      hasBorder: { default: false },
       width: {
         default: null,
       },

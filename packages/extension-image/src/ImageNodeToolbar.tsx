@@ -1,13 +1,26 @@
 import './index.scss';
 import type {FC} from 'react';
-import {Iconfont, InputNumber, IntlComponent, Tooltip,} from '@easy-editor/editor-common';
+import {type AlignType, InputNumber} from '@easy-editor/editor-common';
+import ToolbarButton from '../src/components/ToolbarButton';
 
 const ImageNodeToolbar: FC<{
   defaultWidth: number;
   onWidthChange: (width: number) => void;
+  onAlignChange: (align: AlignType) => void;
   onRemove: () => void;
+  onBorder: () => void;
+  hasBorder?: boolean;
+  align: AlignType;
 }> = props => {
-  const { onRemove, defaultWidth, onWidthChange } = props;
+  const {
+    onAlignChange,
+    align,
+    hasBorder,
+    onRemove,
+    defaultWidth,
+    onWidthChange,
+    onBorder,
+  } = props;
   return (
     <div className="easy-editor-image-toolbar">
       <div className="easy-editor-image-toolbar-item easy-editor-image-toolbar-input-item">
@@ -19,14 +32,29 @@ const ImageNodeToolbar: FC<{
           onChange={onWidthChange}
         />
       </div>
-      <div
-        className="easy-editor-image-toolbar-item easy-editor-image-toolbar-item-width-fix"
+      {(['left', 'center', 'right'] as AlignType[]).map(item => (
+        <ToolbarButton
+          key={item}
+          isActive={align === item}
+          icon={`align-${item}`}
+          onClick={() => {
+            onAlignChange(item);
+          }}
+          tooltip={`align.${item}`}
+        />
+      ))}
+      <ToolbarButton
+        isActive={hasBorder}
+        icon="border"
+        onClick={onBorder}
+        tooltip="image.border"
+      />
+      <ToolbarButton
+        iconClassName="icon icon-delete"
+        icon="remove"
         onClick={onRemove}
-      >
-        <Tooltip content={IntlComponent.get('delete')}>
-          <Iconfont type="remove" className="icon icon-delete" />
-        </Tooltip>
-      </div>
+        tooltip="delete"
+      />
     </div>
   );
 };

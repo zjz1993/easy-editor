@@ -13,6 +13,11 @@
   display: inline-block;
   width: 100%;
   max-width: 100%;
+  .easy-editor-image-border{
+    img{
+      border: solid 1px #d9d9d9;
+    }
+  }
   .easy-editor-image{
     width: fit-content;
     position: relative;
@@ -95,6 +100,9 @@
   &-input-item{
     display: flex;
     width: 140px;
+  }
+  &-item-active{
+    background: styles.$background-grey;
   }
   &-item{
     height: 32px;

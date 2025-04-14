@@ -7,6 +7,7 @@ import {
   offset,
   type Placement,
   safePolygon,
+  shift,
   useClick,
   useDismiss,
   useFloating,
@@ -16,7 +17,7 @@ import {
   useTransitionStyles,
 } from '@floating-ui/react';
 import type {MutableRefObject, PropsWithChildren, ReactNode} from 'react';
-import {useMemo, useRef} from 'react';
+import {forwardRef, useImperativeHandle, useMemo, useRef} from 'react';
 import './index.scss';
 import useControlledValue from '../../hooks/useControlledValue.ts'; // 自定义箭头组件
 
@@ -35,7 +36,7 @@ export interface TPopoverProps extends PropsWithChildren {
   className?: string;
 }
 
-const Popover = (props: TPopoverProps) => {
+const Popover = forwardRef<any, TPopoverProps>((props, ref) => {
   const {
     onOpenChange,
     children,
@@ -60,6 +61,7 @@ const Popover = (props: TPopoverProps) => {
     refs,
     context,
     placement: actualPlacement,
+    update,
   } = useFloating({
     open: isOpen,
     onOpenChange: tempOpen => {
@@ -70,7 +72,7 @@ const Popover = (props: TPopoverProps) => {
     middleware: [
       offset(8),
       flip(),
-      // shift({ padding: 5 }), // 边界留白
+      shift({ padding: 5 }), // 边界留白
       arrow({ element: arrowRef }),
     ],
     whileElementsMounted: autoUpdate,
@@ -106,7 +108,11 @@ const Popover = (props: TPopoverProps) => {
     close: { opacity: 0, transform: 'scale(0.95)' },
   });
   const { x: arrowX, y: arrowY } = context.middlewareData.arrow || {};
-
+  useImperativeHandle(ref, () => {
+    return {
+      update,
+    };
+  });
   return (
     <>
       {/* 触发元素 */}
@@ -146,6 +152,6 @@ const Popover = (props: TPopoverProps) => {
       )}
     </>
   );
-};
+});
 
 export default Popover;
