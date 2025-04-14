@@ -65,7 +65,9 @@ const LinkToolbar = ({
       }}
       className="easy-editor-link-toolbar"
       onMouseLeave={() => {
-        onClose();
+        if (!showEditPopup) {
+          onClose();
+        }
       }}
     >
       {showEditPopup ? (
