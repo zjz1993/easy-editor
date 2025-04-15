@@ -9,6 +9,10 @@ function useHandleChangeImageSize(props: {
   ratio?: number;
 }) {
   const { containerRef, onResizeEnd, initHeight, initWidth, ratio } = props;
+  const sizeCache = useRef<{ width: number; height: number }>({
+    width: 0,
+    height: 0,
+  });
   const [size, setSize] = useState({ width: initWidth, height: initHeight });
   const isResizing = useRef(false);
   const handleMouseDown = (e, corner) => {
@@ -52,19 +56,24 @@ function useHandleChangeImageSize(props: {
       // 设置最小尺寸限制
       newWidth = Math.max(50, newWidth);
       newHeight = Math.max(50, newHeight);
-
-      setSize({
+      const obj = {
         width: newWidth,
         height: ratio ? newWidth / ratio : newHeight, // 拖动时保持宽高比
-      });
+      };
+      setSize(obj);
+      sizeCache.current = obj;
     };
 
     const handleMouseUp = () => {
       isResizing.current = false;
       // 更新 TipTap 节点的属性
+      setSize({
+        width: sizeCache.current.width,
+        height: sizeCache.current.height,
+      });
       onResizeEnd({
-        width: size.width,
-        height: size.height,
+        width: sizeCache.current.width,
+        height: sizeCache.current.height,
       });
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);

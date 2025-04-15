@@ -28,7 +28,10 @@ const ImageView: FC<
     initWidth: width,
     initHeight: height,
     ratio: imageRatio,
-    onResizeEnd: data => updateAttributes(data),
+    onResizeEnd: data => {
+      console.log('拖动完成的data是', data);
+      updateAttributes(data);
+    },
   });
   const handleClickImage = () => {
     // 如果需要手动触发选中状态，可以使用 editor 的命令

@@ -1,6 +1,6 @@
 import './index.scss';
 import type {FC} from 'react';
-import {type AlignType, InputNumber} from '@easy-editor/editor-common';
+import {type AlignType, InputNumber, useControlledValue} from '@easy-editor/editor-common';
 import ToolbarButton from '../src/components/ToolbarButton';
 
 const ImageNodeToolbar: FC<{
@@ -21,6 +21,12 @@ const ImageNodeToolbar: FC<{
     onWidthChange,
     onBorder,
   } = props;
+  const [width, setWidth] = useControlledValue<number>({
+    value: defaultWidth,
+    defaultValue: 1,
+    // onChange: onOpenChange,
+  });
+  console.log('defaultWidth是', defaultWidth);
   return (
     <div className="easy-editor-image-toolbar">
       <div className="easy-editor-image-toolbar-item easy-editor-image-toolbar-input-item">
@@ -28,8 +34,11 @@ const ImageNodeToolbar: FC<{
         <InputNumber
           suffix="px"
           min={1}
-          defaultValue={defaultWidth}
-          onChange={onWidthChange}
+          value={width}
+          onChange={value => {
+            setWidth(value as number);
+            onWidthChange(value as number);
+          }}
         />
       </div>
       {(['left', 'center', 'right'] as AlignType[]).map(item => (
