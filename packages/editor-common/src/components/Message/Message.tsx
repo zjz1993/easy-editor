@@ -1,5 +1,5 @@
 import {autoUpdate, flip, offset, shift, useFloating,} from '@floating-ui/react';
-import type {FC} from 'react';
+import type {FC, ReactNode} from 'react';
 import {useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
@@ -137,13 +137,13 @@ const MessageContainer = () => {
 };
 
 export const message = {
-  success: (msg: string, onClose?: () => void) =>
+  success: (msg: ReactNode, onClose?: () => void) =>
     (window as any).messageApi?.success(msg, onClose),
-  error: (msg: string, onClose?: () => void) =>
+  error: (msg: ReactNode, onClose?: () => void) =>
     (window as any).messageApi?.error(msg, onClose),
-  info: (msg: string, onClose?: () => void) =>
+  info: (msg: ReactNode, onClose?: () => void) =>
     (window as any).messageApi?.info(msg, onClose),
-  warning: (msg: string, onClose?: () => void) =>
+  warning: (msg: ReactNode, onClose?: () => void) =>
     (window as any).messageApi?.warning(msg, onClose),
 };
 

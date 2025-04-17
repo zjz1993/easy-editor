@@ -1,6 +1,6 @@
 import {BLOCK_TYPES} from '../const';
 import {Node, NodeType} from '@tiptap/pm/model';
-import {isString, size} from "lodash-es";
+import {isString, size} from 'lodash-es';
 
 const judgeNodeType = types => {
   return (node: { type: { name: any }; name: any }) => {
@@ -24,6 +24,12 @@ export const isFileNode = judgeNodeType([BLOCK_TYPES.FILE]);
 
 export const isImageExt = (ext: string) => {
   return /^(png|jpg|jpeg|gif)$/i.test(ext);
+};
+
+export const isVideoExt = (ext: string) => {
+  return /^(mp4|m4v|webm|mov|quicktime|ogg|x-msvideo|mpeg|x-ms-wmv|x-flv|x-m4v)$/i.test(
+    ext,
+  );
 };
 
 /**

@@ -1,4 +1,5 @@
 import {KeyCode} from '../const';
+import {size} from 'lodash-es';
 
 export const doDownloadByUrl = (tempUrl: string) => {
   const linkNode = document.createElement('a');
@@ -13,4 +14,14 @@ export const isEsc = ({ keyCode }: { keyCode: any }) => {
 };
 export const isWindows = () => {
   return navigator.userAgent.indexOf('Windows') > -1;
+};
+export const parseMIMEType = (fileType: string) => {
+  if (typeof fileType === 'string') {
+    const arr = fileType.split('/');
+    if (size(arr) !== 2) {
+      return ['', ''];
+    }
+    return arr;
+  }
+  return '';
 };
