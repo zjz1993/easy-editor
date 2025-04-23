@@ -1,17 +1,12 @@
-import EventListener from '@/Editor/components/react-event-listener';
 import {isVideoExt, parseMIMEType} from '../../utils';
 import {Button, message} from '../index';
 import Upload from 'rc-upload';
 import classnames from 'classnames';
-import {isEmpty, noop, take, uniq} from 'lodash-es';
-import React, {type FC, type ReactNode, useRef, useState} from 'react';
-import uuid from 'uuid/v4';
+import {isEmpty, noop, take} from 'lodash-es';
+import React, {type FC, type ReactNode, useRef, useState} from 'react'; //import uuid from 'uuid/v4';
+//import uuid from 'uuid/v4';
 
-const uploadButton = (
-  <Button type="link" icon="upload">
-    点击上传
-  </Button>
-);
+const uploadButton = <Button>点击上传</Button>;
 
 function attrAccept(
   file: { name: string; type: string },
@@ -146,50 +141,52 @@ const FileUpload: FC<IUploadProps> = props => {
   };
 
   const beforeUploadFun = (file, fileList) => {
+    console.log('beforeUploadFun触发', file, fileList);
     //if (beforeUpload && !beforeUpload(file, fileList)) {
     //  return false;
     //}
-    if (batchUploadNum.current <= 0) {
-      batchUploadNum.current =
-        Math.max(batchUploadNum.current, 0) + fileList.length;
-    }
-    const markAsError = errorMsg => {
-      file.response = errorMsg;
-      file.status = 'error';
-      const originFile = (fileList || []).find(({ uid }) => uid === file.uid);
-      originFile.response = errorMsg;
-      originFile.status = 'error';
 
-      message.error(errorMsg);
-      batchUploadNum.current = Math.max(batchUploadNum.current - 1, 0);
-    };
-    const uidList = uniq(
-      []
-        .concat(props.fileList)
-        .concat(fileList)
-        .map(({ uid }) => uid),
-    );
-    const index = uidList.indexOf(file.uid);
-    if (
-      maxFileNum &&
-      (index >= maxFileNum || (index < 0 && uidList.length >= maxFileNum))
-    ) {
-      markAsError(exceedMaxFileNumMsg || '超出文件数量限制');
-      return false;
-    }
-
-    if (!isEmpty(rules)) {
-      return checkRule(file, rules).catch(e => {
-        markAsError(e.message);
-        return Promise.reject(e);
-      });
-    }
-    if (maxFileSize) {
-      return checkMaxSize(file, maxFileSize).catch(e => {
-        markAsError(e.message);
-        return Promise.reject(e);
-      });
-    }
+    //if (batchUploadNum.current <= 0) {
+    //  batchUploadNum.current =
+    //    Math.max(batchUploadNum.current, 0) + fileList.length;
+    //}
+    //const markAsError = errorMsg => {
+    //  file.response = errorMsg;
+    //  file.status = 'error';
+    //  const originFile = (fileList || []).find(({ uid }) => uid === file.uid);
+    //  originFile.response = errorMsg;
+    //  originFile.status = 'error';
+    //
+    //  message.error(errorMsg);
+    //  batchUploadNum.current = Math.max(batchUploadNum.current - 1, 0);
+    //};
+    //const uidList = uniq(
+    //  []
+    //    .concat(props.fileList)
+    //    .concat(fileList)
+    //    .map(({ uid }) => uid),
+    //);
+    //const index = uidList.indexOf(file.uid);
+    //if (
+    //  maxFileNum &&
+    //  (index >= maxFileNum || (index < 0 && uidList.length >= maxFileNum))
+    //) {
+    //  markAsError(exceedMaxFileNumMsg || '超出文件数量限制');
+    //  return false;
+    //}
+    //
+    //if (!isEmpty(rules)) {
+    //  return checkRule(file, rules).catch(e => {
+    //    markAsError(e.message);
+    //    return Promise.reject(e);
+    //  });
+    //}
+    //if (maxFileSize) {
+    //  return checkMaxSize(file, maxFileSize).catch(e => {
+    //    markAsError(e.message);
+    //    return Promise.reject(e);
+    //  });
+    //}
     return true;
   };
 
@@ -249,7 +246,7 @@ const FileUpload: FC<IUploadProps> = props => {
       const img = new Image();
       reader.readAsDataURL(file);
       reader.onload = e => {
-        img.src = e.target.result;
+        typeof e.target.result === 'string' ? (img.src = e.target.result) : '';
       };
 
       img.onload = () => {
@@ -269,7 +266,7 @@ const FileUpload: FC<IUploadProps> = props => {
         canvas.toBlob(
           blob => {
             const imgFile = new File([blob], name, { type }); // 将blob对象转化为图片文件
-            imgFile.uid = uid;
+            // imgFile.uid = uid;
             resolve(imgFile);
           },
           file.type,
@@ -292,7 +289,7 @@ const FileUpload: FC<IUploadProps> = props => {
         fileList[fileIndex].status = 'error';
         batchUploadNum.current = Math.max(batchUploadNum.current - 1, 0);
       } else {
-        const fileKey = response.data.fileKey || uuid();
+        const fileKey = response.data.fileKey;
         const id = response.data.id || 0;
         const url = response.data.url || '';
         const thumbUrl = response.data.thumbUrl || url;
@@ -408,14 +405,14 @@ const FileUpload: FC<IUploadProps> = props => {
         beforeUpload={beforeUploadFun}
         action={action}
         onChange={handleOnChange}
-        fileList={formatFileUrl()}
-        listType={listType}
+        // fileList={formatFileUrl()}
+        // listType={listType}
         disabled={disabled}
         accept={accept}
-        showUploadList={showUploadList}
+        // showUploadList={showUploadList}
         multiple={multiple}
-        onPreview={onPreview}
-        maxCount={maxFileNum}
+        // onPreview={onPreview}
+        // maxCount={maxFileNum}
         customRequest={getCustomRequest()}
       >
         <div
@@ -429,7 +426,7 @@ const FileUpload: FC<IUploadProps> = props => {
           {children || uploadButton}
         </div>
       </Upload>
-      <EventListener target={document} onPaste={onPaste} />
+      {/*<EventListener target={document} onPaste={onPaste} />*/}
     </>
   );
 };

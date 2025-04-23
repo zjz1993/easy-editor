@@ -1,4 +1,4 @@
-import {DropdownList, Iconfont, IntlComponent, Tooltip,} from '@easy-editor/editor-common';
+import {DropdownList, Iconfont, IntlComponent, Tooltip, Upload,} from '@easy-editor/editor-common';
 import type {FC} from 'react';
 import {useContext, useState} from 'react';
 import type {TToolbarWrapperProps} from 'src/types/index.ts';
@@ -21,7 +21,24 @@ const ImageButton: FC<TToolbarWrapperProps> = props => {
               setOpen(true);
             },
           },
-          { label: '上传本地图片', value: '2' },
+          {
+            label: (
+              <Upload
+                accept=".jpg,.jpeg,.png,.gif"
+                acceptErrMsg="支持文件格式：jpg、jpeg、png、gif格式"
+                multiple
+                onChange={file => {
+                  console.log('onChange触发', file);
+                }}
+              >
+                上传本地图片
+              </Upload>
+            ),
+            value: '2',
+            onClick: () => {
+              console.log('触发点击了');
+            },
+          },
         ]}
       >
         <Tooltip content={IntlComponent.get(intlStr)}>

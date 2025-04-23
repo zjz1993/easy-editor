@@ -15,3 +15,4 @@ export { default as MessageContainer } from './Message/Message.tsx';
 export { message } from './Message';
 export { default as Switch } from './Switch';
 export { default as InputNumber } from './InputNumber';
+export { default as Upload } from './Upload';
