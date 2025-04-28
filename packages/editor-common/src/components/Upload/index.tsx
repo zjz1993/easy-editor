@@ -1,9 +1,9 @@
-import {isVideoExt, parseMIMEType} from '../../utils';
 import {Button, message} from '../index';
 import Upload from 'rc-upload';
 import classnames from 'classnames';
 import {isEmpty, noop, take} from 'lodash-es';
-import React, {type FC, type ReactNode, useRef, useState} from 'react'; //import uuid from 'uuid/v4';
+import React, {type FC, type ReactNode, useRef, useState} from 'react';
+import type {RcFile, UploadProgressEvent, UploadRequestOption} from 'rc-upload/es/interface'; //import uuid from 'uuid/v4';
 //import uuid from 'uuid/v4';
 
 const uploadButton = <Button>点击上传</Button>;
@@ -39,13 +39,17 @@ function attrAccept(
 }
 
 export interface IUploadProps {
+  onProgress?: (event: UploadProgressEvent, file: RcFile) => void;
+  onError: (error: Error, ret: Record<string, unknown>, file: RcFile) => void;
+  onStart?: (file: RcFile) => void;
+  onSuccess?: (res: any, file: RcFile) => void;
   listType?: string;
   onPreview?: () => void;
-  onChange?: (file: any) => void;
-  beforeUpload?: (file: any) => void;
-  customRequest?: (file: any) => void;
-  customVideoUpload?: (file: any) => void;
-  onUploaded?: (file: any) => void;
+  onChange?: (file: RcFile) => void;
+  beforeUpload?: (file: RcFile) => void;
+  customRequest?: (options: UploadRequestOption) => void;
+  customVideoUpload?: (file: RcFile) => void;
+  onUploaded?: (file: RcFile) => void;
   autoScrollIntoView?: boolean;
   action?: string;
   showUploadList?: boolean;
@@ -67,13 +71,17 @@ export interface IUploadProps {
 const FileUpload: FC<IUploadProps> = props => {
   const [dragOver, setDragOver] = useState(false);
   const {
+    onProgress,
+    onError,
     onPreview,
     id,
     className,
     action,
     customVideoUpload,
+    onStart,
     customRequest,
     onUploaded,
+    onSuccess,
     beforeUpload = undefined,
     fileList = [],
     maxFileSize = undefined,
@@ -142,6 +150,14 @@ const FileUpload: FC<IUploadProps> = props => {
 
   const beforeUploadFun = (file, fileList) => {
     console.log('beforeUploadFun触发', file, fileList);
+    console.log(file, fileList);
+    return new Promise<string>(resolve => {
+      console.log('start check');
+      setTimeout(() => {
+        console.log('check finshed');
+        resolve(file);
+      }, 3000);
+    });
     //if (beforeUpload && !beforeUpload(file, fileList)) {
     //  return false;
     //}
@@ -187,7 +203,6 @@ const FileUpload: FC<IUploadProps> = props => {
     //    return Promise.reject(e);
     //  });
     //}
-    return true;
   };
 
   const checkMaxSize = (file, maxSize) => {
@@ -338,61 +353,58 @@ const FileUpload: FC<IUploadProps> = props => {
     });
   };
 
-  const getCustomRequest = () => {
-    if (action) {
-      // 指定上传地址的,不启用前端直传
-      return undefined;
-    }
-    return option => {
-      const file = option.file;
-      const originRequest = null;
-      let canceled = false;
-      const isVideo = file => {
-        return isVideoExt(parseMIMEType(file.type)[1]);
-      };
-      if (customRequest || customVideoUpload) {
-        try {
-          if (isVideo(file) && customVideoUpload) {
-            customVideoUpload(option);
-          } else {
-            customRequest(option);
-          }
-        } catch (err) {
-          option.onError(err, { message: '上传失败' });
-        }
-      }
-      // originRequest = ajaxRequest({
-      //   ...option,
-      //   method: 'PUT',
-      //   action: '',
-      //   headers: {
-      //     ...option.headers,
-      //     'Content-Type': 'image/png',
-      //   },
-      //   onError: (err) => {
-      //     option.onError(err, { message: '上传失败' });
-      //   },
-      //   onSuccess: (_, xhr) => {
-      //     // 填充原始的file model
-      //     setTimeout(() => {
-      //       option.onSuccess(
-      //         {
-      //           success: true,
-      //           data: {
-      //             url: 'https://bbs.fanruan.com/source/plugin/it618_video/kindeditor/attached/image/20230417/20230417192156_92893.jpg',
-      //           },
-      //         },
-      //         xhr,
-      //       );
-      //     }, 3000);
-      //   },
-      // });
-      return {
-        abort: () => {
-          canceled = true;
-          originRequest?.abort();
-        },
-      };
+  const getCustomRequest = (option: UploadRequestOption) => {
+    console.log('getCustomRequest触发');
+    const file = option.file;
+    const originRequest = null;
+    let canceled = false;
+    customRequest?.(option);
+    //const isVideo = file => {
+    //  return isVideoExt(parseMIMEType(file.type)[1]);
+    //};
+    //if (customRequest || customVideoUpload) {
+    //  try {
+    //    if (isVideo(file) && customVideoUpload) {
+    //      customVideoUpload(option);
+    //    } else {
+    //      customRequest(option);
+    //    }
+    //  } catch (err) {
+    //    option.onError(err, { message: '上传失败' });
+    //  }
+    //}
+
+    // originRequest = ajaxRequest({
+    //   ...option,
+    //   method: 'PUT',
+    //   action: '',
+    //   headers: {
+    //     ...option.headers,
+    //     'Content-Type': 'image/png',
+    //   },
+    //   onError: (err) => {
+    //     option.onError(err, { message: '上传失败' });
+    //   },
+    //   onSuccess: (_, xhr) => {
+    //     // 填充原始的file model
+    //     setTimeout(() => {
+    //       option.onSuccess(
+    //         {
+    //           success: true,
+    //           data: {
+    //             url: 'https://bbs.fanruan.com/source/plugin/it618_video/kindeditor/attached/image/20230417/20230417192156_92893.jpg',
+    //           },
+    //         },
+    //         xhr,
+    //       );
+    //     }, 3000);
+    //   },
+    // });
+    return {
+      abort: () => {
+        canceled = true;
+        originRequest?.abort();
+      },
     };
   };
 
@@ -404,7 +416,10 @@ const FileUpload: FC<IUploadProps> = props => {
         ref={uploadRef}
         beforeUpload={beforeUploadFun}
         action={action}
-        onChange={handleOnChange}
+        //onChange={handleOnChange}
+        onSuccess={onSuccess}
+        onError={onError}
+        onProgress={onProgress}
         // fileList={formatFileUrl()}
         // listType={listType}
         disabled={disabled}
@@ -413,7 +428,8 @@ const FileUpload: FC<IUploadProps> = props => {
         multiple={multiple}
         // onPreview={onPreview}
         // maxCount={maxFileNum}
-        customRequest={getCustomRequest()}
+        customRequest={getCustomRequest}
+        onStart={onStart}
       >
         <div
           ref={uploadBtnRef}

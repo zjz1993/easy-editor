@@ -7,8 +7,10 @@ import ToolbarContext from '../../context/toolbarContext.ts';
 
 const ImageButton: FC<TToolbarWrapperProps> = props => {
   const { disabled, intlStr } = props;
-  const { editor } = useContext(ToolbarContext);
+  const { editor, imageProps } = useContext(ToolbarContext);
   const [open, setOpen] = useState(false);
+  const { onImageUpload } = imageProps;
+
   return (
     <>
       <DropdownList
@@ -27,9 +29,16 @@ const ImageButton: FC<TToolbarWrapperProps> = props => {
                 accept=".jpg,.jpeg,.png,.gif"
                 acceptErrMsg="支持文件格式：jpg、jpeg、png、gif格式"
                 multiple
-                onChange={file => {
-                  console.log('onChange触发', file);
+                onError={() => {
+                  console.log('onError触发');
                 }}
+                onStart={() => {
+                  console.log('onStart触发');
+                }}
+                onSuccess={(res, file) => {
+                  console.log('上传成功 结果是:', res);
+                }}
+                customRequest={onImageUpload}
               >
                 上传本地图片
               </Upload>

@@ -1,10 +1,10 @@
+import type {TEasyEditorProps} from '@easy-editor/editor-common';
 import {BLOCK_TYPES, isUndefined, MessageContainer, wrapBlockExtensions,} from '@easy-editor/editor-common';
 import EditorToolbar from '@easy-editor/editor-toolbar';
 import {Bold} from '@easy-editor/extension-bold';
 import {EditorContent, useEditor} from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import type {FC} from 'react';
-import type {TEasyEditorProps} from './types/index.ts';
 import './styles/root.scss';
 import {CodeBlock} from '@easy-editor/extension-code-block';
 import {Indent} from '@easy-editor/extension-indent';
@@ -34,6 +34,7 @@ const Editor: FC<TEasyEditorProps> = props => {
   const { intlInit } = useIntlLoaded();
   const { CL, OL, UL, P, H, CLI, LI, QUOTE, HR, TL, IMG } = BLOCK_TYPES;
   const listGroup = `${UL}|${OL}|${CL}`;
+  const imageProps = Object.assign({ max: 0 }, props.imageProps);
   const extensions = [
     StarterKit.configure({ bold: false, codeBlock: false }),
     Bold,
@@ -85,7 +86,7 @@ const Editor: FC<TEasyEditorProps> = props => {
 
   return (
     <div className="easy-editor">
-      {intlInit && <EditorToolbar editor={editor} />}
+      {intlInit && <EditorToolbar editor={editor} imageProps={imageProps} />}
       <EditorContent editor={editor} className="easy-editor-body" />
       <MessageContainer />
       <EditorFilePreview editor={editor} />

@@ -1,12 +1,13 @@
 import {cloneElement, type FC, useContext, useRef} from 'react';
 import './styles/root.scss';
+import type {IImageProps} from '@easy-editor/editor-common';
 import {
   BLOCK_TYPES,
   DropdownPanel,
   Iconfont,
   INDENT_TYPES,
   isSelectionInsideBlockByType,
-  MARK_TYPES
+  MARK_TYPES,
 } from '@easy-editor/editor-common';
 import type {Editor} from '@tiptap/core';
 import Overflow from 'rc-overflow';
@@ -203,11 +204,12 @@ declare module '@tiptap/core' {
 
 export interface IToolbarProps {
   editor: Editor | null;
+  imageProps: Partial<IImageProps>;
 }
 
 const Toolbar: FC<IToolbarProps> = props => {
   const toolbarRef = useRef<HTMLDivElement>();
-  const { editor } = props;
+  const { editor, imageProps = {} } = props;
   const { disabled } = useContext(ToolbarContext);
   const canIndent = editor.isActive('paragraph') || editor.isActive('heading');
   const editorView = editor.view;
@@ -348,7 +350,7 @@ const Toolbar: FC<IToolbarProps> = props => {
     },
   ];
   return (
-    <ToolbarContext.Provider value={{ ...commonProps }}>
+    <ToolbarContext.Provider value={{ ...commonProps, imageProps }}>
       <div className="easy-editor-toolbar" ref={toolbarRef}>
         <Overflow
           data={menuArray}
