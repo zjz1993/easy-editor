@@ -32,11 +32,29 @@ const ImageButton: FC<TToolbarWrapperProps> = props => {
                 onError={() => {
                   console.log('onError触发');
                 }}
-                onStart={() => {
-                  console.log('onStart触发');
+                onProgress={event => {
+                  console.log('onProgress', event);
+                }}
+                onStart={file => {
+                  console.log('onStart触发', file);
+                  editor
+                    .chain()
+                    .focus()
+                    .setImage({ tempFile: file, loading: true, src: '' })
+                    .run();
                 }}
                 onSuccess={(res, file) => {
                   console.log('上传成功 结果是:', res);
+                  editor
+                    .chain()
+                    .focus()
+                    .updateAttrs({
+                      src: res.data,
+                      loading: false,
+                      loadingProgress: 0,
+                      tempFile: null,
+                    })
+                    .run();
                 }}
                 customRequest={onImageUpload}
               >

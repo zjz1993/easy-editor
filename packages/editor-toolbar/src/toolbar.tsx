@@ -126,6 +126,7 @@ declare module '@tiptap/core' {
       toggleTaskList: () => ReturnType;
     };
     image: {
+      updateAttrs: (options: ImageNodeAttributes) => ReturnType;
       setImage: (options: ImageNodeAttributes) => ReturnType;
     };
     codeBlock: {

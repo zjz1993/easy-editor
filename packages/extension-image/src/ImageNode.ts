@@ -11,6 +11,9 @@ export interface ImageNodeAttributes {
   textAlign?: 'center' | 'left' | 'right';
   id?: string;
   hasBorder?: boolean;
+  loading?: boolean;
+  loadingProgress?: number;
+  tempFile?: any;
 }
 
 export interface ImageOptions {
@@ -26,6 +29,7 @@ declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     image: {
       setImage: (obj: ImageNodeAttributes) => ReturnType;
+      updateAttrs: (obj: ImageNodeAttributes) => ReturnType;
     };
   }
 }
@@ -69,6 +73,15 @@ export const ImageNode = Node.create<ImageOptions>({
 
   addAttributes(): Partial<Record<keyof ImageNodeAttributes, any>> {
     return {
+      tempFile: {
+        default: null,
+      },
+      loadingProgress: {
+        default: 0,
+      },
+      loading: {
+        default: true,
+      },
       textAlign: {
         default: 'left',
       },
@@ -110,6 +123,12 @@ export const ImageNode = Node.create<ImageOptions>({
 
   addCommands() {
     return {
+      updateAttrs:
+        options =>
+        ({ commands }) => {
+          console.log('updateAttrs调用了');
+          return commands.updateAttributes('image', options);
+        },
       setImage:
         options =>
         ({ commands }) => {

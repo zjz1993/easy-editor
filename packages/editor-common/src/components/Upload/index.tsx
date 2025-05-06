@@ -3,7 +3,7 @@ import Upload from 'rc-upload';
 import classnames from 'classnames';
 import {isEmpty, noop, take} from 'lodash-es';
 import React, {type FC, type ReactNode, useRef, useState} from 'react';
-import type {RcFile, UploadProgressEvent, UploadRequestOption} from 'rc-upload/es/interface'; //import uuid from 'uuid/v4';
+import type {RcFile, UploadProgressEvent, UploadRequestOption,} from 'rc-upload/es/interface'; //import uuid from 'uuid/v4';
 //import uuid from 'uuid/v4';
 
 const uploadButton = <Button>点击上传</Button>;
@@ -152,11 +152,7 @@ const FileUpload: FC<IUploadProps> = props => {
     console.log('beforeUploadFun触发', file, fileList);
     console.log(file, fileList);
     return new Promise<string>(resolve => {
-      console.log('start check');
-      setTimeout(() => {
-        console.log('check finshed');
-        resolve(file);
-      }, 3000);
+      resolve(file);
     });
     //if (beforeUpload && !beforeUpload(file, fileList)) {
     //  return false;
