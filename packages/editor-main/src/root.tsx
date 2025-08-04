@@ -20,8 +20,7 @@ import {ListItem} from './BulletList/list-item.ts';
 import {UniqueIDExtension} from './extension/UniqueIDExtension/index.ts';
 import useIntlLoaded from './hooks/useIntlLoaded.ts';
 import EditorFilePreview from './components/FilePreview/EditorFilePreview';
-import Underline from '@tiptap/extension-underline';
-import {CodeLine} from '@easy-editor/extension-code-block/src/codeLine.ts'; //import PasteExtension from './extension/paste/index.tsx';
+import Underline from '@tiptap/extension-underline'; //import PasteExtension from './extension/paste/index.tsx';
 //import PasteExtension from './extension/paste/index.tsx';
 
 const Editor: FC<TEasyEditorProps> = props => {
@@ -44,7 +43,6 @@ const Editor: FC<TEasyEditorProps> = props => {
     Underline,
     CustomLink,
     CodeBlock,
-    CodeLine,
     Indent.configure({
       types: [P, H, CL, CLI, OL, UL, LI, QUOTE, HR],
       itemTypeName: BLOCK_TYPES.CLI,
