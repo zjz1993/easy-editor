@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import {useCallback, useState} from 'react';
 
 // Hook 的类型定义
 type UseControlledValueProps<T> = {
@@ -6,11 +6,10 @@ type UseControlledValueProps<T> = {
   defaultValue?: T; // 非受控模式的默认值
   onChange?: (value: T) => void; // 受控模式的值变更回调
 };
-function useControlledValue<T>({
-  value: controlledValue,
-  defaultValue,
-  onChange,
-}: UseControlledValueProps<T>): [T, (newValue: T) => void, boolean] {
+function useControlledValue<T>(
+  props: UseControlledValueProps<T>,
+): [T, (newValue: T) => void, boolean] {
+  const { value: controlledValue, defaultValue, onChange } = props;
   // 判断是否为受控模式
   const isControlled = controlledValue !== undefined;
 

@@ -1,6 +1,6 @@
 import {Iconfont, MARK_TYPES, Popover} from '@easy-editor/editor-common';
 import {type FC, useContext, useState} from 'react';
-import ToolbarItemButtonWrapper from '../../components/toolbarItem/ToolbarItemButtonWrapper.tsx';
+import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 import ToolbarContext from '../../context/toolbarContext.ts';
 import type {TToolbarWrapperProps} from '../../types/index.ts';
 import {LinkPanelPopup} from './LinkPanel.tsx';
@@ -96,3 +96,4 @@ const LinkButton: FC<TToolbarWrapperProps> = props => {
   );
 };
 export default LinkButton;
+export { LinkPanelPopup };

@@ -1,11 +1,11 @@
-import { Iconfont } from '@easy-editor/editor-common';
-import { type FC, useContext } from 'react';
-import type { TToolbarWrapperProps } from 'src/types/index.ts';
-import ToolbarItemButtonWrapper from '../../components/toolbarItem/ToolbarItemButtonWrapper.tsx';
+import {Iconfont} from '@easy-editor/editor-common';
+import {type FC, useContext} from 'react';
+import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 import ToolbarContext from '../../context/toolbarContext.ts';
-import { Button } from '../Button.tsx';
+import type {TToolbarWrapperProps} from '../../types/index.ts';
+import Button from '../Button/index.tsx';
 
-export const Redo: FC<TToolbarWrapperProps> = ({
+export const Undo: FC<TToolbarWrapperProps> = ({
   className,
   style,
   disabled,
@@ -21,11 +21,11 @@ export const Redo: FC<TToolbarWrapperProps> = ({
     >
       <Button
         onClick={() => {
-          editor?.chain().focus().redo?.().run();
+          editor?.chain().focus().undo?.().run();
         }}
         disabled={disabled}
       >
-        <Iconfont type="icon-redo" />
+        <Iconfont type="icon-undo" />
       </Button>
     </ToolbarItemButtonWrapper>
   );

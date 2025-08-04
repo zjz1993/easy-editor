@@ -14,7 +14,6 @@ export const tildeInputRegex = /^[~～]{3}([a-z]+)?[\s\n]$/;
 
 export const CodeBlock = CodeBlockLowlight.extend<CodeBlockOptions>({
   name: BLOCK_TYPES.CODE,
-  allowGapCursor: true,
 
   addOptions() {
     return {

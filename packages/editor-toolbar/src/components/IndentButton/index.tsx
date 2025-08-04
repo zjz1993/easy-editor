@@ -1,12 +1,8 @@
-import {
-  BLOCK_TYPES,
-  INDENT_TYPES,
-  Iconfont,
-} from '@easy-editor/editor-common';
-import { isTextSelection } from '@tiptap/core';
-import { useContext } from 'react';
-import { Button } from '../../components/Button.tsx';
-import ToolbarItemButtonWrapper from '../../components/toolbarItem/ToolbarItemButtonWrapper.tsx';
+import {BLOCK_TYPES, Iconfont, INDENT_TYPES,} from '@easy-editor/editor-common';
+import {isTextSelection} from '@tiptap/core';
+import {useContext} from 'react';
+import Button from '../Button';
+import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 import ToolbarContext from '../../context/toolbarContext.ts';
 
 function getConstant(type: keyof typeof INDENT_TYPES) {
@@ -84,4 +80,4 @@ function IndentButton(props: any) {
   );
 }
 
-export default IndentButton;
+export { IndentButton };

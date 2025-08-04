@@ -1,7 +1,7 @@
 import {Extension} from '@tiptap/core';
 import {Plugin, PluginKey} from '@tiptap/pm/state';
 import {v4 as uuidv4} from 'uuid';
-import {BLOCK_TYPES} from "@easy-editor/editor-common";
+import {BLOCK_TYPES} from '@easy-editor/editor-common';
 
 const UniqueIDExtension = Extension.create({
   name: 'uniqueID',
@@ -15,6 +15,7 @@ const UniqueIDExtension = Extension.create({
           BLOCK_TYPES.H,
           BLOCK_TYPES.CODE,
           BLOCK_TYPES.IMG,
+          BLOCK_TYPES.CODE_LINE,
         ],
         attributes: {
           id: {

@@ -1,4 +1,4 @@
-import { getMarkAttributes, Mark, mergeAttributes } from '@tiptap/core';
+import {getMarkAttributes, Mark, mergeAttributes} from '@tiptap/core';
 
 export interface TextStyleOptions {
   /**
@@ -7,18 +7,6 @@ export interface TextStyleOptions {
    * @example { class: 'foo' }
    */
   HTMLAttributes: Record<string, any>;
-}
-
-declare module '@tiptap/core' {
-  interface Commands<ReturnType> {
-    textStyle: {
-      /**
-       * Remove spans without inline style attributes.
-       * @example editor.commands.removeEmptyTextStyle()
-       */
-      removeEmptyTextStyle: () => ReturnType;
-    };
-  }
 }
 
 /**

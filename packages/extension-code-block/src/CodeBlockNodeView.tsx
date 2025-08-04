@@ -298,17 +298,19 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
           </button>
         </div>
       </div>
-      <div className="easy-editor-code-block__line-numbers">
-        {lineNumbers.map(num => (
-          <div key={num} className="easy-editor-code-block__line-numbers-row">
-            {num}
-          </div>
-        ))}
-      </div>
-      <div className="easy-editor-code-block__content">
-        <pre className={classNames('hljs')} ref={$container}>
-          <NodeViewContent as="code" />
-        </pre>
+      <div className="easy-editor-code-block__content-wrapper">
+        <div className="easy-editor-code-block__line-numbers">
+          {lineNumbers.map(num => (
+            <div key={num} className="easy-editor-code-block__line-numbers-row">
+              {num}
+            </div>
+          ))}
+        </div>
+        <div className="easy-editor-code-block__content">
+          <pre className={classNames('hljs')} ref={$container}>
+            <NodeViewContent as="div" />
+          </pre>
+        </div>
       </div>
     </NodeViewWrapper>
   );

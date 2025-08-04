@@ -640,6 +640,7 @@ export const BLOCK_TYPES = {
   QUOTE: 'quote',
   CODE_INLINE: 'code',
   CODE: 'codeBlock',
+  CODE_LINE: 'codeBlockLine',
   HR: 'divider',
   TL: 'table',
   TR: 'table_row',
@@ -740,4 +741,3 @@ export const headers = [
     keys: 'toolbar.header.quote',
   },
 ];
-export type AlignType = 'left' | 'center' | 'right';

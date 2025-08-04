@@ -10,7 +10,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "rollup -c rollup.config.js -w",
-    "build": "NODE_ENV=production rollup -c rollup.config.js",
+    "build": "NODE_ENV=production rollup -c rollup.config.js --bundleConfigAsCjs",
     "lint": "TIMING=1 eslint \"**/*.ts\"",
     "clear": "rm -rf dist"
   },
@@ -18,17 +18,17 @@
     "@babel/runtime-corejs3": "^7.21.0",
     "@easy-editor/editor-common": "workspace:^",
     "@easy-editor/styles": "workspace:*",
-    "@tiptap/react": "^2.11.5",
+    "@tiptap/react": "^3.0.9",
     "classnames": "^2.5.1",
     "prosemirror-state": "^1.4.3"
   },
   "devDependencies": {
-    "@tiptap/core": "^2.11.5",
-    "@tiptap/pm": "^2.11.5"
+    "@tiptap/core": "^3.0.9",
+    "@tiptap/pm": "^3.0.9"
   },
   "peerDependencies": {
-    "@tiptap/core": "^2.11.5",
-    "@tiptap/pm": "^2.11.5"
+    "@tiptap/core": "^3.0.9",
+    "@tiptap/pm": "^3.0.9"
   },
   "sideEffects": false
 }

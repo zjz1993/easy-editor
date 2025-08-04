@@ -1,7 +1,7 @@
 // import IconFont from '@/Editor/components/IconFont/index';
-import { type NodeViewProps, NodeViewWrapper } from '@tiptap/react';
+import {type NodeViewProps, NodeViewWrapper} from '@tiptap/react';
 //import { Popover, Space, Tooltip } from 'antd';
-import { type FC, Fragment, useState } from 'react';
+import {type FC, useState} from 'react';
 // import LinkEditPopover from './linkEditPopover';
 import './link.scss';
 
@@ -10,14 +10,7 @@ export interface CustomLinkAttrs {
   text: string;
 }
 
-const CustomLinkView: FC<
-  NodeViewProps & {
-    node: {
-      nodeSize: number;
-      attrs: CustomLinkAttrs;
-    };
-  }
-> = props => {
+const CustomLinkView: FC<NodeViewProps> = props => {
   //console.log('view的props是', props);
   const [editVisible, setEditVisible] = useState(false);
   const [inEdit, setInEdit] = useState(false);

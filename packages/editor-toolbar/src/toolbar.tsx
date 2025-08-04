@@ -1,4 +1,4 @@
-import {cloneElement, type FC, useContext, useRef} from 'react';
+import {cloneElement, type FC, useContext, useMemo, useRef} from 'react';
 import './styles/root.scss';
 import type {IImageProps} from '@easy-editor/editor-common';
 import {
@@ -14,21 +14,15 @@ import Overflow from 'rc-overflow';
 import AlignButton from './components/AlignButton/index.tsx';
 import CodeButton from './components/CodeButton/index.tsx';
 import HeaderButton from './components/HeaderButton/index.tsx';
-import IndentButton from './components/IndentButton/IndentButton.tsx';
 import LinkButton from './components/LinkButton/index.tsx';
 import ListButton from './components/ListButton/index.tsx';
 import TextColorPicker from './components/TextColorPicker/index.tsx';
-import {ToolBarItemDivider} from './components/ToolBarItemDivider.tsx';
-import Bold from './components/toolbarItem/Bold.tsx';
-import Italic from './components/toolbarItem/Italic.tsx';
-import {Redo} from './components/toolbarItem/Redo.tsx';
-import Strike from './components/toolbarItem/Strike.tsx';
-import Underline from './components/toolbarItem/Underline.tsx';
-import {Undo} from './components/toolbarItem/Undo.tsx';
+import {Bold, IndentButton, Italic, Redo, Strike, ToolBarItemDivider, Underline, Undo,} from './components';
 import ToolbarContext from './context/toolbarContext.ts';
 import type {IToolbarCommonProps} from './types/index.ts';
 import ImageButton from './components/ImageButton/index.tsx';
 import type {ImageNodeAttributes} from '@easy-editor/extension-image';
+import {useEditorStateTrigger} from './hook/useEditorStateTrigger.ts';
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
@@ -221,135 +215,140 @@ const Toolbar: FC<IToolbarProps> = props => {
     editor,
     disabled: !editor.isEditable,
   };
-  const menuArray = [
-    {
-      key: 'undo',
-      component: <Undo />,
-      intlStr: 'toolbar.undo',
-      disabled: disabled || !editor.can().chain().focus().undo?.().run(),
-    },
-    {
-      key: 'redo',
-      component: <Redo />,
-      intlStr: 'toolbar.redo',
-      disabled: disabled || !editor.can().chain().focus().redo?.().run(),
-    },
-    {
-      key: 'divider',
-      component: <ToolBarItemDivider />,
-    },
-    {
-      key: 'HeaderButton',
-      component: <HeaderButton />,
-      intlStr: 'header',
-      disabled:
-        disabled || isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
-    },
-    {
-      key: 'bold',
-      component: <Bold />,
-      intlStr: 'bold',
-      disabled:
-        disabled ||
-        !editor.can().chain().focus().toggleBold().run() ||
-        isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
-    },
-    {
-      key: 'italic',
-      component: <Italic />,
-      intlStr: 'italic',
-      disabled:
-        disabled ||
-        !editor.can().chain().focus().toggleItalic().run() ||
-        isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
-    },
-    {
-      key: 'underline',
-      component: <Underline />,
-      intlStr: 'underline',
-      disabled:
-        disabled ||
-        !editor.can().chain().focus().toggleUnderline().run() ||
-        isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
-    },
-    {
-      key: 'strike',
-      component: <Strike />,
-      intlStr: 'strike',
-      disabled:
-        disabled ||
-        !editor.can().chain().focus().toggleStrike().run() ||
-        isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
-    },
-    {
-      key: 'textColorPicker',
-      component: <TextColorPicker />,
-      intlStr: 'color',
-      disabled:
-        disabled || isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
-    },
-    {
-      key: 'align',
-      component: <AlignButton />,
-      intlStr: 'align',
-      disabled:
-        disabled || isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
-    },
-    {
-      key: BLOCK_TYPES.OL,
-      component: <ListButton />,
-      disabled:
-        disabled || !editor.can().chain().focus().toggleBulletList?.().run(),
-    },
-    {
-      key: BLOCK_TYPES.UL,
-      component: <ListButton />,
-      disabled:
-        disabled || !editor.can().chain().focus().toggleOrderedList?.().run(),
-    },
-    {
-      key: BLOCK_TYPES.CL,
-      component: <ListButton />,
-      disabled:
-        disabled || !editor.can().chain().focus().toggleTaskList?.().run(),
-    },
-    {
-      key: INDENT_TYPES.Inc,
-      component: <IndentButton />,
-      disabled: disabled || !editor.can().chain().focus().indent().run(),
-    },
-    {
-      key: INDENT_TYPES.Desc,
-      component: <IndentButton />,
-      disabled:
-        disabled || !canIndent || !editor.can().chain().focus().outdent().run(),
-    },
-    {
-      key: 'link',
-      component: <LinkButton />,
-      intlStr: 'tool.link',
-      disabled:
-        disabled ||
-        !editor.state.schema.marks[MARK_TYPES.LK] ||
-        !editor.can().chain().focus().toggleMark(MARK_TYPES.LK).run() ||
-        isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
-    },
-    {
-      key: 'code',
-      component: <CodeButton />,
-      intlStr: 'code',
-      disabled:
-        disabled ||
-        !editor.can().chain().focus().toggleCodeBlock?.().run() ||
-        !editor.can().chain().focus().toggleCode?.().run(),
-    },
-    {
-      key: BLOCK_TYPES.IMG,
-      component: <ImageButton />,
-      intlStr: 'image',
-      disabled: disabled,
-    },
-  ];
+  useEditorStateTrigger(editor); // 只触发 Toolbar 自身刷新
+  const menuArray = useMemo(() => {
+    return [
+      {
+        key: 'undo',
+        component: <Undo />,
+        intlStr: 'toolbar.undo',
+        disabled: disabled || !editor.can().chain().focus().undo?.().run(),
+      },
+      {
+        key: 'redo',
+        component: <Redo />,
+        intlStr: 'toolbar.redo',
+        disabled: disabled || !editor.can().chain().focus().redo?.().run(),
+      },
+      {
+        key: 'divider',
+        component: <ToolBarItemDivider />,
+      },
+      {
+        key: 'HeaderButton',
+        component: <HeaderButton />,
+        intlStr: 'header',
+        disabled:
+          disabled || isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
+      },
+      {
+        key: 'bold',
+        component: <Bold />,
+        intlStr: 'bold',
+        disabled:
+          disabled ||
+          !editor.can().chain().focus().toggleBold().run() ||
+          isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
+      },
+      {
+        key: 'italic',
+        component: <Italic />,
+        intlStr: 'italic',
+        disabled:
+          disabled ||
+          !editor.can().chain().focus().toggleItalic().run() ||
+          isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
+      },
+      {
+        key: 'underline',
+        component: <Underline />,
+        intlStr: 'underline',
+        disabled:
+          disabled ||
+          !editor.can().chain().focus().toggleUnderline().run() ||
+          isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
+      },
+      {
+        key: 'strike',
+        component: <Strike />,
+        intlStr: 'strike',
+        disabled:
+          disabled ||
+          !editor.can().chain().focus().toggleStrike().run() ||
+          isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
+      },
+      {
+        key: 'textColorPicker',
+        component: <TextColorPicker />,
+        intlStr: 'color',
+        disabled:
+          disabled || isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
+      },
+      {
+        key: 'align',
+        component: <AlignButton />,
+        intlStr: 'align',
+        disabled:
+          disabled || isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
+      },
+      {
+        key: BLOCK_TYPES.OL,
+        component: <ListButton />,
+        disabled:
+          disabled || !editor.can().chain().focus().toggleBulletList?.().run(),
+      },
+      {
+        key: BLOCK_TYPES.UL,
+        component: <ListButton />,
+        disabled:
+          disabled || !editor.can().chain().focus().toggleOrderedList?.().run(),
+      },
+      {
+        key: BLOCK_TYPES.CL,
+        component: <ListButton />,
+        disabled:
+          disabled || !editor.can().chain().focus().toggleTaskList?.().run(),
+      },
+      {
+        key: INDENT_TYPES.Inc,
+        component: <IndentButton />,
+        disabled: disabled || !editor.can().chain().focus().indent().run(),
+      },
+      {
+        key: INDENT_TYPES.Desc,
+        component: <IndentButton />,
+        disabled:
+          disabled ||
+          !canIndent ||
+          !editor.can().chain().focus().outdent().run(),
+      },
+      {
+        key: 'link',
+        component: <LinkButton />,
+        intlStr: 'tool.link',
+        disabled:
+          disabled ||
+          !editor.state.schema.marks[MARK_TYPES.LK] ||
+          !editor.can().chain().focus().toggleMark(MARK_TYPES.LK).run() ||
+          isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
+      },
+      {
+        key: 'code',
+        component: <CodeButton />,
+        intlStr: 'code',
+        disabled:
+          disabled ||
+          // !editor.can().chain().focus().toggleCodeBlock?.().run() ||
+          !editor.can().chain().focus().toggleCode?.().run(),
+      },
+      {
+        key: BLOCK_TYPES.IMG,
+        component: <ImageButton />,
+        intlStr: 'image',
+        disabled: disabled,
+      },
+    ];
+  }, [editor?.state]);
   return (
     <ToolbarContext.Provider value={{ ...commonProps, imageProps }}>
       <div className="easy-editor-toolbar" ref={toolbarRef}>

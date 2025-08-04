@@ -1,7 +1,7 @@
-import { BLOCK_TYPES, Iconfont } from '@easy-editor/editor-common';
-import { useContext } from 'react';
-import { Button } from '../../components/Button.tsx';
-import ToolbarItemButtonWrapper from '../../components/toolbarItem/ToolbarItemButtonWrapper.tsx';
+import {BLOCK_TYPES, Iconfont} from '@easy-editor/editor-common';
+import {useContext} from 'react';
+import Button from '../../components/Button';
+import ToolbarItemButtonWrapper from '..//ToolbarItemButtonWrapper';
 import ToolbarContext from '../../context/toolbarContext.ts';
 
 function getConstants(type: keyof typeof BLOCK_TYPES) {

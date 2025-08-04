@@ -1,7 +1,7 @@
 import {Dropdown, Iconfont} from '@easy-editor/editor-common';
 import type {FC} from 'react';
 import {useContext} from 'react';
-import ToolbarItemButtonWrapper from '../toolbarItem/ToolbarItemButtonWrapper.tsx';
+import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 import './index.scss';
 import cx from 'classnames';
 import type {TToolbarWrapperProps} from 'src/types/index.ts';

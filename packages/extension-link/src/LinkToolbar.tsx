@@ -1,5 +1,5 @@
-import {Iconfont, IntlComponent, MARK_TYPES, Tooltip} from '@easy-editor/editor-common';
-import {LinkPanelPopup} from '@easy-editor/editor-toolbar/src/components/LinkButton/LinkPanel.tsx';
+import {Iconfont, IntlComponent, MARK_TYPES, Tooltip,} from '@easy-editor/editor-common';
+import {LinkPanelPopup} from '@easy-editor/editor-toolbar';
 import {autoUpdate, flip, offset, shift, useFloating,} from '@floating-ui/react';
 import {useState} from 'react';
 import './toolbar.scss';

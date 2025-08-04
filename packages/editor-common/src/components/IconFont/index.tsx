@@ -1,62 +1,14 @@
+// index.tsx
 import cx from 'classnames';
-import type {CSSProperties, FC, SVGAttributes} from 'react';
-import {forwardRef, type PropsWithChildren} from 'react';
+import type {CSSProperties, FC} from 'react';
 import {createFromIconfont} from './createFrontIconfont';
+import {Icon} from './Icon'; // 导入 Icon 组件
 import './index.scss';
 
-type BaseIconProps = {
-  className?: string;
-  style?: CSSProperties;
-  size?: string | string[];
-  spin?: boolean;
-};
-
-export type IconProps = BaseIconProps &
-  Omit<SVGAttributes<SVGElement>, keyof BaseIconProps>;
-
-export const getSize = (size: IconProps['size']) => {
-  if (Array.isArray(size) && size.length === 2) {
-    return size as string[];
-  }
-
-  const width = (size as string) || '1em';
-  const height = (size as string) || '1em';
-
-  return [width, height];
-};
-
-export const Icon = forwardRef<SVGSVGElement, PropsWithChildren<IconProps>>(
-  (props, ref) => {
-    const { style, className, spin, size = '1em', children, ...rest } = props;
-
-    const [width, height] = getSize(size);
-
-    const cn = cx(
-      'icon',
-      {
-        'icon-spin': spin,
-      },
-      className,
-    );
-
-    return (
-      <svg
-        ref={ref}
-        className={cn}
-        style={style}
-        width={width}
-        height={height}
-        fill="currentColor"
-        {...rest}
-      >
-        {children}
-      </svg>
-    );
-  },
-);
 const IconFont = createFromIconfont(
   '//at.alicdn.com/t/c/font_4437062_f8f2fydfxer.js',
 );
+
 const IconComponent: FC<{
   type: string;
   style?: CSSProperties;
@@ -78,4 +30,7 @@ const IconComponent: FC<{
     </span>
   );
 };
+
+// 重新导出 Icon 组件和类型
+export { Icon, type IconProps } from './Icon';
 export default IconComponent;

@@ -8,7 +8,7 @@ import './index.scss';
 import {AnimatePresence, motion} from 'framer-motion';
 import {assign, isFunction, isString, size, some, split} from 'lodash-es';
 import Spin from '../Spin';
-import {IntlComponent} from '../../index.ts';
+import IntlComponent from 'react-intl-universal';
 
 const formatScaleVal = val => {
   if (!val) return '';
@@ -376,6 +376,7 @@ const FilePreview: FC<IFilePreviewProps> = ({
     return (
       <div className="preview-body" onClick={onClose}>
         {createSwitchBtns()}
+        {/* biome-ignore lint/a11y/useMediaCaption: <explanation> */}
         <video
           key={activeIndex}
           className="preview-video preview-center"
@@ -392,6 +393,7 @@ const FilePreview: FC<IFilePreviewProps> = ({
     return (
       <div className="preview-body" onClick={onClose}>
         {createSwitchBtns()}
+        {/* biome-ignore lint/a11y/useMediaCaption: <explanation> */}
         <audio
           key={activeIndex}
           className="preview-audio preview-center"

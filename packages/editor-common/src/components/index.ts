@@ -1,11 +1,8 @@
 export { default as Modal } from './Modal/index';
 export { default as DropdownPanel } from './DropdownPanel/index';
-export {
-  default as Dropdown,
-  type TDropDownRefProps,
-} from './Dropdown/index.tsx';
-export { default as DropdownList } from './DropdownList/index.tsx';
-export { default as Iconfont } from './IconFont/index';
+export { default as Dropdown } from './Dropdown/index.tsx';
+export { default as DropdownList } from './DropdownList';
+export { default as Iconfont } from './IconFont';
 export { default as Spin } from './Spin';
 export { default as FilePreview } from './FilePreview';
 export { default as Button } from './Button';

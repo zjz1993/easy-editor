@@ -1,5 +1,2 @@
-import {ImageNode} from './ImageNode.ts';
-
-export * from './ImageNode.ts';
-
-export default ImageNode;
+export * from './ImageNode';
+export type { ImageNodeAttributes, ImageOptions } from './types';

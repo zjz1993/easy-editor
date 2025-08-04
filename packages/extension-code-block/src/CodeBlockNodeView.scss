@@ -8,27 +8,13 @@
   background: #f5f6f8;
   border-radius: 4px;
   overflow: hidden;
-  &__line-numbers{
-    position: absolute;
-    left: 0;
-    top: 23px;
-    font-size: 14px;
-    line-height: 25px;
-    width: 15px;
-    text-align: center;
-    color: rgba(0, 0, 0, 0.3);
-  }
 
   &__toolbar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding: 5px 6px 0 10px;
+    padding: 10px;
     font-size: 13px;
     line-height: 18px;
     user-select: none;
@@ -38,16 +24,23 @@
     }
   }
 
-  &__content {
-    pre {
-      margin: 0;
-      border-radius: 0 !important;
-
-      code {
-        padding: 23px !important;
-      }
+  &__content-wrapper{
+    display: flex;
+    .easy-editor-code-block__line-numbers{
+      font-size: 14px;
+      line-height: 25px;
+      min-width: 15px;
+      text-align: center;
+      color: rgba(0, 0, 0, 0.3);
+      margin-right: 10px;
+    }
+    .easy-editor-code-block__content {
+      font-size: 14px;
+      line-height: 25px;
+      flex:1;
     }
   }
+
   &__button_area{
     display: inline-flex;
     &__button {
@@ -206,11 +199,6 @@
   /* Python / JS / TS 装饰器 */
   .hljs-decorator {
     color: #e5c07b;
-  }
-
-  /* 代码块阴影 */
-  pre {
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   }
 
   /* 滚动条样式 */

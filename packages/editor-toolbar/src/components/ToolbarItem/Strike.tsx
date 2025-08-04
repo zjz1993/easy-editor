@@ -1,9 +1,9 @@
-import { Iconfont } from '@easy-editor/editor-common';
-import { type FC, useContext } from 'react';
-import ToolbarItemButtonWrapper from '../../components/toolbarItem/ToolbarItemButtonWrapper.tsx';
+import {Iconfont} from '@easy-editor/editor-common';
+import {type FC, useContext} from 'react';
+import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 import ToolbarContext from '../../context/toolbarContext.ts';
-import type { TToolbarWrapperProps } from '../../types/index.ts';
-import { Button } from '../Button.tsx';
+import type {TToolbarWrapperProps} from '../../types/index.ts';
+import Button from '../Button';
 
 const Strike: FC<TToolbarWrapperProps> = ({
   className,
@@ -31,4 +31,4 @@ const Strike: FC<TToolbarWrapperProps> = ({
     </ToolbarItemButtonWrapper>
   );
 };
-export default Strike;
+export { Strike };

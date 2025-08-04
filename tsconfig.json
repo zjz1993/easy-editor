@@ -8,6 +8,7 @@
       "DOM",
       "DOM.Iterable"
     ],
+
     "composite": false,
     "declaration": true,
     "declarationMap": true,

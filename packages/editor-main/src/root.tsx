@@ -1,6 +1,6 @@
 import type {TEasyEditorProps} from '@easy-editor/editor-common';
 import {BLOCK_TYPES, isUndefined, MessageContainer, wrapBlockExtensions,} from '@easy-editor/editor-common';
-import EditorToolbar from '@easy-editor/editor-toolbar';
+import {EditorToolbar} from '@easy-editor/editor-toolbar';
 import {Bold} from '@easy-editor/extension-bold';
 import {EditorContent, useEditor} from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -11,16 +11,17 @@ import {Indent} from '@easy-editor/extension-indent';
 import {CustomLink} from '@easy-editor/extension-link';
 import {TaskItem, TaskList} from '@easy-editor/extension-task-item';
 import {Color} from '@tiptap/extension-color';
-import Image from '@easy-editor/extension-image';
+import {ImageNode} from '@easy-editor/extension-image';
 import {Placeholder} from '@tiptap/extension-placeholder';
 import {TextAlign} from '@tiptap/extension-text-align';
 import {TextStyle} from '@tiptap/extension-text-style';
-import Underline from '@tiptap/extension-underline';
 import BulletList from './BulletList/bullet-list.ts';
 import {ListItem} from './BulletList/list-item.ts';
 import {UniqueIDExtension} from './extension/UniqueIDExtension/index.ts';
 import useIntlLoaded from './hooks/useIntlLoaded.ts';
-import EditorFilePreview from './components/FilePreview/EditorFilePreview'; //import PasteExtension from './extension/paste/index.tsx';
+import EditorFilePreview from './components/FilePreview/EditorFilePreview';
+import Underline from '@tiptap/extension-underline';
+import {CodeLine} from '@easy-editor/extension-code-block/src/codeLine.ts'; //import PasteExtension from './extension/paste/index.tsx';
 //import PasteExtension from './extension/paste/index.tsx';
 
 const Editor: FC<TEasyEditorProps> = props => {
@@ -36,13 +37,14 @@ const Editor: FC<TEasyEditorProps> = props => {
   const listGroup = `${UL}|${OL}|${CL}`;
   const imageProps = Object.assign({ max: 0 }, props.imageProps);
   const extensions = [
-    StarterKit.configure({ bold: false, codeBlock: false }),
+    StarterKit.configure({ bold: false, codeBlock: false, underline: false }),
     Bold,
-    Underline,
     TextStyle,
     Color,
+    Underline,
     CustomLink,
     CodeBlock,
+    CodeLine,
     Indent.configure({
       types: [P, H, CL, CLI, OL, UL, LI, QUOTE, HR],
       itemTypeName: BLOCK_TYPES.CLI,
@@ -62,7 +64,7 @@ const Editor: FC<TEasyEditorProps> = props => {
     TaskList,
     TaskItem,
     UniqueIDExtension,
-    Image,
+    ImageNode,
     // CustomParagraph,
   ];
   const editor = useEditor({

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import type { MouseEvent, ReactNode } from 'react';
-import { forwardRef } from 'react';
+import type {MouseEvent, ReactNode} from 'react';
+import {forwardRef} from 'react';
 
 export type ButtonProps = {
   disabled?: boolean;
@@ -9,7 +9,7 @@ export type ButtonProps = {
   onClick?: (e: MouseEvent<HTMLDivElement>) => void;
 };
 
-export const Button = forwardRef<HTMLDivElement, ButtonProps>(
+const Button = forwardRef<HTMLDivElement, ButtonProps>(
   ({ disabled, isActive, children, onClick }, ref) => {
     return (
       <div
@@ -31,5 +31,4 @@ export const Button = forwardRef<HTMLDivElement, ButtonProps>(
     );
   },
 );
-
-Button.displayName = 'Button';
+export default Button;

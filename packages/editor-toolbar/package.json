@@ -7,7 +7,7 @@
   "types": "dist/types/index.d.ts",
   "scripts": {
     "dev": "rollup -c rollup.config.js -w",
-    "build": "NODE_ENV=production rollup -c rollup.config.js",
+    "build": "npm run clear && NODE_ENV=production rollup -c rollup.config.js",
     "lint": "TIMING=1 eslint \"**/*.ts\"",
     "clear": "rm -rf dist"
   },
@@ -19,11 +19,11 @@
     "@easy-editor/extension-bold": "workspace:^",
     "@easy-editor/extension-image": "workspace:^",
     "@easy-editor/styles": "workspace:*",
-    "@tiptap/core": "^2.11.5",
-    "@tiptap/extension-heading": "^2.11.5",
-    "@tiptap/pm": "^2.11.5",
-    "@tiptap/react": "^2.11.5",
-    "@tiptap/starter-kit": "^2.11.5",
+    "@tiptap/core": "^3.0.9",
+    "@tiptap/extension-heading": "^3.0.9",
+    "@tiptap/pm": "^3.0.9",
+    "@tiptap/react": "^3.0.9",
+    "@tiptap/starter-kit": "^3.0.9",
     "classnames": "^2.5.1",
     "rc-overflow": "^1.4.1",
     "react-hook-form": "^7.54.2"

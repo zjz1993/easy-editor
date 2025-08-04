@@ -1,7 +1,7 @@
 import {BLOCK_TYPES, DropdownList, Iconfont, IntlComponent,} from '@easy-editor/editor-common';
 import type {FC} from 'react';
 import {useContext, useState} from 'react';
-import ToolbarItemButtonWrapper from '../../components/toolbarItem/ToolbarItemButtonWrapper.tsx';
+import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 import ToolbarContext from '../../context/toolbarContext.ts';
 import type {TToolbarWrapperProps} from '../../types/index.ts';
 
@@ -26,7 +26,7 @@ const CodeButton: FC<TToolbarWrapperProps> = props => {
         }}
         options={[
           {
-            disabled: !editor.can().chain().focus().toggleCodeBlock?.().run(),
+            // disabled: !editor.can().chain().focus().toggleCodeBlock({language:'text'})?.().run(),
             label: editor.isActive(BLOCK_TYPES.CODE)
               ? IntlComponent.get('codeBlock.inline.remove')
               : IntlComponent.get('codeBlock.inline.insert'),

@@ -1,7 +1,7 @@
-import { IntlComponent, Tooltip } from '@easy-editor/editor-common';
-import type { CSSProperties, FC, ReactElement } from 'react';
-import { command, option } from '../../utils/index.ts';
-import ToolBarItem from '../ToolBarItem.tsx';
+import {IntlComponent, Tooltip} from '@easy-editor/editor-common';
+import type {CSSProperties, FC, ReactElement} from 'react';
+import {command, option} from '../../utils/index.ts';
+import ToolBarItem from '../ToolbarItem/ToolBarItem';
 
 const ToolbarItemButtonWrapper: FC<{
   intlStr: string;

@@ -6,16 +6,16 @@ import json from '@rollup/plugin-json';
 import babel from '@rollup/plugin-babel';
 import {DEFAULT_EXTENSIONS} from '@babel/core';
 import typescript2 from 'rollup-plugin-typescript2';
-import sourcemaps from 'rollup-plugin-sourcemaps';
 import postcss from 'rollup-plugin-postcss';
 // import NpmImport from 'less-plugin-npm-import';
-import {visualizer} from 'rollup-plugin-visualizer';
 import alias from "rollup-plugin-alias";
+import {dts} from "rollup-plugin-dts";
 
 const extensions = [...DEFAULT_EXTENSIONS, '.ts', '.tsx'];
 
 const getPlugins = ({ projectPath, tsconfigPath }) => {
   return [
+    // dts(),
     resolve({
       browser: true,
       preferBuiltins: false,
@@ -30,6 +30,8 @@ const getPlugins = ({ projectPath, tsconfigPath }) => {
         ? tsconfigPath
         : path.resolve(projectPath, 'tsconfig.json'),
       useTsconfigDeclarationDir: true,
+      declaration: true, // 明确指定生成声明文件
+      declarationDir: path.resolve(projectPath, 'dist/types'), // 指定声明文件输出目录
       exclude: ['**/__tests__', '**/*.test.ts'],
     }),
     babel({
@@ -38,17 +40,16 @@ const getPlugins = ({ projectPath, tsconfigPath }) => {
       extensions: extensions,
       exclude: '**/node_modules/**',
     }),
-    sourcemaps(),
     postcss({
       extract: 'styles.css',  // 将所有样式提取到一个 CSS 文件
       minimize: true,      // 压缩 CSS
       // sourceMap: true,     // 生成 SourceMap
       use: ['sass'],       // 使用 SASS 处理器
     }),
-    visualizer({
-      emitFile: true,
-      file: 'stats.html',
-    }),
+    // visualizer({
+    //   emitFile: true,
+    //   file: 'stats.html',
+    // }),
   ];
 };
 
@@ -102,7 +103,7 @@ export const createRollupConfig = (opts) => {
       return {
         ...o,
         external: external ? external : defaultExternals,
-        plugins: [...getPlugins({ projectPath, tsconfigPath }), ...plugins, alias({
+        plugins: [...getPlugins({ projectPath, tsconfigPath }), ...plugins, dts(),alias({
           entries: [
             {
               find: '@easy-editor/styles',

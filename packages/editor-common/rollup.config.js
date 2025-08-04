@@ -1,9 +1,10 @@
 import replace from '@rollup/plugin-replace';
 import copy from 'rollup-plugin-copy';
-import { createRollupConfig } from '../../scripts/rollup.common';
-import packageJson from './package.json';
+import {createRollupConfig} from '../../scripts/rollup.common';
+import packageJson from './package.json'; // 获取基础配置
 
-export default createRollupConfig({
+// 获取基础配置
+const baseConfigs = createRollupConfig({
   pkg: packageJson,
   projectPath: __dirname,
   plugins: [
@@ -12,14 +13,28 @@ export default createRollupConfig({
         {
           src: 'src/components/IconFont/assets/iconfont.js',
           dest: 'dist/assets',
-        }, // 复制 iconfont.js
+        },
       ],
     }),
     replace({
       'process.env.NODE_ENV': JSON.stringify(
         process.env.NODE_ENV || 'development',
-      ), // 替换环境变量
-      preventAssignment: true, // 防止错误替换
+      ),
+      preventAssignment: true,
     }),
   ],
 });
+
+// 添加类型声明配置
+// const typesConfig = {
+//   input: 'src/index.ts',
+//   output: [
+//     {
+//       file: packageJson.types,
+//       format: 'es',
+//     },
+//   ],
+//   plugins: [dts()],
+// };
+
+export default [...(Array.isArray(baseConfigs) ? baseConfigs : [baseConfigs])];

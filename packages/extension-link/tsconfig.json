@@ -4,7 +4,8 @@
     "baseUrl": ".",
     "declarationDir": "./dist/types",
     "emitDeclarationOnly": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "rootDir": "./src"
   },
   "include": ["src"],
   "exclude": ["node_modules"]

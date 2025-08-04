@@ -4,10 +4,7 @@ import DropdownPanel from '../DropdownPanel/index.tsx';
 import './index.scss';
 import cx from 'classnames';
 import useControlledValue from '../../hooks/useControlledValue.ts';
-
-export type TDropDownRefProps = {
-  toggleVisible: (visible: boolean) => void;
-};
+import type {TDropDownRefProps} from '../../types/index.ts';
 
 const DropdownList = forwardRef<
   TDropDownRefProps,

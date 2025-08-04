@@ -1,123 +1,37 @@
 
 
 > @easy-editor/editor-toolbar@0.0.1 build /Users/zhaojunzhe/easy-editor/packages/editor-toolbar
-> NODE_ENV=production rollup -c rollup.config.js
+> npm run clear && NODE_ENV=production rollup -c rollup.config.js
+
+
+> @easy-editor/editor-toolbar@0.0.1 clear
+> rm -rf dist
 
 [36m
 [1msrc/index.ts[22m → [1mdist/main.js[22m...[39m
-[33m[1mDeprecation Warning[0m: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+[1m[33m(!) You have passed an unrecognized option[39m[22m
+Unknown input options: onLog. Allowed options: acorn, acornInjectPlugins, cache, context, experimentalCacheExpiry, external, inlineDynamicImports, input, makeAbsoluteExternalsRelative, manualChunks, maxParallelFileOps, maxParallelFileReads, moduleContext, onwarn, perf, plugins, preserveEntrySignatures, preserveModules, preserveSymlinks, shimMissingExports, strictDeprecations, treeshake, watch
+[1m[31m[!] [1m(plugin rpt2) Error: [96msrc/components/CodeButton/index.tsx[0m:[93m4[0m:[93m38[0m - [91merror[0m[90m TS2307: [0mCannot find module '../ToolbarItem/ToolbarItemButtonWrapper.tsx' or its corresponding type declarations.
 
-More info: https://sass-lang.com/d/legacy-js-api
+[7m4[0m import ToolbarItemButtonWrapper from '../ToolbarItem/ToolbarItemButtonWrapper.tsx';
+[7m [0m [91m                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[22m[1m[39m[22m
+src/index.ts
+[2m
+    at error (/Users/zhaojunzhe/easy-editor/node_modules/.pnpm/rollup@2.78.0/node_modules/rollup/dist/shared/rollup.js:198:30)
+    at throwPluginError (/Users/zhaojunzhe/easy-editor/node_modules/.pnpm/rollup@2.78.0/node_modules/rollup/dist/shared/rollup.js:21911:12)
+    at Object.error (/Users/zhaojunzhe/easy-editor/node_modules/.pnpm/rollup@2.78.0/node_modules/rollup/dist/shared/rollup.js:22633:20)
+    at RollupContext.error (/Users/zhaojunzhe/easy-editor/node_modules/.pnpm/rollup-plugin-typescript2@0.36.0_rollup@2.78.0_typescript@5.6.3/node_modules/rollup-plugin-typescript2/dist/rollup-plugin-typescript2.cjs.js:1457:26)
+    at /Users/zhaojunzhe/easy-editor/node_modules/.pnpm/rollup-plugin-typescript2@0.36.0_rollup@2.78.0_typescript@5.6.3/node_modules/rollup-plugin-typescript2/dist/rollup-plugin-typescript2.cjs.js:27639:26
+    at Array.forEach (<anonymous>)
+    at printDiagnostics (/Users/zhaojunzhe/easy-editor/node_modules/.pnpm/rollup-plugin-typescript2@0.36.0_rollup@2.78.0_typescript@5.6.3/node_modules/rollup-plugin-typescript2/dist/rollup-plugin-typescript2.cjs.js:27615:17)
+    at typecheckFile (/Users/zhaojunzhe/easy-editor/node_modules/.pnpm/rollup-plugin-typescript2@0.36.0_rollup@2.78.0_typescript@5.6.3/node_modules/rollup-plugin-typescript2/dist/rollup-plugin-typescript2.cjs.js:27972:9)
+    at Object.<anonymous> (/Users/zhaojunzhe/easy-editor/node_modules/.pnpm/rollup-plugin-typescript2@0.36.0_rollup@2.78.0_typescript@5.6.3/node_modules/rollup-plugin-typescript2/dist/rollup-plugin-typescript2.cjs.js:28118:21)
+    at Generator.next (<anonymous>)
+    at /Users/zhaojunzhe/easy-editor/node_modules/.pnpm/rollup-plugin-typescript2@0.36.0_rollup@2.78.0_typescript@5.6.3/node_modules/rollup-plugin-typescript2/dist/rollup-plugin-typescript2.cjs.js:63:69
+    at new Promise (<anonymous>)
+    at __awaiter (/Users/zhaojunzhe/easy-editor/node_modules/.pnpm/rollup-plugin-typescript2@0.36.0_rollup@2.78.0_typescript@5.6.3/node_modules/rollup-plugin-typescript2/dist/rollup-plugin-typescript2.cjs.js:59:10)
+    at Object.transform (/Users/zhaojunzhe/easy-editor/node_modules/.pnpm/rollup-plugin-typescript2@0.36.0_rollup@2.78.0_typescript@5.6.3/node_modules/rollup-plugin-typescript2/dist/rollup-plugin-typescript2.cjs.js:28099:20)
+    at /Users/zhaojunzhe/easy-editor/node_modules/.pnpm/rollup@2.78.0/node_modules/rollup/dist/shared/rollup.js:22840:40[22m
 
-[33m[1mDeprecation Warning[0m: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
-
-More info: https://sass-lang.com/d/legacy-js-api
-
-[33m[1mDeprecation Warning[0m: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
-
-More info: https://sass-lang.com/d/legacy-js-api
-
-[33m[1mDeprecation Warning[0m: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
-
-More info: https://sass-lang.com/d/legacy-js-api
-
-[1m[33m(!) Unresolved dependencies[39m[22m
-[90mhttps://rollupjs.org/guide/en/#warning-treating-module-as-external-dependency[39m
-[1m@babel/runtime-corejs3/core-js-stable/instance/map[22m (imported by src/components/AlignButton/alignPopup.tsx, src/components/TextColorPicker/colorPickerDropdown.tsx, src/toolbar.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/instance/find[22m (imported by src/components/AlignButton/index.tsx, src/components/HeaderButton/index.tsx, src/components/TextColorPicker/index.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/instance/for-each[22m (imported by src/components/HeaderButton/HeaderButtonDropdown.tsx, src/toolbar.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/instance/keys[22m (imported by src/components/HeaderButton/HeaderButtonDropdown.tsx)
-[1m@babel/runtime-corejs3/helpers/defineProperty[22m (imported by src/components/HeaderButton/HeaderButtonDropdown.tsx, src/toolbar.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/instance/filter[22m (imported by src/toolbar.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/object/keys[22m (imported by src/toolbar.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/object/get-own-property-symbols[22m (imported by src/toolbar.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/object/define-properties[22m (imported by src/toolbar.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor[22m (imported by src/toolbar.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptors[22m (imported by src/toolbar.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/object/define-property[22m (imported by src/toolbar.tsx)
-[1m[33m(!) `this` has been rewritten to `undefined`[39m[22m
-[90mhttps://rollupjs.org/guide/en/#error-this-is-undefined[39m
-[1m../../node_modules/.pnpm/intl-messageformat@7.8.4/node_modules/intl-messageformat/lib/formatters.js[22m
-[90m1: var __extends = (this && this.__extends) || (function () {
-                    ^
-2:     var extendStatics = function (d, b) {
-3:         extendStatics = Object.setPrototypeOf ||[39m
-...and 3 other occurrences
-[1m../../node_modules/.pnpm/intl-messageformat@7.8.4/node_modules/intl-messageformat/lib/core.js[22m
-[90m4: See the accompanying LICENSE file for terms.
-5: */
-6: var __assign = (this && this.__assign) || function () {
-                   ^
-7:     __assign = Object.assign || function(t) {
-8:         for (var s, i = 1, n = arguments.length; i < n; i++) {[39m
-...and 1 other occurrence
-[1m../../node_modules/.pnpm/intl-format-cache@4.3.1/node_modules/intl-format-cache/lib/index.js[22m
-[90m4: See the accompanying LICENSE file for terms.
-5: */
-6: var __spreadArrays = (this && this.__spreadArrays) || function () {
-                         ^
-7:     for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-8:     for (var r = Array(s), k = 0, i = 0; i < il; i++)[39m
-...and 1 other occurrence
-
-...and 3 other files
-[32mcreated [1mdist/main.js[22m in [1m16.5s[22m[39m
-[36m
-[1msrc/index.ts[22m → [1mdist/index.esm.js[22m...[39m
-[33m[1mDeprecation Warning[0m: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
-
-More info: https://sass-lang.com/d/legacy-js-api
-
-[33m[1mDeprecation Warning[0m: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
-
-More info: https://sass-lang.com/d/legacy-js-api
-
-[33m[1mDeprecation Warning[0m: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
-
-More info: https://sass-lang.com/d/legacy-js-api
-
-[33m[1mDeprecation Warning[0m: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
-
-More info: https://sass-lang.com/d/legacy-js-api
-
-[1m[33m(!) Unresolved dependencies[39m[22m
-[90mhttps://rollupjs.org/guide/en/#warning-treating-module-as-external-dependency[39m
-[1m@babel/runtime-corejs3/core-js-stable/instance/find[22m (imported by src/components/AlignButton/index.tsx, src/components/HeaderButton/index.tsx, src/components/TextColorPicker/index.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/instance/map[22m (imported by src/components/AlignButton/alignPopup.tsx, src/components/TextColorPicker/colorPickerDropdown.tsx, src/toolbar.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/instance/keys[22m (imported by src/components/HeaderButton/HeaderButtonDropdown.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/instance/for-each[22m (imported by src/components/HeaderButton/HeaderButtonDropdown.tsx, src/toolbar.tsx)
-[1m@babel/runtime-corejs3/helpers/defineProperty[22m (imported by src/components/HeaderButton/HeaderButtonDropdown.tsx, src/toolbar.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/instance/filter[22m (imported by src/toolbar.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/object/keys[22m (imported by src/toolbar.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/object/get-own-property-symbols[22m (imported by src/toolbar.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor[22m (imported by src/toolbar.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptors[22m (imported by src/toolbar.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/object/define-property[22m (imported by src/toolbar.tsx)
-[1m@babel/runtime-corejs3/core-js-stable/object/define-properties[22m (imported by src/toolbar.tsx)
-[1m[33m(!) `this` has been rewritten to `undefined`[39m[22m
-[90mhttps://rollupjs.org/guide/en/#error-this-is-undefined[39m
-[1m../../node_modules/.pnpm/intl-messageformat@7.8.4/node_modules/intl-messageformat/lib/core.js[22m
-[90m4: See the accompanying LICENSE file for terms.
-5: */
-6: var __assign = (this && this.__assign) || function () {
-                   ^
-7:     __assign = Object.assign || function(t) {
-8:         for (var s, i = 1, n = arguments.length; i < n; i++) {[39m
-...and 1 other occurrence
-[1m../../node_modules/.pnpm/intl-messageformat@7.8.4/node_modules/intl-messageformat/lib/formatters.js[22m
-[90m1: var __extends = (this && this.__extends) || (function () {
-                    ^
-2:     var extendStatics = function (d, b) {
-3:         extendStatics = Object.setPrototypeOf ||[39m
-...and 3 other occurrences
-[1m../../node_modules/.pnpm/intl-format-cache@4.3.1/node_modules/intl-format-cache/lib/index.js[22m
-[90m4: See the accompanying LICENSE file for terms.
-5: */
-6: var __spreadArrays = (this && this.__spreadArrays) || function () {
-                         ^
-7:     for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-8:     for (var r = Array(s), k = 0, i = 0; i < il; i++)[39m
-...and 1 other occurrence
-
-...and 3 other files
-[32mcreated [1mdist/index.esm.js[22m in [1m12.5s[22m[39m
+[41m[30m ELIFECYCLE [39m[49m [31mCommand failed with exit code 1.[39m

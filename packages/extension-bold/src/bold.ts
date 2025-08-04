@@ -1,8 +1,8 @@
-import { markInputRule, markPasteRule } from '@tiptap/core';
-import type { BoldOptions as TBoldOptions } from '@tiptap/extension-bold';
-import { Bold as TBold } from '@tiptap/extension-bold';
+import {markInputRule, markPasteRule} from '@tiptap/core';
+import type {BoldOptions as TBoldOptions} from '@tiptap/extension-bold';
+import {Bold as TBold} from '@tiptap/extension-bold';
 
-export type BoldOptions = TBoldOptions;
+type BoldOptions = TBoldOptions;
 
 export const starInputRegex = /(?:^|\s)((?:\*\*)((?:[^*]+))(?:\*\*))\s$/;
 export const starPasteRegex = /(?:^|\s)((?:\*\*)((?:[^*]+))(?:\*\*))/g;

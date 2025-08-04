@@ -4,7 +4,7 @@ import {BLOCK_TYPES, headers, Iconfont, IntlComponent} from '@easy-editor/editor
 import cx from 'classnames';
 import ToolbarContext from '../../context/toolbarContext.ts';
 import {command, option} from '../../utils/index.ts';
-import {ToolBarItemDivider} from '../ToolBarItemDivider.tsx';
+import {ToolBarItemDivider} from '../ToolbarItem';
 
 const HeaderButtonDropdown: FC<{ onClick?: () => void }> = props => {
   const { onClick } = props;

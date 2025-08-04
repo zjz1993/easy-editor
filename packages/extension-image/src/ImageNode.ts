@@ -1,29 +1,7 @@
 import {mergeAttributes, Node, nodeInputRule} from '@tiptap/core';
 import {ReactNodeViewRenderer} from '@tiptap/react';
 import ImageView from './ImageView.tsx';
-
-export interface ImageNodeAttributes {
-  src: string;
-  alt?: string;
-  title?: string;
-  width?: number;
-  height?: number;
-  textAlign?: 'center' | 'left' | 'right';
-  id?: string;
-  hasBorder?: boolean;
-  loading?: boolean;
-  loadingProgress?: number;
-  tempFile?: any;
-}
-
-export interface ImageOptions {
-  inline: boolean;
-
-  allowBase64: boolean;
-
-  HTMLAttributes: Record<string, any>;
-  minWidth: number;
-}
+import type {ImageNodeAttributes, ImageOptions} from './types/index.ts';
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {

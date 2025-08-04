@@ -1,4 +1,5 @@
-import {Button, message} from '../index';
+import Button from '../Button';
+import {message} from '../Message';
 import Upload from 'rc-upload';
 import classnames from 'classnames';
 import {isEmpty, noop, take} from 'lodash-es';

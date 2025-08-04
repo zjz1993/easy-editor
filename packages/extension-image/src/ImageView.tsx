@@ -3,7 +3,6 @@ import type {NodeViewProps} from '@tiptap/core';
 import cx from 'classnames';
 import {Iconfont, isUndefined, isViewEditable, Popover, PREVIEW_CLS,} from '@easy-editor/editor-common';
 import {type FC, useEffect, useRef, useState} from 'react';
-import type {ImageNodeAttributes} from './ImageNode.ts';
 import './index.scss';
 import useHandleChangeImageSize from './hooks/useHandleChangeImageSize.ts';
 import ImageNodeToolbar from './ImageNodeToolbar.tsx';
@@ -25,14 +24,7 @@ const getProgressCircleProps = (value: number) => {
   };
 };
 
-const ImageView: FC<
-  NodeViewProps & {
-    node: {
-      dom: HTMLElement;
-      attrs: ImageNodeAttributes;
-    };
-  }
-> = props => {
+const ImageView: FC<NodeViewProps> = props => {
   const imgRef = useRef<HTMLImageElement>();
   const popoverRef = useRef<any>();
   const [imageRatio, setImageRatio] = useState<number | undefined>();

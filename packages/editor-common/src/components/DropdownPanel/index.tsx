@@ -1,10 +1,9 @@
 import './style/index.scss';
-import { useSize } from 'ahooks';
+import {useSize} from 'ahooks';
 import cx from 'classnames';
-import { isUndefined } from 'lodash-es';
-import Trigger, { type TriggerProps } from 'rc-trigger';
-import 'rc-trigger/assets/index.css';
-import { type CSSProperties, type FC, type ReactElement, useRef } from 'react';
+import {isUndefined} from 'lodash-es';
+import Trigger, {type TriggerProps} from 'rc-trigger';
+import {type CSSProperties, type FC, type ReactElement, useRef} from 'react';
 
 interface IDropdownPanelProps extends TriggerProps {
   className?: string;
