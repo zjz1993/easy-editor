@@ -1,5 +1,5 @@
 import type {FC, ReactNode} from 'react';
-import {motion} from 'framer-motion';
+import {type Easing, motion} from 'framer-motion';
 import './index.scss';
 
 export interface SpinProps {
@@ -30,7 +30,7 @@ const Spin: FC<SpinProps> = ({
       rotate: 360,
       transition: {
         duration: 1,
-        ease: 'linear',
+        ease: 'linear' as Easing,
         repeat: Number.POSITIVE_INFINITY,
       },
     },

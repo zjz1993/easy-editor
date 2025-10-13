@@ -41,4 +41,5 @@ export default {
   'zoom-out': '缩小',
   'image.not.support': '不支持预览超过20M的图片，请下载后查看',
   'image.border': '边框',
+  table: '插入表格',
 };

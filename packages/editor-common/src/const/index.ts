@@ -661,6 +661,7 @@ export const BLOCK_TYPES = {
   TEXT: 'text',
   MENTIONS: 'mention',
   HARD_BREAK: 'hard_break',
+  TABLE: 'table',
 };
 
 export const MARK_TYPES = {

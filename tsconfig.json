@@ -28,7 +28,8 @@
     "allowImportingTsExtensions": true
   },
   "files": [
-    "./types.d.ts"
+    "./types.d.ts",
+    "./tiptap.d.ts"
   ],
   "exclude": [
     "node_modules"

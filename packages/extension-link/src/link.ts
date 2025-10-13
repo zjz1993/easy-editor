@@ -1,16 +1,11 @@
-import {
-  Mark,
-  type PasteRuleMatch,
-  markPasteRule,
-  mergeAttributes,
-} from '@tiptap/core';
-import type { Plugin } from '@tiptap/pm/state';
-import { find, registerCustomProtocol, reset } from 'linkifyjs';
+import {Mark, markPasteRule, mergeAttributes, type PasteRuleMatch,} from '@tiptap/core';
+import type {Plugin} from '@tiptap/pm/state';
+import {find, registerCustomProtocol, reset} from 'linkifyjs';
 
-import { MARK_TYPES } from '@easy-editor/editor-common';
-import { autolink } from './helpers/autolinks.js';
-import { clickHandler } from './helpers/clickHandler.js';
-import { pasteHandler } from './helpers/pasteHandler.js';
+import {MARK_TYPES} from '@easy-editor/editor-common';
+import {autolink} from './helpers/autolinks.js';
+import {clickHandler} from './helpers/clickHandler.js';
+import {pasteHandler} from './helpers/pasteHandler.js';
 
 export interface LinkProtocolOptions {
   /**

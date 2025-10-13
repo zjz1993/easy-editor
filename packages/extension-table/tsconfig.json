@@ -4,9 +4,8 @@
     "baseUrl": ".",
     "declarationDir": "./dist/types",
     "emitDeclarationOnly": true,
-    "downlevelIteration": true,
     "rootDir": "./src"
   },
-  "include": ["src", "../../tiptap.d.ts"],
+  "include": ["src","../../tiptap.d.ts"],
   "exclude": ["node_modules"]
 }

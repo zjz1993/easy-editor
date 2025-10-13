@@ -12,6 +12,7 @@ import {CustomLink} from '@easy-editor/extension-link';
 import {TaskItem, TaskList} from '@easy-editor/extension-task-item';
 import {Color} from '@tiptap/extension-color';
 import {ImageNode} from '@easy-editor/extension-image';
+import {Table, TableCell, TableHeader, TableRow} from '@easy-editor/extension-table';
 import {Placeholder} from '@tiptap/extension-placeholder';
 import {TextAlign} from '@tiptap/extension-text-align';
 import {TextStyle} from '@tiptap/extension-text-style';
@@ -20,7 +21,7 @@ import {ListItem} from './BulletList/list-item.ts';
 import {UniqueIDExtension} from './extension/UniqueIDExtension/index.ts';
 import useIntlLoaded from './hooks/useIntlLoaded.ts';
 import EditorFilePreview from './components/FilePreview/EditorFilePreview';
-import Underline from '@tiptap/extension-underline'; //import PasteExtension from './extension/paste/index.tsx';
+import Underline from '@tiptap/extension-underline';
 //import PasteExtension from './extension/paste/index.tsx';
 
 const Editor: FC<TEasyEditorProps> = props => {
@@ -38,6 +39,12 @@ const Editor: FC<TEasyEditorProps> = props => {
   const extensions = [
     StarterKit.configure({ bold: false, codeBlock: false, underline: false }),
     Bold,
+    Table.configure({
+      resizable: true,
+    }),
+    TableRow,
+    TableHeader,
+    TableCell,
     TextStyle,
     Color,
     Underline,

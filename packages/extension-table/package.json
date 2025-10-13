@@ -1,5 +1,5 @@
 {
-  "name": "@easy-editor/extension-code-block",
+  "name": "@easy-editor/extension-table",
   "version": "0.0.1",
   "main": "dist/main.js",
   "module": "dist/index.esm.js",
@@ -15,28 +15,24 @@
     "clear": "rm -rf dist"
   },
   "dependencies": {
+    "@babel/runtime-corejs3": "^7.21.0",
     "@easy-editor/editor-common": "workspace:^",
-    "@easy-editor/editor-toolbar": "workspace:^",
     "@easy-editor/styles": "workspace:*",
-    "@floating-ui/react": "^0.27.4",
-    "@tiptap/extension-code-block": "^3.6.6",
-    "@tiptap/extension-code-block-lowlight": "^3.6.6",
+    "@tiptap/extension-table": "^3.6.6",
+    "@tiptap/extension-table-cell": "^3.6.6",
+    "@tiptap/extension-table-header": "^3.6.6",
+    "@tiptap/extension-table-row": "^3.6.6",
     "@tiptap/react": "^3.6.6",
-    "classnames": "^2.2.6",
-    "copy-to-clipboard": "^3.3.3",
-    "lowlight": "^2.9.0",
-    "prettier": "^3.5.3"
+    "classnames": "^2.5.1",
+    "prosemirror-state": "^1.4.3"
   },
   "devDependencies": {
     "@tiptap/core": "^3.6.6",
-    "@tiptap/pm": "^3.6.6",
-    "@types/react-dom": "^18.3.1"
+    "@tiptap/pm": "^3.6.6"
   },
   "peerDependencies": {
-    "@tiptap/core": "^2.7.0",
-    "@tiptap/pm": "^2.7.0",
-    "react": "^16.14.0 || ^17.0.0 || ^18.0.0",
-    "react-dom": "^16.14.0 || ^17.0.0 || ^18.0.0"
+    "@tiptap/core": "^3.6.6",
+    "@tiptap/pm": "^3.6.6"
   },
   "sideEffects": false
 }

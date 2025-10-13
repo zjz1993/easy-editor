@@ -23,6 +23,7 @@ import type {IToolbarCommonProps} from './types/index.ts';
 import ImageButton from './components/ImageButton/index.tsx';
 import type {ImageNodeAttributes} from '@easy-editor/extension-image';
 import {useEditorStateTrigger} from './hook/useEditorStateTrigger.ts';
+import TableButton from "./components/TableButton/index.tsx";
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
@@ -345,6 +346,12 @@ const Toolbar: FC<IToolbarProps> = props => {
         key: BLOCK_TYPES.IMG,
         component: <ImageButton />,
         intlStr: 'image',
+        disabled: disabled,
+      },
+      {
+        key: BLOCK_TYPES.TABLE,
+        component: <TableButton />,
+        intlStr: 'table',
         disabled: disabled,
       },
     ];
