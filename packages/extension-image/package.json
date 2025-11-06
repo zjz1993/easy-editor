@@ -18,17 +18,17 @@
     "@babel/runtime-corejs3": "^7.21.0",
     "@easy-editor/editor-common": "workspace:^",
     "@easy-editor/styles": "workspace:*",
-    "@tiptap/react": "^3.6.6",
+    "@tiptap/react": "^3.6.7",
     "classnames": "^2.5.1",
     "prosemirror-state": "^1.4.3"
   },
   "devDependencies": {
-    "@tiptap/core": "^3.6.6",
-    "@tiptap/pm": "^3.6.6"
+    "@tiptap/core": "^3.6.7",
+    "@tiptap/pm": "^3.6.7"
   },
   "peerDependencies": {
-    "@tiptap/core": "^3.6.6",
-    "@tiptap/pm": "^3.6.6"
+    "@tiptap/core": "^3.6.7",
+    "@tiptap/pm": "^3.6.7"
   },
   "sideEffects": false
 }

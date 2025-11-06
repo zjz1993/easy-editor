@@ -7,7 +7,7 @@
 	"types": "dist/types/index.d.ts",
 	"scripts": {
 		"dev": "rollup -c rollup.config.js -w --bundleConfigAsCjs",
-    "build": "npm run clear && npm run clear && NODE_ENV=production rollup -c rollup.config.js --bundleConfigAsCjs",
+		"build": "npm run clear && npm run clear && NODE_ENV=production rollup -c rollup.config.js --bundleConfigAsCjs",
 		"lint": "TIMING=1 eslint \"**/*.ts\"",
 		"clear": "rm -rf dist"
 	},
@@ -22,7 +22,8 @@
 	"dependencies": {
 		"@easy-editor/styles": "workspace:*",
 		"@floating-ui/react": "^0.27.4",
-		"@tiptap/pm": "^3.6.6",
+		"@tiptap/extension-bubble-menu": "^3.6.7",
+		"@tiptap/pm": "^3.6.7",
 		"ahooks": "^3.8.4",
 		"classnames": "^2.5.1",
 		"framer-motion": "^12.23.12",
@@ -38,7 +39,7 @@
 		"@babel/preset-typescript": "^7.26.0",
 		"@babel/runtime-corejs3": "^7.26.0",
 		"@rollup/plugin-replace": "^6.0.2",
-		"@tiptap/core": "^3.6.6",
+		"@tiptap/core": "^3.6.7",
 		"@types/lodash-es": "^4.17.12",
 		"@types/node": "^22.10.7",
 		"@types/react-dom": "^18.3.1",

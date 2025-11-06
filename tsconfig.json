@@ -16,7 +16,7 @@
     "forceConsistentCasingInFileNames": true,
     "inlineSources": false,
     "isolatedModules": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "preserveWatchOutput": true,
@@ -28,8 +28,7 @@
     "allowImportingTsExtensions": true
   },
   "files": [
-    "./types.d.ts",
-    "./tiptap.d.ts"
+    "./types.d.ts"
   ],
   "exclude": [
     "node_modules"

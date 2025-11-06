@@ -1,4 +1,6 @@
 export default {
+  'common.copy.success': '复制成功',
+  'common.copy.fail': '复制失败',
   'toolbar.undo': '撤销 ({command} + Z)',
   'toolbar.redo': '重做 ({command} + Y)',
   header: '标题',
@@ -42,4 +44,10 @@ export default {
   'image.not.support': '不支持预览超过20M的图片，请下载后查看',
   'image.border': '边框',
   table: '插入表格',
+  'table.insert.row': '插入行',
+  'table.insert.col': '插入列',
+  'table.delete.row': '删除行',
+  'table.delete.col': '删除列',
+  'table.delete.table': '删除表格',
+  'table.copy.table': '复制表格',
 };

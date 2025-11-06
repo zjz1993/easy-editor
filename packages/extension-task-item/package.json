@@ -19,12 +19,12 @@
     "@babel/runtime-corejs3": "^7.21.0"
   },
   "devDependencies": {
-    "@tiptap/core": "^3.6.6",
-    "@tiptap/pm": "^3.6.6"
+    "@tiptap/core": "^3.6.7",
+    "@tiptap/pm": "^3.6.7"
   },
   "peerDependencies": {
-    "@tiptap/core": "^3.6.6",
-    "@tiptap/pm": "^3.6.6"
+    "@tiptap/core": "^3.6.7",
+    "@tiptap/pm": "^3.6.7"
   },
   "repository": {
     "type": "git",

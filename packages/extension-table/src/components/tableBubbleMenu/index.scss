@@ -1,0 +1,31 @@
+.easy-editor-table-menu{
+  background: white;
+  height: 40px;
+  box-sizing: border-box;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 15%);
+  border-radius: 4px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  &-item{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all .2s;
+    padding: 2px;
+    box-sizing: border-box;
+    &:hover{
+      background: #F2F2F2;
+    }
+    &:not(:last-child){
+      margin-right: 8px;
+    }
+  }
+  .easy-editor-table-icon-delete{
+    &:hover{
+      color:red;
+    }
+  }
+}

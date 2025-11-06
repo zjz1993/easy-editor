@@ -40,6 +40,7 @@ const TableButton: FC<TToolbarWrapperProps> = props => {
                 .focus()
                 .insertTable({ rows, cols, withHeaderRow: true })
                 .run();
+              setPopoverOpen(false);
             }}
           />
         }

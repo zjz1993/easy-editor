@@ -7,6 +7,6 @@
     "downlevelIteration": true,
     "rootDir": "./src"
   },
-  "include": ["src", "../../tiptap.d.ts"],
+  "include": ["src"],
   "exclude": ["node_modules"]
 }

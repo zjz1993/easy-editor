@@ -1,7 +1,6 @@
 import type {NodeViewProps} from '@tiptap/core';
 import {NodeViewContent, NodeViewWrapper} from '@tiptap/react';
 import classNames from 'classnames';
-import copy from 'copy-to-clipboard';
 import prettier from 'prettier';
 import babelPlugin from 'prettier/plugins/babel';
 import estreePlugin from 'prettier/plugins/estree';
@@ -11,7 +10,7 @@ import type React from 'react';
 import {useCallback, useMemo, useRef, useState} from 'react';
 import {getLanguageByValue, getLanguageByValueOrAlias, languages,} from './languages';
 import './CodeBlockNodeView.scss';
-import {BLOCK_TYPES, Dropdown, get, Iconfont, message,} from '@easy-editor/editor-common';
+import {BLOCK_TYPES, Dropdown, get, Iconfont, message, smartClipboardCopy} from '@easy-editor/editor-common';
 import {TextSelection} from '@tiptap/pm/state';
 
 const CODE_BLOCK_DROPDOWN_MAX_HEIGHT = 245;
@@ -250,8 +249,7 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
           <button
             className="easy-editor-code-block__button_area__button"
             onClick={() => {
-              copy(pureCode as string);
-              message.success('复制成功');
+              smartClipboardCopy(pureCode as string);
             }}
           >
             复制

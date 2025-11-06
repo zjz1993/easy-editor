@@ -20,8 +20,8 @@ const InsertTablePanel: FC<{
 }) => {
   const [rows, setRows] = useState(1);
   const [cols, setCols] = useState(1);
-  const [totalRows, setTotalRows] = useState(minRows);
-  const [totalCols, setTotalCols] = useState(minCols);
+  const [totalRows, setTotalRows] = useState(maxRows);
+  const [totalCols, setTotalCols] = useState(maxCols);
 
   const pickerRef = useRef(null);
 
@@ -34,8 +34,8 @@ const InsertTablePanel: FC<{
     (row: number, col: number) => {
       setRows(row);
       setCols(col);
-      setTotalRows(Math.max(Math.min(row + 1, maxRows), minRows));
-      setTotalCols(Math.max(Math.min(col + 1, maxCols), minCols));
+      //setTotalRows(Math.max(Math.min(row + 1, maxRows), minRows));
+      //setTotalCols(Math.max(Math.min(col + 1, maxCols), minCols));
     },
     [maxRows, maxCols, minRows, minCols],
   );

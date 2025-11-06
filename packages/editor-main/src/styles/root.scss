@@ -164,6 +164,12 @@
     box-sizing: border-box;
     .easy-editor-block-container{
       margin-bottom: 8px;
+      .easy-editor-table-scroll-wrapper{
+        overflow-y: hidden;
+        overflow-x: auto;
+        padding: 40px 8px 0px 40px;
+        margin: -10px -8px 0px -10px;
+      }
     }
     .tiptap p.is-editor-empty:first-child::before {
       color: #adb5bd;
@@ -194,11 +200,11 @@
       transition: all .3s;
     }
   }
-  table {
+  &-table {
     border-collapse: collapse;
     margin: 0;
-    overflow: hidden;
     table-layout: fixed;
+    width: 100%;
 
     td,
     th {
@@ -220,6 +226,7 @@
     }
 
     .selectedCell:after {
+      background: rgba(61, 37, 20, .08);
       content: '';
       left: 0;
       right: 0;
@@ -238,11 +245,189 @@
       top: 0;
       width: 4px;
     }
-  }
 
-  .tableWrapper {
-    margin: 1.5rem 0;
-    overflow-x: auto;
+    .grip-column {
+      position: absolute;
+      top: -12px;
+      left: -1px;
+      width: 100%;
+
+      .bar {
+        box-sizing: content-box;
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 10px;
+        background: styles.$hover-grey;
+        border: 1px solid styles.$background-grey;
+        display: block;
+
+        &:hover {
+          z-index: 1;
+          background: styles.$primary-color;
+          border-color: styles.$primary-color;
+        }
+      }
+
+      .add {
+        position: absolute;
+        top: -15px;
+        transform: translateX(-7px);
+
+        display: block;
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        text-align: center;
+        cursor: pointer;
+        font-size: 0;
+
+        &.before {
+          left: 0;
+        }
+
+        &.after {
+          left: 100%;
+        }
+
+        &::before {
+          content: '';
+          position: absolute;
+          left: 50%;
+          top: 6px;
+          transform: translateX(-50%);
+
+          display: block;
+          width: 4px;
+          height: 4px;
+          background: #dcdcdc;
+          border-radius: 50%;
+        }
+
+        &:hover {
+          font-size: 14px;
+
+          &::before {
+            display: none;
+          }
+        }
+      }
+
+      &.selected .bar {
+        z-index: 1;
+        background: styles.$primary-color;
+        border-color: styles.$primary-color;
+      }
+
+      &.last .bar {
+        border-top-right-radius: 3px;
+      }
+    }
+
+    .grip-row {
+      position: absolute;
+      left: -12px;
+      top: -1px;
+      height: 100%;
+
+      .bar {
+        box-sizing: content-box;
+        cursor: pointer;
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 10px;
+        background: styles.$hover-grey;
+        border: 1px solid styles.$hover-grey;
+        display: block;
+
+        &:hover {
+          z-index: 1;
+          background: styles.$primary-color;
+          border-color: styles.$primary-color;
+        }
+      }
+
+      .add {
+        position: absolute;
+        left: -16px;
+        transform: translateY(-7px);
+
+        display: block;
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        text-align: center;
+        cursor: pointer;
+        font-size: 0;
+
+        &.before {
+          top: 0;
+        }
+
+        &.after {
+          top: 100%;
+        }
+
+        &::before {
+          content: '';
+          position: absolute;
+          left: 50%;
+          top: 6px;
+          transform: translateX(-50%);
+
+          display: block;
+          width: 4px;
+          height: 4px;
+          background-color: #dcdcdc;
+          border-radius: 50%;
+        }
+
+        &:hover {
+          font-size: 14px;
+
+          &::before {
+            display: none;
+          }
+        }
+      }
+
+      &.selected .bar {
+        z-index: 3;
+        background-color: #90d4cf;
+      }
+
+      &.last .bar {
+        border-bottom-left-radius: 3px;
+      }
+    }
+
+    .grip-table {
+      &::after {
+        box-sizing: content-box;
+        content: '';
+        cursor: pointer;
+        position: absolute;
+        top: -12px;
+        left: -12px;
+        display: block;
+        background: styles.$hover-grey;
+        width: 10px;
+        height: 10px;
+        border: 1px solid styles.$hover-grey;
+        border-top-left-radius: 3px;
+      }
+
+      &:hover::after,
+      &.selected::after {
+        z-index: 1;
+        background: styles.$primary-color;
+        border-color: styles.$primary-color;
+      }
+    }
   }
 
   &.resize-cursor {

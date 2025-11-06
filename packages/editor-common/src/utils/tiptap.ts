@@ -83,7 +83,7 @@ const wrapBlockExtensions = (
             return childExtensions || [];
           },
         };
-        if (isNode) {
+        if (isNode && !extension.config.addNodeView) {
           config.renderHTML = renderHTML;
         }
         return extension.extend(config);
