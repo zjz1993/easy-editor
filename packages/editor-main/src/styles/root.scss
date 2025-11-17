@@ -201,10 +201,13 @@
     }
   }
   &-table {
+    border-spacing: 0;
     border-collapse: collapse;
-    margin: 0;
     table-layout: fixed;
-    width: 100%;
+    border-radius: 4px;
+    overflow: auto;
+    margin: 0;
+    box-sizing: border-box;
 
     td,
     th {

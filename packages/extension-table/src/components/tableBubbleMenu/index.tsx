@@ -1,9 +1,11 @@
-import {BubbleMenu, Iconfont, IntlComponent, Tooltip} from '@easy-editor/editor-common';
+import {BubbleMenu, Iconfont, IntlComponent, Tooltip,} from '@easy-editor/editor-common';
 import type {Editor} from '@tiptap/core';
 import {type FC, useCallback, useState} from 'react';
 import type {BubbleMenuProps} from '@tiptap/react/menus';
 import {
   copyTableToClipboard,
+  type CustomTableMap,
+  equalizeWidth,
   getCellsInColumn,
   getCellsInRow,
   getSelectedCells,
@@ -11,7 +13,7 @@ import {
   isColumnSelected,
   isRowSelected,
   isTableSelected
-} from "../utils/index.ts";
+} from '../utils/index.ts';
 import './index.scss';
 
 export type TableBubbleMenuProps = {
@@ -21,11 +23,11 @@ export type TableBubbleMenuProps = {
 export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
   const [selectedState, setSelectedState] = useState<{
     rowSelected: boolean;
-    columnSelected: boolean;
+    columnSelected: CustomTableMap[];
     tableSelected: boolean;
   }>({
     rowSelected: false,
-    columnSelected: false,
+    columnSelected: [],
     tableSelected: false,
   });
   const [selectedCells, setSelectedCells] = useState<any[]>([]);
@@ -56,13 +58,14 @@ export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
         cellColumnIndexMap.push(columnIndex);
         columnIndex += colspan;
       });
-      const hasColumnSelected = !!cellsInRow.some((_cell, index) =>
+      const columnSelected = cellsInRow.filter((_cell, index) =>
         isColumnSelected(cellColumnIndexMap[index], editor.state.selection),
       );
+      console.log('columnSelected是', columnSelected);
       const cells = getSelectedCells(editor.state.selection);
       setSelectedState({
         rowSelected: hasRowSelected,
-        columnSelected: hasColumnSelected,
+        columnSelected,
         tableSelected: isTableSelected(editor.state.selection),
       });
       if (Array.isArray(cells)) {
@@ -112,7 +115,7 @@ export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
           </div>
         );
       }
-      if (selectedState.columnSelected) {
+      if (selectedState.columnSelected.length > 0) {
         return (
           <div className="easy-editor-table-menu-item">
             <Tooltip content={IntlComponent.get('table.delete.col')}>
@@ -160,12 +163,42 @@ export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
     }
     return null;
   };
-  const renderSelectTableBtn = () => {
-    if (selectedState.tableSelected) {
+  //const renderSelectTableBtn = () => {
+  //  if (selectedState.tableSelected) {
+  //    return (
+  //      <div className="easy-editor-table-menu-item">
+  //        <Tooltip content="均分">
+  //          <div
+  //            onClick={() => {
+  //              equalizeWidth(editor.view);
+  //            }}
+  //          >
+  //            均分
+  //          </div>
+  //        </Tooltip>
+  //      </div>
+  //    );
+  //  }
+  //};
+  const renderEqualizeColumnBtn = () => {
+    if (selectedState.columnSelected.length >= 2) {
       return (
         <div className="easy-editor-table-menu-item">
-          <Tooltip content="选中表格">
-            <div>选中</div>
+          <Tooltip content="均分">
+            <div
+              onClick={() => {
+                console.log(
+                  'selectedState.columnSelected',
+                  selectedState.columnSelected,
+                );
+                const startPos = selectedState.columnSelected.map(
+                  item => item.pos,
+                );
+                equalizeWidth(editor.view, startPos);
+              }}
+            >
+              均分
+            </div>
           </Tooltip>
         </div>
       );
@@ -193,8 +226,9 @@ export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
       shouldShow={shouldShow}
       className="easy-editor-table-menu"
     >
+      {renderEqualizeColumnBtn()}
       {renderCopyTableBtn()}
-      {renderSelectTableBtn()}
+      {/*{renderSelectTableBtn()}*/}
       {renderSplitBtn()}
       {renderDeleteBtn()}
     </BubbleMenu>

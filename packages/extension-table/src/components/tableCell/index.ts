@@ -11,7 +11,7 @@ import {
   selectRow,
   toggleSelectTable,
 } from '../utils/index.ts';
-import {addRow, selectedRect} from '@tiptap/pm/tables';
+import {addColumn, addRow, selectedRect} from '@tiptap/pm/tables';
 
 export const TableCell = TTableCell.extend<TTableCellOptions>({
   addProseMirrorPlugins() {
@@ -159,10 +159,14 @@ export const TableCell = TTableCell.extend<TTableCellOptions>({
                         ),
                       );
                     } else if (target.classList.contains('before')) {
-                      // editor.view.dispatch(addColumn(state.tr, rect, cellColumnIndex))
+                      this.editor.view.dispatch(
+                        addColumn(state.tr, rect, cellColumnIndex),
+                      );
                     } else if (target.classList.contains('after')) {
                       const colspan = Number.parseInt(node.attrs.colspan) || 1;
-                      // editor.view.dispatch(addColumn(state.tr, rect, cellColumnIndex + colspan))
+                      this.editor.view.dispatch(
+                        addColumn(state.tr, rect, cellColumnIndex + colspan),
+                      );
                     }
                   });
 

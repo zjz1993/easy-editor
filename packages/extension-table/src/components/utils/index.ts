@@ -2,8 +2,16 @@ import {findParentNode} from '@tiptap/core';
 import {type EditorState, type Selection, TextSelection, type Transaction,} from '@tiptap/pm/state';
 import {CellSelection, TableMap} from '@tiptap/pm/tables';
 import {DOMSerializer} from 'prosemirror-model';
-import {smartClipboardCopy} from "@easy-editor/editor-common"; // 寻找table
+import {smartClipboardCopy} from '@easy-editor/editor-common';
+import type {EditorView} from '@tiptap/pm/view';
+import {currentColWidth, updateColumnWidth} from './TableResizePlugin.ts'; // 寻找table
 // 寻找table
+export type CustomTableMap = {
+  pos: number;
+  start: number;
+  node: any;
+};
+
 export const findTable = (selection: Selection) =>
   findParentNode(
     node => node.type.spec.tableRole && node.type.spec.tableRole === 'table',
@@ -12,10 +20,9 @@ export const findTable = (selection: Selection) =>
 export const getCellsInColumn = (
   columnIndex: number | number[],
   selection: Selection,
-) => {
+): CustomTableMap[] => {
   const table = findTable(selection);
   if (!table) return [];
-
   const map = TableMap.get(table.node);
   const indexes = Array.isArray(columnIndex) ? columnIndex : [columnIndex];
 
@@ -38,7 +45,7 @@ export const getCellsInColumn = (
 export const getCellsInRow = (
   rowIndex: number | number[],
   selection: Selection,
-) => {
+): CustomTableMap[] => {
   const table = findTable(selection);
   if (!table) return [];
 
@@ -264,3 +271,44 @@ export async function copyTableToClipboard(view: any) {
   await smartClipboardCopy(html, text);
   return html;
 }
+// 获取整表的宽度
+export const getTableWidth = (view: EditorView) => {
+  const { state } = view;
+  const table = findTable(state.selection);
+  if (!table) return 0;
+  const dom: any = view.domAtPos(table.start).node;
+  if (!dom) return 0;
+  return dom.getBoundingClientRect().width;
+};
+
+// 均分所选的列宽
+export const equalizeWidth = (view: EditorView, posArray: number[]) => {
+  const { state } = view;
+  const table = findTable(state.selection);
+  if (!table) {
+    return 0;
+  }
+  let dom: any = view.domAtPos(table.start).node;
+  console.log('dom', dom);
+  while (dom && dom.nodeName !== 'TABLE') {
+    dom = dom.parentNode;
+  }
+  if (!dom) return 0;
+  const map = TableMap.get(table.node);
+  let totalWidth = 0;
+  for (let i = 0; i < map.width; i++) {
+    console.log('map.map[i]', map.map[i] + 1);
+    if (posArray.find(item => item === map.map[i] + 1)) {
+      const cell = view.state.doc.nodeAt(map.map[i] + 1)!;
+      const width = currentColWidth(view, map.map[i] + 1, cell.attrs);
+      totalWidth += width;
+    }
+  }
+  const width = totalWidth / posArray.length;
+  for (let i = 0; i < map.width; i++) {
+    if (posArray.find(item => item === map.map[i] + 1)) {
+      updateColumnWidth(view, map.map[i] + 1, width);
+    }
+  }
+  return totalWidth;
+};
