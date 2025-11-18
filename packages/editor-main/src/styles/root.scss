@@ -249,13 +249,13 @@
       width: 4px;
     }
 
-    .grip-column {
+    .easy-editor-table-tool-column {
       position: absolute;
       top: -12px;
       left: -1px;
       width: 100%;
 
-      .bar {
+      &-item {
         box-sizing: content-box;
         cursor: pointer;
         position: absolute;
@@ -329,13 +329,13 @@
       }
     }
 
-    .grip-row {
+    .easy-editor-table-tool-row {
       position: absolute;
       left: -12px;
       top: -1px;
       height: 100%;
 
-      .bar {
+      &-item {
         box-sizing: content-box;
         cursor: pointer;
         position: absolute;

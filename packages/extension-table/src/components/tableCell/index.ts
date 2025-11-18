@@ -11,7 +11,8 @@ import {
   selectRow,
   toggleSelectTable,
 } from '../utils/index.ts';
-import {addColumn, addRow, selectedRect} from '@tiptap/pm/tables';
+import {addColumn, addRow, selectedRect, TableMap} from '@tiptap/pm/tables';
+import classNames from 'classnames';
 
 export const TableCell = TTableCell.extend<TTableCellOptions>({
   addProseMirrorPlugins() {
@@ -28,6 +29,24 @@ export const TableCell = TTableCell.extend<TTableCellOptions>({
             const decorations: Decoration[] = [];
             const table = findTable(selection);
             if (!table) return DecorationSet.empty;
+
+            const map = TableMap.get(table.node);
+
+            //map.map.forEach((cellPos, index) => {
+            //  const cellNode = state.doc.nodeAt(cellPos);
+            //  const row = Math.floor(index / map.width);
+            //  const col = index % map.width;
+            //
+            //  console.log('cell at:', cellPos, 'row:', row, 'col:', col);
+            //
+            //  if (row === 0) {
+            //    console.log('第一行单元格:', cellPos);
+            //  }
+            //  if (col === 0) {
+            //    console.log('第一列单元格:', cellPos);
+            //  }
+            //});
+
             const firstColumnCells = getCellsInColumn(0, selection);
             if (firstColumnCells.length) {
               firstColumnCells.forEach(({ node, pos }, rowIndex) => {
@@ -37,11 +56,11 @@ export const TableCell = TTableCell.extend<TTableCellOptions>({
                 if (isFirst) {
                   decorations.push(
                     Decoration.widget(pos + 1, () => {
-                      let className = 'grip-table';
                       const selected = isTableSelected(selection);
-                      if (selected) {
-                        className += ' selected';
-                      }
+                      const className = classNames(
+                        'grip-table',
+                        selected && 'selected',
+                      );
                       const grip = document.createElement('a');
                       grip.className = className;
                       grip.addEventListener('mousedown', event => {
@@ -58,11 +77,11 @@ export const TableCell = TTableCell.extend<TTableCellOptions>({
                 const isLast = rowIndex === firstColumnCells.length - 1;
                 const deco = Decoration.widget(pos + 1, () => {
                   const grip = document.createElement('a');
-                  grip.className = `grip-row${rowSelected ? ' selected' : ''}${isFirst ? ' first' : ''}${isLast ? ' last' : ''}`;
+                  grip.className = `easy-editor-table-tool-row${rowSelected ? ' selected' : ''}${isFirst ? ' first' : ''}${isLast ? ' last' : ''}`;
 
                   // 点击选中整行
                   const bar = document.createElement('span');
-                  bar.className = 'bar';
+                  bar.className = 'easy-editor-table-tool-row-item';
                   grip.appendChild(bar);
 
                   // + 按钮：上方插入
@@ -88,7 +107,11 @@ export const TableCell = TTableCell.extend<TTableCellOptions>({
                       const rect = selectedRect(state);
                       const target = event.target as HTMLElement;
                       console.log('target是', target);
-                      if (target.classList.contains('bar')) {
+                      if (
+                        target.classList.contains(
+                          'easy-editor-table-tool-row-item',
+                        )
+                      ) {
                         this.editor.view.dispatch(selectRow(rowIndex, state));
                       } else if (target.classList.contains('before')) {
                         this.editor.view.dispatch(
@@ -122,10 +145,10 @@ export const TableCell = TTableCell.extend<TTableCellOptions>({
                 const isLast = colIndex === firstRowCells.length - 1;
                 const deco = Decoration.widget(pos + 1, () => {
                   const grip = document.createElement('a');
-                  grip.className = `grip-column${colSelected ? ' selected' : ''}${isFirst ? ' first' : ''}${isLast ? ' last' : ''}`;
+                  grip.className = `easy-editor-table-tool-column${colSelected ? ' selected' : ''}${isFirst ? ' first' : ''}${isLast ? ' last' : ''}`;
 
                   const bar = document.createElement('span');
-                  bar.className = 'bar';
+                  bar.className = 'easy-editor-table-tool-column-item';
                   grip.appendChild(bar);
 
                   // + 按钮：左侧插入
@@ -149,7 +172,11 @@ export const TableCell = TTableCell.extend<TTableCellOptions>({
                     const rect = selectedRect(state);
                     const target = event.target as HTMLElement;
 
-                    if (target.classList.contains('bar')) {
+                    if (
+                      target.classList.contains(
+                        'easy-editor-table-tool-column-item',
+                      )
+                    ) {
                       this.editor.view.dispatch(
                         selectRow(cellColumnIndex, state, 'col').setMeta(
                           pluginKey,

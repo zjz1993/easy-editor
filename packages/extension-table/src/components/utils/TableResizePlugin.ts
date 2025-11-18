@@ -339,7 +339,6 @@ export function displayColumnWidth(
   while (dom && dom.nodeName !== 'TABLE') {
     dom = dom.parentNode;
   }
-  console.log('有dom吗', col, width);
   if (!dom) return;
   updateColumnsOnResize(
     table,
