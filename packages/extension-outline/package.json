@@ -1,0 +1,38 @@
+{
+  "name": "@easy-editor/extension-outline",
+  "version": "0.0.1",
+  "main": "dist/main.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "dev": "rollup -c rollup.config.js -w --bundleConfigAsCjs",
+    "build": "npm run clear && npm run clear && NODE_ENV=production rollup -c rollup.config.js --bundleConfigAsCjs",
+    "lint": "TIMING=1 eslint \"**/*.ts\"",
+    "clear": "rm -rf dist"
+  },
+  "dependencies": {
+    "@easy-editor/editor-common": "workspace:^",
+    "@easy-editor/editor-toolbar": "workspace:^",
+    "@easy-editor/styles": "workspace:*",
+    "@floating-ui/react": "^0.27.4",
+    "@tiptap/react": "^3.6.7",
+    "prosemirror-state": "^1.4.3",
+    "react-simple-tree-menu": "^1.1.18"
+  },
+  "devDependencies": {
+    "@tiptap/core": "^3.6.7",
+    "@tiptap/pm": "^3.6.7",
+    "@types/react-dom": "^18.3.1"
+  },
+  "peerDependencies": {
+    "@tiptap/core": "^2.7.0",
+    "@tiptap/pm": "^2.7.0",
+    "react": "^16.14.0 || ^17.0.0 || ^18.0.0",
+    "react-dom": "^16.14.0 || ^17.0.0 || ^18.0.0"
+  },
+  "sideEffects": false
+}
