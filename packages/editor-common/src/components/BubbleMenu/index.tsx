@@ -22,7 +22,6 @@ export const BubbleMenu = (props: BubbleMenuProps) => {
     shouldShow = null,
   } = props;
   const [element, setElement] = useState<HTMLDivElement | null>(null);
-
   useEffect(() => {
     if (!element) {
       return;
@@ -37,7 +36,16 @@ export const BubbleMenu = (props: BubbleMenuProps) => {
       editor,
       element,
       pluginKey,
-      shouldShow,
+      shouldShow: props => {
+        const show = shouldShow(props);
+
+        // 3️⃣ React DOM 样式控制显示隐藏
+        if (element) {
+          element.style.display = show ? 'flex' : 'none';
+        }
+
+        return show;
+      },
     });
 
     editor.registerPlugin(plugin);
@@ -47,12 +55,28 @@ export const BubbleMenu = (props: BubbleMenuProps) => {
   }, [editor, element]);
 
   return (
-    <div
-      ref={setElement}
-      className={className}
-      style={{ visibility: 'hidden' }}
-    >
-      {props.children}
-    </div>
+    <>
+      {editor.isEditable && (
+        <div
+          ref={setElement}
+          className={className}
+          // style={{ display: 'none' }}
+          //style={{
+          //  display: shouldShow({
+          //    editor,
+          //    element,
+          //    view: editor.view,
+          //    state: editor.state,
+          //    from: editor.state.selection.from,
+          //    to: editor.state.selection.to,
+          //  })
+          //    ? 'flex'
+          //    : 'none',
+          //}}
+        >
+          {props.children}
+        </div>
+      )}
+    </>
   );
 };
