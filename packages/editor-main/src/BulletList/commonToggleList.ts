@@ -1,46 +1,35 @@
-import { BLOCK_TYPES } from '@easy-editor/editor-common';
-import type { CommandProps } from '@tiptap/react';
-import { ListItem } from './list-item';
-import { TextStyle } from './text-style';
+export function commonToggleList({ props, editor, options, name }) {
+  const { tr, commands, chain } = props;
+  const { from, to } = tr.selection;
 
-export function commonToggleList({
-  props,
-  editor,
-  options,
-  name,
-}: {
-  props: CommandProps;
-  editor: any;
-  options: Record<any, any>;
-  name: string;
-}) {
-  const { dispatch, tr, commands, chain } = props;
-  const { selection } = tr;
-  const { from, to } = selection;
   let childNodeIndent = null;
-  tr.doc.nodesBetween(from, to, (node: any, pos: number) => {
-    const { P } = BLOCK_TYPES;
-    if (node.type.name === P) {
-      const indent = node.attrs.indent;
-      childNodeIndent = indent;
-      // 去除原来p节点上的缩进
-      const newTr = tr.setNodeMarkup(
+
+  // 遍历时不要 dispatch
+  tr.doc.nodesBetween(from, to, (node, pos) => {
+    if (node.type.name === 'paragraph') {
+      childNodeIndent = node.attrs.indent;
+
+      // ✔ 累积到同一个 tr 上
+      tr.setNodeMarkup(
         pos,
         node.type,
-        { indent: null },
+        { ...node.attrs, indent: null },
         node.marks,
       );
-      dispatch?.(newTr);
     }
   });
+
+  // ✔ 遍历完后一次性 dispatch
+  props.dispatch?.(tr);
 
   if (options.keepAttributes) {
     return chain()
       .toggleList(name, options.itemTypeName, options.keepMarks, {
         indent: childNodeIndent,
       })
-      .updateAttributes(ListItem.name, editor.getAttributes(TextStyle.name))
+      .updateAttributes('listItem', editor.getAttributes('textStyle'))
       .run();
   }
+
   return commands.toggleList(name, options.itemTypeName, options.keepMarks);
 }

@@ -351,7 +351,7 @@ const FileUpload: FC<IUploadProps> = props => {
   };
 
   const getCustomRequest = (option: UploadRequestOption) => {
-    console.log('getCustomRequest触发');
+    console.log('getCustomRequest触发', option);
     const file = option.file;
     const originRequest = null;
     let canceled = false;

@@ -1,28 +1,33 @@
 @use "~@easy-editor/styles" as styles;
 @use 'sass:list';
-*{
+
+* {
   margin: 0;
   padding: 0;
 }
-.easy-editor{
+
+.easy-editor {
   display: flex;
   flex-direction: column;
   height: 100%;
   background: white;
   box-sizing: border-box;
-  &-link{
+
+  &-link {
     cursor: pointer;
   }
-  .ProseMirror{
-    code{
+
+  .ProseMirror {
+    code {
       padding: 8px;
-      margin: 0;
       font-size: 12px;
       background: styles.$background-grey;
       border-radius: 4px;
+      margin: 3px;
     }
+
     pre {
-      code{
+      code {
         display: block;
         box-sizing: border-box;
         margin: 0;
@@ -35,9 +40,11 @@
         line-height: 25px;
       }
     }
-    p{
+
+    p {
       color: styles.$primary-black;
     }
+
     ol,
     ul {
       //margin-left: 30px;
@@ -89,6 +96,7 @@
         }
       }
     }
+
     $max-depth: 11;
     $list-styles: (disc, circle, square);
 
@@ -113,9 +121,11 @@
 
     // 使用示例
     @include ul-list-type-generator();
+
     li.check-list-item {
       list-style-type: none;
     }
+
     p[data-first-indent='true'] {
       text-indent: 2em;
     }
@@ -149,12 +159,14 @@
       //}
     }
   }
+
   blockquote {
     border-left: 3px solid rgba(61, 37, 20, .12);
     margin: 1.5rem 0;
     padding-left: 1rem;
   }
-  &-body{
+
+  &-body {
     display: flex;
     overflow: auto;
     flex: 1 1;
@@ -162,44 +174,53 @@
     width: 100%;
     padding: 8px;
     box-sizing: border-box;
-    .easy-editor-block-container{
+
+    .easy-editor-block-container {
       margin-bottom: 8px;
-      .easy-editor-table-scroll-wrapper{
+
+      .easy-editor-table-scroll-wrapper {
         overflow-y: hidden;
         overflow-x: auto;
         padding: 40px 8px 0px 40px;
         margin: -10px -8px 0px -10px;
       }
     }
-    .tiptap p.is-editor-empty:first-child::before {
+
+    .tiptap div.is-editor-empty::before {
       color: #adb5bd;
       content: attr(data-placeholder);
       float: left;
       height: 0;
       pointer-events: none;
     }
-    .ProseMirror{
+
+    .ProseMirror {
       width: 100%;
-      &:focus{
+
+      &:focus {
         outline: none;
       }
     }
   }
-  &-sort-row{
+
+  &-sort-row {
     display: flex;
     align-items: center;
-    &:hover{
-      .easy-editor-sort-row__drag-handle{
+
+    &:hover {
+      .easy-editor-sort-row__drag-handle {
         visibility: visible;
       }
     }
-    &__drag-handle{
+
+    &__drag-handle {
       position: relative;
       cursor: grab;
       visibility: hidden;
       transition: all .3s;
     }
   }
+
   &-table {
     border-spacing: 0;
     border-collapse: collapse;
@@ -208,6 +229,19 @@
     overflow: auto;
     margin: 0;
     box-sizing: border-box;
+
+    &-cell-selected {
+      &:after{
+        position: absolute;
+        display: block;
+        content: " ";
+        top: 0;
+        left: 0;
+        width: 8px;
+        height: 100%;
+        cursor: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMTciIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsdGVyPSJ1cmwoI2ZpbHRlcjBfZF8zMjUxXzQ0NDAwKSI+PHBhdGggZD0iTTE1IDExLjQwMlYxSDQuNTk4bDMuNDY3IDMuNDY3TDIgMTAuNTMzIDUuNDY3IDE0bDYuMDY2LTYuMDY1TDE1IDExLjQwM3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMy43MjggMTAuNTMzbDYuMDY1LTYuMDY1LTIuMjMtMi4yNDNoNi4yMTJ2Ni4yMTJsLTIuMjQzLTIuMjQyLTYuMDY1IDYuMDY1LTEuNzQtMS43Mjd6IiBmaWxsPSIjMDAwIi8+PC9nPjxkZWZzPjxmaWx0ZXIgaWQ9ImZpbHRlcjBfZF8zMjUxXzQ0NDAwIiB4PSIuMzI5IiB5PSIuMjU3IiB3aWR0aD0iMTYuMzQzIiBoZWlnaHQ9IjE2LjM0MyIgZmlsdGVyVW5pdHM9InVzZXJTcGFjZU9uVXNlIiBjb2xvci1pbnRlcnBvbGF0aW9uLWZpbHRlcnM9InNSR0IiPjxmZUZsb29kIGZsb29kLW9wYWNpdHk9IjAiIHJlc3VsdD0iQmFja2dyb3VuZEltYWdlRml4Ii8+PGZlQ29sb3JNYXRyaXggaW49IlNvdXJjZUFscGhhIiB2YWx1ZXM9IjAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDEyNyAwIiByZXN1bHQ9ImhhcmRBbHBoYSIvPjxmZU9mZnNldCBkeT0iLjkyOSIvPjxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249Ii44MzYiLz48ZmVDb2xvck1hdHJpeCB2YWx1ZXM9IjAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAuNjUgMCIvPjxmZUJsZW5kIGluMj0iQmFja2dyb3VuZEltYWdlRml4IiByZXN1bHQ9ImVmZmVjdDFfZHJvcFNoYWRvd18zMjUxXzQ0NDAwIi8+PGZlQmxlbmQgaW49IlNvdXJjZUdyYXBoaWMiIGluMj0iZWZmZWN0MV9kcm9wU2hhZG93XzMyNTFfNDQ0MDAiIHJlc3VsdD0ic2hhcGUiLz48L2ZpbHRlcj48L2RlZnM+PC9zdmc+) 12 0, default;
+      }
+    }
 
     td,
     th {
@@ -318,13 +352,13 @@
         }
       }
 
-      &.selected .bar {
+      &.selected .easy-editor-table-tool-column-item {
         z-index: 1;
         background: styles.$primary-color;
         border-color: styles.$primary-color;
       }
 
-      &.last .bar {
+      &.last .easy-editor-table-tool-column-item {
         border-top-right-radius: 3px;
       }
     }
@@ -398,12 +432,12 @@
         }
       }
 
-      &.selected .bar {
+      &.selected .easy-editor-table-tool-row-item {
         z-index: 3;
         background-color: #90d4cf;
       }
 
-      &.last .bar {
+      &.last .easy-editor-table-tool-row-item {
         border-bottom-left-radius: 3px;
       }
     }

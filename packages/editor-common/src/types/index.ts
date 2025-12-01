@@ -1,5 +1,5 @@
 import type {JSONContent} from '@tiptap/core';
-import type {UploadRequestOption} from "rc-upload/es/interface";
+import type {UploadRequestOption} from 'rc-upload/es/interface';
 
 export type TDropDownRefProps = {
   toggleVisible: (visible: boolean) => void;
@@ -19,6 +19,8 @@ export type TEasyEditorProps = {
 };
 export type IImageProps = {
   max: number;
+  minWidth: number;
+  minHeight: number;
   maxFileSize: number;
   onImageBeforeUpload: (file: File, fileList: File[]) => boolean;
   onImageStartUpload: (fileList: File[]) => void;

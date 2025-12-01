@@ -4,11 +4,12 @@ import DropdownPanel from '../DropdownPanel/index.tsx';
 import './index.scss';
 import cx from 'classnames';
 import useControlledValue from '../../hooks/useControlledValue.ts';
-import type {TDropDownRefProps} from "../../types/index.ts";
+import type {TDropDownRefProps} from '../../types/index.ts';
 
 const Dropdown = forwardRef<
   TDropDownRefProps,
   {
+    showIcon?: boolean;
     visible?: boolean;
     children: ReactElement;
     popup: ReactNode;
@@ -20,6 +21,7 @@ const Dropdown = forwardRef<
   }
 >((props, ref) => {
   const {
+    showIcon = true,
     visible,
     onClick,
     getPopupContainer,
@@ -67,14 +69,16 @@ const Dropdown = forwardRef<
     >
       <div className="easy-editor-dropdown">
         {children}
-        <div
-          className={cx(
-            'easy-editor-dropdown__icon',
-            isOpen && 'easy-editor-dropdown__icon__open',
-          )}
-        >
-          <Iconfont type="icon-caret-down" />
-        </div>
+        {showIcon && (
+          <div
+            className={cx(
+              'easy-editor-dropdown__icon',
+              isOpen && 'easy-editor-dropdown__icon__open',
+            )}
+          >
+            <Iconfont type="icon-caret-down" />
+          </div>
+        )}
       </div>
     </DropdownPanel>
   );

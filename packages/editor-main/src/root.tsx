@@ -12,7 +12,7 @@ import {CustomLink} from '@easy-editor/extension-link';
 import {TaskItem, TaskList} from '@easy-editor/extension-task-item';
 import {Color} from '@tiptap/extension-color';
 import {ImageNode} from '@easy-editor/extension-image';
-import {Table, TableBubbleMenu, TableCell, TableHeader, TableRow} from '@easy-editor/extension-table';
+import {Table, TableBubbleMenu, TableCell, TableHeader, TableRow,} from '@easy-editor/extension-table';
 import {Placeholder} from '@tiptap/extension-placeholder';
 import {TextAlign} from '@tiptap/extension-text-align';
 import {TextStyle} from '@tiptap/extension-text-style';
@@ -21,7 +21,8 @@ import {ListItem} from './BulletList/list-item.ts';
 import {UniqueIDExtension} from './extension/UniqueIDExtension/index.ts';
 import useIntlLoaded from './hooks/useIntlLoaded.ts';
 import EditorFilePreview from './components/FilePreview/EditorFilePreview';
-import Underline from '@tiptap/extension-underline'; //import PasteExtension from './extension/paste/index.tsx';
+import Underline from '@tiptap/extension-underline';
+import {OutlineExtension} from '@easy-editor/extension-outline'; //import PasteExtension from './extension/paste/index.tsx';
 //import PasteExtension from './extension/paste/index.tsx';
 
 const Editor: FC<TEasyEditorProps> = props => {
@@ -35,7 +36,10 @@ const Editor: FC<TEasyEditorProps> = props => {
   const { intlInit } = useIntlLoaded();
   const { CL, OL, UL, P, H, CLI, LI, QUOTE, HR, TL, IMG, TABLE } = BLOCK_TYPES;
   const listGroup = `${UL}|${OL}|${CL}`;
-  const imageProps = Object.assign({ max: 0 }, props.imageProps);
+  const imageProps = Object.assign(
+    { max: 0, minWidth: 100, minHeight: 100 },
+    props.imageProps,
+  );
   const extensions = [
     StarterKit.configure({ bold: false, codeBlock: false, underline: false }),
     Bold,
@@ -80,6 +84,7 @@ const Editor: FC<TEasyEditorProps> = props => {
         [P, H, CL, OL, UL, QUOTE, HR, TL, IMG],
         '',
       ),
+      OutlineExtension,
       Placeholder.configure({
         placeholder,
       }),
@@ -94,7 +99,13 @@ const Editor: FC<TEasyEditorProps> = props => {
   return (
     <div className="easy-editor">
       {intlInit && <EditorToolbar editor={editor} imageProps={imageProps} />}
-      <EditorContent editor={editor} className="easy-editor-body" />
+      <EditorContent
+        autoFocus={autoFocus}
+        editor={editor}
+        className="easy-editor-body"
+      >
+        {/*<OutlineView editor={editor} />*/}
+      </EditorContent>
       <MessageContainer />
       <TableBubbleMenu editor={editor} />
       <EditorFilePreview editor={editor} />

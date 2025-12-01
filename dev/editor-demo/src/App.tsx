@@ -6,13 +6,15 @@ function App() {
     <>
       <div style={{ height: '100vh' }}>
         <Editor
+          placeholder="这是一个Placeholder"
           title="1234"
           onChange={(data) => {
             console.log('输出的内容是', data);
           }}
           imageProps={{
             onImageUpload:(option) => {
-              option.onSuccess?.({ data: 'https://pica.zhimg.com/50/v2-11302f948748d0e272a4d8401971ed1d_qhd.jpg?source=b6762063' });
+              console.log('onImageUpload触发了吗', option);
+              option.onSuccess?.({ data: 'https://hwobs-sq.fanruan.com/shequ_forum/image/4f39ce3ae8685ecc17ec5c947e8e275f.png' });
             }
           }}
         />

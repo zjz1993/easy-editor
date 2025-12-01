@@ -10,8 +10,9 @@ import type React from 'react';
 import {useCallback, useMemo, useRef, useState} from 'react';
 import {getLanguageByValue, getLanguageByValueOrAlias, languages,} from './languages';
 import './CodeBlockNodeView.scss';
-import {BLOCK_TYPES, Dropdown, get, Iconfont, message, smartClipboardCopy} from '@easy-editor/editor-common';
+import {BLOCK_TYPES, Dropdown, get, Iconfont, message, smartClipboardCopy,} from '@easy-editor/editor-common';
 import {TextSelection} from '@tiptap/pm/state';
+import {exportCode} from './utils.ts';
 
 const CODE_BLOCK_DROPDOWN_MAX_HEIGHT = 245;
 
@@ -140,11 +141,112 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
   const lineNumbers = useMemo(() => {
     return pureCode.split('\n').map((_, index) => index + 1);
   }, [pureCode]);
+  const renderToolbar = () => {
+    const copyBtn = (
+      <button
+        className="easy-editor-code-block__button_area__button"
+        onClick={() => {
+          smartClipboardCopy(pureCode as string);
+        }}
+      >
+        复制
+      </button>
+    );
+    if (isEditable) {
+      return (
+        <>
+          <button
+            className="easy-editor-code-block__button_area__button"
+            onClick={async () => {
+              try {
+                focusToCodeBlock();
+                const formatCodeString = await formatCode(
+                  pureCode,
+                  selectedValue,
+                );
+                const range = getCurrentCodeBlockRange();
+                if (range) {
+                  const { from, to } = range;
+                  const newNode = editor.schema.nodes[BLOCK_TYPES.CODE].create(
+                    { language: selectedValue }, // attrs
+                    editor.schema.text(formatCodeString), // content
+                  );
+                  const tr = editor.state.tr.replaceWith(from - 1, to, newNode);
+                  tr.setSelection(TextSelection.create(tr.doc, from + 1)); // 设置光标位置
+                  editor.view.dispatch(tr);
+                } else {
+                  message.warning('操作失败');
+                }
+              } catch (e) {
+                message.warning('操作失败');
+              }
+            }}
+          >
+            格式化
+          </button>
+          {copyBtn}
+          <button
+            onClick={() => {
+              exportCode(pureCode as string, language);
+            }}
+            className="easy-editor-code-block__button_area__button"
+          >
+            下载
+          </button>
+          <button
+            className="easy-editor-code-block__button_area__button"
+            onClick={() => {
+              try {
+                focusToCodeBlock();
+                const res = getCurrentCodeBlockRange();
+                editor
+                  .chain()
+                  .focus() // 确保编辑器聚焦
+                  .deleteRange({ from: res.from, to: res.to }) // 删除指定范围
+                  .run();
+              } catch (e) {
+                message.success('操作失败');
+              }
+            }}
+          >
+            清空代码块
+          </button>
+          <button
+            className="easy-editor-code-block__button_area__button"
+            onClick={() => {
+              try {
+                focusToCodeBlock();
+                const res = getCurrentCodeBlockRange();
+                if (res) {
+                  editor
+                    .chain()
+                    .focus() // 确保编辑器聚焦
+                    .deleteRange({ from: res.from - 1, to: res.to }) // 删除指定范围
+                    .run();
+                } else {
+                  message.warning('操作失败');
+                }
+              } catch (e) {
+                message.warning('操作失败');
+              }
+            }}
+          >
+            删除代码块
+          </button>
+        </>
+      );
+    }
+    return copyBtn;
+  };
 
   return (
     <NodeViewWrapper
       data-id={node.attrs.id}
-      className={classNames(node.attrs.className, 'easy-editor-code-block')}
+      className={classNames(
+        node.attrs.className,
+        'easy-editor-code-block',
+        'easy-editor-block-container',
+      )}
       //onMouseEnter={() => setToolbarVisible(true)}
       //onMouseLeave={() => setToolbarVisible(false)}
     >
@@ -153,8 +255,12 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
         contentEditable={false}
       >
         <Dropdown
+          showIcon={isEditable}
           visible={dropdownVisible}
           onVisibleChange={visible => {
+            if (!isEditable) {
+              return false;
+            }
             setDropdownVisible(visible);
           }}
           popup={
@@ -217,83 +323,7 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
           )}
         </Dropdown>
         <div className="easy-editor-code-block__button_area">
-          <button
-            className="easy-editor-code-block__button_area__button"
-            onClick={async () => {
-              try {
-                focusToCodeBlock();
-                const formatCodeString = await formatCode(
-                  pureCode,
-                  selectedValue,
-                );
-                const range = getCurrentCodeBlockRange();
-                if (range) {
-                  const { from, to } = range;
-                  const newNode = editor.schema.nodes[BLOCK_TYPES.CODE].create(
-                    { language: selectedValue }, // attrs
-                    editor.schema.text(formatCodeString), // content
-                  );
-                  const tr = editor.state.tr.replaceWith(from - 1, to, newNode);
-                  tr.setSelection(TextSelection.create(tr.doc, from + 1)); // 设置光标位置
-                  editor.view.dispatch(tr);
-                } else {
-                  message.warning('操作失败');
-                }
-              } catch (e) {
-                message.warning('操作失败');
-              }
-            }}
-          >
-            格式化
-          </button>
-          <button
-            className="easy-editor-code-block__button_area__button"
-            onClick={() => {
-              smartClipboardCopy(pureCode as string);
-            }}
-          >
-            复制
-          </button>
-          <button
-            className="easy-editor-code-block__button_area__button"
-            onClick={() => {
-              try {
-                focusToCodeBlock();
-                const res = getCurrentCodeBlockRange();
-                editor
-                  .chain()
-                  .focus() // 确保编辑器聚焦
-                  .deleteRange({ from: res.from, to: res.to }) // 删除指定范围
-                  .run();
-              } catch (e) {
-                message.success('操作失败');
-              }
-            }}
-          >
-            清空代码块
-          </button>
-          <button
-            className="easy-editor-code-block__button_area__button"
-            onClick={() => {
-              try {
-                focusToCodeBlock();
-                const res = getCurrentCodeBlockRange();
-                if (res) {
-                  editor
-                    .chain()
-                    .focus() // 确保编辑器聚焦
-                    .deleteRange({ from: res.from - 1, to: res.to }) // 删除指定范围
-                    .run();
-                } else {
-                  message.warning('操作失败');
-                }
-              } catch (e) {
-                message.warning('操作失败');
-              }
-            }}
-          >
-            删除代码块
-          </button>
+          {renderToolbar()}
         </div>
       </div>
       <div className="easy-editor-code-block__content-wrapper">

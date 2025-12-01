@@ -24,6 +24,11 @@ export const inputRegex =
  */
 export const ImageNode = Node.create<ImageOptions>({
   name: 'image',
+  group: 'inline',
+  inline: true,
+  draggable() {
+    return this.editor.isEditable;
+  },
 
   addOptions() {
     return {
@@ -34,17 +39,6 @@ export const ImageNode = Node.create<ImageOptions>({
     };
   },
 
-  inline() {
-    return this.options.inline;
-  },
-
-  group() {
-    return this.options.inline ? 'inline' : 'block';
-  },
-
-  draggable() {
-    return this.editor.isEditable;
-  },
   selectable() {
     return this.editor.isEditable;
   },
@@ -104,7 +98,7 @@ export const ImageNode = Node.create<ImageOptions>({
       updateAttrs:
         options =>
         ({ commands }) => {
-          console.log('updateAttrs调用了');
+          console.log('updateAttrs调用了', options);
           return commands.updateAttributes('image', options);
         },
       setImage:
