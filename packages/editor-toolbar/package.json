@@ -15,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@easy-editor/context": "workspace:^",
     "@easy-editor/editor-common": "workspace:^",
     "@easy-editor/extension-bold": "workspace:^",
     "@easy-editor/extension-image": "workspace:^",

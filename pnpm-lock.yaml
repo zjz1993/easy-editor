@@ -199,8 +199,23 @@ importers:
         specifier: ^3.5.0
         version: 3.5.0
 
+  packages/editor-context:
+    dependencies:
+      '@tiptap/core':
+        specifier: ^3.6.7
+        version: 3.6.7(@tiptap/pm@3.6.7)
+      '@tiptap/react':
+        specifier: ^3.6.7
+        version: 3.6.7(@floating-ui/dom@1.7.4)(@tiptap/core@3.6.7)(@tiptap/pm@3.6.7)(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
+      react:
+        specifier: ^18.0.0
+        version: 18.3.1
+
   packages/editor-main:
     dependencies:
+      '@easy-editor/context':
+        specifier: workspace:^
+        version: link:../editor-context
       '@easy-editor/editor-common':
         specifier: workspace:^
         version: link:../editor-common
@@ -292,6 +307,9 @@ importers:
 
   packages/editor-toolbar:
     dependencies:
+      '@easy-editor/context':
+        specifier: workspace:^
+        version: link:../editor-context
       '@easy-editor/editor-common':
         specifier: workspace:^
         version: link:../editor-common

@@ -8,9 +8,3 @@ export * from './utils';
 export * from './components';
 export * from 'lodash-es';
 export { IntlComponent, Language_ZhCN };
-export type {
-  AlignType,
-  TDropDownRefProps,
-  IImageProps,
-  TEasyEditorProps,
-} from './types';

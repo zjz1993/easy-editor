@@ -1,10 +1,9 @@
-import type {TEasyEditorProps} from '@easy-editor/editor-common';
 import {BLOCK_TYPES, isUndefined, MessageContainer, wrapBlockExtensions,} from '@easy-editor/editor-common';
 import {EditorToolbar} from '@easy-editor/editor-toolbar';
 import {Bold} from '@easy-editor/extension-bold';
 import {EditorContent, useEditor} from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import type {FC} from 'react';
+import {type FC, useEffect} from 'react';
 import './styles/root.scss';
 import {CodeBlock} from '@easy-editor/extension-code-block';
 import {Indent} from '@easy-editor/extension-indent';
@@ -22,7 +21,9 @@ import {UniqueIDExtension} from './extension/UniqueIDExtension/index.ts';
 import useIntlLoaded from './hooks/useIntlLoaded.ts';
 import EditorFilePreview from './components/FilePreview/EditorFilePreview';
 import Underline from '@tiptap/extension-underline';
-import {OutlineExtension} from '@easy-editor/extension-outline'; //import PasteExtension from './extension/paste/index.tsx';
+import {OutlineExtension} from '@easy-editor/extension-outline';
+import {useEditorProps} from "./hooks/useEditorProps.ts"; //import PasteExtension from './extension/paste/index.tsx';
+import {EditorProvider, type TEasyEditorProps} from '@easy-editor/context'; //import PasteExtension from './extension/paste/index.tsx';
 //import PasteExtension from './extension/paste/index.tsx';
 
 const Editor: FC<TEasyEditorProps> = props => {
@@ -36,10 +37,13 @@ const Editor: FC<TEasyEditorProps> = props => {
   const { intlInit } = useIntlLoaded();
   const { CL, OL, UL, P, H, CLI, LI, QUOTE, HR, TL, IMG, TABLE } = BLOCK_TYPES;
   const listGroup = `${UL}|${OL}|${CL}`;
-  const imageProps = Object.assign(
-    { max: 0, minWidth: 100, minHeight: 100 },
-    props.imageProps,
-  );
+  const mergedProps = useEditorProps(props, {
+    imageProps: {
+      max: 0,
+      minWidth: 100,
+      minHeight: 100,
+    },
+  });
   const extensions = [
     StarterKit.configure({ bold: false, codeBlock: false, underline: false }),
     Bold,
@@ -96,21 +100,28 @@ const Editor: FC<TEasyEditorProps> = props => {
     },
   });
 
+  useEffect(() => {
+    console.log('empty吗', editor.isEmpty);
+  }, [editor]);
   return (
-    <div className="easy-editor">
-      {intlInit && <EditorToolbar editor={editor} imageProps={imageProps} />}
-      <EditorContent
-        autoFocus={autoFocus}
-        editor={editor}
-        className="easy-editor-body"
-      >
-        {/*<OutlineView editor={editor} />*/}
-      </EditorContent>
-      <MessageContainer />
-      <TableBubbleMenu editor={editor} />
-      <EditorFilePreview editor={editor} />
-      {/*<BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu>*/}
-    </div>
+    <EditorProvider editor={editor} props={mergedProps}>
+      <div className="easy-editor">
+        {intlInit && (
+          <EditorToolbar editor={editor} imageProps={mergedProps.imageProps} />
+        )}
+        <EditorContent
+          autoFocus={autoFocus}
+          editor={editor}
+          className="easy-editor-body"
+        >
+          {/*<OutlineView editor={editor} />*/}
+        </EditorContent>
+        <MessageContainer />
+        <TableBubbleMenu editor={editor} />
+        <EditorFilePreview editor={editor} />
+        {/*<BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu>*/}
+      </div>
+    </EditorProvider>
   );
 };
 

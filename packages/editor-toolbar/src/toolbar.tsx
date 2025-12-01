@@ -1,6 +1,6 @@
 import {cloneElement, type FC, useContext, useMemo, useRef} from 'react';
 import './styles/root.scss';
-import type {IImageProps} from '@easy-editor/editor-common';
+import type {IImageProps} from '@easy-editor/context';
 import {
   BLOCK_TYPES,
   DropdownPanel,

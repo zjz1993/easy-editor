@@ -12,6 +12,7 @@
 	},
 	"description": "基于tiptap的编辑器",
 	"dependencies": {
+    "@easy-editor/context": "workspace:^",
     "@easy-editor/extension-outline": "workspace:^",
     "@easy-editor/extension-table": "workspace:^",
     "@easy-editor/extension-image": "workspace:^",
