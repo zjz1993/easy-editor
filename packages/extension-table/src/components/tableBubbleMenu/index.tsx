@@ -9,10 +9,10 @@ import {
   getCellsInColumn,
   getCellsInRow,
   getSelectedCells,
-  isCellSelection,
   isColumnSelected,
   isRowSelected,
-  isTableSelected
+  isTableSelected,
+  shouldShowTableMenu
 } from '../utils/index.ts';
 import './index.scss';
 
@@ -33,7 +33,7 @@ export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
   const [selectedCells, setSelectedCells] = useState<any[]>([]);
   const shouldShow = useCallback<BubbleMenuProps['shouldShow']>(
     props => {
-      const { editor, state } = props;
+      const { editor, state, from, to, view } = props;
       if (!editor.isEditable) {
         return false;
       }
@@ -61,7 +61,7 @@ export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
       const columnSelected = cellsInRow.filter((_cell, index) =>
         isColumnSelected(cellColumnIndexMap[index], editor.state.selection),
       );
-      console.log('columnSelected是', columnSelected);
+
       const cells = getSelectedCells(editor.state.selection);
       setSelectedState({
         rowSelected: hasRowSelected,
@@ -73,7 +73,8 @@ export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
       } else {
         setSelectedCells([]);
       }
-      return isCellSelection(editor.state.selection);
+      const res = shouldShowTableMenu({ editor, state, view, from, to });
+      return res;
     },
     [editor],
   );

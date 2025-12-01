@@ -68,6 +68,18 @@ export const getCellsInRow = (
   });
 };
 
+export const shouldShowTableMenu = ({ editor, view, state, from, to }) => {
+  const { selection } = state;
+
+  // 1️⃣ 必须是 CellSelection
+  if (!(selection instanceof CellSelection)) return false;
+
+  // 2️⃣ 确保表格节点还存在
+  const $anchor = selection.$anchorCell;
+  const tableNode = $anchor.node($anchor.depth - 1);
+  return !(!tableNode || tableNode.type.name !== 'table');
+};
+
 export const isCellSelection = (selection: any) => {
   return selection instanceof CellSelection;
 };

@@ -13,7 +13,6 @@ export const Table = TTable.extend({
     };
   },
   addProseMirrorPlugins() {
-    console.log('this.options是', this.options);
     return [
       columnResizing({
         editor: this.editor,

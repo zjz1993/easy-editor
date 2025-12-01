@@ -325,7 +325,6 @@ export function displayColumnWidth(
   width: number,
   cellMinWidth: number,
 ): void {
-  console.log('cell是', cell);
   const $cell = view.state.doc.resolve(cell);
   const table = $cell.node(-1);
   const start = $cell.start(-1);
