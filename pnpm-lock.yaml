@@ -261,9 +261,6 @@ importers:
       '@tiptap/extension-paragraph':
         specifier: ^3.6.7
         version: 3.6.7(@tiptap/core@3.6.7)
-      '@tiptap/extension-placeholder':
-        specifier: ^3.6.7
-        version: 3.6.7(@tiptap/extensions@3.6.7)
       '@tiptap/extension-text-align':
         specifier: ^3.6.7
         version: 3.6.7(@tiptap/core@3.6.7)
@@ -3509,14 +3506,6 @@ packages:
       '@tiptap/core': ^3.6.7
     dependencies:
       '@tiptap/core': 3.6.7(@tiptap/pm@3.6.7)
-    dev: false
-
-  /@tiptap/extension-placeholder@3.6.7(@tiptap/extensions@3.6.7):
-    resolution: {integrity: sha512-zy142MIFbiBt2kTW1z/FMQAv1p5ldR478x3vIr2KoqHqhLiaMdcJ4kLzHuajWmINsBolapBlC83wINhRBhuYjg==}
-    peerDependencies:
-      '@tiptap/extensions': ^3.6.7
-    dependencies:
-      '@tiptap/extensions': 3.6.7(@tiptap/core@3.6.7)(@tiptap/pm@3.6.7)
     dev: false
 
   /@tiptap/extension-strike@3.6.7(@tiptap/core@3.6.7):

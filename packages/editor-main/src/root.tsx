@@ -12,7 +12,7 @@ import {TaskItem, TaskList} from '@easy-editor/extension-task-item';
 import {Color} from '@tiptap/extension-color';
 import {ImageNode} from '@easy-editor/extension-image';
 import {Table, TableBubbleMenu, TableCell, TableHeader, TableRow,} from '@easy-editor/extension-table';
-import {Placeholder} from '@tiptap/extension-placeholder';
+import {Placeholder} from './extension/Placeholder';
 import {TextAlign} from '@tiptap/extension-text-align';
 import {TextStyle} from '@tiptap/extension-text-style';
 import BulletList from './BulletList/bullet-list.ts';
