@@ -1,17 +1,11 @@
 import type {NodeViewProps} from '@tiptap/core';
 import {NodeViewContent, NodeViewWrapper} from '@tiptap/react';
 import classNames from 'classnames';
-import prettier from 'prettier';
-import babelPlugin from 'prettier/plugins/babel';
-import estreePlugin from 'prettier/plugins/estree';
-import htmlPlugin from 'prettier/plugins/html';
-import typescriptPlugin from 'prettier/plugins/typescript';
 import type React from 'react';
 import {useCallback, useMemo, useRef, useState} from 'react';
 import {getLanguageByValue, getLanguageByValueOrAlias, languages,} from './languages';
 import './CodeBlockNodeView.scss';
 import {BLOCK_TYPES, Dropdown, get, Iconfont, message, smartClipboardCopy,} from '@easy-editor/editor-common';
-import {TextSelection} from '@tiptap/pm/state';
 import {exportCode} from './utils.ts';
 
 const CODE_BLOCK_DROPDOWN_MAX_HEIGHT = 245;
@@ -60,35 +54,6 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
     setTimeout(() => inputRef.current.focus());
   }, [isEditable]);
 
-  const formatCode = async (
-    code: string,
-    language: string = 'javascript',
-  ): Promise<string> => {
-    try {
-      // 根据语言选择 Prettier 的解析器
-      const parser =
-        language === 'typescript'
-          ? 'typescript'
-          : language === 'html'
-            ? 'html'
-            : 'babel';
-
-      // 需要传入正确的解析插件
-      const plugins = [babelPlugin, typescriptPlugin, htmlPlugin, estreePlugin];
-
-      return await prettier.format(code, {
-        parser,
-        plugins,
-        tabWidth: 2,
-        semi: true,
-        singleQuote: false,
-      });
-    } catch (error) {
-      message.warning('格式化失败');
-      console.log('error', error);
-      return code; // 失败时返回原代码
-    }
-  };
   function getCurrentCodeBlockRange() {
     const { $from } = editor.state.selection; // 获取光标位置的解析位置
 
@@ -155,35 +120,6 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
     if (isEditable) {
       return (
         <>
-          <button
-            className="easy-editor-code-block__button_area__button"
-            onClick={async () => {
-              try {
-                focusToCodeBlock();
-                const formatCodeString = await formatCode(
-                  pureCode,
-                  selectedValue,
-                );
-                const range = getCurrentCodeBlockRange();
-                if (range) {
-                  const { from, to } = range;
-                  const newNode = editor.schema.nodes[BLOCK_TYPES.CODE].create(
-                    { language: selectedValue }, // attrs
-                    editor.schema.text(formatCodeString), // content
-                  );
-                  const tr = editor.state.tr.replaceWith(from - 1, to, newNode);
-                  tr.setSelection(TextSelection.create(tr.doc, from + 1)); // 设置光标位置
-                  editor.view.dispatch(tr);
-                } else {
-                  message.warning('操作失败');
-                }
-              } catch (e) {
-                message.warning('操作失败');
-              }
-            }}
-          >
-            格式化
-          </button>
           {copyBtn}
           <button
             onClick={() => {

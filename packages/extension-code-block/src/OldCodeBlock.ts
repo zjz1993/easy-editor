@@ -1,16 +1,101 @@
 import {BLOCK_TYPES} from '@easy-editor/editor-common';
 import type {CodeBlockLowlightOptions} from '@tiptap/extension-code-block-lowlight';
 import {CodeBlockLowlight} from '@tiptap/extension-code-block-lowlight';
-import {TextSelection} from '@tiptap/pm/state';
+import {Plugin, PluginKey, TextSelection} from '@tiptap/pm/state';
 import {ReactNodeViewRenderer} from '@tiptap/react';
 import {lowlight} from 'lowlight/lib/all';
 import {CodeBlockNodeView} from './CodeBlockNodeView';
 import {getSelectedLineRange} from './utils';
+import {languages} from "./languages.ts";
 
 export type CodeBlockOptions = CodeBlockLowlightOptions;
 
-export const backtickInputRegex = /^[`·]{3}([a-z]+)?[\s\n]$/;
-export const tildeInputRegex = /^[~～]{3}([a-z]+)?[\s\n]$/;
+const langAliasMap = (() => {
+  const map = new Map<string, string>();
+
+  languages.forEach(l => {
+    map.set(l.value, l.value);
+    l.alias.forEach(a => map.set(a, l.value));
+  });
+
+  return map;
+})();
+
+export function detectLanguage(text: string): string {
+  const trimmed = text.trim();
+
+  // ========== JSON ==========
+  if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+    try {
+      JSON.parse(text);
+      return 'json';
+    } catch {}
+  }
+
+  // ========== YAML ==========
+  // YAML 有“- ”列表或 key: value 格式，且没有大括号
+  if (!/[{}<>]/.test(text) && /^(\s*\w+:\s+.+\n?)+/m.test(text)) {
+    return 'yaml';
+  }
+  if (/^-\s+\w+/.test(text)) {
+    return 'yaml';
+  }
+
+  // ========== HTML/XML ==========
+  if (/^\s*<([A-Za-z][A-Za-z0-9]*)\b[^>]*>/.test(text)) {
+    return 'xml';
+  }
+
+  // ========== SQL ==========
+  if (
+    /\b(SELECT|INSERT|UPDATE|DELETE|FROM|WHERE|JOIN|CREATE|ALTER|TABLE|VALUES)\b/i.test(
+      text,
+    )
+  ) {
+    return 'sql';
+  }
+
+  // ========== CSS ==========
+  if (/^[.#]?[A-Za-z0-9_-]+\s*{[^}]+}/m.test(text)) {
+    return 'css';
+  }
+
+  // ========== Java ==========
+  if (
+    /\b(class|interface|public|private|protected|static|void|new)\b/.test(
+      text,
+    ) &&
+    /{[\s\S]*}/.test(text)
+  ) {
+    return 'java';
+  }
+
+  // ========== TS/JS/JSX/TSX ==========
+  // JSX 特征
+  if (/<[A-Z][A-Za-z0-9]*\b[^>]*>/.test(text) && /{.*}/.test(text)) {
+    return 'javascript'; // 你 jsx 归属于 js
+  }
+
+  // TypeScript 特征
+  if (/\binterface\b|\btype\b/.test(text)) {
+    return 'typescript';
+  }
+
+  // JavaScript 特征
+  if (/\b(import|export|const|let|var|function|=>)\b/.test(text)) {
+    return 'javascript';
+  }
+
+  // ========== fallback → highlightAuto ==========
+  const result = lowlight.highlightAuto(text);
+  const lang = result.data.language;
+
+  if (lang && langAliasMap.has(lang)) {
+    return langAliasMap.get(lang)!;
+  }
+
+  return 'plaintext';
+}
 
 export const CodeBlock = CodeBlockLowlight.extend<CodeBlockOptions>({
   name: BLOCK_TYPES.CODE,
@@ -170,6 +255,67 @@ export const CodeBlock = CodeBlockLowlight.extend<CodeBlockOptions>({
       //  }),
       //  autoFocus: true,
       //}),
+    ];
+  },
+
+  addProseMirrorPlugins() {
+    return [
+      ...(this.parent?.() || []),
+      // this plugin creates a code block for pasted content from VS Code
+      // we can also detect the copied code language
+      new Plugin({
+        key: new PluginKey('codeBlockVSCodeHandler'),
+        props: {
+          handlePaste: (view, event) => {
+            if (!event.clipboardData) {
+              return false;
+            }
+
+            // don’t create a new code block within code blocks
+            if (this.editor.isActive(this.type.name)) {
+              return false;
+            }
+
+            const text = event.clipboardData.getData('text/plain');
+            const vscode = event.clipboardData.getData('vscode-editor-data');
+            const vscodeData = vscode ? JSON.parse(vscode) : undefined;
+            const language = vscodeData?.mode || detectLanguage(text);
+            console.log('language是', language);
+            if (!text || !language) {
+              return false;
+            }
+
+            const { tr, schema } = view.state;
+
+            // prepare a text node
+            // strip carriage return chars from text pasted as code
+            // see: https://github.com/ProseMirror/prosemirror-view/commit/a50a6bcceb4ce52ac8fcc6162488d8875613aacd
+            const textNode = schema.text(text.replace(/\r\n?/g, '\n'));
+
+            // create a code block with the text node
+            // replace selection with the code block
+            tr.replaceSelectionWith(this.type.create({ language }, textNode));
+
+            if (tr.selection.$from.parent.type !== this.type) {
+              // put cursor inside the newly created code block
+              tr.setSelection(
+                TextSelection.near(
+                  tr.doc.resolve(Math.max(0, tr.selection.from - 2)),
+                ),
+              );
+            }
+
+            // store meta information
+            // this is useful for other plugins that depends on the paste event
+            // like the paste rule plugin
+            tr.setMeta('paste', true);
+
+            view.dispatch(tr);
+
+            return true;
+          },
+        },
+      }),
     ];
   },
 });
