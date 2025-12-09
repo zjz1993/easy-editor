@@ -3,7 +3,6 @@ import cx from 'classnames';
 import type {CSSProperties, FC} from 'react';
 import {createFromIconfont} from './createFrontIconfont';
 import {Icon} from './Icon'; // 导入 Icon 组件
-import './index.scss';
 
 const IconFont = createFromIconfont(
   '//at.alicdn.com/t/c/font_4437062_f8f2fydfxer.js',

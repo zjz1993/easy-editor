@@ -2,7 +2,6 @@ import type {FC, ReactNode} from 'react';
 import {autoUpdate, offset, useClick, useDismiss, useFloating, useInteractions, useRole,} from '@floating-ui/react';
 import {AnimatePresence, motion} from 'framer-motion';
 import {createPortal} from 'react-dom';
-import './index.scss';
 import Button from '../Button';
 import Iconfont from '../IconFont';
 import cx from 'classnames';

@@ -5,7 +5,6 @@ import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 import ToolbarContext from '../../context/toolbarContext.ts';
 import type {TToolbarWrapperProps} from '../../types/index.ts';
 import InsertTablePanel from "./insertTablePanel";
-import './index.scss';
 
 const TableButton: FC<TToolbarWrapperProps> = props => {
   const { intlStr, style, disabled } = props;

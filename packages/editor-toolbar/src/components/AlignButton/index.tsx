@@ -1,5 +1,5 @@
-import type {AlignType} from "@easy-editor/editor-common";
-import {DropdownList, Iconfont, IntlComponent, Tooltip,} from '@easy-editor/editor-common';
+import type {AlignType} from "@easy-editor/context";
+import {DropdownList, Iconfont, IntlComponent, Tooltip} from '@easy-editor/editor-common';
 import type {FC} from 'react';
 import {useContext} from 'react';
 import ToolbarContext from '../../context/toolbarContext.ts';

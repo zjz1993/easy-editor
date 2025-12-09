@@ -1,7 +1,6 @@
 import {chunk, Iconfont} from '@easy-editor/editor-common';
 import type {FC} from 'react';
 import {useContext} from 'react';
-import './index.scss';
 import ToolbarContext from '../../context/toolbarContext.ts';
 
 export const colorArray = [

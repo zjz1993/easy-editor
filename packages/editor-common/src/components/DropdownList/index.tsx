@@ -1,7 +1,6 @@
 import {forwardRef, type ReactElement, type ReactNode, useCallback, useImperativeHandle,} from 'react';
 import Iconfont from '../IconFont';
 import DropdownPanel from '../DropdownPanel/index.tsx';
-import './index.scss';
 import cx from 'classnames';
 import useControlledValue from '../../hooks/useControlledValue.ts';
 import type {TDropDownRefProps} from '../../types/index.ts';

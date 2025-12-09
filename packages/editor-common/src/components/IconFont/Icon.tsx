@@ -2,7 +2,6 @@
 import cx from 'classnames';
 import type {CSSProperties, SVGAttributes} from 'react';
 import {forwardRef, type PropsWithChildren} from 'react';
-import './index.scss';
 
 type BaseIconProps = {
   className?: string;

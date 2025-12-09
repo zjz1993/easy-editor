@@ -3,7 +3,6 @@ import type {CSSProperties, HTMLAttributes, KeyboardEvent, KeyboardEventHandler,
 import {forwardRef} from 'react';
 import useMergedState from './useMergeState.ts';
 import KeyCode from './keycode.ts';
-import './index.scss';
 
 export type SwitchChangeEventHandler = (
   checked: boolean,

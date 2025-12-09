@@ -16,6 +16,7 @@ const UniqueIDExtension = Extension.create({
           BLOCK_TYPES.CODE,
           BLOCK_TYPES.IMG,
           BLOCK_TYPES.CODE_LINE,
+          BLOCK_TYPES.TABLE,
         ],
         attributes: {
           id: {

@@ -1,4 +1,3 @@
-import './style/index.scss';
 import {useSize} from 'ahooks';
 import cx from 'classnames';
 import {isUndefined} from 'lodash-es';

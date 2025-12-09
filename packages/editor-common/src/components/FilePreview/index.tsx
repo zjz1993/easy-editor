@@ -4,7 +4,6 @@ import Tooltip from '../Tooltip'; // import { Spin, Tooltip } from 'antd';
 import ClassNames from 'classnames';
 import {type CSSProperties, type FC, type ReactNode, useEffect, useRef, useState,} from 'react';
 import {createPortal} from 'react-dom'; // import { CSSTransition } from 'react-transition-group';
-import './index.scss';
 import {AnimatePresence, motion} from 'framer-motion';
 import {assign, isFunction, isString, size, some, split} from 'lodash-es';
 import Spin from '../Spin';

@@ -18,7 +18,6 @@ import {
 } from '@floating-ui/react';
 import type {MutableRefObject, PropsWithChildren, ReactNode} from 'react';
 import {forwardRef, useImperativeHandle, useMemo, useRef} from 'react';
-import './index.scss';
 import useControlledValue from '../../hooks/useControlledValue.ts'; // 自定义箭头组件
 
 // 自定义箭头组件

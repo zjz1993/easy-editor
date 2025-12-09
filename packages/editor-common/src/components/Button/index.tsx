@@ -1,5 +1,4 @@
 import type {FC, MouseEvent, ReactNode} from "react";
-import './index.scss';
 import cx from "classnames";
 
 const Button: FC<{

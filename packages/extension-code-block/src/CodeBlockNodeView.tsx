@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import type React from 'react';
 import {useCallback, useMemo, useRef, useState} from 'react';
 import {getLanguageByValue, getLanguageByValueOrAlias, languages,} from './languages';
-import './CodeBlockNodeView.scss';
 import {BLOCK_TYPES, Dropdown, get, Iconfont, message, smartClipboardCopy,} from '@easy-editor/editor-common';
 import {exportCode} from './utils.ts';
 

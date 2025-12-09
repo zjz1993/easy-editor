@@ -1,4 +1,5 @@
-import Editor from '@easy-editor/editor'
+import Editor from '@easy-editor/editor';
+import '@easy-editor/styles/src/index.scss';
 
 function App() {
 

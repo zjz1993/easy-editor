@@ -18,7 +18,7 @@ export interface CellAttrs {
  * @public
  */
 export const columnResizingPluginKey = new PluginKey<ResizeState>(
-  'tableColumnResizing',
+  'custom_tableColumnResizing',
 );
 
 /**

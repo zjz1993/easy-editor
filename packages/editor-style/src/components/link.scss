@@ -1,0 +1,34 @@
+@use "../mixin/index" as mixin;
+@use "../colors/colors" as colors;
+.kms-textarea-link-view{
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+  .link{
+    display: inline-block;
+    max-width: 80%;
+    @include mixin.text-truncate;
+  }
+  .icon{
+    cursor: pointer;
+    transition: all .3s;
+  }
+  .remove_icon.icon{
+    &:hover{
+      color: colors.$primary-red;
+    }
+  }
+  .edit_icon.icon{
+    &:hover{
+      color: colors.$primary-color;
+    }
+  }
+  .link_editor{
+    width: 100%;
+    .btn_wrapper{
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}

@@ -1,0 +1,206 @@
+@use "../colors/colors" as styles;
+$circle-size: 40px;
+.easy-editor-image-center.easy-editor-image-container{
+  text-align: center;
+}
+.easy-editor-image-left.easy-editor-image-container{
+  text-align: left;
+}
+.easy-editor-image-right.easy-editor-image-container{
+  text-align: right;
+}
+.easy-editor-image-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 100%;
+  .easy-editor-image-border{
+    img{
+      border: solid 1px #d9d9d9;
+    }
+  }
+  .easy-editor-image-normal{
+    &:hover{
+      box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 20%);
+      transition: all 0.3s;
+      .easy-editor-image-full-screen{
+        display: block;
+      }
+    }
+  }
+  .easy-editor-image{
+    width: fit-content;
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    img{
+      max-width: 100%;
+    }
+    &-full-screen {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: none;
+      width: 30px;
+      height: 30px;
+      color: #fff;
+      line-height: 30px;
+      text-align: center;
+      background: rgba(0, 0, 0, 20%);
+      border-radius: 4px;
+      cursor: pointer;
+
+      > i {
+        font-size: 18px;
+      }
+
+      &:hover {
+        color: styles.$primary-color;
+      }
+    }
+
+    &__resize-handle {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: blue;
+
+      &.top-left {
+        top: -5px;
+        left: -5px;
+        cursor: nwse-resize;
+      }
+
+      &.top-right {
+        top: -5px;
+        right: -5px;
+        cursor: nesw-resize;
+      }
+
+      &.bottom-left {
+        bottom: -5px;
+        left: -5px;
+        cursor: nesw-resize;
+      }
+
+      &.bottom-right {
+        bottom: -5px;
+        right: -5px;
+        cursor: nwse-resize;
+      }
+    }
+
+    &__placeholder {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: rgba(229, 229, 229, 0.8);
+      .circle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: $circle-size;
+        height: $circle-size;
+        text-align: center;
+        border: solid 2px styles.$primary-color;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+
+        .circle-left {
+          position: absolute;
+          top: -2px;
+          bottom: -2px;
+          left: -2px;
+          width: calc($circle-size / 2);
+          overflow: hidden;
+
+          .inner {
+            width: $circle-size;
+            height:$circle-size;
+            border: solid 2px white;
+            border-right-color: transparent;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+
+            &.has-animation {
+              transition: transform 200ms ease-in-out;
+            }
+          }
+        }
+
+        .circle-right {
+          position: absolute;
+          top: -2px;
+          right: -2px;
+          bottom: -2px;
+          width: calc($circle-size / 2);
+          overflow: hidden;
+
+          .inner {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: $circle-size;
+            height: $circle-size;
+            border: solid 2px white;
+            border-top-color: transparent;
+            border-left-color: transparent;
+            border-radius: 50%;
+
+            &.has-animation {
+              transition: transform 200ms ease;
+            }
+          }
+        }
+
+        .circle-text {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          color: styles.$primary-color;
+          font-size: 12px;
+          white-space: nowrap;
+          transform: translate(-50%, -50%);
+        }
+      }
+    }
+  }
+}
+// 图片工具栏
+.easy-editor-image-toolbar{
+  height: 32px;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  &-item-width-fix{
+    width: 32px;
+  }
+  &-input-item{
+    display: flex;
+    width: 140px;
+  }
+  &-item-active{
+    background: styles.$background-grey;
+  }
+  &-item{
+    height: 32px;
+    text-align: center;
+    line-height: 32px;
+    &:hover{
+      background: #f4f4f4;
+      .icon-delete .icon{
+        color: styles.$primary-red;
+      }
+    }
+    .icon{
+      cursor: pointer;
+      color: #000c;
+      transition: all .3s;
+    }
+    &:not(:last-child){
+      margin-right: 8px;
+    }
+  }
+}

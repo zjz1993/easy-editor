@@ -15,7 +15,6 @@ import {
   useRole,
 } from '@floating-ui/react'; // 样式文件，后面会提供
 import React, {type FC, type ReactNode, useRef} from 'react';
-import './index.scss';
 import useControlledValue from '../../hooks/useControlledValue.ts';
 import type {TPopoverProps} from '../Popover/index.tsx';
 

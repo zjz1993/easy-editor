@@ -1,12 +1,26 @@
 {
   "name": "@easy-editor/styles",
   "version": "0.0.1",
-  "main": "src/index.scss",
+  "private": false,
+
+  "files": ["dist", "src"],
+
+  "style": "dist/index.css",
+
   "exports": {
-    "sass": "./src/index.scss"
+    ".": "./dist/index.css",
+
+    "./src/index.scss": "./src/index.scss",
+
+    "./dist/index.css": "./dist/index.css"
   },
-  "files": ["src"],
-  "peerDependencies": {
+
+  "scripts": {
+    "prepublishOnly": "npm run build",
+    "build": "sass src/index.scss dist/index.css"
+  },
+
+  "devDependencies": {
     "sass": "^1.64.0"
   }
 }

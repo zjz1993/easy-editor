@@ -3,7 +3,6 @@ import type {NodeViewProps} from '@tiptap/core';
 import cx from 'classnames';
 import {Iconfont, isUndefined, isViewEditable, Popover, PREVIEW_CLS,} from '@easy-editor/editor-common';
 import {type FC, useEffect, useRef, useState} from 'react';
-import './index.scss';
 import useHandleChangeImageSize from './hooks/useHandleChangeImageSize.ts';
 import ImageNodeToolbar from './ImageNodeToolbar.tsx';
 

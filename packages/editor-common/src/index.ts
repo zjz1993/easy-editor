@@ -7,4 +7,5 @@ export * from './const';
 export * from './utils';
 export * from './components';
 export * from 'lodash-es';
+export * from './types';
 export { IntlComponent, Language_ZhCN };

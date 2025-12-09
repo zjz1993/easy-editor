@@ -1,7 +1,7 @@
-import './index.scss';
 import type {FC} from 'react';
-import {type AlignType, InputNumber, useControlledValue} from '@easy-editor/editor-common';
+import {InputNumber, useControlledValue} from '@easy-editor/editor-common';
 import ToolbarButton from '../src/components/ToolbarButton';
+import type {AlignType} from '@easy-editor/context';
 
 const ImageNodeToolbar: FC<{
   defaultWidth: number;

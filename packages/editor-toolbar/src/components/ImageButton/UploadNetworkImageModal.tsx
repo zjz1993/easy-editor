@@ -1,6 +1,5 @@
 import {Iconfont, InputNumber, Modal, Switch, Tooltip} from '@easy-editor/editor-common';
 import {type FC, useEffect, useRef, useState} from 'react';
-import './index.scss';
 import cx from 'classnames';
 import {Controller, useForm} from 'react-hook-form';
 

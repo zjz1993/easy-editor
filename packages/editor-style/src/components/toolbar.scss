@@ -1,0 +1,243 @@
+@use "../colors/colors" as styles;
+.easy-editor-link-toolbar{
+  display: flex;
+  padding: 8px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 1000;
+  align-items: center;
+  gap: 8px;
+  &-icon-edit{
+    cursor: pointer;
+    transition: all .3s;
+    &:hover{
+      color: styles.$primary-color;
+    }
+  }
+  &-icon-del{
+    cursor: pointer;
+    transition: all .3s;
+    &:hover{
+      color: styles.$primary-red;
+    }
+  }
+}
+
+.kms-tb-table-picker {
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  .table-content {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 12px 0;
+  }
+
+  .table-row {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: row;
+
+    &:last-child {
+      .table-cell {
+        border-bottom-width: 1px;
+      }
+    }
+  }
+
+  .table-cell {
+    flex: 0 0 auto;
+    width: 20px;
+    height: 20px;
+    border: 1px solid styles.$border-grey;
+    border-right-width: 0;
+    border-bottom-width: 0;
+
+    &.active {
+      background: #e6f7f6;
+    }
+
+    &:last-child {
+      border-right-width: 1px;
+    }
+  }
+
+  .table-label {
+    padding: 5px 0;
+    font-size: 12px;
+    text-align: center;
+  }
+}
+
+.toolbar-color-btn{
+  position: relative;
+  &__color{
+    position: absolute;
+    width: 100%;
+    background: styles.$primary-black;
+    height: 5px;
+    bottom: -2px;
+  }
+}
+.easy-editor-color-picker{
+  &__title{
+    font-size: 12px;
+  }
+  &__color_row{
+    display: flex;
+    align-items: center;
+    margin: 8px 0;
+    .color-item{
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      transition: all .3s;
+      cursor: pointer;
+      box-sizing: border-box;
+      &:hover{
+        box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.15);
+      }
+      &:not(:last-child){
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+.easy-editor{
+  .easy-editor-toolbar {
+    position: relative;
+    padding: 8px;
+    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.15);
+    transition: padding 600ms cubic-bezier(0.19, 1, 0.22, 1);
+    display: flex;
+    align-items: center;
+    height: 40px;
+    box-sizing: border-box;
+
+
+    .rc-overflow{
+      display: flex;
+      flex-wrap: nowrap;
+      position: relative;
+      width: 100%;
+
+      &-item {
+        flex: none;
+        max-width: 100%;
+        // margin-right: 100px;
+      }
+    }
+
+    .disabled.easy-editor-toolbar__item{
+      &:hover{
+        background: none;
+      }
+    }
+    .disabled.easy-editor-toolbar__item__btn{
+      cursor: not-allowed;
+      opacity: 0.3;
+    }
+    &__item{
+      display: flex;
+      height: 24px;
+      align-items: center;
+      border-radius: 4px;
+      margin-right: 8px;
+      &__dropdown{
+        width: 70px;
+      }
+      &__btn{
+        display: block;
+        line-height: 24px;
+        width: 24px;
+        height: 24px;
+        border: none;
+        outline: none;
+        border-radius: 4px;
+        text-align: center;
+        font-size: 16px;
+        color: inherit;
+        cursor: pointer;
+        &--active{
+          background-color: styles.$background-grey;
+        }
+        &--disabled{
+          cursor: not-allowed;
+          opacity: 0.3;
+        }
+      }
+      &:hover{
+        background: styles.$hover-grey;
+      }
+    }
+  }
+  .divider-horizontal.easy-editor__divider {
+    width: 100%;
+    height: 1px;
+    display: flex;
+    clear: both;
+  }
+  .divider-vertical.easy-editor__divider {
+    width: 1px;
+    margin: 0 8px 0 0;
+    height: 18px;
+    display: inline-block;
+    position: relative;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .easy-editor__divider {
+    background-color: styles.$border-color;
+  }
+}
+
+.easy-editor-link-panel{
+  padding: 16px;
+  .submit_row.easy-editor-link-panel__row{
+    justify-content: flex-end;
+    margin-bottom: 0;
+    gap: 8px;
+    display: flex;
+  }
+  &__error{
+    color: styles.$primary-red;
+    margin-bottom: 8px;
+    &__tips{
+      font-size: 12px;
+    }
+  }
+  &__row{
+    margin-bottom: 8px;
+    &__inner{
+      display: flex;
+      align-items: flex-start;
+    }
+    &__label{
+      height: 32px;
+      line-height: 32px;
+      &:after{
+        content: ":";
+        margin-right: 8px;
+      }
+    }
+    &__input{
+      display: block;
+      width: 210px;
+      box-sizing: border-box;
+      padding: 7px 8px;
+      height: 32px;
+      background: styles.$primary-white;
+      border-radius: 3px;
+      border: 1px solid styles.$border-color;
+      color: inherit;
+      outline: 0;
+    }
+  }
+}

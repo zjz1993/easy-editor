@@ -14,7 +14,6 @@ import {
   isTableSelected,
   shouldShowTableMenu
 } from '../utils/index.ts';
-import './index.scss';
 
 export type TableBubbleMenuProps = {
   editor: Editor;

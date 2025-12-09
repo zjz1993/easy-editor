@@ -280,7 +280,6 @@ export const CodeBlock = CodeBlockLowlight.extend<CodeBlockOptions>({
             const vscode = event.clipboardData.getData('vscode-editor-data');
             const vscodeData = vscode ? JSON.parse(vscode) : undefined;
             const language = vscodeData?.mode || detectLanguage(text);
-            console.log('language是', language);
             if (!text || !language) {
               return false;
             }

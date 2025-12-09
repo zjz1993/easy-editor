@@ -1,7 +1,7 @@
 // OutlineView.tsx
 import {useEffect, useState} from 'react'
-import TreeMenu from 'react-simple-tree-menu'
-import 'react-simple-tree-menu/dist/main.css'
+import Tree from "rc-tree";
+import "rc-tree/assets/index.css"
 
 export const OutlineView = ({ editor }) => {
   const [treeData, setTreeData] = useState([]);
@@ -26,18 +26,19 @@ export const OutlineView = ({ editor }) => {
   const convertOutlineToTree = items =>
     items.map(i => ({
       key: String(i.pos),
-      label: i.text,
-      nodes: convertOutlineToTree(i.children),
+      title: i.text,
+      children: convertOutlineToTree(i.children),
     }));
 
   return (
     <div style={{ width: 260, borderRight: '1px solid #eee', padding: '8px' }}>
-      <TreeMenu
-        data={treeData}
-        onClickItem={({ key }) => {
-          editor.commands.focus();
-          editor.commands.setTextSelection(Number(key));
-        }}
+      <Tree
+        checkable={false}
+        treeData={treeData}
+        //onSelect={({ key }) => {
+        //  editor.commands.focus();
+        //  editor.commands.setTextSelection(Number(key));
+        //}}
       />
     </div>
   );

@@ -1,6 +1,5 @@
 import type {FC, ReactNode} from 'react';
 import {type Easing, motion} from 'framer-motion';
-import './index.scss';
 
 export interface SpinProps {
   spinning?: boolean;

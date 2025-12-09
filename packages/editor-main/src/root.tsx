@@ -3,8 +3,7 @@ import {EditorToolbar} from '@easy-editor/editor-toolbar';
 import {Bold} from '@easy-editor/extension-bold';
 import {EditorContent, useEditor} from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import {type FC, useEffect} from 'react';
-import './styles/root.scss';
+import type {FC} from 'react';
 import {CodeBlock} from '@easy-editor/extension-code-block';
 import {Indent} from '@easy-editor/extension-indent';
 import {CustomLink} from '@easy-editor/extension-link';
@@ -22,7 +21,7 @@ import useIntlLoaded from './hooks/useIntlLoaded.ts';
 import EditorFilePreview from './components/FilePreview/EditorFilePreview';
 import Underline from '@tiptap/extension-underline';
 import {OutlineExtension} from '@easy-editor/extension-outline';
-import {useEditorProps} from "./hooks/useEditorProps.ts"; //import PasteExtension from './extension/paste/index.tsx';
+import {useEditorProps} from './hooks/useEditorProps.ts'; //import PasteExtension from './extension/paste/index.tsx';
 import {EditorProvider, type TEasyEditorProps} from '@easy-editor/context'; //import PasteExtension from './extension/paste/index.tsx';
 //import PasteExtension from './extension/paste/index.tsx';
 
@@ -100,9 +99,6 @@ const Editor: FC<TEasyEditorProps> = props => {
     },
   });
 
-  useEffect(() => {
-    console.log('empty吗', editor.isEmpty);
-  }, [editor]);
   return (
     <EditorProvider editor={editor} props={mergedProps}>
       <div className="easy-editor">

@@ -1,4 +1,4 @@
-import {Dropdown, IntlComponent, type TDropDownRefProps,} from '@easy-editor/editor-common';
+import {Dropdown, IntlComponent, type TDropDownRefProps} from '@easy-editor/editor-common';
 import cx from 'classnames';
 import type {FC} from 'react';
 import {useContext, useRef} from 'react';

@@ -2,7 +2,6 @@ import {autoUpdate, flip, offset, shift, useFloating,} from '@floating-ui/react'
 import type {FC, ReactNode} from 'react';
 import {useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
-import './index.scss';
 import cx from 'classnames';
 import Iconfont from '../IconFont';
 

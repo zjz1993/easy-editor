@@ -1,44 +1,27 @@
 {
-	"name": "easy-editor",
-	"version": "1.0.0",
-	"private": "true",
-	"description": "",
-	"scripts": {
+  "private": true,
+  "files": [
+    "dist"
+  ],
+  "scripts": {
     "start": "pnpm turbo run dev --filter=editor-demo",
-		"build": "turbo run build --filter=@easy-editor/* && node scripts/mergeCss.js",
-		"preinstall": "npx only-allow pnpm",
-		"init:tiptap": "pnpm recursive install @tiptap/react @tiptap/pm @tiptap/starter-kit --filter='!@easy-editor/dev'"
-	},
-	"keywords": [],
-	"author": "zhaojunzhe",
-	"license": "ISC",
-	"devDependencies": {
-		"@babel/core": "^7.26.0",
-		"@babel/plugin-transform-runtime": "^7.25.9",
-		"@biomejs/biome": "1.9.4",
-		"@changesets/cli": "^2.27.9",
-		"@rollup/plugin-babel": "^6.0.4",
-		"@rollup/plugin-commonjs": "^28.0.2",
-		"@rollup/plugin-image": "^3.0.3",
-		"@rollup/plugin-json": "^6.1.0",
-		"@rollup/plugin-node-resolve": "^16.0.0",
-		"@types/react": "^18.3.12",
-		"core-js": "3",
-		"only-allow": "^1.2.1",
-		"rollup": "4.22.4",
-		"rollup-plugin-alias": "^2.2.0",
-		"rollup-plugin-dts": "^6.2.3",
-		"rollup-plugin-postcss": "^4.0.2",
-		"rollup-plugin-typescript2": "^0.36.0",
-		"rollup-plugin-visualizer": "^5.14.0",
-		"sass": "^1.83.0",
-		"sass-embedded": "^1.83.0",
-		"tslib": "^2.8.1",
-		"turbo": "^2.3.0"
-	},
-	"packageManager": "pnpm@9.13.0",
-	"engines": {
-		"node": ">=18",
-		"pnpm": ">=8"
-	}
+    "build": "turbo run build --filter=@easy-editor/*"
+  },
+  "keywords": [],
+  "author": "zhaojunzhe",
+  "license": "ISC",
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@types/react": "^18.3.12",
+    "esbuild-sass-plugin": "^3.3.1",
+    "only-allow": "^1.2.1",
+    "tsup": "^8.5.1",
+    "turbo": "^2.3.0",
+    "typescript": "^5.6.0"
+  },
+  "packageManager": "pnpm@9.13.0",
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=8"
+  }
 }

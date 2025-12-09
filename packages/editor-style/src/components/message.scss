@@ -1,0 +1,60 @@
+@use "../colors/colors" as styles;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOutUp {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+.easy-editor-message-success{
+  .easy-editor-message__icon{
+    color: styles.$primary-green;
+  }
+}
+.easy-editor-message-error{
+  .easy-editor-message__icon{
+    color: styles.$primary-red;
+  }
+}
+.easy-editor-message-info{
+  .easy-editor-message__icon{
+    color: styles.$primary-color;
+  }
+}
+.easy-editor-message-warning{
+  .easy-editor-message__icon{
+    color: styles.$primary-yellow;
+  }
+}
+.easy-editor-message {
+  padding: 8px 16px;
+  opacity: 1;
+  transition: all 0.3s;
+  margin-bottom: 8px;
+  display: inline-block;
+  background: styles.$primary-white;
+  border-radius: 8px;
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  pointer-events: all;
+  box-sizing: border-box;
+  animation: fadeInUp 0.3s ease-out, fadeOutUp 0.3s ease-out 2.7s forwards;
+  &__inner{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}

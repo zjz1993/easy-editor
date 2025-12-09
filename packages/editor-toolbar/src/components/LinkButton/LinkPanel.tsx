@@ -1,6 +1,5 @@
 import type React from 'react';
 import {useForm} from 'react-hook-form';
-import './index.scss';
 import cx from 'classnames';
 import {Button} from "@easy-editor/editor-common";
 

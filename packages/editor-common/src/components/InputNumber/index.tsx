@@ -1,7 +1,6 @@
 import type {InputNumberProps} from 'rc-input-number';
 import RcInputNumber from 'rc-input-number';
 import {forwardRef, useRef} from 'react';
-import './index.scss';
 import cx from 'classnames';
 
 const InputNumber = forwardRef<any, InputNumberProps>((props, ref) => {

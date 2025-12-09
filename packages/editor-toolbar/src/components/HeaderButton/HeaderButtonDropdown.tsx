@@ -1,5 +1,4 @@
 import {type FC, useCallback, useContext} from 'react';
-import './index.scss';
 import {BLOCK_TYPES, headers, Iconfont, IntlComponent} from '@easy-editor/editor-common';
 import cx from 'classnames';
 import ToolbarContext from '../../context/toolbarContext.ts';

@@ -1,28 +1,34 @@
+import type {TableOptions as OrigTableOptions} from '@tiptap/extension-table';
 import {Table as TTable} from '@tiptap/extension-table';
 import {TableView} from "./TableView.ts";
 import {columnResizing} from "../utils/TableResizePlugin.ts";
-import '../../styles/index.scss';
-import {tableEditing} from '@tiptap/pm/tables';
 
-const tableResizerPlugin: any = null;
+export type TableOptions = Partial<OrigTableOptions> & {
+  cellMinWidth?: number;
+};
 
-export const Table = TTable.extend({
+export const Table = TTable.extend<TableOptions>({
   addOptions() {
     return {
+      ...this.parent?.(),
       cellMinWidth: 100,
     };
   },
   addProseMirrorPlugins() {
+    const parentPlugins = this.parent?.() ?? [];
     return [
+      ...parentPlugins.filter(
+        p => !p.key.startsWith('custom_tableColumnResizing'),
+      ),
       columnResizing({
         editor: this.editor,
         handleWidth: this.options.handleWidth,
         cellMinWidth: this.options.cellMinWidth,
         lastColumnResizable: this.options.lastColumnResizable,
       }),
-      tableEditing({
-        allowTableNodeSelection: this.options.allowTableNodeSelection,
-      }),
+      //tableEditing({
+      //  allowTableNodeSelection: this.options.allowTableNodeSelection,
+      //}),
     ];
   },
   addNodeView() {

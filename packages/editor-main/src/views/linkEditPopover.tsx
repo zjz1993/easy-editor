@@ -1,7 +1,6 @@
 // import type { CustomLinkAttrs } from '@/Editor/textarea/views/link';
 // import { Button, Form, Input, Space } from 'antd';
-import type { FC } from 'react';
-import 'src/views/link.scss';
+import type {FC} from 'react';
 
 const LinkEditPopover: FC<{
   onSubmit: (data: any) => void;
