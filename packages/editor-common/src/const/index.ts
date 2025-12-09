@@ -1,3 +1,12 @@
+export enum HeaderLevel {
+  H1 = 1,
+  H2 = 2,
+  H3 = 3,
+  H4 = 4,
+  H5 = 5,
+  H6 = 6,
+}
+
 export const INDENT_TYPES = {
   Inc: 'inc',
   Desc: 'desc',
@@ -696,7 +705,7 @@ export const headers = [
   {
     name: 'h1',
     type: BLOCK_TYPES.H,
-    attrs: { level: 1 },
+    attrs: { level: HeaderLevel.H1 },
     keys: 'toolbar.header.h1',
   },
   {

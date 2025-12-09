@@ -52,7 +52,7 @@ export const BubbleMenu = (props: BubbleMenuProps) => {
     return () => {
       editor.unregisterPlugin(pluginKey);
     };
-  }, [editor, element]);
+  }, [editor, element, shouldShow]);
 
   return (
     <>

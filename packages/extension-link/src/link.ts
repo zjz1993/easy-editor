@@ -5,7 +5,6 @@ import {find, registerCustomProtocol, reset} from 'linkifyjs';
 import {MARK_TYPES} from '@easy-editor/editor-common';
 import {autolink} from './helpers/autolinks.js';
 import {clickHandler} from './helpers/clickHandler.js';
-import {pasteHandler} from './helpers/pasteHandler.js';
 
 export interface LinkProtocolOptions {
   /**
@@ -267,9 +266,6 @@ export const Link = Mark.create<LinkOptions>({
           return element.getAttribute('href');
         },
       },
-      text: {
-        default: null,
-      },
       target: {
         default: this.options.HTMLAttributes.target,
       },
@@ -396,9 +392,19 @@ export const Link = Mark.create<LinkOptions>({
 
       unsetLink:
         () =>
-        ({ chain }) => {
+        ({ state, chain }) => {
+          const { tr } = state;
+
+          // 1. 确保选择范围内所有 链接 Mark 都被 unset
+          tr.removeMark(
+            tr.selection.from,
+            tr.selection.to,
+            state.schema.marks[MARK_TYPES.LK],
+          );
+
+          // 2. 再执行 chain 的逻辑
           return chain()
-            .unsetMark(this.name, { extendEmptyMarkRange: true })
+            .unsetMark(MARK_TYPES.LK, { extendEmptyMarkRange: true })
             .setMeta('preventAutolink', true)
             .run();
         },
@@ -410,7 +416,7 @@ export const Link = Mark.create<LinkOptions>({
       markPasteRule({
         find: text => {
           const foundLinks: PasteRuleMatch[] = [];
-          console.log('markPasteRule触发', text);
+
           if (text) {
             const { protocols, defaultProtocol } = this.options;
             const links = find(text).filter(
@@ -423,28 +429,22 @@ export const Link = Mark.create<LinkOptions>({
                 }),
             );
             console.log('links是', links);
-            if (links.length) {
-              links.forEach(link =>
-                foundLinks.push({
-                  text: link.value,
-                  data: {
-                    href: link.href,
-                  },
-                  index: link.start,
-                }),
-              );
-            }
-          }
 
+            links.forEach(link =>
+              foundLinks.push({
+                text: link.value,
+                data: { href: link.href },
+                index: link.start,
+              }),
+            );
+          }
+          console.log('foundLinks是', foundLinks);
           return foundLinks;
         },
         type: this.type,
-        getAttributes: match => {
-          return {
-            text: match.data?.href,
-            href: match.data?.href,
-          };
-        },
+        getAttributes: match => ({
+          href: match.data?.href,
+        }),
       }),
     ];
   },
@@ -477,16 +477,27 @@ export const Link = Mark.create<LinkOptions>({
       );
     }
 
-    if (this.options.linkOnPaste) {
-      plugins.push(
-        pasteHandler({
-          editor: this.editor,
-          defaultProtocol: this.options.defaultProtocol,
-          type: this.type,
-        }),
-      );
-    }
+    //if (this.options.linkOnPaste) {
+    //  plugins.push(
+    //    pasteHandler({
+    //      editor: this.editor,
+    //      defaultProtocol: this.options.defaultProtocol,
+    //      type: this.type,
+    //    }),
+    //  );
+    //}
 
     return plugins;
+  },
+
+  addKeyboardShortcuts() {
+    return {
+      Space: ({ editor }) => {
+        if (editor.isActive(this.name)) {
+          editor.chain().focus().unsetMark(this.name).run();
+        }
+        return false;
+      },
+    };
   },
 });

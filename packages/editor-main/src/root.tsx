@@ -44,7 +44,12 @@ const Editor: FC<TEasyEditorProps> = props => {
     },
   });
   const extensions = [
-    StarterKit.configure({ bold: false, codeBlock: false, underline: false }),
+    StarterKit.configure({
+      bold: false,
+      codeBlock: false,
+      underline: false,
+      link: false,
+    }),
     Bold,
     Table.configure({
       resizable: true,

@@ -29,7 +29,6 @@ function getLinkRange(doc, pos, linkMark) {
 
   return { from, to };
 }
-let inToolbar = false;
 
 const CustomLink = Link.extend({
   name: MARK_TYPES.LK,
@@ -89,47 +88,12 @@ const CustomLink = Link.extend({
                   onClose: () => {
                     component.destroy();
                     container.remove();
-                    inToolbar = false;
-                    container.removeEventListener(
-                      'mouseenter',
-                      handleContainerMouseEnter,
-                    );
-                    target.removeEventListener('mouseleave', handleMouseOut);
                   },
                 },
               });
 
               // 立即将 React 组件渲染到容器中
               container.appendChild(component.element);
-
-              const handleMouseOut = (mouseoutEvent: MouseEvent) => {
-                const relatedTarget = mouseoutEvent.relatedTarget;
-                if (
-                  relatedTarget instanceof Node &&
-                  !target.contains(relatedTarget)
-                ) {
-                  setTimeout(() => {
-                    if (!inToolbar) {
-                      container.remove();
-                      target.removeEventListener('mouseleave', handleMouseOut);
-                    }
-                    //if (!container.contains(relatedTarget)) {
-                    //  container.remove();
-                    //  target.removeEventListener('mouseleave', handleMouseOut);
-                    //}
-                  }, 500);
-                }
-              };
-              const handleContainerMouseEnter = (mouseoutEvent: MouseEvent) => {
-                inToolbar = true;
-              };
-              //
-              //// 为链接和工具栏都添加 mouseout 监听
-              target.addEventListener('mouseleave', handleMouseOut);
-              container.addEventListener(
-                'mouseenter',
-                handleContainerMouseEnter,
-              );
             }
 
             return false;

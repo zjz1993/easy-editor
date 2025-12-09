@@ -94,7 +94,11 @@ export function detectLanguage(text: string): string {
     return langAliasMap.get(lang)!;
   }
 
-  return 'plaintext';
+  if (lang === 'plaintext' || lang === 'text' || lang === 'markdown') {
+    return undefined;
+  }
+
+  return undefined;
 }
 
 export const CodeBlock = CodeBlockLowlight.extend<CodeBlockOptions>({
@@ -233,36 +237,9 @@ export const CodeBlock = CodeBlockLowlight.extend<CodeBlockOptions>({
     };
   },
 
-  addInputRules() {
-    return [
-      //textblockTypeInputRule({
-      //  find: backtickInputRegex,
-      //  type: this.type,
-      //  getAttributes: match => ({
-      //    language:
-      //      getLanguageByValueOrAlias(match[1])?.value ||
-      //      this.options.defaultLanguage,
-      //  }),
-      //  autoFocus: true,
-      //}),
-      //textblockTypeInputRule({
-      //  find: tildeInputRegex,
-      //  type: this.type,
-      //  getAttributes: match => ({
-      //    language:
-      //      getLanguageByValueOrAlias(match[1])?.value ||
-      //      this.options.defaultLanguage,
-      //  }),
-      //  autoFocus: true,
-      //}),
-    ];
-  },
-
   addProseMirrorPlugins() {
     return [
       ...(this.parent?.() || []),
-      // this plugin creates a code block for pasted content from VS Code
-      // we can also detect the copied code language
       new Plugin({
         key: new PluginKey('codeBlockVSCodeHandler'),
         props: {
@@ -280,7 +257,7 @@ export const CodeBlock = CodeBlockLowlight.extend<CodeBlockOptions>({
             const vscode = event.clipboardData.getData('vscode-editor-data');
             const vscodeData = vscode ? JSON.parse(vscode) : undefined;
             const language = vscodeData?.mode || detectLanguage(text);
-            if (!text || !language) {
+            if (!text || !text.includes('\n') || !language) {
               return false;
             }
 
