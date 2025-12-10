@@ -29,6 +29,7 @@ const ToolbarItemButtonWrapper: FC<{
       disabled={disabled}
     >
       <Tooltip
+        disabled={disabled}
         content={IntlComponent.get(intlStr, { command, option })}
         open={tooltipVisible}
       >

@@ -7,6 +7,8 @@ export type ButtonProps = {
   isActive?: boolean;
   children: ReactNode;
   onClick?: (e: MouseEvent<HTMLDivElement>) => void;
+  onMouseEnter?: (e: MouseEvent<HTMLDivElement>) => void;
+  onMouseLeave?: (e: MouseEvent<HTMLDivElement>) => void;
 };
 
 const Button = forwardRef<HTMLDivElement, ButtonProps>(

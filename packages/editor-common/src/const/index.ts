@@ -711,31 +711,31 @@ export const headers = [
   {
     name: 'h2',
     type: BLOCK_TYPES.H,
-    attrs: { level: 2 },
+    attrs: { level: HeaderLevel.H2 },
     keys: 'toolbar.header.h2',
   },
   {
     name: 'h3',
     type: BLOCK_TYPES.H,
-    attrs: { level: 3 },
+    attrs: { level: HeaderLevel.H3 },
     keys: 'toolbar.header.h3',
   },
   {
     name: 'h4',
     type: BLOCK_TYPES.H,
-    attrs: { level: 4 },
+    attrs: { level: HeaderLevel.H4 },
     keys: 'toolbar.header.h4',
   },
   {
     name: 'h5',
     type: BLOCK_TYPES.H,
-    attrs: { level: 5 },
+    attrs: { level: HeaderLevel.H5 },
     keys: 'toolbar.header.h5',
   },
   {
     name: 'h6',
     type: BLOCK_TYPES.H,
-    attrs: { level: 6 },
+    attrs: { level: HeaderLevel.H6 },
     keys: 'toolbar.header.h6',
   },
   {

@@ -4,6 +4,7 @@ import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 import ToolbarContext from '../../context/toolbarContext.ts';
 import type {TToolbarWrapperProps} from '../../types/index.ts';
 import {LinkPanelPopup} from './LinkPanel.tsx';
+import Button from '../Button';
 
 const LinkButton: FC<TToolbarWrapperProps> = props => {
   const { intlStr, className, style, disabled } = props;
@@ -33,6 +34,7 @@ const LinkButton: FC<TToolbarWrapperProps> = props => {
       tooltipVisible={tooltipVisible}
     >
       <Popover
+        disabled={disabled}
         open={popoverOpen}
         onOpenChange={open => {
           if (open) {
@@ -76,8 +78,8 @@ const LinkButton: FC<TToolbarWrapperProps> = props => {
           />
         }
       >
-        <Iconfont
-          type="icon-link"
+        <Button
+          disabled={disabled}
           onClick={() => {
             if (disabled) {
               return;
@@ -90,7 +92,9 @@ const LinkButton: FC<TToolbarWrapperProps> = props => {
           onMouseEnter={() => {
             setTooltipVisible(true);
           }}
-        />
+        >
+          <Iconfont type="icon-link" />
+        </Button>
       </Popover>
     </ToolbarItemButtonWrapper>
   );

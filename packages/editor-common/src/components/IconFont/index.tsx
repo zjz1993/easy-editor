@@ -15,17 +15,34 @@ const IconComponent: FC<{
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
   onClick?: () => void;
+  disabled?: boolean;
 }> = props => {
-  const { type, style, className, onMouseEnter, onMouseLeave, onClick } = props;
+  const {
+    disabled,
+    type,
+    style,
+    className,
+    onMouseEnter,
+    onMouseLeave,
+    onClick,
+  } = props;
   return (
-    <span className={cx(className, 'anticon')}>
-      <IconFont
-        type={type.startsWith('icon') ? type : `icon-${type}`}
-        style={style}
-        onClick={onClick}
-        onMouseLeave={onMouseLeave}
-        onMouseEnter={onMouseEnter}
-      />
+    <span className="easy-editor-icon">
+      <span
+        className={cx(
+          className,
+          'anticon',
+          disabled && 'easy-editor-icon-disabled',
+        )}
+      >
+        <IconFont
+          type={type.startsWith('icon') ? type : `icon-${type}`}
+          style={style}
+          onClick={onClick}
+          onMouseLeave={onMouseLeave}
+          onMouseEnter={onMouseEnter}
+        />
+      </span>
     </span>
   );
 };

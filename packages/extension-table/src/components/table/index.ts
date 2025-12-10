@@ -18,6 +18,7 @@ export const Table = TTable.extend<TableOptions>({
     const parentPlugins = this.parent?.() ?? [];
     return [
       ...parentPlugins.filter(
+        //@ts-ignore
         p => !p.key.startsWith('custom_tableColumnResizing'),
       ),
       columnResizing({

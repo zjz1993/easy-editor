@@ -1,5 +1,6 @@
-import {cloneElement, type FC, useContext, useMemo, useRef} from 'react';
+import {cloneElement, type FC, useMemo, useRef} from 'react';
 import type {IImageProps} from '@easy-editor/context';
+import {useEditorContext} from '@easy-editor/context';
 import {
   BLOCK_TYPES,
   DropdownPanel,
@@ -21,8 +22,8 @@ import ToolbarContext from './context/toolbarContext.ts';
 import type {IToolbarCommonProps} from './types/index.ts';
 import ImageButton from './components/ImageButton/index.tsx';
 import type {ImageNodeAttributes} from '@easy-editor/extension-image';
+import TableButton from './components/TableButton/index.tsx';
 import {useEditorStateTrigger} from './hook/useEditorStateTrigger.ts';
-import TableButton from "./components/TableButton/index.tsx";
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
@@ -331,8 +332,10 @@ export interface IToolbarProps {
 
 const Toolbar: FC<IToolbarProps> = props => {
   const toolbarRef = useRef<HTMLDivElement>();
+  const {
+    props: { editable },
+  } = useEditorContext();
   const { editor, imageProps = {} } = props;
-  const { disabled } = useContext(ToolbarContext);
   const canIndent = editor.isActive('paragraph') || editor.isActive('heading');
   const editorView = editor.view;
   const commonProps: IToolbarCommonProps = {
@@ -344,6 +347,7 @@ const Toolbar: FC<IToolbarProps> = props => {
   };
   useEditorStateTrigger(editor); // 只触发 Toolbar 自身刷新
   const menuArray = useMemo(() => {
+    const disabled = !editor.isEditable || !editable;
     return [
       {
         key: 'undo',
@@ -465,6 +469,7 @@ const Toolbar: FC<IToolbarProps> = props => {
         intlStr: 'code',
         disabled:
           disabled ||
+          isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE) ||
           // !editor.can().chain().focus().toggleCodeBlock?.().run() ||
           !editor.can().chain().focus().toggleCode?.().run(),
       },
@@ -472,16 +477,17 @@ const Toolbar: FC<IToolbarProps> = props => {
         key: BLOCK_TYPES.IMG,
         component: <ImageButton />,
         intlStr: 'image',
-        disabled: disabled,
+        disabled:
+          disabled || isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
       },
       {
         key: BLOCK_TYPES.TABLE,
         component: <TableButton />,
         intlStr: 'table',
-        disabled: disabled,
+        disabled: disabled || editor.isActive(BLOCK_TYPES.CODE),
       },
     ];
-  }, [editor?.state]);
+  }, [editor, editable]);
   return (
     <ToolbarContext.Provider value={{ ...commonProps, imageProps }}>
       <div className="easy-editor-toolbar" ref={toolbarRef}>

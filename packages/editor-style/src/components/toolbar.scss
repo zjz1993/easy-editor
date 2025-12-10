@@ -1,4 +1,5 @@
 @use "../colors/colors" as styles;
+@use "../mixin/index" as mixins;
 .easy-editor-link-toolbar{
   display: flex;
   padding: 8px;
@@ -136,13 +137,13 @@
     }
 
     .disabled.easy-editor-toolbar__item{
+      @include mixins.btn-not-allow(0.3);
       &:hover{
         background: none;
       }
     }
-    .disabled.easy-editor-toolbar__item__btn{
-      cursor: not-allowed;
-      opacity: 0.3;
+    .easy-editor-toolbar__item.easy-editor-toolbar__item__dropdown{
+      width: 50px;
     }
     &__item{
       display: flex;
@@ -150,9 +151,6 @@
       align-items: center;
       border-radius: 4px;
       margin-right: 8px;
-      &__dropdown{
-        width: 70px;
-      }
       &__btn{
         display: block;
         line-height: 24px;
@@ -168,13 +166,12 @@
         &--active{
           background-color: styles.$background-grey;
         }
-        &--disabled{
-          cursor: not-allowed;
-          opacity: 0.3;
-        }
       }
       &:hover{
         background: styles.$hover-grey;
+      }
+      .dropdown-disabled .easy-editor-toolbar__item:hover {
+        background: none;
       }
     }
   }

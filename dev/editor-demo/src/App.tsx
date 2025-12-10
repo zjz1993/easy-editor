@@ -1,17 +1,23 @@
 import Editor from '@easy-editor/editor';
 import '@easy-editor/styles/src/index.scss';
+import {useState} from "react";
 
 function App() {
-
+  const [editable, setEditable] = useState(true);
   return (
     <>
       <div style={{ height: '100vh' }}>
+        <div>{editable ? '能编辑' : '不能'}</div>
+        <button onClick={() => {
+          setEditable(!editable);
+        }}>测试</button>
         <Editor
           placeholder="这是一个Placeholder"
           title="1234"
           onChange={(data) => {
             console.log('输出的内容是', data);
           }}
+          editable={editable}
           imageProps={{
             onImageUpload:(option) => {
               console.log('onImageUpload触发了吗', option);

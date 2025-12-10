@@ -1,5 +1,6 @@
 @use "../colors/colors" as styles;
 @use "../variable/index" as variables;
+@use "../mixin/index" as mixins;
 @use 'sass:list';
 
 * {
@@ -472,19 +473,23 @@
     cursor: ew-resize;
     cursor: col-resize;
   }
-
-  .anticon {
-    display: inline-flex;
-    align-items: center;
-    color: inherit;
-    font-style: normal;
-    line-height: 0;
-    text-align: center;
-    text-transform: none;
-    vertical-align: -0.125em;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  .easy-editor-icon{
+    .easy-editor-icon-disabled.anticon{
+      @include mixins.btn-not-allow(0.3);
+    }
+    .anticon {
+      display: inline-flex;
+      align-items: center;
+      color: inherit;
+      font-style: normal;
+      line-height: 0;
+      text-align: center;
+      text-transform: none;
+      vertical-align: -0.125em;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
   }
   @keyframes spin {
     0% {

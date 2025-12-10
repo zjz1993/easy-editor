@@ -33,6 +33,7 @@ export interface TPopoverProps extends PropsWithChildren {
   onOpenChange?: (open: boolean) => void;
   triggerAction?: 'click' | 'hover';
   className?: string;
+  disabled?: boolean;
 }
 
 const Popover = forwardRef<any, TPopoverProps>((props, ref) => {

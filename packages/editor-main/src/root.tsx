@@ -1,7 +1,7 @@
 import {BLOCK_TYPES, isUndefined, MessageContainer, wrapBlockExtensions,} from '@easy-editor/editor-common';
 import {EditorToolbar} from '@easy-editor/editor-toolbar';
 import {Bold} from '@easy-editor/extension-bold';
-import {EditorContent, useEditor} from '@tiptap/react';
+import {EditorContent} from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import type {FC} from 'react';
 import {CodeBlock} from '@easy-editor/extension-code-block';
@@ -21,9 +21,9 @@ import useIntlLoaded from './hooks/useIntlLoaded.ts';
 import EditorFilePreview from './components/FilePreview/EditorFilePreview';
 import Underline from '@tiptap/extension-underline';
 import {OutlineExtension} from '@easy-editor/extension-outline';
-import {useEditorProps} from './hooks/useEditorProps.ts'; //import PasteExtension from './extension/paste/index.tsx';
-import {EditorProvider, type TEasyEditorProps} from '@easy-editor/context'; //import PasteExtension from './extension/paste/index.tsx';
-//import PasteExtension from './extension/paste/index.tsx';
+import {useEditorProps} from './hooks/useEditorProps.ts';
+import {EditorProvider, type TEasyEditorProps} from '@easy-editor/context';
+import {useTiptapWithSync} from "./hooks/useTiptapWithSync.ts";
 
 const Editor: FC<TEasyEditorProps> = props => {
   const {
@@ -84,7 +84,7 @@ const Editor: FC<TEasyEditorProps> = props => {
     ImageNode,
     // CustomParagraph,
   ];
-  const editor = useEditor({
+  const editor = useTiptapWithSync({
     autofocus: !isUndefined(autoFocus) ? 'end' : undefined,
     extensions: [
       ...wrapBlockExtensions(

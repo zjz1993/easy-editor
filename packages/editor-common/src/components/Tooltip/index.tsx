@@ -25,6 +25,7 @@ const NewTooltip: FC<TPopoverProps> = props => {
     children,
     content,
     placement = 'top' as Placement,
+    disabled,
   } = props;
   const [isOpen, setIsOpen] = useControlledValue<boolean>({
     value: open,
@@ -45,6 +46,9 @@ const NewTooltip: FC<TPopoverProps> = props => {
   } = useFloating({
     open: isOpen,
     onOpenChange: tempOpen => {
+      if (disabled) {
+        return;
+      }
       setIsOpen(tempOpen);
     },
     placement,

@@ -5,6 +5,7 @@ import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 import ToolbarContext from '../../context/toolbarContext.ts';
 import type {TToolbarWrapperProps} from '../../types/index.ts';
 import InsertTablePanel from "./insertTablePanel";
+import Button from '../Button';
 
 const TableButton: FC<TToolbarWrapperProps> = props => {
   const { intlStr, style, disabled } = props;
@@ -19,6 +20,7 @@ const TableButton: FC<TToolbarWrapperProps> = props => {
       tooltipVisible={tooltipVisible}
     >
       <Popover
+        disabled={disabled}
         open={popoverOpen}
         onOpenChange={open => {
           if (open) {
@@ -44,8 +46,8 @@ const TableButton: FC<TToolbarWrapperProps> = props => {
           />
         }
       >
-        <Iconfont
-          type="icon-table"
+        <Button
+          disabled={disabled}
           onClick={() => {
             if (disabled) {
               return;
@@ -58,7 +60,9 @@ const TableButton: FC<TToolbarWrapperProps> = props => {
           onMouseEnter={() => {
             setTooltipVisible(true);
           }}
-        />
+        >
+          <Iconfont type="icon-table" />
+        </Button>
       </Popover>
     </ToolbarItemButtonWrapper>
   );

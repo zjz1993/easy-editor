@@ -1,5 +1,13 @@
+@use "../colors/colors";
 @mixin text-truncate {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+@mixin btn-not-allow($opacity:null){
+  cursor: not-allowed;
+  color: colors.$not-allow;
+  @if $opacity{
+    opacity: $opacity;
+  }
 }

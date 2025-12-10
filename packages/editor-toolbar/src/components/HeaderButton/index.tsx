@@ -1,7 +1,6 @@
 import {Dropdown, IntlComponent, type TDropDownRefProps} from '@easy-editor/editor-common';
 import cx from 'classnames';
-import type {FC} from 'react';
-import {useContext, useRef} from 'react';
+import {type FC, useContext, useRef} from 'react';
 import type {TToolbarWrapperProps} from 'src/types/index.ts';
 import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 import ToolbarContext from '../../context/toolbarContext.ts';
@@ -9,7 +8,11 @@ import HeaderButtonDropdown from './HeaderButtonDropdown.tsx';
 
 const headingLevels = [1, 2, 3, 4, 5, 6];
 
-const HeaderButton: FC<TToolbarWrapperProps> = ({ disabled, intlStr }) => {
+const HeaderButton: FC<TToolbarWrapperProps> = ({
+  style,
+  disabled,
+  intlStr,
+}) => {
   const { editor } = useContext(ToolbarContext);
   const ref = useRef<TDropDownRefProps>();
   const getHeadingText = () => {
@@ -28,26 +31,34 @@ const HeaderButton: FC<TToolbarWrapperProps> = ({ disabled, intlStr }) => {
     return IntlComponent.get('paragraph');
   };
   return (
-    <Dropdown
-      disabled={disabled}
+    <ToolbarItemButtonWrapper
+      intlStr={intlStr}
       className={cx(
+        'easy-editor-toolbar__item__btn',
         'easy-editor-toolbar__item__dropdown',
-        disabled && 'dropdown-disabled',
       )}
-      getPopupContainer={node => node.parentNode as HTMLElement}
-      ref={ref}
-      popup={
-        <HeaderButtonDropdown
-          onClick={() => {
-            ref.current.toggleVisible(false);
-          }}
-        />
-      }
+      style={style}
+      disabled={disabled}
     >
-      <ToolbarItemButtonWrapper intlStr={intlStr}>
+      <Dropdown
+        disabled={disabled}
+        className={cx(
+          'easy-editor-toolbar__item__dropdown',
+          disabled && 'dropdown-disabled',
+        )}
+        getPopupContainer={node => node.parentNode as HTMLElement}
+        ref={ref}
+        popup={
+          <HeaderButtonDropdown
+            onClick={() => {
+              ref.current.toggleVisible(false);
+            }}
+          />
+        }
+      >
         <div>{getHeadingText()}</div>
-      </ToolbarItemButtonWrapper>
-    </Dropdown>
+      </Dropdown>
+    </ToolbarItemButtonWrapper>
   );
 };
 export default HeaderButton;

@@ -7,7 +7,11 @@ import type {TToolbarWrapperProps} from 'src/types/index.ts';
 import ToolbarContext from '../../context/toolbarContext.ts';
 import ColorPickerDropdown, {colorArray} from './colorPickerDropdown.tsx';
 
-const TextColorPicker: FC<TToolbarWrapperProps> = ({ intlStr, disabled }) => {
+const TextColorPicker: FC<TToolbarWrapperProps> = ({
+  style,
+  intlStr,
+  disabled,
+}) => {
   const { editor } = useContext(ToolbarContext);
   const getActiveColor = () => {
     const res = colorArray.find(color =>
@@ -20,13 +24,20 @@ const TextColorPicker: FC<TToolbarWrapperProps> = ({ intlStr, disabled }) => {
   };
   const activeColor = getActiveColor();
   return (
-    <Dropdown
+    <ToolbarItemButtonWrapper
+      intlStr={intlStr}
+      className={cx(
+        'easy-editor-toolbar__item__btn',
+        'easy-editor-toolbar__item__dropdown',
+      )}
+      style={style}
       disabled={disabled}
-      className={cx(disabled && 'disabled')}
-      // getPopupContainer={triggerNode => triggerNode.parentElement}
-      popup={<ColorPickerDropdown />}
     >
-      <ToolbarItemButtonWrapper intlStr={intlStr}>
+      <Dropdown
+        disabled={disabled}
+        className={cx(disabled && 'disabled')}
+        popup={<ColorPickerDropdown />}
+      >
         <div className="toolbar-color-btn">
           <Iconfont type="icon-font-color" />
           <div
@@ -34,8 +45,8 @@ const TextColorPicker: FC<TToolbarWrapperProps> = ({ intlStr, disabled }) => {
             style={{ background: activeColor }}
           />
         </div>
-      </ToolbarItemButtonWrapper>
-    </Dropdown>
+      </Dropdown>
+    </ToolbarItemButtonWrapper>
   );
 };
 export default TextColorPicker;

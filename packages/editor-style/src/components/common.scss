@@ -268,8 +268,7 @@
 }
 
 .easy-editor-dropdown__disabled.easy-editor-dropdown{
-  cursor: not-allowed;
-  color: styles.$not-allow;
+  @include mixin.btn-not-allow;
 }
 .easy-editor-dropdown {
   display: flex;

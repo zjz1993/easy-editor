@@ -1,13 +1,15 @@
 import type {AlignType} from "@easy-editor/context";
-import {DropdownList, Iconfont, IntlComponent, Tooltip} from '@easy-editor/editor-common';
+import {DropdownList, Iconfont, IntlComponent} from '@easy-editor/editor-common';
 import type {FC} from 'react';
 import {useContext} from 'react';
 import ToolbarContext from '../../context/toolbarContext.ts';
 import type {TToolbarWrapperProps} from '../../types/index.ts';
+import cx from "classnames";
+import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 
 const AlignButton: FC<TToolbarWrapperProps> = props => {
   const { editor } = useContext(ToolbarContext);
-  const { disabled, intlStr } = props;
+  const { disabled, intlStr, style } = props;
   const alignArray: AlignType[] = ['left', 'center', 'right'];
   const getActiveAlignBtn = () => {
     const activeAlign = alignArray.find(item =>
@@ -20,21 +22,29 @@ const AlignButton: FC<TToolbarWrapperProps> = props => {
   };
   const activeAlign = getActiveAlignBtn();
   return (
-    <DropdownList
+    <ToolbarItemButtonWrapper
+      intlStr={intlStr}
+      className={cx(
+        'easy-editor-toolbar__item__btn',
+        'easy-editor-toolbar__item__dropdown',
+      )}
+      style={style}
       disabled={disabled}
-      options={alignArray.map(item => ({
-        label: IntlComponent.get(`align.${item}`),
-        value: `align_${item}`,
-        icon: <Iconfont type={`icon-align-${item}`} />,
-        onClick: () => {
-          editor.chain().focus().setTextAlign(item).run();
-        },
-      }))}
     >
-      <Tooltip content={IntlComponent.get(intlStr)}>
+      <DropdownList
+        disabled={disabled}
+        options={alignArray.map(item => ({
+          label: IntlComponent.get(`align.${item}`),
+          value: `align_${item}`,
+          icon: <Iconfont type={`icon-align-${item}`} />,
+          onClick: () => {
+            editor.chain().focus().setTextAlign(item).run();
+          },
+        }))}
+      >
         <Iconfont type={`icon-align-${activeAlign}`} />
-      </Tooltip>
-    </DropdownList>
+      </DropdownList>
+    </ToolbarItemButtonWrapper>
   );
 };
 export default AlignButton;

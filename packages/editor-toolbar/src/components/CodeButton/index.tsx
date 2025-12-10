@@ -24,6 +24,7 @@ const CodeButton: FC<TToolbarWrapperProps> = props => {
             setTooltipVisible(false);
           }
         }}
+        disabled={disabled}
         options={[
           {
             // disabled: !editor.can().chain().focus().toggleCodeBlock({language:'text'})?.().run(),

@@ -60,7 +60,7 @@ const Dropdown = forwardRef<
 
   return (
     <DropdownPanel
-      className={cx('easy-editor-toolbar__item', className)}
+      className={cx(className)}
       popup={popup}
       popupVisible={isOpen}
       onPopupVisibleChange={handleVisibleChange}
