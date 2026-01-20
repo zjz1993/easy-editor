@@ -2,7 +2,7 @@
 @use "../mixin/index" as mixin;
 @use "../variable/index" as var;
 @use 'sass:color';
-.easy-editor-btn{
+.textory-btn{
   line-height: 1.5715;
   position: relative;
   display: inline-block;
@@ -41,7 +41,7 @@
   }
 }
 
-.easy-editor-file-preview {
+.textory-file-preview {
   position: fixed;
   top: 0;
   right: 0;
@@ -267,13 +267,13 @@
   }
 }
 
-.easy-editor-dropdown__disabled.easy-editor-dropdown{
+.textory-dropdown__disabled.textory-dropdown{
   @include mixin.btn-not-allow;
 }
-.easy-editor-dropdown {
+.textory-dropdown {
   display: flex;
   flex:1;
-  .easy-editor-toolbar__item{
+  .textory-toolbar__item{
     flex: 1;
   }
   &__icon{
@@ -283,7 +283,7 @@
     }
   }
 }
-.easy-editor-tooltip {
+.textory-tooltip {
   background: #333;
   color: white;
   padding: 8px 12px;
@@ -294,7 +294,7 @@
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-.easy-editor-modal{
+.textory-modal{
   &-overlay {
     position: fixed;
     inset: 0;
@@ -318,7 +318,7 @@
     max-width: 500px;
     width: 100%;
     box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);;
-    .easy-editor-modal-close {
+    .textory-modal-close {
       position: absolute;
       top: calc((calc(calc(1.5 * 16px) + calc(16px * 2)) - 32px) / 2);
       inset-inline-end: calc((calc(calc(1.5 * 16px) + calc(16px * 2)) - 32px) / 2);
@@ -345,18 +345,18 @@
         text-decoration: none;
       }
     }
-    .easy-editor-modal-header{
+    .textory-modal-header{
       display: flex;
       align-items: center;
       margin-bottom: 8px;
     }
-    .easy-editor-modal-body{
+    .textory-modal-body{
       font-size: 14px;
       line-height: 1.5;
       word-wrap: break-word;
       padding: 0;
     }
-    .easy-editor-modal-footer{
+    .textory-modal-footer{
       background: transparent;
       margin-top: 12px;
       padding: 0;
@@ -369,7 +369,7 @@
   }
 }
 
-.easy-editor-network-image-modal{
+.textory-network-image-modal{
   &_panel{
     &__inner{
       display: flex;

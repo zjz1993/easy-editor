@@ -128,7 +128,7 @@ const Popover = forwardRef<any, TPopoverProps>((props, ref) => {
               refs.setFloating(node);
               popoverRef.current = node;
             }}
-            className="easy-editor-popover-container"
+            className="textory-popover-container"
             {...getFloatingProps()}
             style={{ ...styles, position: strategy, top: y ?? 0, left: x ?? 0 }}
           >

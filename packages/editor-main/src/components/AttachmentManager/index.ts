@@ -1,4 +1,4 @@
-import {assign, isNil} from '@easy-editor/editor-common';
+import {assign, isNil} from '@textory/editor-common';
 
 const fileKey2Attachments = {}; // fileKey到attachment的映射
 const upFileId2OriSize = {};

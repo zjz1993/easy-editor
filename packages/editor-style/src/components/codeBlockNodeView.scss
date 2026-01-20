@@ -1,6 +1,6 @@
 @use "../colors/colors" as styles;
 
-.easy-editor-code-block {
+.textory-code-block {
   position: relative;
   display: block;
   border: 1px solid styles.$border-color;
@@ -26,7 +26,7 @@
 
   &__content-wrapper{
     display: flex;
-    .easy-editor-code-block__line-numbers{
+    .textory-code-block__line-numbers{
       font-size: 14px;
       line-height: 25px;
       min-width: 15px;
@@ -34,7 +34,7 @@
       color: rgba(0, 0, 0, 0.3);
       margin-right: 10px;
     }
-    .easy-editor-code-block__content {
+    .textory-code-block__content {
       font-size: 14px;
       line-height: 25px;
       flex:1;
@@ -217,11 +217,11 @@
   }
 
 }
-.easy-editor-code-block__dropdown {
-  .easy-editor-dropdown-menu__item--active{
+.textory-code-block__dropdown {
+  .textory-dropdown-menu__item--active{
     color: styles.$primary-color;
   }
-  .easy-editor-dropdown-menu__item {
+  .textory-dropdown-menu__item {
     clear: both;
     margin: 0;
     padding: 0 8px;
@@ -237,7 +237,7 @@
       margin-bottom: 8px;
     }
   }
-  .easy-editor-dropdown-menu__content {
+  .textory-dropdown-menu__content {
     display: flex;
     flex-direction: column;
     width: 180px;
@@ -297,7 +297,7 @@
   }
 }
 
-.easy-editor-code-block__dropdown-trigger {
+.textory-code-block__dropdown-trigger {
   flex-shrink: 0;
   margin: 0 8px 0 0;
   font-size: inherit;

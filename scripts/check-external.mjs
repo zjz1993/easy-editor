@@ -59,7 +59,7 @@ const getTsupExternalPatterns = () => {
 
   const patterns = {
     strings: new Set(),
-    prefixes: new Set(), // e.g., '@tiptap/', '@easy-editor/', 'rc-'
+    prefixes: new Set(), // e.g., '@tiptap/', '@textory/', 'rc-'
   };
 
   // Remove comments first
@@ -155,7 +155,7 @@ const categorizeDependency = (packageName) => {
   }
 
   // Check internal packages - MUST external
-  if (packageName.startsWith('@easy-editor/')) {
+  if (packageName.startsWith('@textory/')) {
     return 'MUST';
   }
 

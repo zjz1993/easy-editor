@@ -1,5 +1,5 @@
-import type {AlignType} from "@easy-editor/context";
-import {DropdownList, Iconfont, IntlComponent} from '@easy-editor/editor-common';
+import type {AlignType} from "@textory/context";
+import {DropdownList, Iconfont, IntlComponent} from '@textory/editor-common';
 import type {FC} from 'react';
 import {useContext} from 'react';
 import ToolbarContext from '../../context/toolbarContext.ts';
@@ -25,8 +25,8 @@ const AlignButton: FC<TToolbarWrapperProps> = props => {
     <ToolbarItemButtonWrapper
       intlStr={intlStr}
       className={cx(
-        'easy-editor-toolbar__item__btn',
-        'easy-editor-toolbar__item__dropdown',
+        'textory-toolbar__item__btn',
+        'textory-toolbar__item__dropdown',
       )}
       style={style}
       disabled={disabled}

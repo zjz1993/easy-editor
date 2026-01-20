@@ -1,5 +1,5 @@
 {
-  "name": "@easy-editor/extension-task-item",
+  "name": "@textory/extension-task-item",
   "version": "0.0.1",
   "private": false,
   "files": [

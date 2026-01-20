@@ -1,4 +1,4 @@
-import { isUndefined } from '@easy-editor/editor-common';
+import { isUndefined } from '@textory/editor-common';
 import { Extension, findParentNodeClosestToPos } from '@tiptap/core';
 import {
   AllSelection,

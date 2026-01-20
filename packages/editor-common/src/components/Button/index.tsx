@@ -10,14 +10,14 @@ const Button: FC<{
   const calcClsByType = () => {
     switch (type) {
       case 'primary':
-        return 'easy-editor-btn-primary';
+        return 'textory-btn-primary';
       default:
         return '';
     }
   };
   return (
     <div
-      className={cx('easy-editor-btn', calcClsByType())}
+      className={cx('textory-btn', calcClsByType())}
       onClick={e => {
         onClick?.(e);
       }}

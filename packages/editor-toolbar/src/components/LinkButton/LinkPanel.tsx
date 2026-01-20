@@ -1,7 +1,7 @@
 import type React from 'react';
 import {useForm} from 'react-hook-form';
 import cx from 'classnames';
-import {Button} from "@easy-editor/editor-common";
+import {Button} from "@textory/editor-common";
 
 export type LinkEditPopupProps = {
   text?: string;
@@ -23,23 +23,23 @@ export const LinkPanelPopup: React.FC<LinkEditPopupProps> = props => {
   };
 
   return (
-    <div className="easy-editor-link-panel">
+    <div className="textory-link-panel">
       <form onSubmit={e => e.preventDefault()}>
         <div
           className={cx(
-            'easy-editor-link-panel__row',
-            errors.text && 'easy-editor-link-panel__error',
+            'textory-link-panel__row',
+            errors.text && 'textory-link-panel__error',
           )}
         >
-          <div className="easy-editor-link-panel__row__inner">
-            <label className="easy-editor-link-panel__row__label">文字</label>
+          <div className="textory-link-panel__row__inner">
+            <label className="textory-link-panel__row__label">文字</label>
             <div>
               <input
-                className="easy-editor-link-panel__row__input"
+                className="textory-link-panel__row__input"
                 defaultValue={text}
                 {...register('text', { required: '请填写文字' })}
               />
-              <div className="easy-editor-link-panel__error__tips">
+              <div className="textory-link-panel__error__tips">
                 {errors?.href?.message}
               </div>
             </div>
@@ -48,25 +48,25 @@ export const LinkPanelPopup: React.FC<LinkEditPopupProps> = props => {
 
         <div
           className={cx(
-            'easy-editor-link-panel__row',
-            errors.href && 'easy-editor-link-panel__error',
+            'textory-link-panel__row',
+            errors.href && 'textory-link-panel__error',
           )}
         >
-          <div className="easy-editor-link-panel__row__inner">
-            <label className="easy-editor-link-panel__row__label">链接</label>
+          <div className="textory-link-panel__row__inner">
+            <label className="textory-link-panel__row__label">链接</label>
             <div>
               <input
-                className="easy-editor-link-panel__row__input"
+                className="textory-link-panel__row__input"
                 defaultValue={href}
                 {...register('href', { required: '请填写链接' })}
               />
-              <div className="easy-editor-link-panel__error__tips">
+              <div className="textory-link-panel__error__tips">
                 {errors?.href?.message}
               </div>
             </div>
           </div>
         </div>
-        <div className={cx('submit_row', 'easy-editor-link-panel__row')}>
+        <div className={cx('submit_row', 'textory-link-panel__row')}>
           <Button onClick={onCancel}>取消</Button>
           <Button type="primary" onClick={handleSubmit(onSubmit)}>
             提交

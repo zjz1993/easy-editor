@@ -1,6 +1,6 @@
 import {cloneElement, type FC, useMemo, useRef} from 'react';
-import type {IImageProps} from '@easy-editor/context';
-import {useEditorContext} from '@easy-editor/context';
+import type {IImageProps} from '@textory/context';
+import {useEditorContext} from '@textory/context';
 import {
   BLOCK_TYPES,
   DropdownPanel,
@@ -8,7 +8,7 @@ import {
   INDENT_TYPES,
   isSelectionInsideBlockByType,
   MARK_TYPES,
-} from '@easy-editor/editor-common';
+} from '@textory/editor-common';
 import type {Editor} from '@tiptap/core';
 import Overflow from 'rc-overflow';
 import AlignButton from './components/AlignButton/index.tsx';
@@ -21,7 +21,7 @@ import {Bold, IndentButton, Italic, Redo, Strike, ToolBarItemDivider, Underline,
 import ToolbarContext from './context/toolbarContext.ts';
 import type {IToolbarCommonProps} from './types/index.ts';
 import ImageButton from './components/ImageButton/index.tsx';
-import type {ImageNodeAttributes} from '@easy-editor/extension-image';
+import type {ImageNodeAttributes} from '@textory/extension-image';
 import TableButton from './components/TableButton/index.tsx';
 import {useEditorStateTrigger} from './hook/useEditorStateTrigger.ts';
 
@@ -490,7 +490,7 @@ const Toolbar: FC<IToolbarProps> = props => {
   }, [editor, editable]);
   return (
     <ToolbarContext.Provider value={{ ...commonProps, imageProps }}>
-      <div className="easy-editor-toolbar" ref={toolbarRef}>
+      <div className="textory-toolbar" ref={toolbarRef}>
         <Overflow
           data={menuArray}
           renderRest={restArray => {

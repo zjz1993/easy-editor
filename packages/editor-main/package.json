@@ -1,5 +1,5 @@
 {
-	"name": "@easy-editor/editor",
+	"name": "@textory/editor",
 	"version": "0.0.1",
 	"private": false,
 	"files": [
@@ -23,17 +23,17 @@
     "access": "public"
   },
 	"dependencies": {
-		"@easy-editor/context": "workspace:^",
-		"@easy-editor/editor-common": "workspace:^",
-		"@easy-editor/editor-toolbar": "workspace:^",
-		"@easy-editor/extension-bold": "workspace:^",
-		"@easy-editor/extension-code-block": "workspace:^",
-		"@easy-editor/extension-image": "workspace:^",
-		"@easy-editor/extension-indent": "workspace:^",
-		"@easy-editor/extension-link": "workspace:^",
-		"@easy-editor/extension-outline": "workspace:^",
-		"@easy-editor/extension-table": "workspace:^",
-		"@easy-editor/extension-task-item": "workspace:^",
+		"@textory/context": "workspace:^",
+		"@textory/editor-common": "workspace:^",
+		"@textory/editor-toolbar": "workspace:^",
+		"@textory/extension-bold": "workspace:^",
+		"@textory/extension-code-block": "workspace:^",
+		"@textory/extension-image": "workspace:^",
+		"@textory/extension-indent": "workspace:^",
+		"@textory/extension-link": "workspace:^",
+		"@textory/extension-outline": "workspace:^",
+		"@textory/extension-table": "workspace:^",
+		"@textory/extension-task-item": "workspace:^",
 		"uuid": "^11.1.0"
 	},
 	"devDependencies": {

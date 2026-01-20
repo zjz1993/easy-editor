@@ -1,4 +1,4 @@
-import {FilePreview, isEmpty} from '@easy-editor/editor-common';
+import {FilePreview, isEmpty} from '@textory/editor-common';
 import type {FC, ReactNode} from 'react';
 import {useEffect, useState} from 'react';
 import {EditorFilePreviewPlugin} from './EditorFilePreviewPlugin';

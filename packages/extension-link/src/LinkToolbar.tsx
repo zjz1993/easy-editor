@@ -6,10 +6,10 @@ import {
   Tooltip,
   useDebounceFn,
   useEventListener,
-} from '@easy-editor/editor-common';
+} from '@textory/editor-common';
 import {useCallback, useRef, useState} from 'react';
 import {autoUpdate, flip, offset, shift, useFloating} from "@floating-ui/react";
-import {LinkPanelPopup} from "@easy-editor/editor-toolbar";
+import {LinkPanelPopup} from "@textory/editor-toolbar";
 
 const LinkToolbar = ({
   from,
@@ -140,7 +140,7 @@ const LinkToolbar = ({
       style={{
         ...floatingStyles,
       }}
-      className="easy-editor-link-toolbar"
+      className="textory-link-toolbar"
       onMouseEnter={handleToolbarMouseEnter}
       onMouseLeave={handleToolbarMouseLeave}
     >
@@ -160,7 +160,7 @@ const LinkToolbar = ({
           <Tooltip content={IntlComponent.get('toolbar.link.edit')}>
             <Iconfont
               type="icon-edit"
-              className="easy-editor-link-toolbar-icon-edit"
+              className="textory-link-toolbar-icon-edit"
               onClick={() => {
                 setShowEditPopup(true);
               }}
@@ -169,14 +169,14 @@ const LinkToolbar = ({
           <Tooltip content={IntlComponent.get('toolbar.link.unlink')}>
             <Iconfont
               type="icon-unlink"
-              className="easy-editor-link-toolbar-icon-del"
+              className="textory-link-toolbar-icon-del"
               onClick={handleRemoveLink}
             />
           </Tooltip>
           <Tooltip content={IntlComponent.get('delete')}>
             <Iconfont
               type="icon-remove"
-              className="easy-editor-link-toolbar-icon-del"
+              className="textory-link-toolbar-icon-del"
               onClick={handleDeleteLink}
             />
           </Tooltip>

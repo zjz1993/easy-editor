@@ -1,4 +1,4 @@
-import {IntlComponent, Tooltip} from '@easy-editor/editor-common';
+import {IntlComponent, Tooltip} from '@textory/editor-common';
 import type {CSSProperties, FC, ReactElement} from 'react';
 import {command, option} from '../../utils/index.ts';
 import ToolBarItem from '../ToolbarItem/ToolBarItem';

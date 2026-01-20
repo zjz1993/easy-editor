@@ -1,5 +1,5 @@
 import type {FC} from 'react';
-import {Iconfont, IntlComponent, Tooltip} from '@easy-editor/editor-common';
+import {Iconfont, IntlComponent, Tooltip} from '@textory/editor-common';
 import cx from 'classnames';
 
 interface IToolbarButtonProps {
@@ -26,8 +26,8 @@ const ToolbarButton: FC<IToolbarButtonProps> = props => {
     <div
       className={cx(
         className,
-        isActive && 'easy-editor-image-toolbar-item-active',
-        'easy-editor-image-toolbar-item easy-editor-image-toolbar-item-width-fix',
+        isActive && 'textory-image-toolbar-item-active',
+        'textory-image-toolbar-item textory-image-toolbar-item-width-fix',
       )}
       onClick={() => {
         if (disabled) {

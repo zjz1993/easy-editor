@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import type React from 'react';
 import {useCallback, useMemo, useRef, useState} from 'react';
 import {getLanguageByValue, getLanguageByValueOrAlias, languages,} from './languages';
-import {BLOCK_TYPES, Dropdown, get, Iconfont, message, smartClipboardCopy,} from '@easy-editor/editor-common';
+import {BLOCK_TYPES, Dropdown, get, Iconfont, message, smartClipboardCopy,} from '@textory/editor-common';
 import {exportCode} from './utils.ts';
 
 const CODE_BLOCK_DROPDOWN_MAX_HEIGHT = 245;
@@ -108,7 +108,7 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
   const renderToolbar = () => {
     const copyBtn = (
       <button
-        className="easy-editor-code-block__button_area__button"
+        className="textory-code-block__button_area__button"
         onClick={() => {
           smartClipboardCopy(pureCode as string);
         }}
@@ -124,12 +124,12 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
             onClick={() => {
               exportCode(pureCode as string, language);
             }}
-            className="easy-editor-code-block__button_area__button"
+            className="textory-code-block__button_area__button"
           >
             下载
           </button>
           <button
-            className="easy-editor-code-block__button_area__button"
+            className="textory-code-block__button_area__button"
             onClick={() => {
               try {
                 focusToCodeBlock();
@@ -147,7 +147,7 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
             清空代码块
           </button>
           <button
-            className="easy-editor-code-block__button_area__button"
+            className="textory-code-block__button_area__button"
             onClick={() => {
               try {
                 focusToCodeBlock();
@@ -179,14 +179,14 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
       data-id={node.attrs.id}
       className={classNames(
         node.attrs.className,
-        'easy-editor-code-block',
-        'easy-editor-block-container',
+        'textory-code-block',
+        'textory-block-container',
       )}
       //onMouseEnter={() => setToolbarVisible(true)}
       //onMouseLeave={() => setToolbarVisible(false)}
     >
       <div
-        className={classNames('easy-editor-code-block__toolbar')}
+        className={classNames('textory-code-block__toolbar')}
         contentEditable={false}
       >
         <Dropdown
@@ -199,15 +199,15 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
             setDropdownVisible(visible);
           }}
           popup={
-            <div className="easy-editor-dropdown-menu easy-editor-code-block__dropdown">
+            <div className="textory-dropdown-menu textory-code-block__dropdown">
               <div
-                className="easy-editor-dropdown-menu__content"
+                className="textory-dropdown-menu__content"
                 style={{
                   maxHeight: CODE_BLOCK_DROPDOWN_MAX_HEIGHT,
                 }}
               >
-                <div className="easy-editor-code-block__dropdown-search">
-                  <div className="easy-editor-code-block__dropdown-input">
+                <div className="textory-code-block__dropdown-search">
+                  <div className="textory-code-block__dropdown-input">
                     <input
                       ref={inputRef}
                       type="text"
@@ -224,12 +224,12 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
                     )}
                   </div>
                 </div>
-                <div className="easy-editor-code-block__dropdown-list">
+                <div className="textory-code-block__dropdown-list">
                   {searchedLanguages.map(lang => (
                     <div
                       key={lang.value}
-                      className={classNames('easy-editor-dropdown-menu__item', {
-                        'easy-editor-dropdown-menu__item--active':
+                      className={classNames('textory-dropdown-menu__item', {
+                        'textory-dropdown-menu__item--active':
                           selectedValue === lang.value,
                       })}
                       onClick={() => {
@@ -248,7 +248,7 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
         >
           {isEditable ? (
             <div
-              className="easy-editor-dropdown-trigger easy-editor-code-block__dropdown-trigger"
+              className="textory-dropdown-trigger textory-code-block__dropdown-trigger"
               onClick={handleOpen}
             >
               <span>{selectedLanguageItem?.name || selectedValue}</span>
@@ -257,19 +257,19 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
             <span>{languageItem?.name || language}</span>
           )}
         </Dropdown>
-        <div className="easy-editor-code-block__button_area">
+        <div className="textory-code-block__button_area">
           {renderToolbar()}
         </div>
       </div>
-      <div className="easy-editor-code-block__content-wrapper">
-        <div className="easy-editor-code-block__line-numbers">
+      <div className="textory-code-block__content-wrapper">
+        <div className="textory-code-block__line-numbers">
           {lineNumbers.map(num => (
-            <div key={num} className="easy-editor-code-block__line-numbers-row">
+            <div key={num} className="textory-code-block__line-numbers-row">
               {num}
             </div>
           ))}
         </div>
-        <div className="easy-editor-code-block__content">
+        <div className="textory-code-block__content">
           <pre className={classNames('hljs')} ref={$container}>
             <NodeViewContent as="div" />
           </pre>

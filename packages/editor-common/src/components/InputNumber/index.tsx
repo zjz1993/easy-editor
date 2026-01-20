@@ -10,7 +10,7 @@ const InputNumber = forwardRef<any, InputNumberProps>((props, ref) => {
     <RcInputNumber
       {...otherProps}
       ref={inputNumberRef}
-      className={cx(className, 'easy-editor-input-number')}
+      className={cx(className, 'textory-input-number')}
     />
   );
 });

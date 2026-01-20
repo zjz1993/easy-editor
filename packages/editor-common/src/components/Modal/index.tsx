@@ -42,16 +42,16 @@ const Modal: FC<ModalProps> = ({
 
   return createPortal(
     <AnimatePresence>
-      <div className={cx('easy-editor-modal', wrapperClassName)}>
+      <div className={cx('textory-modal', wrapperClassName)}>
         <motion.div
-          className="easy-editor-modal-overlay"
+          className="textory-modal-overlay"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
           {/* 蒙层，点击时关闭 Modal */}
           <motion.div
-            className="easy-editor-modal-backdrop"
+            className="textory-modal-backdrop"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -62,7 +62,7 @@ const Modal: FC<ModalProps> = ({
           <motion.div
             ref={refs.setFloating}
             {...getFloatingProps()}
-            className="easy-editor-modal-container"
+            className="textory-modal-container"
             onClick={e => e.stopPropagation()} // 阻止冒泡，避免点击 Modal 内部时关闭
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -71,12 +71,12 @@ const Modal: FC<ModalProps> = ({
           >
             <Iconfont
               type="icon-close"
-              className="easy-editor-modal-close"
+              className="textory-modal-close"
               onClick={onClose}
             />
-            <div className="easy-editor-modal-header">{title}</div>
-            <div className="easy-editor-modal-body">{children}</div>
-            <div className="easy-editor-modal-footer">
+            <div className="textory-modal-header">{title}</div>
+            <div className="textory-modal-body">{children}</div>
+            <div className="textory-modal-footer">
               <Button type="primary" onClick={onSubmit}>
                 确认
               </Button>

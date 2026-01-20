@@ -646,7 +646,7 @@ const FilePreview: FC<IFilePreviewProps> = ({
         >
           <div
             ref={bodyRef}
-            className={ClassNames('easy-editor-file-preview', className)}
+            className={ClassNames('textory-file-preview', className)}
             style={style}
             onKeyDown={e => {
               if (isEsc(e) && visible) {

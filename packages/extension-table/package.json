@@ -1,5 +1,5 @@
 {
-  "name": "@easy-editor/extension-table",
+  "name": "@textory/extension-table",
   "version": "0.0.1",
   "private": false,
   "files": [
@@ -23,8 +23,8 @@
     "build": "tsup --config tsup.config.ts"
   },
   "dependencies": {
-    "@easy-editor/editor-common": "workspace:^",
-    "@easy-editor/styles": "workspace:*",
+    "@textory/editor-common": "workspace:^",
+    "@textory/styles": "workspace:*",
     "classnames": "^2.5.1"
   },
   "devDependencies": {

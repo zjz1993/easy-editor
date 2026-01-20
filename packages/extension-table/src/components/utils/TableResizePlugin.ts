@@ -380,7 +380,7 @@ export function handleDecorations(
       // const pos = start + cellPos + table.nodeAt(cellPos)!.nodeSize - 1;
       const pos = start + cellPos + 1;
       const dom = document.createElement('div');
-      dom.className = 'easy-editor-table-column-resizer';
+      dom.className = 'textory-table-column-resizer';
       decorations.push(Decoration.widget(pos, dom));
     }
   }

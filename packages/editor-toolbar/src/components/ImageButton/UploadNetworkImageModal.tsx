@@ -1,4 +1,4 @@
-import {Iconfont, InputNumber, Modal, Switch, Tooltip} from '@easy-editor/editor-common';
+import {Iconfont, InputNumber, Modal, Switch, Tooltip} from '@textory/editor-common';
 import {type FC, useEffect, useRef, useState} from 'react';
 import cx from 'classnames';
 import {Controller, useForm} from 'react-hook-form';
@@ -47,7 +47,7 @@ const UploadNetworkImageModal: FC<TUploadNetworkImageModalProps> = props => {
 
   return (
     <Modal
-      wrapperClassName="easy-editor-network-image-modal"
+      wrapperClassName="textory-network-image-modal"
       open={open}
       onClose={() => {
         onClose?.();
@@ -60,11 +60,11 @@ const UploadNetworkImageModal: FC<TUploadNetworkImageModalProps> = props => {
     >
       {open && (
         <form
-          className="easy-editor-network-image-modal_panel"
+          className="textory-network-image-modal_panel"
           onSubmit={e => e.preventDefault()}
         >
           <div
-            className={cx('row', errors.src && 'easy-editor-link-panel__error')}
+            className={cx('row', errors.src && 'textory-link-panel__error')}
           >
             <div className="row__inner">
               <label className="row__label required">图片链接</label>
@@ -73,18 +73,18 @@ const UploadNetworkImageModal: FC<TUploadNetworkImageModalProps> = props => {
                   className="row__input"
                   {...register('src', { required: '请填写链接' })}
                 />
-                <div className="easy-editor-link-panel__error__tips">
+                <div className="textory-link-panel__error__tips">
                   {errors?.src?.message}
                 </div>
               </div>
             </div>
           </div>
-          <div className="easy-editor-network-image-modal_panel__inner">
-            <div className="easy-editor-network-image-modal_panel__inner__part">
+          <div className="textory-network-image-modal_panel__inner">
+            <div className="textory-network-image-modal_panel__inner__part">
               <div
                 className={cx(
                   'row',
-                  errors.width && 'easy-editor-link-panel__error',
+                  errors.width && 'textory-link-panel__error',
                 )}
               >
                 <div className="row__inner">
@@ -98,7 +98,7 @@ const UploadNetworkImageModal: FC<TUploadNetworkImageModalProps> = props => {
                         <InputNumber {...field} suffix="px" min={1} />
                       )}
                     />
-                    <div className="easy-editor-link-panel__error__tips">
+                    <div className="textory-link-panel__error__tips">
                       {errors?.width?.message}
                     </div>
                   </div>
@@ -108,7 +108,7 @@ const UploadNetworkImageModal: FC<TUploadNetworkImageModalProps> = props => {
               <div
                 className={cx(
                   'row',
-                  errors.height && 'easy-editor-link-panel__error',
+                  errors.height && 'textory-link-panel__error',
                 )}
               >
                 <div className="row__inner">
@@ -127,7 +127,7 @@ const UploadNetworkImageModal: FC<TUploadNetworkImageModalProps> = props => {
                         />
                       )}
                     />
-                    <div className="easy-editor-link-panel__error__tips">
+                    <div className="textory-link-panel__error__tips">
                       {errors?.height?.message}
                     </div>
                   </div>

@@ -1,4 +1,4 @@
-import {IntlComponent} from '@easy-editor/editor-common';
+import {IntlComponent} from '@textory/editor-common';
 
 const UnSupportImagePreview = () => {
   return (

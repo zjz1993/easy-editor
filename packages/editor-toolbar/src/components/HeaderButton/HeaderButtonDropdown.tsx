@@ -1,5 +1,5 @@
 import {type FC, useCallback, useContext} from 'react';
-import {BLOCK_TYPES, headers, Iconfont, IntlComponent} from '@easy-editor/editor-common';
+import {BLOCK_TYPES, headers, Iconfont, IntlComponent} from '@textory/editor-common';
 import cx from 'classnames';
 import ToolbarContext from '../../context/toolbarContext.ts';
 import {command, option} from '../../utils/index.ts';
@@ -15,7 +15,7 @@ const HeaderButtonDropdown: FC<{ onClick?: () => void }> = props => {
         [BLOCK_TYPES.P]: (
           <div
             key={`header_${index}`}
-            className={cx('easy-editor-header-dropdown__item')}
+            className={cx('textory-header-dropdown__item')}
             onClick={() => {
               editor.chain().focus().setParagraph().run();
               onClick?.();
@@ -37,7 +37,7 @@ const HeaderButtonDropdown: FC<{ onClick?: () => void }> = props => {
         [BLOCK_TYPES.QUOTE]: (
           <div
             key="header_quote"
-            className={cx('easy-editor-header-dropdown__item')}
+            className={cx('textory-header-dropdown__item')}
             onClick={() => {
               editor.chain().focus().toggleBlockquote().run();
               onClick?.();
@@ -60,7 +60,7 @@ const HeaderButtonDropdown: FC<{ onClick?: () => void }> = props => {
           <div
             key={`header_${index}`}
             className={cx(
-              'easy-editor-header-dropdown__item',
+              'textory-header-dropdown__item',
               type === BLOCK_TYPES.H && `header-${name}`,
             )}
             onClick={() => {
@@ -98,7 +98,7 @@ const HeaderButtonDropdown: FC<{ onClick?: () => void }> = props => {
     return res;
   }, []);
   return (
-    <div className="easy-editor-header-dropdown">{createHeaderItem()}</div>
+    <div className="textory-header-dropdown">{createHeaderItem()}</div>
   );
 };
 export default HeaderButtonDropdown;

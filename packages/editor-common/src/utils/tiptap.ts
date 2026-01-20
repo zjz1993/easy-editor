@@ -73,7 +73,7 @@ const wrapBlockExtensions = (
         //@ts-ignore
         function renderHTML(props: any) {
           const dom = this.parent(props);
-          return ['div', { class: 'easy-editor-block-container' }, dom];
+          return ['div', { class: 'textory-block-container' }, dom];
         }
         const config = {
           ...extension.config,

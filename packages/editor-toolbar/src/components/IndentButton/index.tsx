@@ -1,4 +1,4 @@
-import {BLOCK_TYPES, Iconfont, INDENT_TYPES,} from '@easy-editor/editor-common';
+import {BLOCK_TYPES, Iconfont, INDENT_TYPES,} from '@textory/editor-common';
 import {isTextSelection} from '@tiptap/core';
 import {useContext} from 'react';
 import Button from '../Button';

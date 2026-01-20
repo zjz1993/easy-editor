@@ -1,4 +1,4 @@
-import { IntlComponent, Language_ZhCN } from '@easy-editor/editor-common';
+import { IntlComponent, Language_ZhCN } from '@textory/editor-common';
 import { useEffect, useState } from 'react';
 
 function useIntlLoaded() {

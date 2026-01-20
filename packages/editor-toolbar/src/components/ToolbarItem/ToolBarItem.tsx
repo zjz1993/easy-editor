@@ -20,7 +20,7 @@ const ToolBarItem: FC<MenuBarItemProps> = ({
     <div
       onClick={onclick}
       className={classNames(
-        'easy-editor-toolbar__item',
+        'textory-toolbar__item',
         disabled && 'disabled',
         className,
       )}

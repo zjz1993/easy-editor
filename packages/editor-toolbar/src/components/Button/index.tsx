@@ -23,9 +23,9 @@ const Button = forwardRef<HTMLDivElement, ButtonProps>(
           }
           onClick?.(e);
         }}
-        className={classNames('easy-editor-toolbar__item__btn', {
-          'easy-editor-toolbar__item__btn--active': isActive,
-          'easy-editor-toolbar__item__btn--disabled': disabled,
+        className={classNames('textory-toolbar__item__btn', {
+          'textory-toolbar__item__btn--active': isActive,
+          'textory-toolbar__item__btn--disabled': disabled,
         })}
       >
         {children}

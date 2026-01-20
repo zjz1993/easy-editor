@@ -1,4 +1,4 @@
-import {BLOCK_TYPES, Iconfont} from '@easy-editor/editor-common';
+import {BLOCK_TYPES, Iconfont} from '@textory/editor-common';
 import {useContext} from 'react';
 import Button from '../../components/Button';
 import ToolbarItemButtonWrapper from '..//ToolbarItemButtonWrapper';

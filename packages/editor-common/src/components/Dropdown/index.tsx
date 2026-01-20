@@ -66,13 +66,13 @@ const Dropdown = forwardRef<
       onPopupVisibleChange={handleVisibleChange}
       getPopupContainer={getPopupContainer}
     >
-      <div className="easy-editor-dropdown">
+      <div className="textory-dropdown">
         {children}
         {showIcon && (
           <div
             className={cx(
-              'easy-editor-dropdown__icon',
-              isOpen && 'easy-editor-dropdown__icon__open',
+              'textory-dropdown__icon',
+              isOpen && 'textory-dropdown__icon__open',
             )}
           >
             <Iconfont type="icon-caret-down" />

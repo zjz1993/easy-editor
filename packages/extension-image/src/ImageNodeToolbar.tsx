@@ -1,7 +1,7 @@
 import type {FC} from 'react';
-import {InputNumber, useControlledValue} from '@easy-editor/editor-common';
+import {InputNumber, useControlledValue} from '@textory/editor-common';
 import ToolbarButton from '../src/components/ToolbarButton';
-import type {AlignType} from '@easy-editor/context';
+import type {AlignType} from '@textory/context';
 
 const ImageNodeToolbar: FC<{
   defaultWidth: number;
@@ -28,8 +28,8 @@ const ImageNodeToolbar: FC<{
   });
   console.log('defaultWidth是', defaultWidth);
   return (
-    <div className="easy-editor-image-toolbar">
-      <div className="easy-editor-image-toolbar-item easy-editor-image-toolbar-input-item">
+    <div className="textory-image-toolbar">
+      <div className="textory-image-toolbar-item textory-image-toolbar-input-item">
         <span>宽：</span>
         <InputNumber
           suffix="px"

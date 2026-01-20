@@ -1,16 +1,16 @@
-import {BLOCK_TYPES, isUndefined, MessageContainer, wrapBlockExtensions,} from '@easy-editor/editor-common';
-import {EditorToolbar} from '@easy-editor/editor-toolbar';
-import {Bold} from '@easy-editor/extension-bold';
+import {BLOCK_TYPES, isUndefined, MessageContainer, wrapBlockExtensions,} from '@textory/editor-common';
+import {EditorToolbar} from '@textory/editor-toolbar';
+import {Bold} from '@textory/extension-bold';
 import {EditorContent} from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import type {FC} from 'react';
-import {CodeBlock} from '@easy-editor/extension-code-block';
-import {Indent} from '@easy-editor/extension-indent';
-import {CustomLink} from '@easy-editor/extension-link';
-import {TaskItem, TaskList} from '@easy-editor/extension-task-item';
+import {CodeBlock} from '@textory/extension-code-block';
+import {Indent} from '@textory/extension-indent';
+import {CustomLink} from '@textory/extension-link';
+import {TaskItem, TaskList} from '@textory/extension-task-item';
 import {Color} from '@tiptap/extension-color';
-import {ImageNode} from '@easy-editor/extension-image';
-import {Table, TableBubbleMenu, TableCell, TableHeader, TableRow,} from '@easy-editor/extension-table';
+import {ImageNode} from '@textory/extension-image';
+import {Table, TableBubbleMenu, TableCell, TableHeader, TableRow,} from '@textory/extension-table';
 import {Placeholder} from './extension/Placeholder';
 import {TextAlign} from '@tiptap/extension-text-align';
 import {TextStyle} from '@tiptap/extension-text-style';
@@ -20,9 +20,9 @@ import {UniqueIDExtension} from './extension/UniqueIDExtension/index.ts';
 import useIntlLoaded from './hooks/useIntlLoaded.ts';
 import EditorFilePreview from './components/FilePreview/EditorFilePreview';
 import Underline from '@tiptap/extension-underline';
-import {OutlineExtension} from '@easy-editor/extension-outline';
+import {OutlineExtension} from '@textory/extension-outline';
 import {useEditorProps} from './hooks/useEditorProps.ts';
-import {EditorProvider, type TEasyEditorProps} from '@easy-editor/context';
+import {EditorProvider, type TEasyEditorProps} from '@textory/context';
 import {useTiptapWithSync} from "./hooks/useTiptapWithSync.ts";
 
 const Editor: FC<TEasyEditorProps> = props => {
@@ -106,14 +106,14 @@ const Editor: FC<TEasyEditorProps> = props => {
 
   return (
     <EditorProvider editor={editor} props={mergedProps}>
-      <div className="easy-editor">
+      <div className="textory">
         {intlInit && (
           <EditorToolbar editor={editor} imageProps={mergedProps.imageProps} />
         )}
         <EditorContent
           autoFocus={autoFocus}
           editor={editor}
-          className="easy-editor-body"
+          className="textory-body"
         >
           {/*<OutlineView editor={editor} />*/}
         </EditorContent>

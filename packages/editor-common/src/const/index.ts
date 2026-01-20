@@ -14,8 +14,8 @@ export const INDENT_TYPES = {
 
 export const PREVIEW_CLS = {
   FILE: 'kms-doc-attachment',
-  FULL_SCREEN: 'easy-editor-image-full-screen',
-  IMAGE: 'easy-editor-image',
+  FULL_SCREEN: 'textory-image-full-screen',
+  IMAGE: 'textory-image',
 };
 
 export const KeyCode = {

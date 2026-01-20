@@ -1,4 +1,4 @@
-import {Iconfont, MARK_TYPES, Popover} from '@easy-editor/editor-common';
+import {Iconfont, MARK_TYPES, Popover} from '@textory/editor-common';
 import {type FC, useContext, useState} from 'react';
 import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 import ToolbarContext from '../../context/toolbarContext.ts';
@@ -28,7 +28,7 @@ const LinkButton: FC<TToolbarWrapperProps> = props => {
   return (
     <ToolbarItemButtonWrapper
       intlStr={intlStr}
-      className={'easy-editor-toolbar__item__btn'}
+      className={'textory-toolbar__item__btn'}
       style={style}
       disabled={disabled}
       tooltipVisible={tooltipVisible}

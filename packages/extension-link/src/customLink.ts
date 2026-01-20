@@ -1,4 +1,4 @@
-import {MARK_TYPES} from '@easy-editor/editor-common';
+import {MARK_TYPES} from '@textory/editor-common';
 import {ReactRenderer} from '@tiptap/react';
 import {Plugin, PluginKey} from 'prosemirror-state';
 import LinkToolbar from './LinkToolbar.tsx';

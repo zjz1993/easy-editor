@@ -124,7 +124,7 @@ const NewTooltip: FC<TPopoverProps> = props => {
               zIndex: 1000,
             }}
             {...getFloatingProps()}
-            className="easy-editor-tooltip"
+            className="textory-tooltip"
             data-placement={placement}
           >
             {title}

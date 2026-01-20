@@ -1,6 +1,6 @@
 import {createContext} from 'react';
 import type {IToolbarCommonProps} from '../types/index.ts';
-import type {IImageProps} from '@easy-editor/context';
+import type {IImageProps} from '@textory/context';
 
 const ToolbarContext = createContext<
   IToolbarCommonProps & { imageProps?: Partial<IImageProps> }

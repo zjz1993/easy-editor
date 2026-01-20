@@ -1,4 +1,4 @@
-import {DropdownList, Iconfont, Upload,} from '@easy-editor/editor-common';
+import {DropdownList, Iconfont, Upload,} from '@textory/editor-common';
 import {type FC, useContext, useRef, useState} from 'react';
 import type {TToolbarWrapperProps} from 'src/types/index.ts';
 import UploadNetworkImageModal from './UploadNetworkImageModal.tsx';
@@ -18,8 +18,8 @@ const ImageButton: FC<TToolbarWrapperProps> = props => {
       <ToolbarItemButtonWrapper
         intlStr={intlStr}
         className={cx(
-          'easy-editor-toolbar__item__btn',
-          'easy-editor-toolbar__item__dropdown',
+          'textory-toolbar__item__btn',
+          'textory-toolbar__item__dropdown',
         )}
         style={style}
         disabled={disabled}

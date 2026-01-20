@@ -77,11 +77,11 @@ export const TableCell = TTableCell.extend<TTableCellOptions>({
                 const isLast = rowIndex === firstColumnCells.length - 1;
                 const deco = Decoration.widget(pos + 1, () => {
                   const grip = document.createElement('a');
-                  grip.className = `easy-editor-table-tool-row${rowSelected ? ' selected' : ''}${isFirst ? ' first' : ''}${isLast ? ' last' : ''}`;
+                  grip.className = `textory-table-tool-row${rowSelected ? ' selected' : ''}${isFirst ? ' first' : ''}${isLast ? ' last' : ''}`;
 
                   // 点击选中整行
                   const bar = document.createElement('span');
-                  bar.className = 'easy-editor-table-tool-row-item';
+                  bar.className = 'textory-table-tool-row-item';
                   grip.appendChild(bar);
 
                   // + 按钮：上方插入
@@ -109,7 +109,7 @@ export const TableCell = TTableCell.extend<TTableCellOptions>({
                       console.log('target是', target);
                       if (
                         target.classList.contains(
-                          'easy-editor-table-tool-row-item',
+                          'textory-table-tool-row-item',
                         )
                       ) {
                         this.editor.view.dispatch(selectRow(rowIndex, state));
@@ -145,10 +145,10 @@ export const TableCell = TTableCell.extend<TTableCellOptions>({
                 const isLast = colIndex === firstRowCells.length - 1;
                 const deco = Decoration.widget(pos + 1, () => {
                   const grip = document.createElement('a');
-                  grip.className = `easy-editor-table-tool-column${colSelected ? ' selected' : ''}${isFirst ? ' first' : ''}${isLast ? ' last' : ''}`;
+                  grip.className = `textory-table-tool-column${colSelected ? ' selected' : ''}${isFirst ? ' first' : ''}${isLast ? ' last' : ''}`;
 
                   const bar = document.createElement('span');
-                  bar.className = 'easy-editor-table-tool-column-item';
+                  bar.className = 'textory-table-tool-column-item';
                   grip.appendChild(bar);
 
                   // + 按钮：左侧插入
@@ -174,7 +174,7 @@ export const TableCell = TTableCell.extend<TTableCellOptions>({
 
                     if (
                       target.classList.contains(
-                        'easy-editor-table-tool-column-item',
+                        'textory-table-tool-column-item',
                       )
                     ) {
                       this.editor.view.dispatch(

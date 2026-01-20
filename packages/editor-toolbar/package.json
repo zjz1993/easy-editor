@@ -1,5 +1,5 @@
 {
-  "name": "@easy-editor/editor-toolbar",
+  "name": "@textory/editor-toolbar",
   "version": "0.0.1",
   "description": "",
   "private": false,
@@ -26,10 +26,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@easy-editor/context": "workspace:^",
-    "@easy-editor/editor-common": "workspace:^",
-    "@easy-editor/extension-bold": "workspace:^",
-    "@easy-editor/extension-image": "workspace:^",
+    "@textory/context": "workspace:^",
+    "@textory/editor-common": "workspace:^",
+    "@textory/extension-bold": "workspace:^",
+    "@textory/extension-image": "workspace:^",
     "classnames": "^2.5.1",
     "rc-overflow": "^1.4.1",
     "react-hook-form": "^7.54.2"

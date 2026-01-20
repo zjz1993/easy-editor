@@ -2,7 +2,7 @@ import {Mark, markPasteRule, mergeAttributes, type PasteRuleMatch,} from '@tipta
 import type {Plugin} from '@tiptap/pm/state';
 import {find, registerCustomProtocol, reset} from 'linkifyjs';
 
-import {MARK_TYPES} from '@easy-editor/editor-common';
+import {MARK_TYPES} from '@textory/editor-common';
 import {autolink} from './helpers/autolinks.js';
 import {clickHandler} from './helpers/clickHandler.js';
 
@@ -248,7 +248,7 @@ export const Link = Mark.create<LinkOptions>({
       protocols: [],
       defaultProtocol: 'http',
       HTMLAttributes: {
-        class: 'easy-editor-link',
+        class: 'textory-link',
         target: '_blank',
         rel: 'noopener noreferrer nofollow',
       },

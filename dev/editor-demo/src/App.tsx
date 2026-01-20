@@ -1,5 +1,5 @@
-import Editor from '@easy-editor/editor';
-import '@easy-editor/styles/src/index.scss';
+import Editor from '@textory/editor';
+import '@textory/styles/src/index.scss';
 import {useState} from "react";
 
 function App() {

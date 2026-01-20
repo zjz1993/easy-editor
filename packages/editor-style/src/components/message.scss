@@ -20,27 +20,27 @@
     transform: translateY(-20px);
   }
 }
-.easy-editor-message-success{
-  .easy-editor-message__icon{
+.textory-message-success{
+  .textory-message__icon{
     color: styles.$primary-green;
   }
 }
-.easy-editor-message-error{
-  .easy-editor-message__icon{
+.textory-message-error{
+  .textory-message__icon{
     color: styles.$primary-red;
   }
 }
-.easy-editor-message-info{
-  .easy-editor-message__icon{
+.textory-message-info{
+  .textory-message__icon{
     color: styles.$primary-color;
   }
 }
-.easy-editor-message-warning{
-  .easy-editor-message__icon{
+.textory-message-warning{
+  .textory-message__icon{
     color: styles.$primary-yellow;
   }
 }
-.easy-editor-message {
+.textory-message {
   padding: 8px 16px;
   opacity: 1;
   transition: all 0.3s;

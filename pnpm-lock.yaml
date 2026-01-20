@@ -35,10 +35,10 @@ importers:
 
   dev/editor-demo:
     dependencies:
-      '@easy-editor/editor':
+      '@textory/editor':
         specifier: workspace:^
         version: link:../../packages/editor-main
-      '@easy-editor/styles':
+      '@textory/styles':
         specifier: workspace:^
         version: link:../../packages/editor-style
       fast-glob:
@@ -176,37 +176,37 @@ importers:
 
   packages/editor-main:
     dependencies:
-      '@easy-editor/context':
+      '@textory/context':
         specifier: workspace:^
         version: link:../editor-context
-      '@easy-editor/editor-common':
+      '@textory/editor-common':
         specifier: workspace:^
         version: link:../editor-common
-      '@easy-editor/editor-toolbar':
+      '@textory/editor-toolbar':
         specifier: workspace:^
         version: link:../editor-toolbar
-      '@easy-editor/extension-bold':
+      '@textory/extension-bold':
         specifier: workspace:^
         version: link:../extension-bold
-      '@easy-editor/extension-code-block':
+      '@textory/extension-code-block':
         specifier: workspace:^
         version: link:../extension-code-block
-      '@easy-editor/extension-image':
+      '@textory/extension-image':
         specifier: workspace:^
         version: link:../extension-image
-      '@easy-editor/extension-indent':
+      '@textory/extension-indent':
         specifier: workspace:^
         version: link:../extension-indent
-      '@easy-editor/extension-link':
+      '@textory/extension-link':
         specifier: workspace:^
         version: link:../extension-link
-      '@easy-editor/extension-outline':
+      '@textory/extension-outline':
         specifier: workspace:^
         version: link:../extension-outline
-      '@easy-editor/extension-table':
+      '@textory/extension-table':
         specifier: workspace:^
         version: link:../extension-table
-      '@easy-editor/extension-task-item':
+      '@textory/extension-task-item':
         specifier: workspace:^
         version: link:../extension-task-item
       react:
@@ -273,16 +273,16 @@ importers:
 
   packages/editor-toolbar:
     dependencies:
-      '@easy-editor/context':
+      '@textory/context':
         specifier: workspace:^
         version: link:../editor-context
-      '@easy-editor/editor-common':
+      '@textory/editor-common':
         specifier: workspace:^
         version: link:../editor-common
-      '@easy-editor/extension-bold':
+      '@textory/extension-bold':
         specifier: workspace:^
         version: link:../extension-bold
-      '@easy-editor/extension-image':
+      '@textory/extension-image':
         specifier: workspace:^
         version: link:../extension-image
       classnames:
@@ -347,10 +347,10 @@ importers:
 
   packages/extension-code-block:
     dependencies:
-      '@easy-editor/editor-common':
+      '@textory/editor-common':
         specifier: workspace:^
         version: link:../editor-common
-      '@easy-editor/editor-toolbar':
+      '@textory/editor-toolbar':
         specifier: workspace:^
         version: link:../editor-toolbar
       '@floating-ui/react':
@@ -399,10 +399,10 @@ importers:
 
   packages/extension-image:
     dependencies:
-      '@easy-editor/context':
+      '@textory/context':
         specifier: workspace:^
         version: link:../editor-context
-      '@easy-editor/editor-common':
+      '@textory/editor-common':
         specifier: workspace:^
         version: link:../editor-common
       classnames:
@@ -436,7 +436,7 @@ importers:
 
   packages/extension-indent:
     dependencies:
-      '@easy-editor/editor-common':
+      '@textory/editor-common':
         specifier: workspace:^
         version: link:../editor-common
     devDependencies:
@@ -455,10 +455,10 @@ importers:
 
   packages/extension-link:
     dependencies:
-      '@easy-editor/editor-common':
+      '@textory/editor-common':
         specifier: workspace:^
         version: link:../editor-common
-      '@easy-editor/editor-toolbar':
+      '@textory/editor-toolbar':
         specifier: workspace:^
         version: link:../editor-toolbar
       '@floating-ui/react':
@@ -498,10 +498,10 @@ importers:
 
   packages/extension-outline:
     dependencies:
-      '@easy-editor/editor-common':
+      '@textory/editor-common':
         specifier: workspace:^
         version: link:../editor-common
-      '@easy-editor/editor-toolbar':
+      '@textory/editor-toolbar':
         specifier: workspace:^
         version: link:../editor-toolbar
       '@floating-ui/react':
@@ -541,10 +541,10 @@ importers:
 
   packages/extension-table:
     dependencies:
-      '@easy-editor/editor-common':
+      '@textory/editor-common':
         specifier: workspace:^
         version: link:../editor-common
-      '@easy-editor/styles':
+      '@textory/styles':
         specifier: workspace:*
         version: link:../editor-style
       classnames:

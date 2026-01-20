@@ -21,7 +21,7 @@ export default defineConfig({
     "react",
     "react-dom",
     /^@tiptap\/.*/,
-    /^@easy-editor\/.*/,
+    /^@textory\/.*/,
     // ⭐️ 必须加
     "use-sync-external-store",
     "use-sync-external-store/shim",

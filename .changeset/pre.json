@@ -2,19 +2,19 @@
   "mode": "pre",
   "tag": "beta",
   "initialVersions": {
-    "@easy-editor/editor-common": "1.0.0",
-    "@easy-editor/context": "0.0.1",
-    "@easy-editor/editor": "0.0.1",
-    "@easy-editor/styles": "0.0.1",
-    "@easy-editor/editor-toolbar": "0.0.1",
-    "@easy-editor/extension-bold": "0.0.1",
-    "@easy-editor/extension-code-block": "0.0.1",
-    "@easy-editor/extension-image": "0.0.1",
-    "@easy-editor/extension-indent": "0.0.1",
-    "@easy-editor/extension-link": "0.0.1",
-    "@easy-editor/extension-outline": "0.0.1",
-    "@easy-editor/extension-table": "0.0.1",
-    "@easy-editor/extension-task-item": "0.0.1"
+    "@textory/editor-common": "1.0.0",
+    "@textory/context": "0.0.1",
+    "@textory/editor": "0.0.1",
+    "@textory/styles": "0.0.1",
+    "@textory/editor-toolbar": "0.0.1",
+    "@textory/extension-bold": "0.0.1",
+    "@textory/extension-code-block": "0.0.1",
+    "@textory/extension-image": "0.0.1",
+    "@textory/extension-indent": "0.0.1",
+    "@textory/extension-link": "0.0.1",
+    "@textory/extension-outline": "0.0.1",
+    "@textory/extension-table": "0.0.1",
+    "@textory/extension-task-item": "0.0.1"
   },
   "changesets": []
 }

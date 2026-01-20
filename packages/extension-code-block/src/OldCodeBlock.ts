@@ -1,4 +1,4 @@
-import {BLOCK_TYPES} from '@easy-editor/editor-common';
+import {BLOCK_TYPES} from '@textory/editor-common';
 import type {CodeBlockLowlightOptions} from '@tiptap/extension-code-block-lowlight';
 import {CodeBlockLowlight} from '@tiptap/extension-code-block-lowlight';
 import {Plugin, PluginKey, TextSelection} from '@tiptap/pm/state';

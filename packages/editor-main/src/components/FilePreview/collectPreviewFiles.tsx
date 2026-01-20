@@ -1,7 +1,7 @@
 import {getAttachment} from '../AttachmentManager/index.ts';
 import UnSupportImagePreview from './UnSupportImagePreview.tsx';
 import {getViewFileNodes} from './utils.ts';
-import {assign, forEach, isImageExt, isPreviewableImage, parseFileName,} from '@easy-editor/editor-common';
+import {assign, forEach, isImageExt, isPreviewableImage, parseFileName,} from '@textory/editor-common';
 
 const collectPreviewFiles = $view => {
   const files = [];

@@ -177,10 +177,10 @@
     padding: 8px;
     box-sizing: border-box;
 
-    .easy-editor-block-container {
+    .textory-block-container {
       margin-bottom: 8px;
 
-      .easy-editor-table-scroll-wrapper {
+      .textory-table-scroll-wrapper {
         overflow-y: hidden;
         overflow-x: auto;
         padding: 40px 8px 0px 40px;
@@ -210,7 +210,7 @@
     align-items: center;
 
     &:hover {
-      .easy-editor-sort-row__drag-handle {
+      .textory-sort-row__drag-handle {
         visibility: visible;
       }
     }
@@ -285,7 +285,7 @@
       width: 4px;
     }
 
-    .easy-editor-table-tool-column {
+    .textory-table-tool-column {
       position: absolute;
       top: -12px;
       left: -1px;
@@ -354,18 +354,18 @@
         }
       }
 
-      &.selected .easy-editor-table-tool-column-item {
+      &.selected .textory-table-tool-column-item {
         z-index: 1;
         background: styles.$primary-color;
         border-color: styles.$primary-color;
       }
 
-      &.last .easy-editor-table-tool-column-item {
+      &.last .textory-table-tool-column-item {
         border-top-right-radius: 3px;
       }
     }
 
-    .easy-editor-table-tool-row {
+    .textory-table-tool-row {
       position: absolute;
       left: -12px;
       top: -1px;
@@ -434,12 +434,12 @@
         }
       }
 
-      &.selected .easy-editor-table-tool-row-item {
+      &.selected .textory-table-tool-row-item {
         z-index: 3;
         background-color: #90d4cf;
       }
 
-      &.last .easy-editor-table-tool-row-item {
+      &.last .textory-table-tool-row-item {
         border-bottom-left-radius: 3px;
       }
     }
@@ -473,8 +473,8 @@
     cursor: ew-resize;
     cursor: col-resize;
   }
-  .easy-editor-icon{
-    .easy-editor-icon-disabled.anticon{
+  .textory-icon{
+    .textory-icon-disabled.anticon{
       @include mixins.btn-not-allow(0.3);
     }
     .anticon {

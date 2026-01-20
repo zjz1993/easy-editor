@@ -70,13 +70,13 @@ export class TableView implements NodeView {
     this.cellMinWidth = cellMinWidth;
 
     this.dom = document.createElement('div');
-    this.dom.classList.add('easy-editor-block-container');
+    this.dom.classList.add('textory-block-container');
 
     this.scrollDom = document.createElement('div');
-    this.scrollDom.className = 'easy-editor-table-scroll-wrapper';
+    this.scrollDom.className = 'textory-table-scroll-wrapper';
     this.dom.appendChild(this.scrollDom);
     const tableDom = document.createElement('table');
-    tableDom.classList.add('easy-editor-table');
+    tableDom.classList.add('textory-table');
     this.table = this.scrollDom.appendChild(tableDom);
     this.colgroup = this.table.appendChild(document.createElement('colgroup'));
     updateColumns(node, this.colgroup, this.table, cellMinWidth);

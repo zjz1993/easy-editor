@@ -29,10 +29,10 @@ Each package has these standard scripts:
 ### Running Specific Tasks
 ```bash
 # Build a specific package
-pnpm --filter @easy-editor/editor-name build
+pnpm --filter @textory/editor-name build
 
 # Run dev mode for a specific package
-pnpm --filter @easy-editor/editor-name dev
+pnpm --filter @textory/editor-name dev
 ```
 
 ## Monorepo Structure
@@ -40,21 +40,21 @@ pnpm --filter @easy-editor/editor-name dev
 ### Package Categories
 
 **Core Editor Packages:**
-- `@easy-editor/editor` (packages/editor-main) - Main editor component that composes all extensions
-- `@easy-editor/editor-context` (packages/editor-context) - React context for state management and props distribution
-- `@easy-editor/editor-common` (packages/editor-common) - Shared utilities, constants, hooks, and components
-- `@easy-editor/editor-toolbar` (packages/editor-toolbar) - Modular toolbar component
-- `@easy-editor/editor-style` (packages/editor-style) - Shared SCSS styles
+- `@textory/editor` (packages/editor-main) - Main editor component that composes all extensions
+- `@textory/editor-context` (packages/editor-context) - React context for state management and props distribution
+- `@textory/editor-common` (packages/editor-common) - Shared utilities, constants, hooks, and components
+- `@textory/editor-toolbar` (packages/editor-toolbar) - Modular toolbar component
+- `@textory/editor-style` (packages/editor-style) - Shared SCSS styles
 
 **Extension Packages:**
-- `@easy-editor/extension-bold` - Bold text formatting
-- `@easy-editor/extension-code-block` - Code blocks with language detection
-- `@easy-editor/extension-image` - Image insertion and handling
-- `@easy-editor/extension-indent` - Text indentation support
-- `@easy-editor/extension-link` - Hyperlink support
-- `@easy-editor/extension-outline` - Document outline/navigation
-- `@easy-editor/extension-table` - Table creation and editing with bubble menus
-- `@easy-editor/extension-task-item` - Task lists and checkboxes
+- `@textory/extension-bold` - Bold text formatting
+- `@textory/extension-code-block` - Code blocks with language detection
+- `@textory/extension-image` - Image insertion and handling
+- `@textory/extension-indent` - Text indentation support
+- `@textory/extension-link` - Hyperlink support
+- `@textory/extension-outline` - Document outline/navigation
+- `@textory/extension-table` - Table creation and editing with bubble menus
+- `@textory/extension-task-item` - Task lists and checkboxes
 
 **Demo Application:**
 - `editor-demo` (dev/editor-demo) - Vite-based demo app for testing the editor
@@ -74,7 +74,7 @@ All packages build to ESM format only. React and Tiptap are externalized as peer
 Each package extends the base tsup configuration (`tsup.config.base.ts`):
 - Entry: `src/index.ts`
 - Output: ESM with TypeScript declarations
-- External dependencies: React, React DOM, Tiptap packages, and internal @easy-editor/* packages
+- External dependencies: React, React DOM, Tiptap packages, and internal @textory/* packages
 - Platform: browser
 - Target: ES2018
 - SCSS compilation via esbuild-sass-plugin
@@ -86,13 +86,13 @@ Each package extends the base tsup configuration (`tsup.config.base.ts`):
 
 The main editor (`packages/editor-main/src/root.tsx`) composes all extensions:
 1. Base extensions from Tiptap StarterKit (with some features disabled)
-2. Custom extensions from @easy-editor packages
+2. Custom extensions from @textory packages
 3. Extensions are wrapped with `wrapBlockExtensions()` utility for consistency
-4. Extension names are defined as constants in `BLOCK_TYPES` from @easy-editor/editor-common
+4. Extension names are defined as constants in `BLOCK_TYPES` from @textory/editor-common
 
 ### State Management
 
-- `EditorProvider` from @easy-editor/context wraps the entire editor
+- `EditorProvider` from @textory/context wraps the entire editor
 - Props are managed through React context and distributed to child components
 - Custom hooks provide access to editor instance and props:
   - `useEditorInstance()` - Access the Tiptap editor instance
@@ -126,7 +126,7 @@ The toolbar is modular and composable:
 
 ### Block Type Constants
 
-All block types are defined in `@easy-editor/editor-common` as constants:
+All block types are defined in `@textory/editor-common` as constants:
 - Used for extension configuration and content matching
 - Examples: `P`, `H`, `UL`, `OL`, `QUOTE`, `IMG`, `TABLE`, etc.
 - Critical for extension configuration and list handling
@@ -143,14 +143,14 @@ All block types are defined in `@easy-editor/editor-common` as constants:
 When creating new extensions:
 1. Create package in `packages/extension-name/`
 2. Extend appropriate Tiptap base extension
-3. Add to `@easy-editor/editor` dependencies
+3. Add to `@textory/editor` dependencies
 4. Import and add to extensions array in `packages/editor-main/src/root.tsx`
 5. Follow the pattern of existing extensions (see extension-bold for simple example)
 
 ### Styling
 - Styles are in SCSS format
 - Compiled during build via esbuild-sass-plugin
-- Shared styles in @easy-editor/editor-style
+- Shared styles in @textory/editor-style
 - Each package can have its own styles
 
 ### TypeScript
@@ -162,7 +162,7 @@ When creating new extensions:
 ## Testing Changes
 
 After making changes:
-1. Build affected packages: `pnpm --filter @easy-editor/package-name build`
+1. Build affected packages: `pnpm --filter @textory/package-name build`
 2. Or build all: `pnpm build`
 3. Test with demo app: `pnpm start`
 
@@ -194,12 +194,12 @@ These packages MUST be externalized to avoid runtime errors:
 |----------|--------|----------|
 | **React Ecosystem** | Must be singleton | `react`, `react-dom`, `use-sync-external-store` |
 | **Stateful Libraries** | Internal state management | `@tiptap/*`, `prosemirror-*` |
-| **Internal Packages** | Avoid circular dependencies | `@easy-editor/*` |
+| **Internal Packages** | Avoid circular dependencies | `@textory/*` |
 
 **Why React must be external:**
 ```typescript
 // ❌ If React is bundled:
-// @easy-editor/editor/dist/index.mjs contains React instance A
+// @textory/editor/dist/index.mjs contains React instance A
 // User project uses React instance B
 // Result: Hooks fail, Context breaks, errors like "Hooks can only be called inside the body of a function component"
 
@@ -265,7 +265,7 @@ external: [
   /^@tiptap\/.*/,
 
   // Internal packages (MUST)
-  /^@easy-editor\/.*/,
+  /^@textory\/.*/,
 
   // Third-party libraries (SHOULD)
   "lowlight", /^lowlight\/.*/,
@@ -313,3 +313,39 @@ Savings: ~80-95% reduction
 - React hooks failure
 - Context not working
 - Multiple instances causing state desync
+
+💡 最佳实践建议
+
+  Beta 发布流程
+
+  # 1. 确保在 prerelease 模式
+  pnpm pre:enter
+
+  # 2. 开发新功能...
+
+  # 3. 创建 changeset
+  pnpm changeset
+
+  # 4. 更新版本
+  pnpm changeset:version
+
+  # 5. 发布
+  pnpm release:beta
+
+  # 6. 测试验证
+  # 在其他项目中安装测试
+  pnpm add @textory/editor@beta
+
+  转正式发布
+
+  # 1. 退出 prerelease 模式
+  pnpm pre:exit
+
+  # 2. 创建正式版 changeset
+  pnpm changeset
+
+  # 3. 更新版本（会变成正式版本号）
+  pnpm changeset:version
+
+  # 4. 发布正式版
+  pnpm release

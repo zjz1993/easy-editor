@@ -3,7 +3,7 @@ import {NodeViewContent, NodeViewWrapper} from '@tiptap/react';
 export default props => {
   console.log('props是', props);
   return (
-    <NodeViewWrapper className="draggable-item easy-editor-block-container">
+    <NodeViewWrapper className="draggable-item textory-block-container">
       <div
         className="drag-handle"
         contentEditable={false}

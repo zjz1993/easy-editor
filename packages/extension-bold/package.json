@@ -1,5 +1,5 @@
 {
-  "name": "@easy-editor/extension-bold",
+  "name": "@textory/extension-bold",
   "version": "0.0.1",
   "private": false,
   "files": [

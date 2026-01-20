@@ -1,5 +1,5 @@
 {
-  "name": "@easy-editor/extension-link",
+  "name": "@textory/extension-link",
   "version": "0.0.1",
   "private": false,
   "files": [
@@ -23,8 +23,8 @@
     "build": "tsup --config tsup.config.ts"
   },
   "dependencies": {
-    "@easy-editor/editor-common": "workspace:^",
-    "@easy-editor/editor-toolbar": "workspace:^",
+    "@textory/editor-common": "workspace:^",
+    "@textory/editor-toolbar": "workspace:^",
     "@floating-ui/react": "^0.27.4",
     "linkifyjs": "^4.2.0"
   },

@@ -1,4 +1,4 @@
-import {Dropdown, IntlComponent, type TDropDownRefProps} from '@easy-editor/editor-common';
+import {Dropdown, IntlComponent, type TDropDownRefProps} from '@textory/editor-common';
 import cx from 'classnames';
 import {type FC, useContext, useRef} from 'react';
 import type {TToolbarWrapperProps} from 'src/types/index.ts';
@@ -34,8 +34,8 @@ const HeaderButton: FC<TToolbarWrapperProps> = ({
     <ToolbarItemButtonWrapper
       intlStr={intlStr}
       className={cx(
-        'easy-editor-toolbar__item__btn',
-        'easy-editor-toolbar__item__dropdown',
+        'textory-toolbar__item__btn',
+        'textory-toolbar__item__dropdown',
       )}
       style={style}
       disabled={disabled}
@@ -43,7 +43,7 @@ const HeaderButton: FC<TToolbarWrapperProps> = ({
       <Dropdown
         disabled={disabled}
         className={cx(
-          'easy-editor-toolbar__item__dropdown',
+          'textory-toolbar__item__dropdown',
           disabled && 'dropdown-disabled',
         )}
         getPopupContainer={node => node.parentNode as HTMLElement}

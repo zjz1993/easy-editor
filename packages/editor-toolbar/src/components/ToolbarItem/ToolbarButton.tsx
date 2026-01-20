@@ -1,7 +1,7 @@
 import type {CSSProperties, FC} from 'react';
 import Button from '../Button';
 import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
-import {Iconfont} from '@easy-editor/editor-common';
+import {Iconfont} from '@textory/editor-common';
 
 export interface ToolbarButtonProps {
   intlStr?: string;

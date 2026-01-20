@@ -42,7 +42,7 @@ const DropdownPanel: FC<IDropdownPanelProps> = props => {
         ...popupStyle,
         width: sameWidth ? childrenContainerSize?.width : popupStyle.width,
       }}
-      popupClassName={cx('easy-editor-dropdown-panel', popupClassName)}
+      popupClassName={cx('textory-dropdown-panel', popupClassName)}
       popupMotion={{ motionName: 'rc-trigger-popup-fade' }}
     >
       <div
@@ -50,8 +50,8 @@ const DropdownPanel: FC<IDropdownPanelProps> = props => {
         ref={childrenRef}
         className={cx(
           className,
-          'easy-editor-dropdown-container',
-          sameWidth && 'easy-editor-dropdown-container-same-width',
+          'textory-dropdown-container',
+          sameWidth && 'textory-dropdown-container-same-width',
         )}
       >
         {children}

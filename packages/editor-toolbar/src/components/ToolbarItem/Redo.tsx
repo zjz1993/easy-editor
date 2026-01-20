@@ -1,4 +1,4 @@
-import {Iconfont} from '@easy-editor/editor-common';
+import {Iconfont} from '@textory/editor-common';
 import {type FC, useContext} from 'react';
 import type {TToolbarWrapperProps} from 'src/types/index.ts';
 import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';

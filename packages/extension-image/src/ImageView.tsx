@@ -1,7 +1,7 @@
 import {NodeViewWrapper} from '@tiptap/react';
 import type {NodeViewProps} from '@tiptap/core';
 import cx from 'classnames';
-import {Iconfont, isUndefined, isViewEditable, Popover, PREVIEW_CLS,} from '@easy-editor/editor-common';
+import {Iconfont, isUndefined, isViewEditable, Popover, PREVIEW_CLS,} from '@textory/editor-common';
 import {type FC, useEffect, useRef, useState} from 'react';
 import useHandleChangeImageSize from './hooks/useHandleChangeImageSize.ts';
 import ImageNodeToolbar from './ImageNodeToolbar.tsx';
@@ -124,18 +124,18 @@ const ImageView: FC<NodeViewProps> = props => {
       draggable="true"
       ref={containerRef}
       className={cx(
-        `easy-editor-image-${textAlign}`,
-        'easy-editor-image-container',
-        'easy-editor-block-container',
+        `textory-image-${textAlign}`,
+        'textory-image-container',
+        'textory-block-container',
       )}
       as="div"
       onClick={handleClickImage}
     >
       <span
         className={cx(
-          'easy-editor-image',
-          !loading && !tempFile && 'easy-editor-image-normal',
-          hasBorder && 'easy-editor-image-border',
+          'textory-image',
+          !loading && !tempFile && 'textory-image-normal',
+          hasBorder && 'textory-image-border',
         )}
         data-id={id}
       >
@@ -144,7 +144,7 @@ const ImageView: FC<NodeViewProps> = props => {
         </div>
         {loading && tempFile && !isUndefined(loadingProgress) ? (
           <>
-            <div className="easy-editor-image__placeholder">
+            <div className="textory-image__placeholder">
               {getProgressCircleHTML(loadingProgress)}
             </div>
             <img src={fileToObjectUrl(tempFile)} />
@@ -211,19 +211,19 @@ const ImageView: FC<NodeViewProps> = props => {
         {selected && isViewEditable(view) && (
           <>
             <div
-              className="top-left easy-editor-image__resize-handle"
+              className="top-left textory-image__resize-handle"
               onMouseDown={e => handleMouseDown(e, 'top-left')}
             />
             <div
-              className="top-right easy-editor-image__resize-handle"
+              className="top-right textory-image__resize-handle"
               onMouseDown={e => handleMouseDown(e, 'top-right')}
             />
             <div
-              className="bottom-left easy-editor-image__resize-handle"
+              className="bottom-left textory-image__resize-handle"
               onMouseDown={e => handleMouseDown(e, 'bottom-left')}
             />
             <div
-              className="bottom-right easy-editor-image__resize-handle"
+              className="bottom-right textory-image__resize-handle"
               onMouseDown={e => handleMouseDown(e, 'bottom-right')}
             />
           </>

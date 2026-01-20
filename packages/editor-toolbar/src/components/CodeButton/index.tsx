@@ -1,4 +1,4 @@
-import {BLOCK_TYPES, DropdownList, Iconfont, IntlComponent,} from '@easy-editor/editor-common';
+import {BLOCK_TYPES, DropdownList, Iconfont, IntlComponent,} from '@textory/editor-common';
 import type {FC} from 'react';
 import {useContext, useState} from 'react';
 import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';

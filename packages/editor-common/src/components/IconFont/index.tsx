@@ -27,12 +27,12 @@ const IconComponent: FC<{
     onClick,
   } = props;
   return (
-    <span className="easy-editor-icon">
+    <span className="textory-icon">
       <span
         className={cx(
           className,
           'anticon',
-          disabled && 'easy-editor-icon-disabled',
+          disabled && 'textory-icon-disabled',
         )}
       >
         <IconFont

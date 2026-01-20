@@ -1,34 +1,34 @@
 @use "../colors/colors" as styles;
 $circle-size: 40px;
-.easy-editor-image-center.easy-editor-image-container{
+.textory-image-center.textory-image-container{
   text-align: center;
 }
-.easy-editor-image-left.easy-editor-image-container{
+.textory-image-left.textory-image-container{
   text-align: left;
 }
-.easy-editor-image-right.easy-editor-image-container{
+.textory-image-right.textory-image-container{
   text-align: right;
 }
-.easy-editor-image-container {
+.textory-image-container {
   position: relative;
   display: inline-block;
   width: 100%;
   max-width: 100%;
-  .easy-editor-image-border{
+  .textory-image-border{
     img{
       border: solid 1px #d9d9d9;
     }
   }
-  .easy-editor-image-normal{
+  .textory-image-normal{
     &:hover{
       box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 20%);
       transition: all 0.3s;
-      .easy-editor-image-full-screen{
+      .textory-image-full-screen{
         display: block;
       }
     }
   }
-  .easy-editor-image{
+  .textory-image{
     width: fit-content;
     position: relative;
     cursor: pointer;
@@ -169,7 +169,7 @@ $circle-size: 40px;
   }
 }
 // 图片工具栏
-.easy-editor-image-toolbar{
+.textory-image-toolbar{
   height: 32px;
   display: flex;
   align-items: center;

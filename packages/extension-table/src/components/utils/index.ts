@@ -2,7 +2,7 @@ import {findParentNode} from '@tiptap/core';
 import {type EditorState, type Selection, TextSelection, type Transaction,} from '@tiptap/pm/state';
 import {CellSelection, TableMap} from '@tiptap/pm/tables';
 import {DOMSerializer} from 'prosemirror-model';
-import {smartClipboardCopy} from '@easy-editor/editor-common';
+import {smartClipboardCopy} from '@textory/editor-common';
 import type {EditorView} from '@tiptap/pm/view';
 import {currentColWidth, updateColumnWidth} from './TableResizePlugin.ts'; // 寻找table
 // 寻找table

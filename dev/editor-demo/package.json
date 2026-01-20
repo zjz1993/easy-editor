@@ -10,8 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@easy-editor/editor": "workspace:^",
-    "@easy-editor/styles": "workspace:^",
+    "@textory/editor": "workspace:^",
+    "@textory/styles": "workspace:^",
     "fast-glob": "^3.3.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"

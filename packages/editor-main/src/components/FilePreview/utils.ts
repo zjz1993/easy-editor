@@ -1,4 +1,4 @@
-import {findIndex, forEach, isFileNode, isImageNode, PREVIEW_CLS,} from '@easy-editor/editor-common';
+import {findIndex, forEach, isFileNode, isImageNode, PREVIEW_CLS,} from '@textory/editor-common';
 
 export const getViewFileNodes = $view => {
   return $view.querySelectorAll(`.${PREVIEW_CLS.FILE}`);

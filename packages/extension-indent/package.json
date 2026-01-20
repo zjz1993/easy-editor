@@ -1,5 +1,5 @@
 {
-  "name": "@easy-editor/extension-indent",
+  "name": "@textory/extension-indent",
   "version": "0.0.1",
   "private": false,
   "files": [
@@ -23,7 +23,7 @@
     "build": "tsup --config tsup.config.ts"
   },
   "dependencies": {
-    "@easy-editor/editor-common": "workspace:^"
+    "@textory/editor-common": "workspace:^"
   },
   "devDependencies": {
     "@tiptap/core": "^3.13.0",

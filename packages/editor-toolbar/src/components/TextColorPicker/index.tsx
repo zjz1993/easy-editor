@@ -1,4 +1,4 @@
-import {Dropdown, Iconfont} from '@easy-editor/editor-common';
+import {Dropdown, Iconfont} from '@textory/editor-common';
 import type {FC} from 'react';
 import {useContext} from 'react';
 import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
@@ -27,8 +27,8 @@ const TextColorPicker: FC<TToolbarWrapperProps> = ({
     <ToolbarItemButtonWrapper
       intlStr={intlStr}
       className={cx(
-        'easy-editor-toolbar__item__btn',
-        'easy-editor-toolbar__item__dropdown',
+        'textory-toolbar__item__btn',
+        'textory-toolbar__item__dropdown',
       )}
       style={style}
       disabled={disabled}

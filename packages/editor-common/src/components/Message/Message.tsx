@@ -36,24 +36,24 @@ const Message: FC<MessageProps> = ({ delay, id, message, type, onClose }) => {
 
   const colors = {
     success: (
-      <Iconfont type="icon-checked" className="easy-editor-message__icon" />
+      <Iconfont type="icon-checked" className="textory-message__icon" />
     ),
     error: (
       <Iconfont
         type="icon-close-circle-fill"
-        className="easy-editor-message__icon"
+        className="textory-message__icon"
       />
     ),
     info: (
       <Iconfont
         type="icon-info-circle-fill"
-        className="easy-editor-message__icon"
+        className="textory-message__icon"
       />
     ),
     warning: (
       <Iconfont
         type="icon-warning-circle-fill"
-        className="easy-editor-message__icon"
+        className="textory-message__icon"
       />
     ),
   };
@@ -61,14 +61,14 @@ const Message: FC<MessageProps> = ({ delay, id, message, type, onClose }) => {
   return (
     <div
       ref={refs.setFloating}
-      className={cx('easy-editor-message', `easy-editor-message-${type}`)}
+      className={cx('textory-message', `textory-message-${type}`)}
       style={{
         // position: strategy,
         top: y ?? 0,
         left: x ?? 0,
       }}
     >
-      <div className="easy-editor-message__inner">
+      <div className="textory-message__inner">
         {colors[type]}
         <span>{message}</span>
       </div>

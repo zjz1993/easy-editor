@@ -1,5 +1,5 @@
 @use "../colors/colors" as styles;
-.easy-editor-table{
+.textory-table{
   &-column-resizer{
     cursor: col-resize;
     position: absolute;
@@ -12,7 +12,7 @@
   }
 }
 
-.easy-editor-table-menu{
+.textory-table-menu{
   background: styles.$primary-white;
   height: 40px;
   box-sizing: border-box;
@@ -37,7 +37,7 @@
       margin-right: 8px;
     }
   }
-  .easy-editor-table-icon-delete{
+  .textory-table-icon-delete{
     &:hover{
       color: styles.$primary-red;
     }

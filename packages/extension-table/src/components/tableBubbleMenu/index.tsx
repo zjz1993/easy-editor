@@ -1,4 +1,4 @@
-import {BubbleMenu, Iconfont, IntlComponent, Tooltip,} from '@easy-editor/editor-common';
+import {BubbleMenu, Iconfont, IntlComponent, Tooltip,} from '@textory/editor-common';
 import type {Editor} from '@tiptap/core';
 import {type FC, useCallback, useState} from 'react';
 import type {BubbleMenuProps} from '@tiptap/react/menus';
@@ -81,7 +81,7 @@ export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
     if (shouldShow) {
       if (selectedState.tableSelected) {
         return (
-          <div className="easy-editor-table-menu-item">
+          <div className="textory-table-menu-item">
             <Tooltip content={IntlComponent.get('table.delete.table')}>
               <div
                 onClick={() => {
@@ -90,7 +90,7 @@ export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
               >
                 <Iconfont
                   type="remove"
-                  className="easy-editor-table-icon-delete"
+                  className="textory-table-icon-delete"
                 />
               </div>
             </Tooltip>
@@ -99,7 +99,7 @@ export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
       }
       if (selectedState.rowSelected) {
         return (
-          <div className="easy-editor-table-menu-item">
+          <div className="textory-table-menu-item">
             <Tooltip content={IntlComponent.get('table.delete.row')}>
               <div
                 onClick={() => {
@@ -108,7 +108,7 @@ export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
               >
                 <Iconfont
                   type="remove"
-                  className="easy-editor-table-icon-delete"
+                  className="textory-table-icon-delete"
                 />
               </div>
             </Tooltip>
@@ -117,7 +117,7 @@ export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
       }
       if (selectedState.columnSelected.length > 0) {
         return (
-          <div className="easy-editor-table-menu-item">
+          <div className="textory-table-menu-item">
             <Tooltip content={IntlComponent.get('table.delete.col')}>
               <div
                 onClick={() => {
@@ -126,7 +126,7 @@ export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
               >
                 <Iconfont
                   type="remove"
-                  className="easy-editor-table-icon-delete"
+                  className="textory-table-icon-delete"
                 />
               </div>
             </Tooltip>
@@ -145,7 +145,7 @@ export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
       (selectedCells.length > 1 && canMergeCells) || canSplitCell;
     if (!selectedState.tableSelected && showSplitBtn) {
       return (
-        <div className="easy-editor-table-menu-item">
+        <div className="textory-table-menu-item">
           <Tooltip content={canMergeCells ? '合并单元格' : '拆分单元格'}>
             <Iconfont
               type={canSplitCell ? 'icon-unmerge' : 'icon-merge'}
@@ -166,7 +166,7 @@ export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
   //const renderSelectTableBtn = () => {
   //  if (selectedState.tableSelected) {
   //    return (
-  //      <div className="easy-editor-table-menu-item">
+  //      <div className="textory-table-menu-item">
   //        <Tooltip content="均分">
   //          <div
   //            onClick={() => {
@@ -183,7 +183,7 @@ export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
   const renderEqualizeColumnBtn = () => {
     if (selectedState.columnSelected.length >= 2) {
       return (
-        <div className="easy-editor-table-menu-item">
+        <div className="textory-table-menu-item">
           <Tooltip content="均分">
             <div
               onClick={() => {
@@ -207,7 +207,7 @@ export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
   const renderCopyTableBtn = () => {
     if (selectedState.tableSelected) {
       return (
-        <div className="easy-editor-table-menu-item">
+        <div className="textory-table-menu-item">
           <Tooltip content={IntlComponent.get('table.copy.table')}>
             <Iconfont
               type="copy"
@@ -224,7 +224,7 @@ export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
     <BubbleMenu
       editor={editor}
       shouldShow={shouldShow}
-      className="easy-editor-table-menu"
+      className="textory-table-menu"
     >
       {renderEqualizeColumnBtn()}
       {renderCopyTableBtn()}

@@ -1,7 +1,7 @@
 import {Extension} from '@tiptap/core';
 import {Plugin, PluginKey} from '@tiptap/pm/state';
 import {v4 as uuidv4} from 'uuid';
-import {BLOCK_TYPES} from '@easy-editor/editor-common';
+import {BLOCK_TYPES} from '@textory/editor-common';
 
 const UniqueIDExtension = Extension.create({
   name: 'uniqueID',

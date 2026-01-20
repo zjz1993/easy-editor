@@ -1,4 +1,4 @@
-import {closest, PREVIEW_CLS} from '@easy-editor/editor-common';
+import {closest, PREVIEW_CLS} from '@textory/editor-common';
 import {Plugin, PluginKey} from '@tiptap/pm/state';
 
 export const EditorFilePreviewPlugin = ({

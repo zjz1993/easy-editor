@@ -1,4 +1,4 @@
-import {chunk, Iconfont} from '@easy-editor/editor-common';
+import {chunk, Iconfont} from '@textory/editor-common';
 import type {FC} from 'react';
 import {useContext} from 'react';
 import ToolbarContext from '../../context/toolbarContext.ts';
@@ -27,7 +27,7 @@ export const colorArray = [
 const ColorPickerDropdown: FC = () => {
   const { editor } = useContext(ToolbarContext);
   return (
-    <div className="easy-editor-color-picker">
+    <div className="textory-color-picker">
       {chunk(colorArray, 6).map((colorTempArray, index) => {
         const array = colorTempArray.map(color => {
           return (
@@ -46,7 +46,7 @@ const ColorPickerDropdown: FC = () => {
           );
         });
         return (
-          <div className="easy-editor-color-picker__color_row" key={index}>
+          <div className="textory-color-picker__color_row" key={index}>
             {array}
           </div>
         );

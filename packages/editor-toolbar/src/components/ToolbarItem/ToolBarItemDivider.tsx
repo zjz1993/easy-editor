@@ -13,7 +13,7 @@ export const ToolBarItemDivider: FC<MenuBarDividerProps> = ({
   return (
     <span
       className={classNames(
-        'easy-editor__divider',
+        'textory__divider',
         className,
         `divider-${direction}`,
       )}

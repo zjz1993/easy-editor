@@ -65,15 +65,15 @@ const DropdownList = forwardRef<
 
   return (
     <DropdownPanel
-      className={cx('easy-editor-toolbar__item', className)}
+      className={cx('textory-toolbar__item', className)}
       popup={
-        <div className="easy-editor-dropdown__content">
+        <div className="textory-dropdown__content">
           {options.map(item => (
             <div
               className={cx(
-                'easy-editor-dropdown__content__item',
+                'textory-dropdown__content__item',
                 item.disabled &&
-                  'easy-editor-dropdown__content__item__disabled',
+                  'textory-dropdown__content__item__disabled',
               )}
               key={item.value}
               onClick={() => {
@@ -96,15 +96,15 @@ const DropdownList = forwardRef<
     >
       <div
         className={cx(
-          'easy-editor-dropdown',
-          disabled && 'easy-editor-dropdown__disabled',
+          'textory-dropdown',
+          disabled && 'textory-dropdown__disabled',
         )}
       >
-        <div className="easy-editor-toolbar__item">{children}</div>
+        <div className="textory-toolbar__item">{children}</div>
         <div
           className={cx(
-            'easy-editor-dropdown__icon',
-            isOpen && 'easy-editor-dropdown__icon__open',
+            'textory-dropdown__icon',
+            isOpen && 'textory-dropdown__icon__open',
           )}
         >
           <Iconfont type="icon-caret-down" />

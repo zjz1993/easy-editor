@@ -1,4 +1,4 @@
-import {Iconfont, Popover,} from '@easy-editor/editor-common';
+import {Iconfont, Popover,} from '@textory/editor-common';
 import type {FC} from 'react';
 import {useContext, useState} from 'react';
 import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';

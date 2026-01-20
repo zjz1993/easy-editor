@@ -56,7 +56,7 @@ export const ListItem = Node.create<ListItemOptions>({
     return [
       'li',
       mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, {
-        className: 'easy-editor-list-item',
+        className: 'textory-list-item',
       }),
       0,
     ];

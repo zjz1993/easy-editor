@@ -3,7 +3,7 @@ import {Extension, isNodeEmpty} from '@tiptap/core'
 import type {Node as ProsemirrorNode} from '@tiptap/pm/model'
 import {Plugin, PluginKey} from '@tiptap/pm/state'
 import {Decoration, DecorationSet} from '@tiptap/pm/view'
-import {BLOCK_TYPES} from "@easy-editor/editor-common";
+import {BLOCK_TYPES} from "@textory/editor-common";
 
 export interface PlaceholderOptions {
   emptyEditorClass: string;
