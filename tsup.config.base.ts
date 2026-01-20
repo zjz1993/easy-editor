@@ -5,7 +5,9 @@ import {sassPlugin} from "esbuild-sass-plugin";
 export default defineConfig({
   entry: ["src/index.ts"],
   format: ["esm"],
-  dts: true,
+  dts: {
+    resolve: false, // 不解析外部模块，保持 .d.ts 扩展名
+  },
   sourcemap: true,
   clean: true,
 
