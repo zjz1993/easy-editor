@@ -11,7 +11,12 @@
     "changeset:version": "changeset version",
     "changeset:publish": "changeset publish",
     "version": "changeset version && pnpm install --lockfile-only",
-    "release": "turbo run build --filter=@easy-editor/* && changeset publish"
+    "release": "turbo run build --filter=@easy-editor/* && changeset publish",
+    "pre:enter": "changeset pre enter beta",
+    "pre:exit": "changeset pre exit",
+    "release:beta": "turbo run build --filter=@easy-editor/* && changeset publish --tag beta",
+    "check:external": "node scripts/check-external.mjs",
+    "prepublish": "pnpm check:external"
   },
   "workspaces": ["packages/*"],
   "keywords": [],

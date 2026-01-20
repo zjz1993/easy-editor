@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(node --input-type=module:*)",
+      "Bash(node:*)",
+      "Bash(pnpm check:external)"
     ]
   }
 }

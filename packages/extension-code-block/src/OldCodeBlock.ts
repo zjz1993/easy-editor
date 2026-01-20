@@ -3,7 +3,7 @@ import type {CodeBlockLowlightOptions} from '@tiptap/extension-code-block-lowlig
 import {CodeBlockLowlight} from '@tiptap/extension-code-block-lowlight';
 import {Plugin, PluginKey, TextSelection} from '@tiptap/pm/state';
 import {ReactNodeViewRenderer} from '@tiptap/react';
-import {lowlight} from 'lowlight/lib/all';
+import {lowlight} from 'lowlight';
 import {CodeBlockNodeView} from './CodeBlockNodeView';
 import {getSelectedLineRange} from './utils';
 import {languages} from "./languages.ts";

@@ -25,7 +25,19 @@ export default defineConfig({
     // ⭐️ 必须加
     "use-sync-external-store",
     "use-sync-external-store/shim",
-    "use-sync-external-store/shim/index.js"
+    "use-sync-external-store/shim/index.js",
+    // 外部化其他运行时依赖
+    "lowlight",
+    /^lowlight\/.*/,
+    "classnames",
+    "framer-motion",
+    "ahooks",
+    /^rc-.*/,
+    "lodash-es",
+    "react-intl-universal",
+    "@floating-ui/react",
+    "react-hook-form",
+    "uuid"
   ],
   platform: "browser",
   splitting: false,
