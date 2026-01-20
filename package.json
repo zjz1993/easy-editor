@@ -4,14 +4,22 @@
     "dist"
   ],
   "scripts": {
+    "clean": "pnpm turbo run clean --filter=@easy-editor/* --concurrency=16",
     "start": "pnpm turbo run dev --filter=editor-demo",
-    "build": "turbo run build --filter=@easy-editor/*"
+    "build": "turbo run build --filter=@easy-editor/*",
+    "changeset": "changeset",
+    "changeset:version": "changeset version",
+    "changeset:publish": "changeset publish",
+    "version": "changeset version && pnpm install --lockfile-only",
+    "release": "turbo run build --filter=@easy-editor/* && changeset publish"
   },
+  "workspaces": ["packages/*"],
   "keywords": [],
   "author": "zhaojunzhe",
   "license": "ISC",
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
+    "@changesets/cli": "^2.29.8",
     "@types/react": "^18.3.12",
     "esbuild-sass-plugin": "^3.3.1",
     "only-allow": "^1.2.1",

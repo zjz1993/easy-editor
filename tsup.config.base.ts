@@ -4,7 +4,7 @@ import {sassPlugin} from "esbuild-sass-plugin";
 
 export default defineConfig({
   entry: ["src/index.ts"],
-  format: ["esm", "cjs"],
+  format: ["esm"],
   dts: true,
   sourcemap: true,
   clean: true,
@@ -18,9 +18,15 @@ export default defineConfig({
   external: [
     "react",
     "react-dom",
-    "@tiptap/*",
-    "@easy-editor/*"
+    /^@tiptap\/.*/,
+    /^@easy-editor\/.*/,
+    // ⭐️ 必须加
+    "use-sync-external-store",
+    "use-sync-external-store/shim",
+    "use-sync-external-store/shim/index.js"
   ],
+  platform: "browser",
+  splitting: false,
   // 抽取独立 CSS 文件（与入口同名）
   injectStyle: false,
   // 现代目标；如需更老浏览器，建议额外接入 Babel 再处理 CJS 产物

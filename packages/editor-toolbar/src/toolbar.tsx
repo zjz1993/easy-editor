@@ -347,7 +347,7 @@ const Toolbar: FC<IToolbarProps> = props => {
   };
   useEditorStateTrigger(editor); // 只触发 Toolbar 自身刷新
   const menuArray = useMemo(() => {
-    const disabled = !editor.isEditable || !editable;
+    const disabled = !editable;
     return [
       {
         key: 'undo',

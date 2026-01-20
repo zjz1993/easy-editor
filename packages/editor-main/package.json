@@ -11,14 +11,13 @@
 	"exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
-      "default": "./dist/index.js"
+      "import": "./dist/index.mjs"
     }
   },
-	"scripts": {
-    "dev": "tsup src/index.ts --watch --silent --dts",
-    "build": "tsup src/index.ts --format esm,cjs --dts --out-dir dist"
+  "scripts": {
+    "clean": "rm -rf dist && rm -rf .turbo",
+    "dev": "tsup src/index.ts --format esm --watch --silent --dts",
+    "build": "tsup --config tsup.config.ts"
   },
 	"description": "基于tiptap的编辑器",
 	"dependencies": {
