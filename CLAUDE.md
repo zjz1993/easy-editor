@@ -318,19 +318,10 @@ Savings: ~80-95% reduction
 
   Beta 发布流程
 
-  # 1. 确保在 prerelease 模式
-  pnpm pre:enter
-
-  # 2. 开发新功能...
-
-  # 3. 创建 changeset
-  pnpm changeset
-
-  # 4. 更新版本
-  pnpm changeset:version
-
-  # 5. 发布
-  pnpm release:beta
+  pnpm pre:enter       # 只做一次
+  pnpm changeset       # 写改动
+  pnpm version
+  pnpm release         # 自动 beta
 
   # 6. 测试验证
   # 在其他项目中安装测试
@@ -338,14 +329,6 @@ Savings: ~80-95% reduction
 
   转正式发布
 
-  # 1. 退出 prerelease 模式
   pnpm pre:exit
-
-  # 2. 创建正式版 changeset
-  pnpm changeset
-
-  # 3. 更新版本（会变成正式版本号）
-  pnpm changeset:version
-
-  # 4. 发布正式版
-  pnpm release
+  pnpm version
+  pnpm release         # 自动 latest
