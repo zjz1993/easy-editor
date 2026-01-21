@@ -26,23 +26,20 @@ import {EditorProvider, type TEasyEditorProps} from '@textory/context';
 import {useTiptapWithSync} from "./hooks/useTiptapWithSync.ts";
 
 const Editor: FC<TEasyEditorProps> = props => {
-  const {
-    editable = true,
-    content,
-    onChange,
-    placeholder = '请输入',
-    autoFocus,
-  } = props;
   const { intlInit } = useIntlLoaded();
   const { CL, OL, UL, P, H, CLI, LI, QUOTE, HR, TL, IMG, TABLE } = BLOCK_TYPES;
   const listGroup = `${UL}|${OL}|${CL}`;
-  const mergedProps = useEditorProps(props, {
+  const mergedProps: TEasyEditorProps = useEditorProps(props, {
+    placeholder: '请输入',
+    editable: true,
     imageProps: {
       max: 0,
       minWidth: 100,
       minHeight: 100,
     },
   });
+  const { content, onChange, autoFocus, placeholder } = mergedProps;
+  console.log('mergedProps是', mergedProps, props);
   const extensions = [
     StarterKit.configure({
       bold: false,
@@ -98,7 +95,7 @@ const Editor: FC<TEasyEditorProps> = props => {
       }),
     ],
     content,
-    editable,
+    editable: mergedProps.editable,
     onUpdate: ({ editor }) => {
       onChange?.(editor.state.doc.toJSON());
     },

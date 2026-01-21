@@ -1,22 +1,25 @@
-export function deepMerge<T>(target: T, source: Partial<T>): T {
-  const output = { ...target };
+function isPlainObject(val: any): val is Record<string, any> {
+  return typeof val === 'object' && val !== null && !Array.isArray(val);
+}
 
-  for (const key in source) {
-    const srcVal = source[key];
-    const tgtVal = target[key];
+export function deepMerge<T extends Record<string, any>>(
+  base: T,
+  override?: Partial<T>,
+): T {
+  if (!override) return { ...base };
 
-    if (
-      srcVal &&
-      typeof srcVal === 'object' &&
-      !Array.isArray(srcVal) &&
-      typeof tgtVal === 'object'
-    ) {
-      // 递归 merge
-      output[key] = deepMerge(tgtVal as any, srcVal as any) as any;
-    } else if (srcVal !== undefined) {
-      output[key] = srcVal as any;
+  const result: any = { ...base };
+
+  for (const key in override) {
+    const oVal = override[key];
+    const bVal = base[key];
+
+    if (isPlainObject(bVal) && isPlainObject(oVal)) {
+      result[key] = deepMerge(bVal, oVal);
+    } else if (oVal !== undefined) {
+      result[key] = oVal;
     }
   }
 
-  return output;
+  return result;
 }

@@ -1,66 +1,66 @@
 {
-	"name": "@textory/editor",
-	"version": "0.0.1",
-	"private": false,
-	"files": [
-		"dist"
-	],
-	"module": "dist/index.mjs",
-	"types": "dist/index.d.mts",
-	"exports": {
-    ".": {
-      "types": "./dist/index.d.mts",
-      "import": "./dist/index.mjs"
+    "name": "@textory/editor",
+    "version": "0.1.0-beta.0",
+    "private": false,
+    "files": [
+        "dist"
+    ],
+    "module": "dist/index.mjs",
+    "types": "dist/index.d.mts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.mts",
+            "import": "./dist/index.mjs"
+        }
+    },
+    "scripts": {
+        "clean": "rm -rf dist && rm -rf .turbo",
+        "dev": "tsup src/index.ts --format esm --watch --silent --dts",
+        "build": "tsup --config tsup.config.ts"
+    },
+    "description": "基于tiptap的编辑器",
+    "publishConfig": {
+        "access": "public"
+    },
+    "dependencies": {
+        "@textory/context": "workspace:^",
+        "@textory/editor-common": "workspace:^",
+        "@textory/editor-toolbar": "workspace:^",
+        "@textory/extension-bold": "workspace:^",
+        "@textory/extension-code-block": "workspace:^",
+        "@textory/extension-image": "workspace:^",
+        "@textory/extension-indent": "workspace:^",
+        "@textory/extension-link": "workspace:^",
+        "@textory/extension-outline": "workspace:^",
+        "@textory/extension-table": "workspace:^",
+        "@textory/extension-task-item": "workspace:^",
+        "uuid": "^11.1.0"
+    },
+    "devDependencies": {
+        "@tiptap/core": "^3.13.0",
+        "@tiptap/pm": "^3.13.0",
+        "@tiptap/react": "^3.13.0",
+        "@tiptap/starter-kit": "^3.13.0",
+        "@tiptap/extension-color": "^3.13.0",
+        "@tiptap/extension-highlight": "^3.13.0",
+        "@tiptap/extension-paragraph": "^3.13.0",
+        "@tiptap/extension-text-align": "^3.13.0",
+        "@tiptap/extension-text-style": "^3.13.0",
+        "@tiptap/extension-underline": "^3.13.0",
+        "tsup": "^8.5.1",
+        "@types/react": "^18",
+        "@types/react-dom": "^18",
+        "typescript": "^5.6.0"
+    },
+    "peerDependencies": {
+        "@tiptap/core": "^3.13.0",
+        "@tiptap/extension-color": "^3.13.0",
+        "@tiptap/extension-highlight": "^3.13.0",
+        "@tiptap/extension-paragraph": "^3.13.0",
+        "@tiptap/extension-text-align": "^3.13.0",
+        "@tiptap/extension-text-style": "^3.13.0",
+        "@tiptap/extension-underline": "^3.13.0",
+        "react": ">=18",
+        "react-dom": ">=18"
     }
-  },
-	"scripts": {
-    "clean": "rm -rf dist && rm -rf .turbo",
-    "dev": "tsup src/index.ts --format esm --watch --silent --dts",
-    "build": "tsup --config tsup.config.ts"
-  },
-	"description": "基于tiptap的编辑器",
-	"publishConfig": {
-    "access": "public"
-  },
-	"dependencies": {
-		"@textory/context": "workspace:^",
-		"@textory/editor-common": "workspace:^",
-		"@textory/editor-toolbar": "workspace:^",
-		"@textory/extension-bold": "workspace:^",
-		"@textory/extension-code-block": "workspace:^",
-		"@textory/extension-image": "workspace:^",
-		"@textory/extension-indent": "workspace:^",
-		"@textory/extension-link": "workspace:^",
-		"@textory/extension-outline": "workspace:^",
-		"@textory/extension-table": "workspace:^",
-		"@textory/extension-task-item": "workspace:^",
-		"uuid": "^11.1.0"
-	},
-	"devDependencies": {
-    "@tiptap/core": "^3.13.0",
-    "@tiptap/pm": "^3.13.0",
-    "@tiptap/react": "^3.13.0",
-    "@tiptap/starter-kit": "^3.13.0",
-    "@tiptap/extension-color": "^3.13.0",
-    "@tiptap/extension-highlight": "^3.13.0",
-    "@tiptap/extension-paragraph": "^3.13.0",
-    "@tiptap/extension-text-align": "^3.13.0",
-    "@tiptap/extension-text-style": "^3.13.0",
-    "@tiptap/extension-underline": "^3.13.0",
-    "tsup": "^8.5.1",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "typescript": "^5.6.0"
-  },
-	"peerDependencies": {
-    "@tiptap/core": "^3.13.0",
-    "@tiptap/extension-color": "^3.13.0",
-    "@tiptap/extension-highlight": "^3.13.0",
-    "@tiptap/extension-paragraph": "^3.13.0",
-    "@tiptap/extension-text-align": "^3.13.0",
-    "@tiptap/extension-text-style": "^3.13.0",
-    "@tiptap/extension-underline": "^3.13.0",
-    "react": ">=18",
-    "react-dom": ">=18"
-  }
 }

@@ -17,7 +17,8 @@ function App() {
           onChange={(data) => {
             console.log('输出的内容是', data);
           }}
-          editable={editable}
+          editable={false}
+          // editable={editable}
           imageProps={{
             onImageUpload:(option) => {
               console.log('onImageUpload触发了吗', option);

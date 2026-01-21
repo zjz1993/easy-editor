@@ -8,13 +8,15 @@
     "start": "pnpm turbo run dev --filter=editor-demo",
     "build": "turbo run build --filter=@textory/*",
 
-    "changeset": "changeset",
-    "version": "changeset version && pnpm install --lockfile-only",
-    "release": "turbo run build --filter=@textory/* && changeset publish",
-
     "pre:enter": "changeset pre enter beta",
     "pre:exit": "changeset pre exit",
 
+    "changeset": "changeset",
+    "changeset:version": "changeset version",
+
+    "release:beta": "pnpm changeset:version && turbo run build --filter=@textory/* && changeset publish",
+
+    "release": "pnpm pre:exit && pnpm changeset:version && turbo run build --filter=@textory/* && changeset publish",
     "check:external": "node scripts/check-external.mjs",
     "prepublish": "pnpm check:external"
   },

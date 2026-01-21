@@ -16,5 +16,7 @@
     "@textory/extension-table": "0.0.1",
     "@textory/extension-task-item": "0.0.1"
   },
-  "changesets": []
+  "changesets": [
+    "dry-humans-divide"
+  ]
 }
