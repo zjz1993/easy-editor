@@ -21,7 +21,7 @@ import {UniqueIDExtension} from './extension/UniqueIDExtension/index.ts';
 import useIntlLoaded from './hooks/useIntlLoaded.ts';
 import EditorFilePreview from './components/FilePreview/EditorFilePreview';
 import Underline from '@tiptap/extension-underline';
-import {OutlineExtension} from '@textory/extension-outline';
+import {OutlineExtension, OutlineView} from '@textory/extension-outline';
 import {useEditorProps} from './hooks/useEditorProps.ts';
 import {EditorProvider, type TEasyEditorProps} from '@textory/context';
 import {useTiptapWithSync} from './hooks/useTiptapWithSync.ts';
@@ -101,7 +101,7 @@ const Editor: FC<TEasyEditorProps> = props => {
       onChange?.(editor.state.doc.toJSON());
     },
   });
-  console.log('import.meta.env.MODE是', import.meta.env.MODE);
+
   if (import.meta.env.MODE === 'development') {
     (window as any).__EASY_EDITOR__ = editor;
   }
@@ -116,7 +116,7 @@ const Editor: FC<TEasyEditorProps> = props => {
           editor={editor}
           className="textory-body"
         >
-          {/*<OutlineView editor={editor} />*/}
+          <OutlineView editor={editor} />
         </EditorContent>
         <MessageContainer />
         <TableBubbleMenu editor={editor} />

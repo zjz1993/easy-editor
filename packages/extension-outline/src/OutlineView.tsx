@@ -1,7 +1,6 @@
 // OutlineView.tsx
 import {useEffect, useState} from 'react';
-import Tree from 'rc-tree';
-import 'rc-tree/assets/index.css';
+import Tree from './components/Tree';
 
 export const OutlineView = ({ editor }) => {
   const [treeData, setTreeData] = useState([]);
@@ -26,7 +25,7 @@ export const OutlineView = ({ editor }) => {
   const convertOutlineToTree = items =>
     items.map(i => ({
       key: String(i.pos),
-      title: i.text,
+      label: i.text,
       children: convertOutlineToTree(i.children),
     }));
   if (treeData.length === 0) {
@@ -36,8 +35,7 @@ export const OutlineView = ({ editor }) => {
   return (
     <div className="textory-outline">
       <Tree
-        checkable={false}
-        treeData={treeData}
+        data={treeData}
         //onSelect={({ key }) => {
         //  editor.commands.focus();
         //  editor.commands.setTextSelection(Number(key));
