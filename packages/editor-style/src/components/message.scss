@@ -1,4 +1,5 @@
 @use "../colors/colors" as styles;
+@use "../variable/index" as var;
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -20,27 +21,28 @@
     transform: translateY(-20px);
   }
 }
-.textory-message-success{
-  .textory-message__icon{
+$editor-message-name: '#{var.$editor-name}-message';
+.#{$editor-message-name}-success{
+  .#{$editor-message-name}__icon{
     color: styles.$primary-green;
   }
 }
-.textory-message-error{
-  .textory-message__icon{
+.#{$editor-message-name}-error{
+  .#{$editor-message-name}__icon{
     color: styles.$primary-red;
   }
 }
-.textory-message-info{
-  .textory-message__icon{
+.#{$editor-message-name}-info{
+  .#{$editor-message-name}__icon{
     color: styles.$primary-color;
   }
 }
-.textory-message-warning{
-  .textory-message__icon{
+.#{$editor-message-name}-warning{
+  .#{$editor-message-name}__icon{
     color: styles.$primary-yellow;
   }
 }
-.textory-message {
+.#{$editor-message-name} {
   padding: 8px 16px;
   opacity: 1;
   transition: all 0.3s;

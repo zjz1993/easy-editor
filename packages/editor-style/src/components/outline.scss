@@ -1,0 +1,7 @@
+@use "../variable/index" as var;
+.#{var.$editor-name}-outline{
+  width: 260px;
+  border-right: 1px solid #eee;
+  padding: 8px;
+  box-sizing: border-box;
+}

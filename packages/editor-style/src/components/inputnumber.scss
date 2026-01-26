@@ -1,9 +1,10 @@
-.textory-input-number.rc-input-number-affix-wrapper{
+@use "../variable/index" as var;
+.#{var.$editor-name}-input-number.rc-input-number-affix-wrapper{
   display: flex;
   align-items: center;
   gap: 4px;
 }
-.textory-input-number{
+.#{var.$editor-name}-input-number{
   .rc-input-number {
     display: inline-block;
     height: 30px;

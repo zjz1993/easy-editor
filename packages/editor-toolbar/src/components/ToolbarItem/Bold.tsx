@@ -21,6 +21,7 @@ const Bold: FC<TToolbarWrapperProps> = ({
       disabled={disabled}
     >
       <Button
+        ariaLabel={intlStr}
         isActive={editor.isActive('bold')}
         onClick={() =>
           setTextSelectionAfterChange(editor, () => {

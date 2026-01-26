@@ -3,6 +3,7 @@ import {EditorToolbar} from '@textory/editor-toolbar';
 import {Bold} from '@textory/extension-bold';
 import {EditorContent} from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
+import cx from 'classnames';
 import type {FC} from 'react';
 import {CodeBlock} from '@textory/extension-code-block';
 import {Indent} from '@textory/extension-indent';
@@ -23,7 +24,7 @@ import Underline from '@tiptap/extension-underline';
 import {OutlineExtension} from '@textory/extension-outline';
 import {useEditorProps} from './hooks/useEditorProps.ts';
 import {EditorProvider, type TEasyEditorProps} from '@textory/context';
-import {useTiptapWithSync} from "./hooks/useTiptapWithSync.ts";
+import {useTiptapWithSync} from './hooks/useTiptapWithSync.ts';
 
 const Editor: FC<TEasyEditorProps> = props => {
   const { intlInit } = useIntlLoaded();
@@ -38,8 +39,8 @@ const Editor: FC<TEasyEditorProps> = props => {
       minHeight: 100,
     },
   });
-  const { content, onChange, autoFocus, placeholder } = mergedProps;
-  console.log('mergedProps是', mergedProps, props);
+  const { content, onChange, autoFocus, placeholder, className, style } =
+    mergedProps;
   const extensions = [
     StarterKit.configure({
       bold: false,
@@ -100,10 +101,13 @@ const Editor: FC<TEasyEditorProps> = props => {
       onChange?.(editor.state.doc.toJSON());
     },
   });
-
+  console.log('import.meta.env.MODE是', import.meta.env.MODE);
+  if (import.meta.env.MODE === 'development') {
+    (window as any).__EASY_EDITOR__ = editor;
+  }
   return (
     <EditorProvider editor={editor} props={mergedProps}>
-      <div className="textory">
+      <div className={cx('textory', className)} style={style}>
         {intlInit && (
           <EditorToolbar editor={editor} imageProps={mergedProps.imageProps} />
         )}

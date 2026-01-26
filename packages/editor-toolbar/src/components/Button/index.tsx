@@ -3,18 +3,21 @@ import type {MouseEvent, ReactNode} from 'react';
 import {forwardRef} from 'react';
 
 export type ButtonProps = {
+  ariaLabel?: string;
   disabled?: boolean;
   isActive?: boolean;
   children: ReactNode;
-  onClick?: (e: MouseEvent<HTMLDivElement>) => void;
-  onMouseEnter?: (e: MouseEvent<HTMLDivElement>) => void;
-  onMouseLeave?: (e: MouseEvent<HTMLDivElement>) => void;
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
+  onMouseEnter?: (e: MouseEvent<HTMLButtonElement>) => void;
+  onMouseLeave?: (e: MouseEvent<HTMLButtonElement>) => void;
 };
 
-const Button = forwardRef<HTMLDivElement, ButtonProps>(
-  ({ disabled, isActive, children, onClick }, ref) => {
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ disabled, isActive, children, onClick, ariaLabel }, ref) => {
     return (
-      <div
+      <button
+        disabled={disabled}
+        aria-label={ariaLabel || ''}
         ref={ref}
         onClick={e => {
           e.stopPropagation();
@@ -29,7 +32,7 @@ const Button = forwardRef<HTMLDivElement, ButtonProps>(
         })}
       >
         {children}
-      </div>
+      </button>
     );
   },
 );

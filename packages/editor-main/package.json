@@ -34,22 +34,23 @@
         "@textory/extension-outline": "workspace:^",
         "@textory/extension-table": "workspace:^",
         "@textory/extension-task-item": "workspace:^",
+        "classnames": "^2.5.1",
         "uuid": "^11.1.0"
     },
     "devDependencies": {
         "@tiptap/core": "^3.13.0",
-        "@tiptap/pm": "^3.13.0",
-        "@tiptap/react": "^3.13.0",
-        "@tiptap/starter-kit": "^3.13.0",
         "@tiptap/extension-color": "^3.13.0",
         "@tiptap/extension-highlight": "^3.13.0",
         "@tiptap/extension-paragraph": "^3.13.0",
         "@tiptap/extension-text-align": "^3.13.0",
         "@tiptap/extension-text-style": "^3.13.0",
         "@tiptap/extension-underline": "^3.13.0",
-        "tsup": "^8.5.1",
+        "@tiptap/pm": "^3.13.0",
+        "@tiptap/react": "^3.13.0",
+        "@tiptap/starter-kit": "^3.13.0",
         "@types/react": "^18",
         "@types/react-dom": "^18",
+        "tsup": "^8.5.1",
         "typescript": "^5.6.0"
     },
     "peerDependencies": {

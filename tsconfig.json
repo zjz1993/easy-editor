@@ -8,7 +8,6 @@
       "DOM",
       "DOM.Iterable"
     ],
-
     "composite": false,
     "declaration": true,
     "declarationMap": true,
@@ -31,6 +30,7 @@
     "./types.d.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "test"
   ]
 }
