@@ -38,7 +38,6 @@ const ImageView: FC<NodeViewProps> = props => {
     hasBorder,
     loading,
     loadingProgress,
-    tempFile,
   } = attrs;
   const containerRef = useRef(null);
   const { handleMouseDown, size, changeSize } = useHandleChangeImageSize({
@@ -134,7 +133,7 @@ const ImageView: FC<NodeViewProps> = props => {
       <span
         className={cx(
           'textory-image',
-          !loading && !tempFile && 'textory-image-normal',
+          !loading && 'textory-image-normal',
           hasBorder && 'textory-image-border',
         )}
         data-id={id}
@@ -142,12 +141,12 @@ const ImageView: FC<NodeViewProps> = props => {
         <div className={PREVIEW_CLS.FULL_SCREEN}>
           <Iconfont type="icon-enterfs" />
         </div>
-        {loading && tempFile && !isUndefined(loadingProgress) ? (
+        {loading && !isUndefined(loadingProgress) ? (
           <>
             <div className="textory-image__placeholder">
               {getProgressCircleHTML(loadingProgress)}
             </div>
-            <img src={fileToObjectUrl(tempFile)} />
+            <img src={src} />
           </>
         ) : (
           <Popover

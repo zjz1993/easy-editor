@@ -26,7 +26,7 @@ const ImageNodeToolbar: FC<{
     defaultValue: 1,
     // onChange: onOpenChange,
   });
-  console.log('defaultWidth是', defaultWidth);
+
   return (
     <div className="textory-image-toolbar">
       <div className="textory-image-toolbar-item textory-image-toolbar-input-item">

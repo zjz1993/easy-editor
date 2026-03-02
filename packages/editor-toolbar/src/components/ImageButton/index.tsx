@@ -1,18 +1,55 @@
-import {DropdownList, Iconfont, Upload,} from '@textory/editor-common';
-import {type FC, useContext, useRef, useState} from 'react';
+import {DropdownList, Iconfont, Upload} from '@textory/editor-common';
+import {type FC, useContext, useState} from 'react';
 import type {TToolbarWrapperProps} from 'src/types/index.ts';
 import UploadNetworkImageModal from './UploadNetworkImageModal.tsx';
 import ToolbarContext from '../../context/toolbarContext.ts';
-import cx from "classnames";
+import cx from 'classnames';
+import {v4 as uuid} from 'uuid';
 import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
+import type {Editor} from '@tiptap/core';
+
+function getEditorWidth(editor: Editor) {
+  return editor.view.dom.clientWidth;
+}
+
+function calculateSize(
+  naturalWidth: number,
+  naturalHeight: number,
+  editorWidth: number,
+) {
+  if (naturalWidth <= editorWidth) {
+    return {
+      width: naturalWidth,
+      height: naturalHeight,
+    };
+  }
+
+  const ratio = editorWidth / naturalWidth;
+
+  return {
+    width: editorWidth,
+    height: naturalHeight * ratio,
+  };
+}
+
+function getImageSizeFromFile(file: File) {
+  return new Promise<{ width: number; height: number }>(resolve => {
+    const img = new window.Image();
+    img.onload = () => {
+      resolve({
+        width: img.naturalWidth,
+        height: img.naturalHeight,
+      });
+    };
+    img.src = URL.createObjectURL(file);
+  });
+}
 
 const ImageButton: FC<TToolbarWrapperProps> = props => {
   const { disabled, intlStr, style } = props;
   const { editor, imageProps } = useContext(ToolbarContext);
   const [open, setOpen] = useState(false);
-  const insertPosRef = useRef<number | undefined>();
   const { onImageUpload } = imageProps;
-
   return (
     <>
       <ToolbarItemButtonWrapper
@@ -46,32 +83,46 @@ const ImageButton: FC<TToolbarWrapperProps> = props => {
                   onProgress={event => {
                     console.log('onProgress', event);
                   }}
-                  onStart={file => {
-                    const pos = editor.state.selection.from;
+                  onStart={async file => {
+                    // 2️⃣ 获取真实尺寸
+                    const { width: naturalWidth, height: naturalHeight } =
+                      await getImageSizeFromFile(file);
+
+                    const editorWidth = getEditorWidth(editor);
+
+                    const { width, height } = calculateSize(
+                      naturalWidth,
+                      naturalHeight,
+                      editorWidth,
+                    );
+                    const id = uuid();
                     editor
                       .chain()
                       .focus()
-                      .setImage({ tempFile: file, loading: true, src: '' })
+                      .setImage({
+                        id,
+                        src: URL.createObjectURL(file),
+                        loading: true,
+                        width,
+                        height,
+                      })
                       .run();
-                    insertPosRef.current = pos;
+                    // 把 id 挂到 file 上（关键）
+                    (file as any).__imageId = id;
                   }}
-                  onSuccess={(res, file) => {
-                    console.log('onSuccess触发', res);
-                    const pos = insertPosRef.current;
-                    const tr = editor.state.tr;
+                  onSuccess={async (res, file) => {
+                    const id = (file as any).__imageId;
+                    if (!id) return;
 
-                    const node = editor.state.doc.nodeAt(pos);
-                    if (!node || node.type.name !== 'image') return;
+                    /**
+                     * const previewSrc = node.attrs.src;
+                     * URL.revokeObjectURL(previewSrc);
+                     * */
 
-                    editor.view.dispatch(
-                      tr.setNodeMarkup(pos, undefined, {
-                        ...node.attrs,
-                        src: res.data,
-                        loading: false,
-                        tempFile: null,
-                      }),
-                    );
-                    insertPosRef.current = undefined;
+                    editor.commands.updateImageById(id, {
+                      src: res.data,
+                      loading: false,
+                    });
                   }}
                   customRequest={onImageUpload}
                 >

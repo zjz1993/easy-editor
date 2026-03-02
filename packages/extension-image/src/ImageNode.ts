@@ -8,6 +8,7 @@ declare module '@tiptap/core' {
     image: {
       setImage: (obj: ImageNodeAttributes) => ReturnType;
       updateAttrs: (obj: ImageNodeAttributes) => ReturnType;
+      updateImageById: (id: string, attrs: ImageNodeAttributes) => ReturnType;
     };
   }
 }
@@ -45,9 +46,6 @@ export const ImageNode = Node.create<ImageOptions>({
 
   addAttributes(): Partial<Record<keyof ImageNodeAttributes, any>> {
     return {
-      tempFile: {
-        default: null,
-      },
       loadingProgress: {
         default: 0,
       },
@@ -71,6 +69,9 @@ export const ImageNode = Node.create<ImageOptions>({
         default: null,
       },
       title: {
+        default: null,
+      },
+      id: {
         default: null,
       },
     };
@@ -104,14 +105,48 @@ export const ImageNode = Node.create<ImageOptions>({
       setImage:
         options =>
         ({ commands }) => {
+          const id = options.id;
+
           return commands.insertContent([
-            { type: this.name, attrs: options },
-            // 插入图片后加个空行
+            {
+              type: this.name,
+              attrs: {
+                ...options,
+                id,
+                loading: true,
+              },
+            },
             {
               type: 'paragraph',
-              content: [],
             },
           ]);
+        },
+      /**
+       * 根据 id 更新图片
+       */
+      updateImageById:
+        (id, attrs) =>
+        ({ tr, state, dispatch }) => {
+          let updated = false;
+          state.doc.descendants((node, pos) => {
+            if (node.type.name === 'image' && node.attrs.id === id) {
+              const previewSrc = node.attrs.src;
+              if (previewSrc.startsWith('blob:')) {
+                URL.revokeObjectURL(previewSrc);
+              }
+              tr.setNodeMarkup(pos, undefined, {
+                ...node.attrs,
+                ...attrs,
+              });
+              updated = true;
+            }
+          });
+
+          if (updated && dispatch) {
+            dispatch(tr);
+          }
+
+          return updated;
         },
     };
   },

@@ -2,13 +2,14 @@ import {Iconfont, InputNumber, Modal, Switch, Tooltip} from '@textory/editor-com
 import {type FC, useEffect, useRef, useState} from 'react';
 import cx from 'classnames';
 import {Controller, useForm} from 'react-hook-form';
+import type {ImageNodeAttributes} from "@textory/extension-image";
 
-type FormInputs = {
+interface FormInputs extends ImageNodeAttributes {
   src: string;
   width: number;
   height: number;
   isLockRatio?: boolean;
-};
+}
 
 type TUploadNetworkImageModalProps = {
   open: boolean;
@@ -31,7 +32,7 @@ const UploadNetworkImageModal: FC<TUploadNetworkImageModalProps> = props => {
   } = useForm<FormInputs>();
   const onSubmit = (data: FormInputs) => {
     console.log('data是', data);
-    sendData(data);
+    sendData({ ...data, loading: false });
     onClose();
     reset();
   };
@@ -63,9 +64,7 @@ const UploadNetworkImageModal: FC<TUploadNetworkImageModalProps> = props => {
           className="textory-network-image-modal_panel"
           onSubmit={e => e.preventDefault()}
         >
-          <div
-            className={cx('row', errors.src && 'textory-link-panel__error')}
-          >
+          <div className={cx('row', errors.src && 'textory-link-panel__error')}>
             <div className="row__inner">
               <label className="row__label required">图片链接</label>
               <div className="row__input-wrapper">

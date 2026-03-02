@@ -16,8 +16,7 @@ import {Placeholder} from './extension/Placeholder';
 import {TextAlign} from '@tiptap/extension-text-align';
 import {TextStyle} from '@tiptap/extension-text-style';
 import BulletList from './BulletList/bullet-list.ts';
-import {ListItem} from './BulletList/list-item.ts';
-import {UniqueIDExtension} from './extension/UniqueIDExtension/index.ts';
+import {ListItem} from './BulletList/list-item.ts'; // import {UniqueIDExtension} from './extension/UniqueIDExtension/index.ts';
 import useIntlLoaded from './hooks/useIntlLoaded.ts';
 import EditorFilePreview from './components/FilePreview/EditorFilePreview';
 import Underline from '@tiptap/extension-underline';
@@ -78,7 +77,6 @@ const Editor: FC<TEasyEditorProps> = props => {
     }),
     TaskList,
     TaskItem,
-    UniqueIDExtension,
     ImageNode,
     // CustomParagraph,
   ];
@@ -121,7 +119,6 @@ const Editor: FC<TEasyEditorProps> = props => {
         <MessageContainer />
         <TableBubbleMenu editor={editor} />
         <EditorFilePreview editor={editor} />
-        {/*<BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu>*/}
       </div>
     </EditorProvider>
   );

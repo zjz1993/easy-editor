@@ -9,7 +9,6 @@ export type ImageNodeAttributes = {
   hasBorder?: boolean;
   loading?: boolean;
   loadingProgress?: number;
-  tempFile?: any;
 };
 
 export type ImageOptions = {

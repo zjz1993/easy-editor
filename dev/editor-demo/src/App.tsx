@@ -2,6 +2,14 @@ import Editor from '@textory/editor';
 import '@textory/styles/src/index.scss';
 import {useState} from "react";
 
+function delay(delayTime: number = 2) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve('resolved');
+    }, delayTime * 1000);
+  });
+}
+
 function App() {
   const [editable, setEditable] = useState(true);
   return (
@@ -19,9 +27,10 @@ function App() {
           }}
           editable={editable}
           imageProps={{
-            onImageUpload:(option) => {
+            onImageUpload:async (option) => {
               console.log('onImageUpload触发了吗', option);
-              option.onSuccess?.({ data: 'https://hwobs-sq.fanruan.com/shequ_forum/image/4f39ce3ae8685ecc17ec5c947e8e275f.png' });
+              await delay();
+              option.onSuccess?.({ data: 'https://obs.cn-east-2.myhuaweicloud.com/shequ-oss/content/case/pic/c92b634185494418b1ab2fed5a217660image.png' });
             }
           }}
         />
