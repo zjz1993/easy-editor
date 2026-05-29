@@ -1,3 +1,5 @@
+import './types/prosemirror.ts';
+
 export * from './EditorContext';
 export * from './types/index.ts';
 export * from './useEditorInstance.ts';

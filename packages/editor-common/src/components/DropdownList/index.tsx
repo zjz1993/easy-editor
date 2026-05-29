@@ -65,6 +65,7 @@ const DropdownList = forwardRef<
 
   return (
     <DropdownPanel
+      forceRender
       className={cx('textory-toolbar__item', className)}
       popup={
         <div className="textory-dropdown__content">
@@ -72,8 +73,7 @@ const DropdownList = forwardRef<
             <div
               className={cx(
                 'textory-dropdown__content__item',
-                item.disabled &&
-                  'textory-dropdown__content__item__disabled',
+                item.disabled && 'textory-dropdown__content__item__disabled',
               )}
               key={item.value}
               onClick={() => {

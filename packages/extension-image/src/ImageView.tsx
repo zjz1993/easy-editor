@@ -1,10 +1,11 @@
-import {NodeViewWrapper} from '@tiptap/react';
+import {NodeViewWrapper, useEditorState} from '@tiptap/react';
 import type {NodeViewProps} from '@tiptap/core';
 import cx from 'classnames';
-import {Iconfont, isUndefined, isViewEditable, Popover, PREVIEW_CLS,} from '@textory/editor-common';
+import {Iconfont, isViewEditable, Popover, PREVIEW_CLS,} from '@textory/editor-common';
 import {type FC, useEffect, useRef, useState} from 'react';
 import useHandleChangeImageSize from './hooks/useHandleChangeImageSize.ts';
 import ImageNodeToolbar from './ImageNodeToolbar.tsx';
+import {attachmentUploadPluginKey} from "./plugin/ImagePlaceholderPlugin.ts";
 
 const fileToObjectUrl = (file: Blob | MediaSource) => {
   const url = window.URL || window.webkitURL;
@@ -29,16 +30,7 @@ const ImageView: FC<NodeViewProps> = props => {
   const [imageRatio, setImageRatio] = useState<number | undefined>();
   const { updateAttributes, node, selected, editor, view, getPos } = props;
   const { attrs } = node;
-  const {
-    width,
-    height,
-    src,
-    textAlign,
-    id,
-    hasBorder,
-    loading,
-    loadingProgress,
-  } = attrs;
+  const { width, height, src, textAlign, id, hasBorder } = attrs;
   const containerRef = useRef(null);
   const { handleMouseDown, size, changeSize } = useHandleChangeImageSize({
     containerRef,
@@ -118,6 +110,16 @@ const ImageView: FC<NodeViewProps> = props => {
       </div>
     );
   };
+
+  const progress = useEditorState({
+    editor,
+
+    selector: ({ editor }) => {
+      const pluginState = attachmentUploadPluginKey.getState(editor.state);
+      return pluginState?.progressMap?.[id] ?? 0;
+    },
+  });
+
   return (
     <NodeViewWrapper
       draggable="true"
@@ -133,7 +135,7 @@ const ImageView: FC<NodeViewProps> = props => {
       <span
         className={cx(
           'textory-image',
-          !loading && 'textory-image-normal',
+          !progress && 'textory-image-normal',
           hasBorder && 'textory-image-border',
         )}
         data-id={id}
@@ -141,10 +143,10 @@ const ImageView: FC<NodeViewProps> = props => {
         <div className={PREVIEW_CLS.FULL_SCREEN}>
           <Iconfont type="icon-enterfs" />
         </div>
-        {loading && !isUndefined(loadingProgress) ? (
+        {progress ? (
           <>
             <div className="textory-image__placeholder">
-              {getProgressCircleHTML(loadingProgress)}
+              {getProgressCircleHTML(progress)}
             </div>
             <img src={src} />
           </>

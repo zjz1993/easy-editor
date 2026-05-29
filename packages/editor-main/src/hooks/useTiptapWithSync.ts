@@ -1,12 +1,14 @@
 import {useEffect} from 'react';
 import {useEditor} from '@tiptap/react';
 import type {EditorEvents} from '@tiptap/core';
+import type {EditorProps} from '@tiptap/pm/view';
 
 interface UseTiptapWithSyncOptions {
   content: any;
   editable: boolean;
   placeholder?: string;
   extensions: any[];
+  editorProps?: EditorProps;
   autofocus?: 'start' | 'end' | boolean;
   onUpdate?: (props: EditorEvents['update']) => void;
 }
@@ -18,6 +20,7 @@ export function useTiptapWithSync({
   extensions,
   autofocus,
   onUpdate,
+  editorProps,
 }: UseTiptapWithSyncOptions) {
   // 👇 第一次渲染时创建 editor，不在 props 改变时重新创建
   const editor = useEditor({
@@ -25,6 +28,7 @@ export function useTiptapWithSync({
     editable,
     extensions: [...extensions],
     autofocus,
+    editorProps,
     onUpdate: ({ editor, appendedTransactions, transaction }) => {
       onUpdate?.({ appendedTransactions, transaction, editor });
     },

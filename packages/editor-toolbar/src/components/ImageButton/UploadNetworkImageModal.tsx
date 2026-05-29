@@ -32,7 +32,7 @@ const UploadNetworkImageModal: FC<TUploadNetworkImageModalProps> = props => {
   } = useForm<FormInputs>();
   const onSubmit = (data: FormInputs) => {
     console.log('data是', data);
-    sendData({ ...data, loading: false });
+    sendData({ ...data });
     onClose();
     reset();
   };

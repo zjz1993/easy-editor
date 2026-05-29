@@ -1,3 +1,5 @@
+import '@textory/context'
+
 export { default as Modal } from './Modal/index';
 export { default as DropdownPanel } from './DropdownPanel/index';
 export { default as Dropdown } from './Dropdown/index.tsx';

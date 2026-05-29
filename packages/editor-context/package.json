@@ -20,6 +20,7 @@
   },
   "description": "编辑器的类型声明",
   "devDependencies": {
+    "@tiptap/pm": "^3.13.0",
     "@tiptap/core": "^3.13.0",
     "@tiptap/react": "^3.13.0",
     "tsup": "^8.5.1",

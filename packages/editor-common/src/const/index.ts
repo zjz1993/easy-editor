@@ -751,3 +751,4 @@ export const headers = [
     keys: 'toolbar.header.quote',
   },
 ];
+export const MIN_COL_WIDTH = 100;

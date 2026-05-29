@@ -1,7 +1,8 @@
 import {KeyCode} from '../const';
-import {size} from 'lodash-es';
+import {filter, isEmpty, map, size, some, toArray} from 'lodash-es';
 import {message} from '../components/Message';
 import IntlComponent from 'react-intl-universal';
+import {convertToTable} from './convertToTable.ts';
 
 export const doDownloadByUrl = (tempUrl: string) => {
   const linkNode = document.createElement('a');
@@ -67,3 +68,51 @@ export async function smartClipboardCopy(html: string, text?: string) {
     message.success(IntlComponent.get('common.copy.fail'));
   }
 }
+export const isRichTextFormatMIME = (type: string) => {
+  return /^text\/rtf$/i.test(type);
+};
+export const getFilesFromEvent = (
+  e: {
+    nativeEvent: any;
+    clipboardData: any;
+    dataTransfer: any;
+  },
+  view: any,
+) => {
+  if (!e) {
+    return;
+  }
+  if (e?.nativeEvent) {
+    e = e.nativeEvent;
+  }
+
+  /**
+   * 粘贴复制方式获取数据源 clipboardData
+   * 拖拽复制方式获取数据源 dataTransfer
+   */
+  const transfer = e.clipboardData || e.dataTransfer;
+  const html = transfer.getData('text/html');
+  if (!transfer) {
+    return [];
+  }
+  const isRTFData = some(transfer.types, type => isRichTextFormatMIME(type));
+
+  if (isRTFData) {
+    return [];
+  }
+  // 处理粘贴excel的逻辑
+  if (html && html.indexOf('excel') > -1) {
+    const tableHtml = convertToTable(html, view.state.schema, view.dom.editor);
+    return [tableHtml];
+  }
+  if (!isEmpty(transfer.files)) {
+    return toArray(transfer.files);
+  }
+  if (!isEmpty(transfer.items)) {
+    const fileItems = filter(transfer.items, item => {
+      return item.kind === 'file';
+    });
+    return map(fileItems, item => item.getAsFile());
+  }
+  return [];
+};

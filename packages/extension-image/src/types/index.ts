@@ -7,8 +7,6 @@ export type ImageNodeAttributes = {
   textAlign?: 'center' | 'left' | 'right';
   id?: string;
   hasBorder?: boolean;
-  loading?: boolean;
-  loadingProgress?: number;
 };
 
 export type ImageOptions = {
@@ -19,3 +17,13 @@ export type ImageOptions = {
   HTMLAttributes: Record<string, any>;
   minWidth: number;
 };
+
+declare module '@tiptap/core' {
+  interface Commands<ReturnType> {
+    image: {
+      setImage: (obj: ImageNodeAttributes) => ReturnType;
+      updateAttrs: (obj: ImageNodeAttributes) => ReturnType;
+      updateImageById: (id: string, attrs: ImageNodeAttributes) => ReturnType;
+    };
+  }
+}

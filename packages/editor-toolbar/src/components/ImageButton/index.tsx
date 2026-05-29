@@ -7,6 +7,7 @@ import cx from 'classnames';
 import {v4 as uuid} from 'uuid';
 import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 import type {Editor} from '@tiptap/core';
+import {removeUploadProgress, updateUploadProgress,} from '@textory/extension-image';
 
 function getEditorWidth(editor: Editor) {
   return editor.view.dom.clientWidth;
@@ -46,10 +47,10 @@ function getImageSizeFromFile(file: File) {
 }
 
 const ImageButton: FC<TToolbarWrapperProps> = props => {
-  const { disabled, intlStr, style } = props;
-  const { editor, imageProps } = useContext(ToolbarContext);
+  const { disabled, intlStr, style, editor } = props;
+  const { imageProps } = useContext(ToolbarContext);
   const [open, setOpen] = useState(false);
-  const { onImageUpload } = imageProps;
+  const { onImageUpload, onImageBeforeUpload } = imageProps;
   return (
     <>
       <ToolbarItemButtonWrapper
@@ -74,14 +75,19 @@ const ImageButton: FC<TToolbarWrapperProps> = props => {
             {
               label: (
                 <Upload
+                  editor={editor}
                   accept=".jpg,.jpeg,.png,.gif"
                   acceptErrMsg="支持文件格式：jpg、jpeg、png、gif格式"
                   multiple
+                  beforeUpload={onImageBeforeUpload}
                   onError={() => {
                     console.log('onError触发');
                   }}
-                  onProgress={event => {
-                    console.log('onProgress', event);
+                  onProgress={(event, file) => {
+                    console.log('onProgress触发了吗');
+                    const id = (file as any).__imageId;
+                    if (!id) return;
+                    updateUploadProgress(editor, id, event.percent);
                   }}
                   onStart={async file => {
                     // 2️⃣ 获取真实尺寸
@@ -102,13 +108,13 @@ const ImageButton: FC<TToolbarWrapperProps> = props => {
                       .setImage({
                         id,
                         src: URL.createObjectURL(file),
-                        loading: true,
                         width,
                         height,
                       })
                       .run();
                     // 把 id 挂到 file 上（关键）
                     (file as any).__imageId = id;
+                    updateUploadProgress(editor, id, 0);
                   }}
                   onSuccess={async (res, file) => {
                     const id = (file as any).__imageId;
@@ -121,8 +127,8 @@ const ImageButton: FC<TToolbarWrapperProps> = props => {
 
                     editor.commands.updateImageById(id, {
                       src: res.data,
-                      loading: false,
                     });
+                    removeUploadProgress(editor, id);
                   }}
                   customRequest={onImageUpload}
                 >

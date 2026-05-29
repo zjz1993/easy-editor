@@ -96,6 +96,9 @@ importers:
       '@floating-ui/react':
         specifier: ^0.27.4
         version: 0.27.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@textory/context':
+        specifier: workspace:^
+        version: link:../editor-context
       ahooks:
         specifier: ^3.8.4
         version: 3.8.4(react@18.3.1)
@@ -164,6 +167,9 @@ importers:
       '@tiptap/core':
         specifier: ^3.13.0
         version: 3.13.0(@tiptap/pm@3.13.0)
+      '@tiptap/pm':
+        specifier: ^3.13.0
+        version: 3.13.0
       '@tiptap/react':
         specifier: ^3.13.0
         version: 3.13.0(@floating-ui/dom@1.7.4)(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)

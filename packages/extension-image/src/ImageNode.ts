@@ -2,16 +2,7 @@ import {mergeAttributes, Node, nodeInputRule} from '@tiptap/core';
 import {ReactNodeViewRenderer} from '@tiptap/react';
 import ImageView from './ImageView.tsx';
 import type {ImageNodeAttributes, ImageOptions} from './types/index.ts';
-
-declare module '@tiptap/core' {
-  interface Commands<ReturnType> {
-    image: {
-      setImage: (obj: ImageNodeAttributes) => ReturnType;
-      updateAttrs: (obj: ImageNodeAttributes) => ReturnType;
-      updateImageById: (id: string, attrs: ImageNodeAttributes) => ReturnType;
-    };
-  }
-}
+import {BLOCK_TYPES} from '@textory/editor-common';
 
 /**
  * Matches an image to a ![image](src "title") on input.
@@ -24,7 +15,7 @@ export const inputRegex =
  * @see https://www.tiptap.dev/api/nodes/image
  */
 export const ImageNode = Node.create<ImageOptions>({
-  name: 'image',
+  name: BLOCK_TYPES.IMG,
   group: 'inline',
   inline: true,
   draggable() {
@@ -46,12 +37,6 @@ export const ImageNode = Node.create<ImageOptions>({
 
   addAttributes(): Partial<Record<keyof ImageNodeAttributes, any>> {
     return {
-      loadingProgress: {
-        default: 0,
-      },
-      loading: {
-        default: true,
-      },
       textAlign: {
         default: 'left',
       },
@@ -92,63 +77,6 @@ export const ImageNode = Node.create<ImageOptions>({
       'img',
       mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
     ];
-  },
-
-  addCommands() {
-    return {
-      updateAttrs:
-        options =>
-        ({ commands }) => {
-          console.log('updateAttrs调用了', options);
-          return commands.updateAttributes('image', options);
-        },
-      setImage:
-        options =>
-        ({ commands }) => {
-          const id = options.id;
-
-          return commands.insertContent([
-            {
-              type: this.name,
-              attrs: {
-                ...options,
-                id,
-                loading: true,
-              },
-            },
-            {
-              type: 'paragraph',
-            },
-          ]);
-        },
-      /**
-       * 根据 id 更新图片
-       */
-      updateImageById:
-        (id, attrs) =>
-        ({ tr, state, dispatch }) => {
-          let updated = false;
-          state.doc.descendants((node, pos) => {
-            if (node.type.name === 'image' && node.attrs.id === id) {
-              const previewSrc = node.attrs.src;
-              if (previewSrc.startsWith('blob:')) {
-                URL.revokeObjectURL(previewSrc);
-              }
-              tr.setNodeMarkup(pos, undefined, {
-                ...node.attrs,
-                ...attrs,
-              });
-              updated = true;
-            }
-          });
-
-          if (updated && dispatch) {
-            dispatch(tr);
-          }
-
-          return updated;
-        },
-    };
   },
 
   addInputRules() {

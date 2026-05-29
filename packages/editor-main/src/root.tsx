@@ -5,12 +5,13 @@ import {EditorContent} from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import cx from 'classnames';
 import type {FC} from 'react';
+import {useRef} from 'react';
 import {CodeBlock} from '@textory/extension-code-block';
 import {Indent} from '@textory/extension-indent';
 import {CustomLink} from '@textory/extension-link';
 import {TaskItem, TaskList} from '@textory/extension-task-item';
 import {Color} from '@tiptap/extension-color';
-import {ImageNode} from '@textory/extension-image';
+import {AttachmentExtension} from '@textory/extension-image';
 import {Table, TableBubbleMenu, TableCell, TableHeader, TableRow,} from '@textory/extension-table';
 import {Placeholder} from './extension/Placeholder';
 import {TextAlign} from '@tiptap/extension-text-align';
@@ -26,6 +27,8 @@ import {EditorProvider, type TEasyEditorProps} from '@textory/context';
 import {useTiptapWithSync} from './hooks/useTiptapWithSync.ts';
 
 const Editor: FC<TEasyEditorProps> = props => {
+  const imgUploader = useRef<any>();
+  const fileUploader = useRef<any>();
   const { intlInit } = useIntlLoaded();
   const { CL, OL, UL, P, H, CLI, LI, QUOTE, HR, TL, IMG, TABLE } = BLOCK_TYPES;
   const listGroup = `${UL}|${OL}|${CL}`;
@@ -77,10 +80,14 @@ const Editor: FC<TEasyEditorProps> = props => {
     }),
     TaskList,
     TaskItem,
-    ImageNode,
+    AttachmentExtension.configure(props.imageProps),
     // CustomParagraph,
   ];
   const editor = useTiptapWithSync({
+    editorProps: {
+      imgUploader,
+      fileUploader,
+    },
     autofocus: !isUndefined(autoFocus) ? 'end' : undefined,
     extensions: [
       ...wrapBlockExtensions(

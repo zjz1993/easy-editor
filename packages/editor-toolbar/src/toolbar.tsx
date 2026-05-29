@@ -21,309 +21,8 @@ import {Bold, IndentButton, Italic, Redo, Strike, ToolBarItemDivider, Underline,
 import ToolbarContext from './context/toolbarContext.ts';
 import type {IToolbarCommonProps} from './types/index.ts';
 import ImageButton from './components/ImageButton/index.tsx';
-import type {ImageNodeAttributes} from '@textory/extension-image';
 import TableButton from './components/TableButton/index.tsx';
 import {useEditorStateTrigger} from './hook/useEditorStateTrigger.ts';
-
-declare module '@tiptap/core' {
-  interface Commands<ReturnType> {
-    indentation: {
-      indent: () => ReturnType;
-      outdent: () => ReturnType;
-    };
-    color: {
-      /**
-       * Set the text color
-       * @param color The color to set
-       * @example editor.commands.setColor('red')
-       */
-      setColor: (color: string) => ReturnType;
-
-      /**
-       * Unset the text color
-       * @example editor.commands.unsetColor()
-       */
-      unsetColor: () => ReturnType;
-    };
-    collaboration: {
-      /**
-       * Undo recent changes
-       */
-      undo: () => ReturnType;
-      /**
-       * Reapply reverted changes
-       */
-      redo: () => ReturnType;
-    };
-    paragraph: {
-      /**
-       * Toggle a paragraph
-       */
-      setParagraph: () => ReturnType;
-    };
-    bold: {
-      /**
-       * Toggle a bold mark
-       */
-      toggleBold: () => ReturnType;
-    };
-    underline: {
-      /**
-       * Set an underline mark
-       * @example editor.commands.setUnderline()
-       */
-      setUnderline: () => ReturnType;
-      /**
-       * Toggle an underline mark
-       * @example editor.commands.toggleUnderline()
-       */
-      toggleUnderline: () => ReturnType;
-      /**
-       * Unset an underline mark
-       * @example editor.commands.unsetUnderline()
-       */
-      unsetUnderline: () => ReturnType;
-    };
-    strike: {
-      /**
-       * Toggle a strike mark
-       */
-      toggleStrike: () => ReturnType;
-    };
-    italic: {
-      /**
-       * Toggle an italic mark
-       */
-      toggleItalic: () => ReturnType;
-    };
-    code: {
-      /**
-       * Toggle inline code
-       */
-      toggleCode: () => ReturnType;
-    };
-    bulletList: {
-      /**
-       * Toggle a bullet list
-       */
-      toggleBulletList: () => ReturnType;
-    };
-    orderedList: {
-      /**
-       * Toggle an ordered list
-       */
-      toggleOrderedList: () => ReturnType;
-    };
-    taskList: {
-      /**
-       * Toggle a task list
-       */
-      toggleTaskList: () => ReturnType;
-    };
-    image: {
-      updateAttrs: (options: ImageNodeAttributes) => ReturnType;
-      setImage: (options: ImageNodeAttributes) => ReturnType;
-    };
-    codeBlock: {
-      /**
-       * Toggle a code block
-       */
-      toggleCodeBlock: (attributes?: { language: string }) => ReturnType;
-    };
-    blockQuote: {
-      /**
-       * Toggle a blockquote node
-       */
-      toggleBlockquote: () => ReturnType;
-    };
-    textAlign: {
-      /**
-       * Set the text align attribute
-       * @param alignment The alignment
-       * @example editor.commands.setTextAlign('left')
-       */
-      setTextAlign: (alignment: string) => ReturnType;
-      /**
-       * Unset the text align attribute
-       * @example editor.commands.unsetTextAlign()
-       */
-      unsetTextAlign: () => ReturnType;
-    };
-    horizontalRule: {
-      /**
-       * Add a horizontal rule
-       */
-      setHorizontalRule: () => ReturnType;
-    };
-    heading: {
-      /**
-       * Set a heading node
-       */
-      setHeading: (attributes: { level: number }) => ReturnType;
-      /**
-       * Toggle a heading node
-       */
-      toggleHeading: (attributes: { level: number }) => ReturnType;
-    };
-    customLink: {
-      /**
-       * Set a link mark
-       * @param attributes The link attributes
-       * @example editor.commands.setLink({ href: 'https://tiptap.dev' })
-       */
-      setLink: (attributes: {
-        href: string;
-        text: string;
-        target?: string | null;
-        rel?: string | null;
-        class?: string | null;
-      }) => ReturnType;
-      /**
-       * Toggle a link mark
-       * @param attributes The link attributes
-       * @example editor.commands.toggleLink({ href: 'https://tiptap.dev' })
-       */
-      toggleLink: (attributes: {
-        href: string;
-        target?: string | null;
-        rel?: string | null;
-        class?: string | null;
-      }) => ReturnType;
-      /**
-       * Unset a link mark
-       * @example editor.commands.unsetLink()
-       */
-      unsetLink: () => ReturnType;
-    };
-    table: {
-      /**
-       * Insert a table
-       * @param options The table attributes
-       * @returns True if the command was successful, otherwise false
-       * @example editor.commands.insertTable({ rows: 3, cols: 3, withHeaderRow: true })
-       */
-      insertTable: (options?: {
-        rows?: number;
-        cols?: number;
-        withHeaderRow?: boolean;
-      }) => ReturnType;
-      /**
-       * Add a column before the current column
-       * @returns True if the command was successful, otherwise false
-       * @example editor.commands.addColumnBefore()
-       */
-      addColumnBefore: () => ReturnType;
-      /**
-       * Add a column after the current column
-       * @returns True if the command was successful, otherwise false
-       * @example editor.commands.addColumnAfter()
-       */
-      addColumnAfter: () => ReturnType;
-      /**
-       * Delete the current column
-       * @returns True if the command was successful, otherwise false
-       * @example editor.commands.deleteColumn()
-       */
-      deleteColumn: () => ReturnType;
-      /**
-       * Add a row before the current row
-       * @returns True if the command was successful, otherwise false
-       * @example editor.commands.addRowBefore()
-       */
-      addRowBefore: () => ReturnType;
-      /**
-       * Add a row after the current row
-       * @returns True if the command was successful, otherwise false
-       * @example editor.commands.addRowAfter()
-       */
-      addRowAfter: () => ReturnType;
-      /**
-       * Delete the current row
-       * @returns True if the command was successful, otherwise false
-       * @example editor.commands.deleteRow()
-       */
-      deleteRow: () => ReturnType;
-      /**
-       * Delete the current table
-       * @returns True if the command was successful, otherwise false
-       * @example editor.commands.deleteTable()
-       */
-      deleteTable: () => ReturnType;
-      /**
-       * Merge the currently selected cells
-       * @returns True if the command was successful, otherwise false
-       * @example editor.commands.mergeCells()
-       */
-      mergeCells: () => ReturnType;
-      /**
-       * Split the currently selected cell
-       * @returns True if the command was successful, otherwise false
-       * @example editor.commands.splitCell()
-       */
-      splitCell: () => ReturnType;
-      /**
-       * Toggle the header column
-       * @returns True if the command was successful, otherwise false
-       * @example editor.commands.toggleHeaderColumn()
-       */
-      toggleHeaderColumn: () => ReturnType;
-      /**
-       * Toggle the header row
-       * @returns True if the command was successful, otherwise false
-       * @example editor.commands.toggleHeaderRow()
-       */
-      toggleHeaderRow: () => ReturnType;
-      /**
-       * Toggle the header cell
-       * @returns True if the command was successful, otherwise false
-       * @example editor.commands.toggleHeaderCell()
-       */
-      toggleHeaderCell: () => ReturnType;
-      /**
-       * Merge or split the currently selected cells
-       * @returns True if the command was successful, otherwise false
-       * @example editor.commands.mergeOrSplit()
-       */
-      mergeOrSplit: () => ReturnType;
-      /**
-       * Set a cell attribute
-       * @param name The attribute name
-       * @param value The attribute value
-       * @returns True if the command was successful, otherwise false
-       * @example editor.commands.setCellAttribute('align', 'right')
-       */
-      setCellAttribute: (name: string, value: any) => ReturnType;
-      /**
-       * Moves the selection to the next cell
-       * @returns True if the command was successful, otherwise false
-       * @example editor.commands.goToNextCell()
-       */
-      goToNextCell: () => ReturnType;
-      /**
-       * Moves the selection to the previous cell
-       * @returns True if the command was successful, otherwise false
-       * @example editor.commands.goToPreviousCell()
-       */
-      goToPreviousCell: () => ReturnType;
-      /**
-       * Try to fix the table structure if necessary
-       * @returns True if the command was successful, otherwise false
-       * @example editor.commands.fixTables()
-       */
-      fixTables: () => ReturnType;
-      /**
-       * Set a cell selection inside the current table
-       * @param position The cell position
-       * @returns True if the command was successful, otherwise false
-       * @example editor.commands.setCellSelection({ anchorCell: 1, headCell: 2 })
-       */
-      setCellSelection: (position: {
-        anchorCell: number;
-        headCell?: number;
-      }) => ReturnType;
-    };
-  }
-}
 
 export interface IToolbarProps {
   editor: Editor | null;
@@ -351,13 +50,13 @@ const Toolbar: FC<IToolbarProps> = props => {
     return [
       {
         key: 'undo',
-        component: <Undo />,
+        component: <Undo editor={editor} />,
         intlStr: 'toolbar.undo',
         disabled: disabled || !editor.can().chain().focus().undo?.().run(),
       },
       {
         key: 'redo',
-        component: <Redo />,
+        component: <Redo editor={editor} />,
         intlStr: 'toolbar.redo',
         disabled: disabled || !editor.can().chain().focus().redo?.().run(),
       },
@@ -367,14 +66,14 @@ const Toolbar: FC<IToolbarProps> = props => {
       },
       {
         key: 'HeaderButton',
-        component: <HeaderButton />,
+        component: <HeaderButton editor={editor} />,
         intlStr: 'header',
         disabled:
           disabled || isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
       },
       {
         key: 'bold',
-        component: <Bold />,
+        component: <Bold editor={editor} />,
         intlStr: 'bold',
         disabled:
           disabled ||
@@ -383,7 +82,7 @@ const Toolbar: FC<IToolbarProps> = props => {
       },
       {
         key: 'italic',
-        component: <Italic />,
+        component: <Italic editor={editor} />,
         intlStr: 'italic',
         disabled:
           disabled ||
@@ -392,7 +91,7 @@ const Toolbar: FC<IToolbarProps> = props => {
       },
       {
         key: 'underline',
-        component: <Underline />,
+        component: <Underline editor={editor} />,
         intlStr: 'underline',
         disabled:
           disabled ||
@@ -401,7 +100,7 @@ const Toolbar: FC<IToolbarProps> = props => {
       },
       {
         key: 'strike',
-        component: <Strike />,
+        component: <Strike editor={editor} />,
         intlStr: 'strike',
         disabled:
           disabled ||
@@ -410,14 +109,14 @@ const Toolbar: FC<IToolbarProps> = props => {
       },
       {
         key: 'textColorPicker',
-        component: <TextColorPicker />,
+        component: <TextColorPicker editor={editor} />,
         intlStr: 'color',
         disabled:
           disabled || isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
       },
       {
         key: 'align',
-        component: <AlignButton />,
+        component: <AlignButton editor={editor} />,
         intlStr: 'align',
         disabled:
           disabled || isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
@@ -455,7 +154,7 @@ const Toolbar: FC<IToolbarProps> = props => {
       },
       {
         key: 'link',
-        component: <LinkButton />,
+        component: <LinkButton editor={editor} />,
         intlStr: 'tool.link',
         disabled:
           disabled ||
@@ -465,7 +164,7 @@ const Toolbar: FC<IToolbarProps> = props => {
       },
       {
         key: 'code',
-        component: <CodeButton />,
+        component: <CodeButton editor={editor} />,
         intlStr: 'code',
         disabled:
           disabled ||
@@ -475,14 +174,14 @@ const Toolbar: FC<IToolbarProps> = props => {
       },
       {
         key: BLOCK_TYPES.IMG,
-        component: <ImageButton />,
+        component: <ImageButton editor={editor} />,
         intlStr: 'image',
         disabled:
           disabled || isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
       },
       {
         key: BLOCK_TYPES.TABLE,
-        component: <TableButton />,
+        component: <TableButton editor={editor} />,
         intlStr: 'table',
         disabled: disabled || editor.isActive(BLOCK_TYPES.CODE),
       },
