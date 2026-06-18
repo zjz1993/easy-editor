@@ -1,29 +1,6 @@
-import { isUndefined } from '@textory/editor-common';
-import { Extension, findParentNodeClosestToPos } from '@tiptap/core';
-import {
-  AllSelection,
-  TextSelection,
-  type Transaction,
-} from '@tiptap/pm/state';
-
-declare module '@tiptap/core' {
-  interface Commands<ReturnType> {
-    indentation: {
-      /**
-       * Set the indent attribute
-       */
-      indent: (options?: { delta?: number }) => ReturnType;
-
-      /**
-       * Unset the indent attribute
-       */
-      outdent: (options?: {
-        delta?: number;
-        backspace?: boolean;
-      }) => ReturnType;
-    };
-  }
-}
+import {isUndefined} from '@textory/editor-common';
+import {Extension, findParentNodeClosestToPos} from '@tiptap/core';
+import {AllSelection, TextSelection, type Transaction,} from '@tiptap/pm/state';
 
 function clamp(val: number, min: number, max: number): number {
   if (val < min) {

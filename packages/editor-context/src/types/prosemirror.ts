@@ -1,11 +1,22 @@
 import '@tiptap/pm/view';
 import type {FileUploader, ImgUploader} from './ImgUploader.ts';
+import type {ImageNodeAttributes} from "./imageProps.ts";
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     indentation: {
-      indent: () => ReturnType;
-      outdent: () => ReturnType;
+      /**
+       * Set the indent attribute
+       */
+      indent: (options?: { delta?: number }) => ReturnType;
+
+      /**
+       * Unset the indent attribute
+       */
+      outdent: (options?: {
+        delta?: number;
+        backspace?: boolean;
+      }) => ReturnType;
     };
     color: {
       /**
@@ -293,6 +304,41 @@ declare module '@tiptap/core' {
         anchorCell: number;
         headCell?: number;
       }) => ReturnType;
+    };
+    link: {
+      /**
+       * Set a link mark
+       * @param attributes The link attributes
+       * @example editor.commands.setLink({ href: 'https://tiptap.dev' })
+       */
+      setLink: (attributes: {
+        href: string;
+        text: string;
+        target?: string | null;
+        rel?: string | null;
+        class?: string | null;
+      }) => ReturnType;
+      /**
+       * Toggle a link mark
+       * @param attributes The link attributes
+       * @example editor.commands.toggleLink({ href: 'https://tiptap.dev' })
+       */
+      toggleLink: (attributes: {
+        href: string;
+        target?: string | null;
+        rel?: string | null;
+        class?: string | null;
+      }) => ReturnType;
+      /**
+       * Unset a link mark
+       * @example editor.commands.unsetLink()
+       */
+      unsetLink: () => ReturnType;
+    };
+    image: {
+      setImage: (obj: ImageNodeAttributes) => ReturnType;
+      updateAttrs: (obj: ImageNodeAttributes) => ReturnType;
+      updateImageById: (id: string, attrs: ImageNodeAttributes) => ReturnType;
     };
   }
 }

@@ -50,7 +50,7 @@ const ImageButton: FC<TToolbarWrapperProps> = props => {
   const { disabled, intlStr, style, editor } = props;
   const { imageProps } = useContext(ToolbarContext);
   const [open, setOpen] = useState(false);
-  const { onImageUpload, onImageBeforeUpload } = imageProps;
+  const { onImageUpload, onImageBeforeUpload, maxFileSize } = imageProps;
   return (
     <>
       <ToolbarItemButtonWrapper
@@ -80,8 +80,15 @@ const ImageButton: FC<TToolbarWrapperProps> = props => {
                   acceptErrMsg="支持文件格式：jpg、jpeg、png、gif格式"
                   multiple
                   beforeUpload={onImageBeforeUpload}
-                  onError={() => {
+                  onError={(_, _a, file) => {
                     console.log('onError触发');
+                    const id = (file as any).__imageId;
+                    if (!id) return;
+                    editor.commands.updateImageById(id, {
+                      src: undefined,
+                      isError: true,
+                    });
+                    removeUploadProgress(editor, id);
                   }}
                   onProgress={(event, file) => {
                     console.log('onProgress触发了吗');
@@ -130,6 +137,7 @@ const ImageButton: FC<TToolbarWrapperProps> = props => {
                     });
                     removeUploadProgress(editor, id);
                   }}
+                  maxFileSize={maxFileSize}
                   customRequest={onImageUpload}
                 >
                   上传本地图片

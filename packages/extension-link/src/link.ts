@@ -120,41 +120,6 @@ export interface LinkOptions {
   shouldAutoLink: (url: string) => boolean;
 }
 
-declare module '@tiptap/core' {
-  interface Commands<ReturnType> {
-    link: {
-      /**
-       * Set a link mark
-       * @param attributes The link attributes
-       * @example editor.commands.setLink({ href: 'https://tiptap.dev' })
-       */
-      setLink: (attributes: {
-        href: string;
-        text: string;
-        target?: string | null;
-        rel?: string | null;
-        class?: string | null;
-      }) => ReturnType;
-      /**
-       * Toggle a link mark
-       * @param attributes The link attributes
-       * @example editor.commands.toggleLink({ href: 'https://tiptap.dev' })
-       */
-      toggleLink: (attributes: {
-        href: string;
-        target?: string | null;
-        rel?: string | null;
-        class?: string | null;
-      }) => ReturnType;
-      /**
-       * Unset a link mark
-       * @example editor.commands.unsetLink()
-       */
-      unsetLink: () => ReturnType;
-    };
-  }
-}
-
 // From DOMPurify
 // https://github.com/cure53/DOMPurify/blob/main/src/regexp.js
 // eslint-disable-next-line no-control-regex

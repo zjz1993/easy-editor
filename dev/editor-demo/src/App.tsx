@@ -3,7 +3,7 @@ import '@textory/styles/src/index.scss';
 import {useState} from "react";
 
 function App() {
-  const [editable, setEditable] = useState(true);
+  const [editable] = useState(true);
   return (
     <>
       <div style={{ height: '100vh' }}>
@@ -29,6 +29,7 @@ function App() {
           }}
           editable={editable}
           imageProps={{
+            maxFileSize:600,
             onImageUpload:async (option) => {
               console.log('onImageUpload触发了吗', option);
               const fd = new FormData()
@@ -37,9 +38,11 @@ function App() {
               const res = await fetch("/api/upload",{
                 method: "POST",
                 body: fd,
-              }).then((res) => res.json())
-              console.log('上传的res是', res);
-              option.onSuccess?.({ data: res.url });
+              }).then((res) => res.json()).then((res) => {
+                option.onSuccess?.({ data: res.url });
+              }).catch((err) => {
+                option.onError?.({event: err});
+              })
             }
           }}
         />

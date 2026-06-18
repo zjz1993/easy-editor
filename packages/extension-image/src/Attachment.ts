@@ -3,15 +3,12 @@ import {ImageNode} from './ImageNode.ts';
 import type {IImageProps} from '@textory/context';
 import {BLOCK_TYPES} from '@textory/editor-common';
 import {createUploadPlugin} from './plugin/ImagePlaceholderPlugin.ts';
-import uploadPasteAndDropPlugin from "./plugin/pasteDrop.ts";
+import uploadPasteAndDropPlugin from './plugin/pasteDrop.ts';
 
 const AttachmentExtension = Extension.create<Partial<IImageProps>>({
   name: 'attachment',
   addExtensions() {
     return [ImageNode];
-  },
-  onCreate() {
-    console.log('读取maxFileSize', this.options.maxFileSize);
   },
   addProseMirrorPlugins() {
     const array = [createUploadPlugin()];
@@ -77,7 +74,7 @@ const AttachmentExtension = Extension.create<Partial<IImageProps>>({
   },
   addOptions() {
     return {
-      maxFileSize: 500 * 1024 * 1024 * 1024,
+      maxFileSize: 500,
     };
   },
 });

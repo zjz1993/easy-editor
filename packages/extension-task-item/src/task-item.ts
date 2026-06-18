@@ -1,19 +1,7 @@
-import { Node, PasteRule, getNodeType, mergeAttributes } from '@tiptap/core';
-import type { Node as ProseMirrorNode } from '@tiptap/pm/model';
-// import { wrapInListInputRule, wrappingInputRule } from '@gitee/tide-common';
+import {getNodeType, mergeAttributes, Node, PasteRule} from '@tiptap/core';
+import type {Node as ProseMirrorNode} from '@tiptap/pm/model';
 
-declare module '@tiptap/core' {
-  interface Commands<ReturnType> {
-    checkListItem: {
-      insertTaskItem: (
-        text: string,
-        checked: boolean,
-        from: number,
-        to: number,
-      ) => ReturnType;
-    };
-  }
-}
+// import { wrapInListInputRule, wrappingInputRule } from '@gitee/tide-common';
 
 export interface TaskItemOptions {
   onReadOnlyChecked?: (

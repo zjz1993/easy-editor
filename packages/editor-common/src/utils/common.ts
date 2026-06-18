@@ -3,6 +3,7 @@ import {filter, isEmpty, map, size, some, toArray} from 'lodash-es';
 import {message} from '../components/Message';
 import IntlComponent from 'react-intl-universal';
 import {convertToTable} from './convertToTable.ts';
+import type {RcFile} from "rc-upload/es/interface";
 
 export const doDownloadByUrl = (tempUrl: string) => {
   const linkNode = document.createElement('a');
@@ -116,3 +117,15 @@ export const getFilesFromEvent = (
   }
   return [];
 };
+export function checkMaxSize(file: RcFile, maxSize: number) {
+  if (!maxSize) {
+    return Promise.resolve(file);
+  }
+
+  const checkFileSize =
+    Number.parseFloat((file.size / 1024).toFixed(4)) <= maxSize;
+  if (!checkFileSize) {
+    return Promise.reject(new Error(`文件大小不能大于${maxSize}Kb`));
+  }
+  return Promise.resolve(file);
+}

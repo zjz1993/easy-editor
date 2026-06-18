@@ -5,7 +5,8 @@ import {Iconfont, isViewEditable, Popover, PREVIEW_CLS,} from '@textory/editor-c
 import {type FC, useEffect, useRef, useState} from 'react';
 import useHandleChangeImageSize from './hooks/useHandleChangeImageSize.ts';
 import ImageNodeToolbar from './ImageNodeToolbar.tsx';
-import {attachmentUploadPluginKey} from "./plugin/ImagePlaceholderPlugin.ts";
+import {attachmentUploadPluginKey} from './plugin/ImagePlaceholderPlugin.ts';
+import ImageErrorView from './ImageErrorView.tsx';
 
 const fileToObjectUrl = (file: Blob | MediaSource) => {
   const url = window.URL || window.webkitURL;
@@ -30,7 +31,7 @@ const ImageView: FC<NodeViewProps> = props => {
   const [imageRatio, setImageRatio] = useState<number | undefined>();
   const { updateAttributes, node, selected, editor, view, getPos } = props;
   const { attrs } = node;
-  const { width, height, src, textAlign, id, hasBorder } = attrs;
+  const { width, height, src, textAlign, id, hasBorder, isError } = attrs;
   const containerRef = useRef(null);
   const { handleMouseDown, size, changeSize } = useHandleChangeImageSize({
     containerRef,
@@ -38,11 +39,13 @@ const ImageView: FC<NodeViewProps> = props => {
     initHeight: height,
     ratio: imageRatio,
     onResizeEnd: data => {
-      console.log('拖动完成的data是', data);
       updateAttributes(data);
     },
   });
   const handleClickImage = () => {
+    if (isError) {
+      return;
+    }
     // 如果需要手动触发选中状态，可以使用 editor 的命令
     const pos = getPos();
     editor.chain().setNodeSelection(pos).run(); // 手动选中节点
@@ -119,6 +122,99 @@ const ImageView: FC<NodeViewProps> = props => {
       return pluginState?.progressMap?.[id] ?? 0;
     },
   });
+  const normalImg = (
+    <>
+      <div className={PREVIEW_CLS.FULL_SCREEN}>
+        <Iconfont type="icon-enterfs" />
+      </div>
+      {progress ? (
+        <>
+          <div className="textory-image__placeholder">
+            {getProgressCircleHTML(progress)}
+          </div>
+          <img src={src} />
+        </>
+      ) : (
+        <Popover
+          ref={popoverRef}
+          content={
+            <ImageNodeToolbar
+              onAlignChange={align => {
+                updateAttributes({ textAlign: align });
+                // popoverRef.current.update();
+              }}
+              align={textAlign}
+              hasBorder={hasBorder}
+              defaultWidth={width}
+              onRemove={handleRemove}
+              onBorder={() => {
+                updateAttributes({ hasBorder: !hasBorder });
+              }}
+              onWidthChange={value => {
+                if (imageRatio) {
+                  const newHeight = value / imageRatio;
+                  changeSize(value, newHeight);
+                  updateAttributes({ width: value, height: newHeight });
+                }
+              }}
+            />
+          }
+          triggerAction="hover"
+        >
+          <img
+            onLoad={() => {
+              const $image = imgRef.current;
+              const checkImageShow = ($image: HTMLImageElement) => {
+                return new Promise((resolve, reject) => {
+                  if (!$image) {
+                    reject();
+                  }
+                  const checkImageSize = () => {
+                    if ($image.clientWidth > 0 && $image.clientHeight > 0) {
+                      resolve('');
+                    } else {
+                      requestAnimationFrame(checkImageSize);
+                    }
+                  };
+                  checkImageSize();
+                });
+              };
+              checkImageShow($image).then(() => {
+                const ratio = $image.clientWidth / $image.clientHeight;
+                setImageRatio(ratio);
+              });
+            }}
+            ref={imgRef}
+            src={src}
+            alt=""
+            width={size.width}
+            height={size.height}
+            draggable={false} // 禁止原生拖动
+          />
+        </Popover>
+      )}
+      {selected && isViewEditable(view) && (
+        <>
+          <div
+            className="top-left textory-image__resize-handle"
+            onMouseDown={e => handleMouseDown(e, 'top-left')}
+          />
+          <div
+            className="top-right textory-image__resize-handle"
+            onMouseDown={e => handleMouseDown(e, 'top-right')}
+          />
+          <div
+            className="bottom-left textory-image__resize-handle"
+            onMouseDown={e => handleMouseDown(e, 'bottom-left')}
+          />
+          <div
+            className="bottom-right textory-image__resize-handle"
+            onMouseDown={e => handleMouseDown(e, 'bottom-right')}
+          />
+        </>
+      )}
+    </>
+  );
 
   return (
     <NodeViewWrapper
@@ -135,100 +231,13 @@ const ImageView: FC<NodeViewProps> = props => {
       <span
         className={cx(
           'textory-image',
+          !isError && 'selectable',
           !progress && 'textory-image-normal',
           hasBorder && 'textory-image-border',
         )}
         data-id={id}
       >
-        <div className={PREVIEW_CLS.FULL_SCREEN}>
-          <Iconfont type="icon-enterfs" />
-        </div>
-        {progress ? (
-          <>
-            <div className="textory-image__placeholder">
-              {getProgressCircleHTML(progress)}
-            </div>
-            <img src={src} />
-          </>
-        ) : (
-          <Popover
-            ref={popoverRef}
-            content={
-              <ImageNodeToolbar
-                onAlignChange={align => {
-                  updateAttributes({ textAlign: align });
-                  // popoverRef.current.update();
-                }}
-                align={textAlign}
-                hasBorder={hasBorder}
-                defaultWidth={width}
-                onRemove={handleRemove}
-                onBorder={() => {
-                  updateAttributes({ hasBorder: !hasBorder });
-                }}
-                onWidthChange={value => {
-                  if (imageRatio) {
-                    const newHeight = value / imageRatio;
-                    changeSize(value, newHeight);
-                    updateAttributes({ width: value, height: newHeight });
-                  }
-                }}
-              />
-            }
-            triggerAction="hover"
-          >
-            <img
-              onLoad={() => {
-                const $image = imgRef.current;
-                const checkImageShow = ($image: HTMLImageElement) => {
-                  return new Promise((resolve, reject) => {
-                    if (!$image) {
-                      reject();
-                    }
-                    const checkImageSize = () => {
-                      if ($image.clientWidth > 0 && $image.clientHeight > 0) {
-                        resolve('');
-                      } else {
-                        requestAnimationFrame(checkImageSize);
-                      }
-                    };
-                    checkImageSize();
-                  });
-                };
-                checkImageShow($image).then(() => {
-                  const ratio = $image.clientWidth / $image.clientHeight;
-                  setImageRatio(ratio);
-                });
-              }}
-              ref={imgRef}
-              src={src}
-              alt=""
-              width={size.width}
-              height={size.height}
-              draggable={false} // 禁止原生拖动
-            />
-          </Popover>
-        )}
-        {selected && isViewEditable(view) && (
-          <>
-            <div
-              className="top-left textory-image__resize-handle"
-              onMouseDown={e => handleMouseDown(e, 'top-left')}
-            />
-            <div
-              className="top-right textory-image__resize-handle"
-              onMouseDown={e => handleMouseDown(e, 'top-right')}
-            />
-            <div
-              className="bottom-left textory-image__resize-handle"
-              onMouseDown={e => handleMouseDown(e, 'bottom-left')}
-            />
-            <div
-              className="bottom-right textory-image__resize-handle"
-              onMouseDown={e => handleMouseDown(e, 'bottom-right')}
-            />
-          </>
-        )}
+        {isError ? <ImageErrorView onRemove={handleRemove} /> : normalImg}
       </span>
     </NodeViewWrapper>
   );

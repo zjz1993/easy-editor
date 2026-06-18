@@ -4,7 +4,9 @@
       "Bash(grep:*)",
       "Bash(node --input-type=module:*)",
       "Bash(node:*)",
-      "Bash(pnpm check:external)"
+      "Bash(pnpm check:external)",
+      "Bash(python3:*)",
+      "Bash(pip3 install:*)"
     ]
   }
 }

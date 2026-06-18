@@ -1,4 +1,4 @@
-import { Node, mergeAttributes } from '@tiptap/core';
+import {mergeAttributes, Node} from '@tiptap/core';
 
 export interface TaskListOptions {
   /**
@@ -14,18 +14,6 @@ export interface TaskListOptions {
    * @example { class: 'foo' }
    */
   HTMLAttributes: Record<string, any>;
-}
-
-declare module '@tiptap/core' {
-  interface Commands<ReturnType> {
-    taskList: {
-      /**
-       * Toggle a task list
-       * @example editor.commands.toggleTaskList()
-       */
-      toggleTaskList: () => ReturnType;
-    };
-  }
 }
 
 /**

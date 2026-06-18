@@ -1,8 +1,9 @@
 import {mergeAttributes, Node, nodeInputRule} from '@tiptap/core';
 import {ReactNodeViewRenderer} from '@tiptap/react';
 import ImageView from './ImageView.tsx';
-import type {ImageNodeAttributes, ImageOptions} from './types/index.ts';
+import type {ImageOptions} from './types/index.ts';
 import {BLOCK_TYPES} from '@textory/editor-common';
+import type {ImageNodeAttributes} from '@textory/context';
 
 /**
  * Matches an image to a ![image](src "title") on input.
@@ -37,6 +38,9 @@ export const ImageNode = Node.create<ImageOptions>({
 
   addAttributes(): Partial<Record<keyof ImageNodeAttributes, any>> {
     return {
+      isError: {
+        default: false,
+      },
       textAlign: {
         default: 'left',
       },

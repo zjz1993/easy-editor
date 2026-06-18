@@ -454,6 +454,9 @@ importers:
 
   packages/extension-indent:
     dependencies:
+      '@textory/context':
+        specifier: workspace:^
+        version: link:../editor-context
       '@textory/editor-common':
         specifier: workspace:^
         version: link:../editor-common

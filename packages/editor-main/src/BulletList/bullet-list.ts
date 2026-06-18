@@ -1,7 +1,7 @@
-import { Node, mergeAttributes, wrappingInputRule } from '@tiptap/core';
+import {mergeAttributes, Node, wrappingInputRule} from '@tiptap/core';
 
-import { commonToggleList } from './commonToggleList';
-import { TextStyle } from './text-style';
+import {commonToggleList} from './commonToggleList';
+import {TextStyle} from './text-style';
 
 export interface BulletListOptions {
   /**
@@ -32,17 +32,6 @@ export interface BulletListOptions {
    */
   keepAttributes: boolean;
   content: string;
-}
-
-declare module '@tiptap/core' {
-  interface Commands<ReturnType> {
-    bulletList: {
-      /**
-       * Toggle a bullet list
-       */
-      toggleBulletList: () => ReturnType;
-    };
-  }
 }
 
 /**

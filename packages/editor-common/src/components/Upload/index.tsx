@@ -5,7 +5,8 @@ import classnames from 'classnames';
 import {isEmpty, take} from 'lodash-es';
 import React, {type FC, type ReactNode, useRef, useState} from 'react';
 import type {RcFile, UploadProgressEvent, UploadRequestOption,} from 'rc-upload/es/interface';
-import type {Editor} from '@tiptap/core'; //import uuid from 'uuid/v4';
+import type {Editor} from '@tiptap/core';
+import {checkMaxSize} from "../../utils/index.ts"; //import uuid from 'uuid/v4';
 //import uuid from 'uuid/v4';
 
 const uploadButton = <Button>点击上传</Button>;
@@ -76,24 +77,18 @@ const FileUpload: FC<IUploadProps> = props => {
   const {
     onProgress,
     onError,
-    onPreview,
     id,
     className,
-    customVideoUpload,
     onStart,
     customRequest,
-    onUploaded,
     onSuccess,
     beforeUpload = undefined,
     fileList = [],
-    maxFileSize = undefined,
     maxFileNum = undefined,
-    rules = [],
     children = undefined,
     disabled = false,
     accept = '*',
     acceptErrMsg = undefined,
-    enableGlobalPaste = false,
     exceedMaxFileNumMsg = '',
     multiple = false,
     autoScrollIntoView = false,
@@ -133,9 +128,20 @@ const FileUpload: FC<IUploadProps> = props => {
   };
 
   const beforeUploadFun = (file: RcFile, fileList: RcFile[]) => {
-    console.log('beforeUploadFun触发', file, fileList);
+    const attachmentOptions = editor.extensionManager.extensions.find(
+      ext => ext.name === 'attachment',
+    )?.options;
+    console.log('beforeUploadFun触发', file, attachmentOptions);
+
+    const maxFileSize = props.maxFileSize ?? attachmentOptions?.maxFileSize;
     if (beforeUpload && !beforeUpload(file, fileList)) {
       return false;
+    }
+    if (maxFileSize) {
+      return checkMaxSize(file, maxFileSize).catch(e => {
+        message.error(e.message);
+        return Promise.reject(e);
+      });
     }
     return new Promise<string>(resolve => {
       resolve('');
@@ -146,6 +152,7 @@ const FileUpload: FC<IUploadProps> = props => {
     try {
       customRequest?.(option);
     } catch (err) {
+      console.log('出错了', err);
       option.onError(err, { message: '上传失败' });
     }
   };

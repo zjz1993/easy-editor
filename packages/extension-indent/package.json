@@ -23,6 +23,7 @@
     "build": "tsup --config tsup.config.ts"
   },
   "dependencies": {
+    "@textory/context": "workspace:^",
     "@textory/editor-common": "workspace:^"
   },
   "devDependencies": {
