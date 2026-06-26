@@ -2,7 +2,7 @@ import {Iconfont, InputNumber, Modal, Switch, Tooltip} from '@textory/editor-com
 import {type FC, useEffect, useRef, useState} from 'react';
 import cx from 'classnames';
 import {Controller, useForm} from 'react-hook-form';
-import type {ImageNodeAttributes} from "@textory/extension-image";
+import type {ImageNodeAttributes} from "@textory/context";
 
 interface FormInputs extends ImageNodeAttributes {
   src: string;

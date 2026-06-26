@@ -4,7 +4,8 @@ import classNames from 'classnames';
 import type React from 'react';
 import {useCallback, useMemo, useRef, useState} from 'react';
 import {getLanguageByValue, getLanguageByValueOrAlias, languages,} from './languages';
-import {BLOCK_TYPES, Dropdown, get, Iconfont, message, smartClipboardCopy,} from '@textory/editor-common';
+import {BLOCK_TYPES, Dropdown, Iconfont, message, smartClipboardCopy,} from '@textory/editor-common';
+import {get} from 'lodash-es';
 import {exportCode} from './utils.ts';
 
 const CODE_BLOCK_DROPDOWN_MAX_HEIGHT = 245;

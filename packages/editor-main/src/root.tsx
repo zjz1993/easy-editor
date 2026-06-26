@@ -1,4 +1,5 @@
-import {BLOCK_TYPES, isUndefined, MessageContainer, wrapBlockExtensions,} from '@textory/editor-common';
+import {BLOCK_TYPES, MessageContainer, wrapBlockExtensions,} from '@textory/editor-common';
+import {isUndefined} from 'lodash-es';
 import {EditorToolbar} from '@textory/editor-toolbar';
 import {Bold} from '@textory/extension-bold';
 import {EditorContent} from '@tiptap/react';

@@ -4,9 +4,8 @@ import {
   IntlComponent,
   MARK_TYPES,
   Tooltip,
-  useDebounceFn,
-  useEventListener,
 } from '@textory/editor-common';
+import {useDebounceFn, useEventListener} from 'ahooks';
 import {useCallback, useRef, useState} from 'react';
 import {autoUpdate, flip, offset, shift, useFloating} from "@floating-ui/react";
 import {LinkPanelPopup} from "@textory/editor-toolbar";

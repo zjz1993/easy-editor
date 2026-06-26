@@ -13,7 +13,16 @@
       "Bash(pnpm --filter @textory/extension-task-item build:*)",
       "Bash(pnpm --filter @textory/editor --filter @textory/editor-common --filter @textory/editor-toolbar --filter @textory/extension-bold --filter @textory/extension-image --filter @textory/extension-link --filter @textory/extension-outline --filter @textory/extension-table --filter @textory/extension-indent --filter @textory/extension-code-block --filter @textory/context build)",
       "Bash(pnpm --filter @textory/editor --filter @textory/editor-toolbar --filter @textory/extension-bold --filter @textory/extension-image --filter @textory/extension-link --filter @textory/extension-outline --filter @textory/extension-table --filter @textory/extension-indent --filter @textory/extension-code-block --filter @textory/context build:*)",
-      "Bash(pnpm --filter @textory/extension-link build:*)"
+      "Bash(pnpm --filter @textory/extension-link build:*)",
+      "Bash(pnpm --filter @textory/styles build:*)",
+      "Bash(pnpm --filter @textory/editor build:*)",
+      "Bash(git -C /Users/zhaojunzhe/easy-editor mv packages/extension-code-block/src/OldCodeBlock.ts packages/extension-code-block/src/CodeBlock.ts)",
+      "Bash(pnpm --filter @textory/editor --filter @textory/editor-common --filter @textory/editor-toolbar --filter @textory/extension-bold --filter @textory/extension-code-block --filter @textory/extension-image --filter @textory/extension-link --filter @textory/extension-outline --filter @textory/extension-table --filter @textory/extension-indent --filter @textory/context build:*)",
+      "Bash(pnpm --filter @textory/extension-indent build:*)",
+      "Bash(for pkg in extension-code-block extension-image extension-indent editor-toolbar editor-main)",
+      "Bash(do echo \"=== $pkg ===\" cat /Users/zhaojunzhe/easy-editor/packages/$pkg/package.json)",
+      "Bash(ls:*)",
+      "Bash(pnpm --filter @textory/extension-code-block --filter @textory/extension-image --filter @textory/extension-indent --filter @textory/editor-toolbar --filter @textory/editor build:*)"
     ]
   }
 }

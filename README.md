@@ -35,16 +35,16 @@ pnpm add react react-dom @tiptap/core @tiptap/pm @tiptap/react @tiptap/starter-k
 同时别忘了引入样式：
 
 ```ts
-import '@textory/styles/src/index.scss';
-// 或使用构建产物
-// import '@textory/styles';
+import '@textory/editor/theme/normal.css';
 ```
+
+样式文件与 JS 代码分离，构建后通过子路径 `@textory/editor/theme/normal.css` 单独引入。如果以后多主题，扩展为 `@textory/editor/theme/dark.css` 等。
 
 ## 快速开始
 
 ```tsx
 import Editor from '@textory/editor';
-import '@textory/styles/src/index.scss';
+import '@textory/editor/theme/normal.css';
 
 function App() {
   return (

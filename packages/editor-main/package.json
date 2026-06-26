@@ -11,12 +11,13 @@
         ".": {
             "types": "./dist/index.d.mts",
             "import": "./dist/index.mjs"
-        }
+        },
+        "./theme/normal.css": "./dist/theme/normal.css"
     },
     "scripts": {
         "clean": "rm -rf dist && rm -rf .turbo",
         "dev": "tsup src/index.ts --format esm --watch --silent --dts",
-        "build": "tsup --config tsup.config.ts"
+        "build": "tsup --config tsup.config.ts && node scripts/copy-theme.mjs"
     },
     "description": "基于tiptap的编辑器",
     "publishConfig": {
@@ -35,9 +36,11 @@
         "@textory/extension-table": "workspace:^",
         "@textory/extension-task-item": "workspace:^",
         "classnames": "^2.5.1",
+        "lodash-es": "^4.17.21",
         "uuid": "^11.1.0"
     },
     "devDependencies": {
+        "@textory/styles": "workspace:*",
         "@tiptap/core": "^3.13.0",
         "@tiptap/extension-color": "^3.13.0",
         "@tiptap/extension-highlight": "^3.13.0",
@@ -48,6 +51,7 @@
         "@tiptap/pm": "^3.13.0",
         "@tiptap/react": "^3.13.0",
         "@tiptap/starter-kit": "^3.13.0",
+        "@types/lodash-es": "^4.17.12",
         "@types/react": "^18",
         "@types/react-dom": "^18",
         "tsup": "^8.5.1",

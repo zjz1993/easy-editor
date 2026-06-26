@@ -99,6 +99,31 @@ pnpm release
 - 资源：`.png/.jpg/.svg` 以 data URL 内联
 - SCSS：编译为单独 CSS 文件
 
+### 样式与 JS 分离（@textory/editor）
+
+`@textory/editor` 把样式与 JS 拆开发布，用户通过子路径单独引入：
+
+```ts
+import Editor from '@textory/editor';             // JS
+import '@textory/editor/theme/normal.css';        // CSS
+```
+
+实现要点：
+
+- SCSS 源继续放在 `@textory/styles` 包
+- `@textory/editor` 把 `@textory/styles` 作为 `devDependency`（构建期需要，用户运行时不需要装）
+- editor 的 `build` 脚本在 tsup 之后追加 `node scripts/copy-theme.mjs`，把 `node_modules/@textory/styles/dist/index.css` 拷贝到 `dist/theme/normal.css`
+- 通过 `package.json` 的 `exports` 字段暴露子路径：
+  ```json
+  "exports": {
+    ".": { "types": "./dist/index.d.mts", "import": "./dist/index.mjs" },
+    "./theme/normal.css": "./dist/theme/normal.css"
+  }
+  ```
+- `files: ["dist"]` 已经覆盖 `dist/theme/normal.css`，发布时会被带上
+
+后续若要加主题（dark/compact 等），在 `@textory/styles` 里加对应 SCSS，再在 `copy-theme.mjs` 里多加一条拷贝，并在 `exports` 里追加对应子路径即可。
+
 ## 架构要点
 
 ### 扩展组合

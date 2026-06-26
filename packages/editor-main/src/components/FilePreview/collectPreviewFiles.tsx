@@ -1,7 +1,8 @@
 import {getAttachment} from '../AttachmentManager/index.ts';
 import UnSupportImagePreview from './UnSupportImagePreview.tsx';
 import {getViewFileNodes} from './utils.ts';
-import {assign, forEach, isImageExt, isPreviewableImage, parseFileName,} from '@textory/editor-common';
+import {isImageExt, isPreviewableImage, parseFileName,} from '@textory/editor-common';
+import {assign, forEach} from 'lodash-es';
 
 const collectPreviewFiles = $view => {
   const files = [];

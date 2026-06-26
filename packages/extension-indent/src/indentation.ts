@@ -1,4 +1,4 @@
-import {isUndefined} from '@textory/editor-common';
+import {isUndefined} from 'lodash-es';
 import {Extension, findParentNodeClosestToPos} from '@tiptap/core';
 import {AllSelection, TextSelection, type Transaction,} from '@tiptap/pm/state';
 

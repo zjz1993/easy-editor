@@ -1,4 +1,5 @@
-import {chunk, Iconfont} from '@textory/editor-common';
+import {Iconfont} from '@textory/editor-common';
+import {chunk} from 'lodash-es';
 import type {FC} from 'react';
 import {useContext} from 'react';
 import ToolbarContext from '../../context/toolbarContext.ts';

@@ -1,5 +1,6 @@
 // import { updateTableIndices } from '@/Editor/components/core/src/plugins/table/TableCommands';
-import {filter, get, getFilesFromEvent, isEmpty, isImageExt, isVideoExt, parseMIMEType,} from '@textory/editor-common';
+import {getFilesFromEvent, isImageExt, isVideoExt, parseMIMEType,} from '@textory/editor-common';
+import {filter, get, isEmpty} from 'lodash-es';
 import {Plugin, TextSelection} from '@tiptap/pm/state';
 import type {EditorView} from '@tiptap/pm/view';
 
