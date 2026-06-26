@@ -23,6 +23,8 @@
     "build": "tsup --config tsup.config.ts"
   },
   "devDependencies": {
+    "@tiptap/core": "^3.13.0",
+    "@tiptap/extension-bold": "^3.13.0",
     "tsup": "^8.5.1",
     "typescript": "^5.6.0"
   },

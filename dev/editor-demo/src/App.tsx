@@ -24,6 +24,7 @@ function App() {
         <Editor
           placeholder="这是一个Placeholder"
           title="1234"
+          outputHTML
           onChange={(data) => {
             console.log('输出的内容是', data);
           }}
@@ -35,13 +36,12 @@ function App() {
               const fd = new FormData()
               fd.append('file', option.file)
               // throw new Error('直接报错')
-              const res = await fetch("/api/upload",{
+              await fetch("/api/upload",{
                 method: "POST",
                 body: fd,
               }).then((res) => res.json()).then((res) => {
                 option.onSuccess?.({ data: res.url });
-              }).catch((err) => {
-                option.onError?.({event: err});
+              }).catch(() => {
               })
             }
           }}

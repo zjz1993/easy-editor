@@ -5,6 +5,7 @@ import type {CSSProperties} from "react";
 export type AlignType = 'left' | 'center' | 'right';
 
 export type TEasyEditorProps = {
+  outputHTML?: boolean;
   title?: string;
   content?: string | JSONContent;
   maxCount?: number;

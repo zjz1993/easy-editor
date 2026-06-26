@@ -106,6 +106,12 @@ declare module '@tiptap/core' {
        * Toggle a task list
        */
       toggleTaskList: () => ReturnType;
+      insertTaskItem: (
+        text: string,
+        checked: boolean,
+        from: number,
+        to: number,
+      ) => ReturnType;
     };
     codeBlock: {
       /**

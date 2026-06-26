@@ -28,7 +28,6 @@
   "dependencies": {
     "@textory/context": "workspace:^",
     "@textory/editor-common": "workspace:^",
-    "@textory/extension-bold": "workspace:^",
     "@textory/extension-image": "workspace:^",
     "classnames": "^2.5.1",
     "rc-overflow": "^1.4.1",
@@ -37,10 +36,8 @@
   },
   "devDependencies": {
     "@tiptap/core": "^3.13.0",
-    "@tiptap/extension-heading": "^3.13.0",
     "@tiptap/pm": "^3.13.0",
     "@tiptap/react": "^3.13.0",
-    "@tiptap/starter-kit": "^3.13.0",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "tsup": "^8.5.1",
@@ -48,10 +45,8 @@
   },
   "peerDependencies": {
     "@tiptap/core": "^3.13.0",
-    "@tiptap/extension-heading": "^3.13.0",
     "@tiptap/pm": "^3.13.0",
     "@tiptap/react": "^3.13.0",
-    "@tiptap/starter-kit": "^3.13.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   }

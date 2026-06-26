@@ -6,7 +6,14 @@
       "Bash(node:*)",
       "Bash(pnpm check:external)",
       "Bash(python3:*)",
-      "Bash(pip3 install:*)"
+      "Bash(pip3 install:*)",
+      "Bash(pnpm install:*)",
+      "Bash(pnpm build:*)",
+      "Bash(git stash:*)",
+      "Bash(pnpm --filter @textory/extension-task-item build:*)",
+      "Bash(pnpm --filter @textory/editor --filter @textory/editor-common --filter @textory/editor-toolbar --filter @textory/extension-bold --filter @textory/extension-image --filter @textory/extension-link --filter @textory/extension-outline --filter @textory/extension-table --filter @textory/extension-indent --filter @textory/extension-code-block --filter @textory/context build)",
+      "Bash(pnpm --filter @textory/editor --filter @textory/editor-toolbar --filter @textory/extension-bold --filter @textory/extension-image --filter @textory/extension-link --filter @textory/extension-outline --filter @textory/extension-table --filter @textory/extension-indent --filter @textory/extension-code-block --filter @textory/context build:*)",
+      "Bash(pnpm --filter @textory/extension-link build:*)"
     ]
   }
 }

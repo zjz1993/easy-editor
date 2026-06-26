@@ -294,9 +294,6 @@ importers:
       '@textory/editor-common':
         specifier: workspace:^
         version: link:../editor-common
-      '@textory/extension-bold':
-        specifier: workspace:^
-        version: link:../extension-bold
       '@textory/extension-image':
         specifier: workspace:^
         version: link:../extension-image
@@ -322,18 +319,12 @@ importers:
       '@tiptap/core':
         specifier: ^3.13.0
         version: 3.13.0(@tiptap/pm@3.13.0)
-      '@tiptap/extension-heading':
-        specifier: ^3.13.0
-        version: 3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))
       '@tiptap/pm':
         specifier: ^3.13.0
         version: 3.13.0
       '@tiptap/react':
         specifier: ^3.13.0
         version: 3.13.0(@floating-ui/dom@1.7.4)(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@tiptap/starter-kit':
-        specifier: ^3.13.0
-        version: 3.13.0
       '@types/react':
         specifier: ^18
         version: 18.3.12
@@ -348,14 +339,13 @@ importers:
         version: 5.6.2
 
   packages/extension-bold:
-    dependencies:
+    devDependencies:
       '@tiptap/core':
         specifier: ^3.13.0
         version: 3.13.0(@tiptap/pm@3.13.0)
       '@tiptap/extension-bold':
         specifier: ^3.13.0
         version: 3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))
-    devDependencies:
       tsup:
         specifier: ^8.5.1
         version: 8.5.1(@swc/core@1.15.3)(postcss@8.5.6)(typescript@5.6.2)
@@ -442,9 +432,6 @@ importers:
       '@tiptap/react':
         specifier: ^3.13.0
         version: 3.13.0(@floating-ui/dom@1.7.4)(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      prosemirror-state:
-        specifier: ^1.4.4
-        version: 1.4.4
       tsup:
         specifier: ^8.5.1
         version: 8.5.1(@swc/core@1.15.3)(postcss@8.5.6)(typescript@5.6.2)
@@ -485,9 +472,6 @@ importers:
       '@textory/editor-toolbar':
         specifier: workspace:^
         version: link:../editor-toolbar
-      linkifyjs:
-        specifier: ^4.2.0
-        version: 4.2.0
     devDependencies:
       '@tiptap/core':
         specifier: ^3.13.0
@@ -501,6 +485,9 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.1
         version: 18.3.1
+      linkifyjs:
+        specifier: ^4.2.0
+        version: 4.2.0
       prosemirror-state:
         specifier: ^1.4.4
         version: 1.4.4
@@ -550,9 +537,6 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.1
         version: 18.3.1
-      prosemirror-state:
-        specifier: ^1.4.4
-        version: 1.4.4
       tsup:
         specifier: ^8.5.1
         version: 8.5.1(@swc/core@1.15.3)(postcss@8.5.6)(typescript@5.6.2)
@@ -602,9 +586,6 @@ importers:
       prosemirror-model:
         specifier: ^1.25.4
         version: 1.25.4
-      prosemirror-state:
-        specifier: ^1.4.3
-        version: 1.4.4
       tsup:
         specifier: ^8.5.1
         version: 8.5.1(@swc/core@1.15.3)(postcss@8.5.6)(typescript@5.6.2)
@@ -613,6 +594,10 @@ importers:
         version: 5.6.2
 
   packages/extension-task-item:
+    dependencies:
+      '@textory/context':
+        specifier: workspace:^
+        version: link:../editor-context
     devDependencies:
       '@tiptap/core':
         specifier: ^3.13.0

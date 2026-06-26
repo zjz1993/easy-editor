@@ -41,8 +41,15 @@ const Editor: FC<TEasyEditorProps> = props => {
       minHeight: 100,
     },
   });
-  const { content, onChange, autoFocus, placeholder, className, style } =
-    mergedProps;
+  const {
+    content,
+    onChange,
+    autoFocus,
+    placeholder,
+    className,
+    style,
+    outputHTML,
+  } = mergedProps;
   const extensions = [
     StarterKit.configure({
       bold: false,
@@ -103,7 +110,11 @@ const Editor: FC<TEasyEditorProps> = props => {
     content,
     editable: mergedProps.editable,
     onUpdate: ({ editor }) => {
-      onChange?.(editor.state.doc.toJSON());
+      if (outputHTML) {
+        onChange?.(editor.getHTML());
+      } else {
+        onChange?.(editor.state.doc.toJSON());
+      }
     },
   });
 

@@ -37,7 +37,9 @@ export default defineConfig({
     "react-intl-universal",
     "@floating-ui/react",
     "react-hook-form",
-    "uuid"
+    "uuid",
+    "linkifyjs",
+    /^linkifyjs\/.*/
   ],
   platform: "browser",
   splitting: false,
