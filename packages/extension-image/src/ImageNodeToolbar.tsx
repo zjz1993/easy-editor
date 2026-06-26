@@ -1,0 +1,70 @@
+import type {FC} from 'react';
+import {InputNumber, useControlledValue} from '@textory/editor-common';
+import ToolbarButton from '../src/components/ToolbarButton';
+import type {AlignType} from '@textory/context';
+
+const ImageNodeToolbar: FC<{
+  defaultWidth: number;
+  onWidthChange: (width: number) => void;
+  onAlignChange: (align: AlignType) => void;
+  onRemove: () => void;
+  onBorder: () => void;
+  hasBorder?: boolean;
+  align: AlignType;
+}> = props => {
+  const {
+    onAlignChange,
+    align,
+    hasBorder,
+    onRemove,
+    defaultWidth,
+    onWidthChange,
+    onBorder,
+  } = props;
+  const [width, setWidth] = useControlledValue<number>({
+    value: defaultWidth,
+    defaultValue: 1,
+    // onChange: onOpenChange,
+  });
+
+  return (
+    <div className="textory-image-toolbar">
+      <div className="textory-image-toolbar-item textory-image-toolbar-input-item">
+        <span>宽：</span>
+        <InputNumber
+          suffix="px"
+          min={1}
+          value={width}
+          onChange={value => {
+            setWidth(value as number);
+            onWidthChange(value as number);
+          }}
+        />
+      </div>
+      {(['left', 'center', 'right'] as AlignType[]).map(item => (
+        <ToolbarButton
+          key={item}
+          isActive={align === item}
+          icon={`align-${item}`}
+          onClick={() => {
+            onAlignChange(item);
+          }}
+          tooltip={`align.${item}`}
+        />
+      ))}
+      <ToolbarButton
+        isActive={hasBorder}
+        icon="border"
+        onClick={onBorder}
+        tooltip="image.border"
+      />
+      <ToolbarButton
+        iconClassName="icon icon-delete"
+        icon="remove"
+        onClick={onRemove}
+        tooltip="delete"
+      />
+    </div>
+  );
+};
+export default ImageNodeToolbar;

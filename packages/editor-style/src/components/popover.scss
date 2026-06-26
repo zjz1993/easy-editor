@@ -1,0 +1,9 @@
+@use "../variable/index" as var;
+.#{var.$editor-name}-popover-container {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  min-width: 200px;
+  max-width: 320px;
+}

@@ -1,0 +1,55 @@
+{
+  "name": "@textory/extension-table",
+  "version": "0.0.1",
+  "private": false,
+  "files": [
+    "dist"
+  ],
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.mts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean": "rm -rf dist && rm -rf .turbo",
+    "dev": "tsup src/index.ts --format esm --watch --silent --dts",
+    "build": "tsup --config tsup.config.ts"
+  },
+  "dependencies": {
+    "@textory/editor-common": "workspace:^",
+    "@textory/styles": "workspace:*",
+    "classnames": "^2.5.1"
+  },
+  "devDependencies": {
+    "@tiptap/extension-table": "^3.13.0",
+    "@tiptap/extension-table-cell": "^3.13.0",
+    "@tiptap/extension-table-header": "^3.13.0",
+    "@tiptap/extension-table-row": "^3.13.0",
+    "@tiptap/react": "^3.13.0",
+    "prosemirror-model": "^1.25.4",
+    "@tiptap/core": "^3.13.0",
+    "@tiptap/pm": "^3.13.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.6.0"
+  },
+  "peerDependencies": {
+    "prosemirror-model": "^1.25.4",
+    "@tiptap/core": "^3.13.0",
+    "@tiptap/pm": "^3.13.0",
+    "@tiptap/extension-table": "^3.13.0",
+    "@tiptap/extension-table-cell": "^3.13.0",
+    "@tiptap/extension-table-header": "^3.13.0",
+    "@tiptap/extension-table-row": "^3.13.0",
+    "@tiptap/react": "^3.13.0",
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "sideEffects": false
+}

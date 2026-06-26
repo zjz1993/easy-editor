@@ -1,0 +1,45 @@
+{
+  "name": "@textory/extension-outline",
+  "version": "0.0.1",
+  "private": false,
+  "files": [
+    "dist"
+  ],
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.mts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean": "rm -rf dist && rm -rf .turbo",
+    "dev": "tsup src/index.ts --format esm --watch --silent --dts",
+    "build": "tsup --config tsup.config.ts"
+  },
+  "dependencies": {
+    "@floating-ui/react": "^0.27.4",
+    "@textory/editor-common": "workspace:^",
+    "framer-motion": "^12.23.12"
+  },
+  "devDependencies": {
+    "@tiptap/core": "^3.13.0",
+    "@tiptap/pm": "^3.13.0",
+    "@tiptap/react": "^3.13.0",
+    "@types/react-dom": "^18.3.1",
+    "tsup": "^8.5.1",
+    "typescript": "^5.6.0"
+  },
+  "peerDependencies": {
+    "@tiptap/core": "^3.13.0",
+    "@tiptap/pm": "^3.13.0",
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "sideEffects": false
+}

@@ -1,0 +1,29 @@
+@use "../variable/index" as var;
+.#{var.$editor-name}-tree {
+  font-family: Arial, sans-serif;
+  user-select: none;
+  &-node {
+    margin-left: 20px; /* 整体缩进 */
+    .node-header {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 4px 0;
+    }
+
+    .toggle-icon {
+      display: inline-block;
+      width: 16px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .node-label {
+      margin-left: 4px;
+    }
+
+    .children {
+      margin-left: 20px; /* 子节点缩进 */
+    }
+  }
+}

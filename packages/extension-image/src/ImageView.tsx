@@ -1,0 +1,245 @@
+import {NodeViewWrapper, useEditorState} from '@tiptap/react';
+import type {NodeViewProps} from '@tiptap/core';
+import cx from 'classnames';
+import {Iconfont, isViewEditable, Popover, PREVIEW_CLS,} from '@textory/editor-common';
+import {type FC, useEffect, useRef, useState} from 'react';
+import useHandleChangeImageSize from './hooks/useHandleChangeImageSize.ts';
+import ImageNodeToolbar from './ImageNodeToolbar.tsx';
+import {attachmentUploadPluginKey} from './plugin/ImagePlaceholderPlugin.ts';
+import ImageErrorView from './ImageErrorView.tsx';
+
+const fileToObjectUrl = (file: Blob | MediaSource) => {
+  const url = window.URL || window.webkitURL;
+  return url.createObjectURL(file);
+};
+const getProgressCircleProps = (value: number) => {
+  const onePercentDeg = 360 / 100;
+  const rightRotateDeg = value <= 50 ? onePercentDeg * value : 180;
+  const leftRotateDeg = value > 50 ? onePercentDeg * (value - 50) : 0;
+  const beginDeg = -45;
+  const rightAnimationCls = value > 50 ? '' : 'has-animation';
+  return {
+    leftRotateDeg: beginDeg + leftRotateDeg,
+    rightRotateDeg: beginDeg + rightRotateDeg,
+    rightAnimationCls: rightAnimationCls,
+  };
+};
+
+const ImageView: FC<NodeViewProps> = props => {
+  const imgRef = useRef<HTMLImageElement>();
+  const popoverRef = useRef<any>();
+  const [imageRatio, setImageRatio] = useState<number | undefined>();
+  const { updateAttributes, node, selected, editor, view, getPos } = props;
+  const { attrs } = node;
+  const { width, height, src, textAlign, id, hasBorder, isError } = attrs;
+  const containerRef = useRef(null);
+  const { handleMouseDown, size, changeSize } = useHandleChangeImageSize({
+    containerRef,
+    initWidth: width,
+    initHeight: height,
+    ratio: imageRatio,
+    onResizeEnd: data => {
+      updateAttributes(data);
+    },
+  });
+  const handleClickImage = () => {
+    if (isError) {
+      return;
+    }
+    // 如果需要手动触发选中状态，可以使用 editor 的命令
+    const pos = getPos();
+    editor.chain().setNodeSelection(pos).run(); // 手动选中节点
+  };
+  const handleRemove = () => {
+    const imagePos = getPos();
+    const tr = view.state.tr;
+    tr.delete(imagePos, imagePos + 1);
+    view.dispatch(tr);
+    view.focus();
+  };
+  useEffect(() => {
+    const editorDom = editor.view.dom;
+
+    const handleDragOver = (event: DragEvent) => {
+      event.preventDefault();
+    };
+
+    const handleDrop = (event: DragEvent) => {
+      const pos = editor.view.posAtCoords({
+        left: event.clientX,
+        top: event.clientY,
+      });
+
+      const currentPos = getPos?.();
+      if (!pos || typeof currentPos !== 'number') return;
+
+      event.preventDefault();
+
+      const insertPos = pos.pos > currentPos ? pos.pos - 1 : pos.pos;
+
+      const tr = editor.view.state.tr
+        .delete(currentPos, currentPos + 1)
+        .insert(insertPos, node);
+
+      editor.view.dispatch(tr);
+    };
+
+    editorDom.addEventListener('dragover', handleDragOver);
+    editorDom.addEventListener('drop', handleDrop);
+
+    return () => {
+      editorDom.removeEventListener('dragover', handleDragOver);
+      editorDom.removeEventListener('drop', handleDrop);
+    };
+  }, [editor, getPos, node]);
+  const getProgressCircleHTML = (value: number) => {
+    const { leftRotateDeg, rightRotateDeg, rightAnimationCls } =
+      getProgressCircleProps(value);
+    return (
+      <div className="circle">
+        <div className="circle-left">
+          <div
+            className="inner"
+            style={{ transform: `rotate(${leftRotateDeg}deg)` }}
+          ></div>
+        </div>
+        <div className="circle-right">
+          <div
+            className={cx('inner', rightAnimationCls)}
+            style={{ transform: `rotate(${rightRotateDeg}deg)` }}
+          ></div>
+        </div>
+        <div className="circle-text">{Number.parseInt(String(value), 10)}%</div>
+      </div>
+    );
+  };
+
+  const progress = useEditorState({
+    editor,
+
+    selector: ({ editor }) => {
+      const pluginState = attachmentUploadPluginKey.getState(editor.state);
+      return pluginState?.progressMap?.[id] ?? 0;
+    },
+  });
+  const normalImg = (
+    <>
+      <div className={PREVIEW_CLS.FULL_SCREEN}>
+        <Iconfont type="icon-enterfs" />
+      </div>
+      {progress ? (
+        <>
+          <div className="textory-image__placeholder">
+            {getProgressCircleHTML(progress)}
+          </div>
+          <img src={src} />
+        </>
+      ) : (
+        <Popover
+          ref={popoverRef}
+          content={
+            <ImageNodeToolbar
+              onAlignChange={align => {
+                updateAttributes({ textAlign: align });
+                // popoverRef.current.update();
+              }}
+              align={textAlign}
+              hasBorder={hasBorder}
+              defaultWidth={width}
+              onRemove={handleRemove}
+              onBorder={() => {
+                updateAttributes({ hasBorder: !hasBorder });
+              }}
+              onWidthChange={value => {
+                if (imageRatio) {
+                  const newHeight = value / imageRatio;
+                  changeSize(value, newHeight);
+                  updateAttributes({ width: value, height: newHeight });
+                }
+              }}
+            />
+          }
+          triggerAction="hover"
+        >
+          <img
+            onLoad={() => {
+              const $image = imgRef.current;
+              const checkImageShow = ($image: HTMLImageElement) => {
+                return new Promise((resolve, reject) => {
+                  if (!$image) {
+                    reject();
+                  }
+                  const checkImageSize = () => {
+                    if ($image.clientWidth > 0 && $image.clientHeight > 0) {
+                      resolve('');
+                    } else {
+                      requestAnimationFrame(checkImageSize);
+                    }
+                  };
+                  checkImageSize();
+                });
+              };
+              checkImageShow($image).then(() => {
+                const ratio = $image.clientWidth / $image.clientHeight;
+                setImageRatio(ratio);
+              });
+            }}
+            ref={imgRef}
+            src={src}
+            alt=""
+            width={size.width}
+            height={size.height}
+            draggable={false} // 禁止原生拖动
+          />
+        </Popover>
+      )}
+      {selected && isViewEditable(view) && (
+        <>
+          <div
+            className="top-left textory-image__resize-handle"
+            onMouseDown={e => handleMouseDown(e, 'top-left')}
+          />
+          <div
+            className="top-right textory-image__resize-handle"
+            onMouseDown={e => handleMouseDown(e, 'top-right')}
+          />
+          <div
+            className="bottom-left textory-image__resize-handle"
+            onMouseDown={e => handleMouseDown(e, 'bottom-left')}
+          />
+          <div
+            className="bottom-right textory-image__resize-handle"
+            onMouseDown={e => handleMouseDown(e, 'bottom-right')}
+          />
+        </>
+      )}
+    </>
+  );
+
+  return (
+    <NodeViewWrapper
+      draggable="true"
+      ref={containerRef}
+      className={cx(
+        `textory-image-${textAlign}`,
+        'textory-image-container',
+        'textory-block-container',
+      )}
+      as="div"
+      onClick={handleClickImage}
+    >
+      <span
+        className={cx(
+          'textory-image',
+          !isError && 'selectable',
+          !progress && 'textory-image-normal',
+          hasBorder && 'textory-image-border',
+        )}
+        data-id={id}
+      >
+        {isError ? <ImageErrorView onRemove={handleRemove} /> : normalImg}
+      </span>
+    </NodeViewWrapper>
+  );
+};
+export default ImageView;

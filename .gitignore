@@ -1,0 +1,6 @@
+.turbo/*
+node_modules
+.idea
+dist
+packages/*/.turbo/*
+packages/*/.turbo/
