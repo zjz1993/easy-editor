@@ -22,7 +22,8 @@
       "Bash(for pkg in extension-code-block extension-image extension-indent editor-toolbar editor-main)",
       "Bash(do echo \"=== $pkg ===\" cat /Users/zhaojunzhe/easy-editor/packages/$pkg/package.json)",
       "Bash(ls:*)",
-      "Bash(pnpm --filter @textory/extension-code-block --filter @textory/extension-image --filter @textory/extension-indent --filter @textory/editor-toolbar --filter @textory/editor build:*)"
+      "Bash(pnpm --filter @textory/extension-code-block --filter @textory/extension-image --filter @textory/extension-indent --filter @textory/editor-toolbar --filter @textory/editor build:*)",
+      "Bash(npm view:*)"
     ]
   }
 }

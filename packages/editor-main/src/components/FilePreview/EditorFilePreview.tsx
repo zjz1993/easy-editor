@@ -1,4 +1,4 @@
-import {FilePreview, isEmpty} from '@textory/editor-common';
+import {FilePreview} from '@textory/editor-common';
 import type {FC, ReactNode} from 'react';
 import {useEffect, useState} from 'react';
 import {EditorFilePreviewPlugin} from './EditorFilePreviewPlugin';
@@ -7,6 +7,7 @@ import {collectImagePreviewFiles, getFileIndex} from './utils';
 import collectPreviewFiles from './collectPreviewFiles';
 import type {Editor} from '@tiptap/core';
 import {PluginKey} from '@tiptap/pm/state';
+import {isEmpty} from 'lodash-es';
 
 export interface EditorFilePreviewProps {
   editor: Editor;

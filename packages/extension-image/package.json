@@ -26,7 +26,7 @@
     "@textory/context": "workspace:^",
     "@textory/editor-common": "workspace:^",
     "classnames": "^2.5.1",
-    "lodash-es": "^4.17.21"
+    "lodash-es": "^4.18.0"
   },
   "devDependencies": {
     "@tiptap/react": "^3.13.0",
