@@ -1,4 +1,5 @@
 @use '../colors/colors' as styles;
+@use "../variable/index" as var;
 .rc-trigger-popup {
   position: absolute;
   left: -9999px;
@@ -143,27 +144,27 @@
   transform: translateY(100%);
 }
 
-.disabled.textory-dropdown-container {
+.disabled.#{var.$editor-name}-dropdown-container {
   cursor: not-allowed;
   opacity: 0.3;
 }
 
-.textory-dropdown-container {
+.#{var.$editor-name}-dropdown-container {
   cursor: pointer;
 }
 
-.textory-dropdown-container-same-width.textory-dropdown-container {
+.#{var.$editor-name}-dropdown-container-same-width.#{var.$editor-name}-dropdown-container {
   width: 100%;
 }
 
-.textory-dropdown-panel {
+.#{var.$editor-name}-dropdown-panel {
   padding: 6px;
   background: white;
   box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 8%), 0 3px 6px -4px rgba(0, 0, 0, 12%),
   0 9px 28px 8px rgba(0, 0, 0, 5%);
 
-  .textory-dropdown__content {
-    .textory-dropdown__content__item {
+  .#{var.$editor-name}-dropdown__content {
+    .#{var.$editor-name}-dropdown__content__item {
       padding: 6px 0px;
       cursor: pointer;
 

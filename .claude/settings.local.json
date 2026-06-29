@@ -23,7 +23,17 @@
       "Bash(do echo \"=== $pkg ===\" cat /Users/zhaojunzhe/easy-editor/packages/$pkg/package.json)",
       "Bash(ls:*)",
       "Bash(pnpm --filter @textory/extension-code-block --filter @textory/extension-image --filter @textory/extension-indent --filter @textory/editor-toolbar --filter @textory/editor build:*)",
-      "Bash(npm view:*)"
+      "Bash(npm view:*)",
+      "Bash(for c in Button Spin IconFont InputNumber DropdownPanel Dropdown DropdownList Popover Tooltip Modal Message Switch FilePreview)",
+      "Bash(do)",
+      "Bash(git mv:*)",
+      "Bash(echo:*)",
+      "Bash(done)",
+      "Bash(head -20 echo \"\" echo \"=== editor-common still exports BubbleMenu + Upload ===\" grep -E \"BubbleMenu|Upload\" packages/editor-common/dist/index.d.mts)",
+      "Bash(head -10 echo \"\" echo \"=== editor-common 仍 re-export UI 组件 ===\" grep -E \"\\(Modal|Dropdown|Button|Message|Spin|Switch|Tooltip|Popover|FilePreview|InputNumber|Iconfont\\)\" packages/editor-common/dist/index.d.mts)",
+      "Bash(pkill:*)",
+      "Bash(lsof:*)",
+      "Bash(curl:*)"
     ]
   }
 }

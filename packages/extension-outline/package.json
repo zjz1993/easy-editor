@@ -38,8 +38,8 @@
   "peerDependencies": {
     "@tiptap/core": "^3.13.0",
     "@tiptap/pm": "^3.13.0",
-    "react": ">=18",
-    "react-dom": ">=18"
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19"
   },
   "sideEffects": false
 }

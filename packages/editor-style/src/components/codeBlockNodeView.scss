@@ -1,6 +1,6 @@
 @use "../colors/colors" as styles;
-
-.textory-code-block {
+@use "../variable/index" as var;
+.#{var.$editor-name}-code-block {
   position: relative;
   display: block;
   border: 1px solid styles.$border-color;
@@ -26,7 +26,7 @@
 
   &__content-wrapper{
     display: flex;
-    .textory-code-block__line-numbers{
+    .#{var.$editor-name}-code-block__line-numbers{
       font-size: 14px;
       line-height: 25px;
       min-width: 15px;
@@ -34,7 +34,7 @@
       color: rgba(0, 0, 0, 0.3);
       margin-right: 10px;
     }
-    .textory-code-block__content {
+    .#{var.$editor-name}-code-block__content {
       font-size: 14px;
       line-height: 25px;
       flex:1;
@@ -217,11 +217,11 @@
   }
 
 }
-.textory-code-block__dropdown {
-  .textory-dropdown-menu__item--active{
+.#{var.$editor-name}-code-block__dropdown {
+  .#{var.$editor-name}-dropdown-menu__item--active{
     color: styles.$primary-color;
   }
-  .textory-dropdown-menu__item {
+  .#{var.$editor-name}-dropdown-menu__item {
     clear: both;
     margin: 0;
     padding: 0 8px;
@@ -237,7 +237,7 @@
       margin-bottom: 8px;
     }
   }
-  .textory-dropdown-menu__content {
+  .#{var.$editor-name}-dropdown-menu__content {
     display: flex;
     flex-direction: column;
     width: 180px;
@@ -297,7 +297,7 @@
   }
 }
 
-.textory-code-block__dropdown-trigger {
+.#{var.$editor-name}-code-block__dropdown-trigger {
   flex-shrink: 0;
   margin: 0 8px 0 0;
   font-size: inherit;

@@ -119,7 +119,7 @@ const Editor: FC<TEasyEditorProps> = props => {
     },
   });
 
-  if (import.meta.env.MODE === 'development') {
+  if (process.env.NODE_ENV === 'development') {
     (window as any).__EASY_EDITOR__ = editor;
   }
   return (

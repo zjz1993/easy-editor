@@ -1,1 +1,2 @@
-export { default as useControlledValue } from './useControlledValue.ts';
+// useControlledValue 已迁移到 @textory/editor-common-ui，这里 re-export 维持向后兼容
+export { useControlledValue } from '@textory/editor-common-ui';

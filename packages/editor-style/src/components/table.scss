@@ -1,5 +1,6 @@
 @use "../colors/colors" as styles;
-.textory-table{
+@use "../variable/index" as var;
+.#{var.$editor-name}-table{
   &-column-resizer{
     cursor: col-resize;
     position: absolute;
@@ -12,7 +13,7 @@
   }
 }
 
-.textory-table-menu{
+.#{var.$editor-name}-table-menu{
   background: styles.$primary-white;
   height: 40px;
   box-sizing: border-box;
@@ -37,7 +38,7 @@
       margin-right: 8px;
     }
   }
-  .textory-table-icon-delete{
+  .#{var.$editor-name}-table-icon-delete{
     &:hover{
       color: styles.$primary-red;
     }

@@ -1,5 +1,4 @@
-import Button from '../Button';
-import {message} from '../Message';
+import {Button, message} from '@textory/editor-common-ui';
 import Upload from 'rc-upload';
 import classnames from 'classnames';
 import {isEmpty, take} from 'lodash-es';

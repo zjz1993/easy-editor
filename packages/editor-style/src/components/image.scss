@@ -1,37 +1,38 @@
 @use "../colors/colors" as styles;
+@use "../variable/index" as var;
 $circle-size: 40px;
-.textory-image-center.textory-image-container{
+.#{var.$editor-name}-image-center.#{var.$editor-name}-image-container{
   text-align: center;
 }
-.textory-image-left.textory-image-container{
+.#{var.$editor-name}-image-left.#{var.$editor-name}-image-container{
   text-align: left;
 }
-.textory-image-right.textory-image-container{
+.#{var.$editor-name}-image-right.#{var.$editor-name}-image-container{
   text-align: right;
 }
-.textory-image-container {
+.#{var.$editor-name}-image-container {
   position: relative;
   display: inline-block;
   width: 100%;
   max-width: 100%;
-  .textory-image-border{
+  .#{var.$editor-name}-image-border{
     img{
       border: solid 1px #d9d9d9;
     }
   }
-  .textory-image-normal{
+  .#{var.$editor-name}-image-normal{
     &:hover{
       box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 20%);
       transition: all 0.3s;
-      .textory-image-full-screen{
+      .#{var.$editor-name}-image-full-screen{
         display: block;
       }
     }
   }
-  .selectable.textory-image{
+  .selectable.#{var.$editor-name}-image{
     cursor: pointer;
   }
-  .textory-image{
+  .#{var.$editor-name}-image{
     width: fit-content;
     position: relative;
     display: inline-block;
@@ -196,7 +197,7 @@ $circle-size: 40px;
   }
 }
 // 图片工具栏
-.textory-image-toolbar{
+.#{var.$editor-name}-image-toolbar{
   height: 32px;
   display: flex;
   align-items: center;

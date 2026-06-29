@@ -40,7 +40,7 @@
         "uuid": "^11.1.0"
     },
     "devDependencies": {
-        "@textory/styles": "workspace:*",
+        "@textory/styles": "workspace:^",
         "@tiptap/core": "^3.13.0",
         "@tiptap/extension-color": "^3.13.0",
         "@tiptap/extension-highlight": "^3.13.0",
@@ -67,7 +67,7 @@
         "@tiptap/extension-underline": "^3.13.0",
         "@tiptap/pm": "^3.13.0",
         "@tiptap/starter-kit": "^3.13.0",
-        "react": ">=18",
-        "react-dom": ">=18"
+        "react": "^18 || ^19",
+        "react-dom": "^18 || ^19"
     }
 }

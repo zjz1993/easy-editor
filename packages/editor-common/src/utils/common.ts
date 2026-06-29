@@ -1,21 +1,11 @@
-import {KeyCode} from '../const';
 import {filter, isEmpty, map, size, some, toArray} from 'lodash-es';
-import {message} from '../components/Message';
+import {message} from '@textory/editor-common-ui';
 import IntlComponent from 'react-intl-universal';
 import {convertToTable} from './convertToTable.ts';
 import type {RcFile} from "rc-upload/es/interface";
 
-export const doDownloadByUrl = (tempUrl: string) => {
-  const linkNode = document.createElement('a');
-  linkNode.style.display = 'none';
-  linkNode.href = tempUrl;
-  document.body.appendChild(linkNode);
-  linkNode.click(); //模拟在按钮上的一次鼠标单击
-  document.body.removeChild(linkNode);
-};
-export const isEsc = ({ keyCode }: { keyCode: any }) => {
-  return keyCode === KeyCode.ESC;
-};
+// doDownloadByUrl / isEsc 已迁移到 @textory/editor-common-ui，这里 re-export 维持向后兼容
+export {doDownloadByUrl, isEsc} from '@textory/editor-common-ui';
 export const isWindows = () => {
   return navigator.userAgent.indexOf('Windows') > -1;
 };

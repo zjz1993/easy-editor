@@ -99,6 +99,9 @@ importers:
       '@textory/context':
         specifier: workspace:^
         version: link:../editor-context
+      '@textory/editor-common-ui':
+        specifier: workspace:^
+        version: link:../editor-common-ui
       ahooks:
         specifier: ^3.8.4
         version: 3.8.4(react@18.3.1)
@@ -121,10 +124,10 @@ importers:
         specifier: ^4.9.0
         version: 4.9.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
-        specifier: '>=18'
+        specifier: ^18 || ^19
         version: 18.3.1
       react-dom:
-        specifier: '>=18'
+        specifier: ^18 || ^19
         version: 18.3.1(react@18.3.1)
       react-intl-universal:
         specifier: ^2.12.0
@@ -155,13 +158,65 @@ importers:
         specifier: ^5.6.0
         version: 5.6.2
 
+  packages/editor-common-ui:
+    dependencies:
+      '@floating-ui/react':
+        specifier: ^0.27.4
+        version: 0.27.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@textory/context':
+        specifier: workspace:^
+        version: link:../editor-context
+      ahooks:
+        specifier: ^3.8.4
+        version: 3.8.4(react@18.3.1)
+      classnames:
+        specifier: ^2.5.1
+        version: 2.5.1
+      framer-motion:
+        specifier: ^12.23.12
+        version: 12.23.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      lodash-es:
+        specifier: ^4.18.0
+        version: 4.18.1
+      rc-input-number:
+        specifier: ^9.4.0
+        version: 9.4.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      rc-trigger:
+        specifier: ^5.3.4
+        version: 5.3.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react:
+        specifier: ^18 || ^19
+        version: 18.3.1
+      react-dom:
+        specifier: ^18 || ^19
+        version: 18.3.1(react@18.3.1)
+      react-intl-universal:
+        specifier: ^2.12.0
+        version: 2.12.0(react@18.3.1)
+    devDependencies:
+      '@types/lodash-es':
+        specifier: ^4.17.12
+        version: 4.17.12
+      '@types/react':
+        specifier: ^18
+        version: 18.3.12
+      '@types/react-dom':
+        specifier: ^18
+        version: 18.3.1
+      tsup:
+        specifier: ^8.5.1
+        version: 8.5.1(@swc/core@1.15.3)(postcss@8.5.6)(typescript@5.6.2)
+      typescript:
+        specifier: ^5.6.0
+        version: 5.6.2
+
   packages/editor-context:
     dependencies:
       react:
-        specifier: '>=18'
+        specifier: ^18 || ^19
         version: 18.3.1
       react-dom:
-        specifier: '>=18'
+        specifier: ^18 || ^19
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@tiptap/core':
@@ -228,17 +283,17 @@ importers:
         specifier: ^4.18.0
         version: 4.18.1
       react:
-        specifier: '>=18'
+        specifier: ^18 || ^19
         version: 18.3.1
       react-dom:
-        specifier: '>=18'
+        specifier: ^18 || ^19
         version: 18.3.1(react@18.3.1)
       uuid:
         specifier: ^11.1.0
         version: 11.1.0
     devDependencies:
       '@textory/styles':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../editor-style
       '@tiptap/core':
         specifier: ^3.13.0
@@ -386,10 +441,10 @@ importers:
         specifier: ^2.9.0
         version: 2.9.0
       react:
-        specifier: '>=18'
+        specifier: ^18 || ^19
         version: 18.3.1
       react-dom:
-        specifier: '>=18'
+        specifier: ^18 || ^19
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@tiptap/core':
@@ -438,10 +493,10 @@ importers:
         specifier: ^4.18.0
         version: 4.18.1
       react:
-        specifier: '>=18'
+        specifier: ^18 || ^19
         version: 18.3.1
       react-dom:
-        specifier: '>=18'
+        specifier: ^18 || ^19
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@tiptap/core':
@@ -549,10 +604,10 @@ importers:
         specifier: ^12.23.12
         version: 12.23.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
-        specifier: '>=18'
+        specifier: ^18 || ^19
         version: 18.3.1
       react-dom:
-        specifier: '>=18'
+        specifier: ^18 || ^19
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@tiptap/core':
@@ -580,16 +635,16 @@ importers:
         specifier: workspace:^
         version: link:../editor-common
       '@textory/styles':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../editor-style
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
       react:
-        specifier: '>=18'
+        specifier: ^18 || ^19
         version: 18.3.1
       react-dom:
-        specifier: '>=18'
+        specifier: ^18 || ^19
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@tiptap/core':

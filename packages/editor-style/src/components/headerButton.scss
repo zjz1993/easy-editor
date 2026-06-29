@@ -1,5 +1,6 @@
 @use "../colors/colors" as styles;
-.textory-header-dropdown{
+@use "../variable/index" as var;
+.#{var.$editor-name}-header-dropdown{
   width: 250px;
   cursor: pointer;
   border-radius: 4px;

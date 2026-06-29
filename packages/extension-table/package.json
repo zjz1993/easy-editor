@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@textory/editor-common": "workspace:^",
-    "@textory/styles": "workspace:*",
+    "@textory/styles": "workspace:^",
     "classnames": "^2.5.1"
   },
   "devDependencies": {
@@ -48,8 +48,8 @@
     "@tiptap/extension-table-header": "^3.13.0",
     "@tiptap/extension-table-row": "^3.13.0",
     "@tiptap/react": "^3.13.0",
-    "react": ">=18",
-    "react-dom": ">=18"
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19"
   },
   "sideEffects": false
 }
