@@ -29,6 +29,7 @@
         "@textory/editor-toolbar": "workspace:^",
         "@textory/extension-bold": "workspace:^",
         "@textory/extension-code-block": "workspace:^",
+        "@textory/extension-export": "workspace:^",
         "@textory/extension-image": "workspace:^",
         "@textory/extension-indent": "workspace:^",
         "@textory/extension-link": "workspace:^",
@@ -67,6 +68,7 @@
         "@tiptap/extension-underline": "^3.13.0",
         "@tiptap/pm": "^3.13.0",
         "@tiptap/starter-kit": "^3.13.0",
+        "docx": "^9.6.1",
         "react": "^18 || ^19",
         "react-dom": "^18 || ^19"
     }

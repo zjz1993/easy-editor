@@ -5,8 +5,7 @@ import {Bold} from '@textory/extension-bold';
 import {EditorContent} from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import cx from 'classnames';
-import type {FC} from 'react';
-import {useRef} from 'react';
+import {forwardRef, useImperativeHandle, useRef} from 'react';
 import {CodeBlock} from '@textory/extension-code-block';
 import {Indent} from '@textory/extension-indent';
 import {CustomLink} from '@textory/extension-link';
@@ -26,8 +25,21 @@ import {OutlineExtension, OutlineView} from '@textory/extension-outline';
 import {useEditorProps} from './hooks/useEditorProps.ts';
 import {EditorProvider, type TEasyEditorProps} from '@textory/context';
 import {useTiptapWithSync} from './hooks/useTiptapWithSync.ts';
+import {exportWORD, type ExportOptions} from '@textory/extension-export';
 
-const Editor: FC<TEasyEditorProps> = props => {
+/**
+ * Ref handle exposed by the Editor component.
+ * Allows parent components to call imperative methods.
+ */
+export interface EditorRef {
+  /**
+   * Export the editor content as a DOCX file.
+   * Uses the editor's current content if `data.content` is not provided.
+   */
+  export: (options?: ExportOptions) => Promise<void>;
+}
+
+const Editor = forwardRef<EditorRef, TEasyEditorProps>((props, ref) => {
   const imgUploader = useRef<any>();
   const fileUploader = useRef<any>();
   const { intlInit } = useIntlLoaded();
@@ -119,6 +131,19 @@ const Editor: FC<TEasyEditorProps> = props => {
     },
   });
 
+  useImperativeHandle(ref, () => ({
+    export: (options: ExportOptions = {}) => {
+      const content = options.data?.content ?? editor?.getJSON();
+      return exportWORD({
+        ...options,
+        data: {
+          title: options.data?.title ?? mergedProps.title,
+          content,
+        },
+      });
+    },
+  }), [editor, mergedProps.title]);
+
   if (process.env.NODE_ENV === 'development') {
     (window as any).__EASY_EDITOR__ = editor;
   }
@@ -141,6 +166,8 @@ const Editor: FC<TEasyEditorProps> = props => {
       </div>
     </EditorProvider>
   );
-};
+});
+
+Editor.displayName = 'Editor';
 
 export default Editor;

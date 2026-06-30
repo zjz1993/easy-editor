@@ -1,0 +1,44 @@
+{
+  "name": "@textory/extension-export",
+  "version": "0.0.1",
+  "private": false,
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.mts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rm -rf dist && rm -rf .turbo",
+    "dev": "tsup src/index.ts --format esm --watch --silent --dts",
+    "build": "tsup --config tsup.config.ts"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "@tiptap/core": "^3.13.0",
+    "docx": "^9.6.1",
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19"
+  },
+  "dependencies": {
+    "@textory/context": "workspace:^",
+    "@textory/editor-common-ui": "workspace:^",
+    "image-meta": "^0.2.2"
+  },
+  "devDependencies": {
+    "@tiptap/core": "^3.13.0",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "docx": "^9.6.1",
+    "tsup": "^8.5.1",
+    "typescript": "^5.6.0"
+  }
+}

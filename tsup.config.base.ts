@@ -39,7 +39,10 @@ export default defineConfig({
     "react-hook-form",
     "uuid",
     "linkifyjs",
-    /^linkifyjs\/.*/
+    /^linkifyjs\/.*/,
+    // 导出 DOCX 用到的依赖
+    "docx",
+    "image-meta"
   ],
   platform: "browser",
   splitting: false,

@@ -33,7 +33,9 @@
       "Bash(head -10 echo \"\" echo \"=== editor-common 仍 re-export UI 组件 ===\" grep -E \"\\(Modal|Dropdown|Button|Message|Spin|Switch|Tooltip|Popover|FilePreview|InputNumber|Iconfont\\)\" packages/editor-common/dist/index.d.mts)",
       "Bash(pkill:*)",
       "Bash(lsof:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(pnpm --filter @textory/extension-export build:*)",
+      "Bash(pnpm exec tsc:*)"
     ]
   }
 }
