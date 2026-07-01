@@ -1,8 +1,8 @@
-import {filter, isEmpty, map, size, some, toArray} from 'lodash-es';
+import {filter, isEmpty, map, some, toArray} from 'lodash-es';
 import {message} from '@textory/editor-common-ui';
 import IntlComponent from 'react-intl-universal';
-import {convertToTable} from './convertToTable.ts';
-import type {RcFile} from "rc-upload/es/interface";
+import {convertToTable} from './convertToTable';
+import type {RcFile} from 'rc-upload/es/interface';
 
 // doDownloadByUrl / isEsc 已迁移到 @textory/editor-common-ui，这里 re-export 维持向后兼容
 export {doDownloadByUrl, isEsc} from '@textory/editor-common-ui';
@@ -12,7 +12,7 @@ export const isWindows = () => {
 export const parseMIMEType = (fileType: string) => {
   if (typeof fileType === 'string') {
     const arr = fileType.split('/');
-    if (size(arr) !== 2) {
+    if (arr.length !== 2) {
       return ['', ''];
     }
     return arr;

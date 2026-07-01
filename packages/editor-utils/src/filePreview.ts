@@ -1,4 +1,4 @@
-import {BLOCK_TYPES} from '../const';
+import {BLOCK_TYPES} from './constants';
 import {Node, NodeType} from '@tiptap/pm/model';
 import {isString, size} from 'lodash-es';
 

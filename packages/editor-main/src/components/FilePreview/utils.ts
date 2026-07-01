@@ -1,4 +1,4 @@
-import {isFileNode, isImageNode, PREVIEW_CLS,} from '@textory/editor-common';
+import {isFileNode, isImageNode, PREVIEW_CLS,} from '@textory/editor-utils';
 import {findIndex, forEach} from 'lodash-es';
 
 export const getViewFileNodes = $view => {

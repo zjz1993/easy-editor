@@ -1,10 +1,5 @@
-import {
-  BLOCK_TYPES,
-  Iconfont,
-  IntlComponent,
-  MARK_TYPES,
-  Tooltip,
-} from '@textory/editor-common';
+import {BLOCK_TYPES, MARK_TYPES} from '@textory/editor-utils';
+import {Iconfont, IntlComponent, Tooltip} from '@textory/editor-common';
 import {useDebounceFn, useEventListener} from 'ahooks';
 import {useCallback, useRef, useState} from 'react';
 import {autoUpdate, flip, offset, shift, useFloating} from "@floating-ui/react";

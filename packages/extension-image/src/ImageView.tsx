@@ -1,7 +1,8 @@
 import {NodeViewWrapper, useEditorState} from '@tiptap/react';
 import type {NodeViewProps} from '@tiptap/core';
 import cx from 'classnames';
-import {Iconfont, isViewEditable, Popover, PREVIEW_CLS,} from '@textory/editor-common';
+import {isViewEditable, PREVIEW_CLS} from '@textory/editor-utils';
+import {Iconfont, Popover} from '@textory/editor-common';
 import {type FC, useEffect, useRef, useState} from 'react';
 import useHandleChangeImageSize from './hooks/useHandleChangeImageSize.ts';
 import ImageNodeToolbar from './ImageNodeToolbar.tsx';

@@ -1,4 +1,4 @@
-import {MIN_COL_WIDTH} from '../const';
+import {MIN_COL_WIDTH} from './constants';
 import {fill, isEmpty, isNull} from 'lodash-es';
 //  @ts-ignore
 import {Fragment} from '@tiptap/pm/model';

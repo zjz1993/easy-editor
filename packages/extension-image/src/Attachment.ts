@@ -1,7 +1,7 @@
 import {Extension} from '@tiptap/core';
 import {ImageNode} from './ImageNode.ts';
 import type {IImageProps} from '@textory/context';
-import {BLOCK_TYPES} from '@textory/editor-common';
+import {BLOCK_TYPES} from '@textory/editor-utils';
 import {createUploadPlugin} from './plugin/ImagePlaceholderPlugin.ts';
 import uploadPasteAndDropPlugin from './plugin/pasteDrop.ts';
 

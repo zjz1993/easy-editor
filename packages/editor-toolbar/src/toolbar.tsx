@@ -3,12 +3,11 @@ import type {IImageProps} from '@textory/context';
 import {useEditorContext} from '@textory/context';
 import {
   BLOCK_TYPES,
-  DropdownPanel,
-  Iconfont,
   INDENT_TYPES,
   isSelectionInsideBlockByType,
   MARK_TYPES,
-} from '@textory/editor-common';
+} from '@textory/editor-utils';
+import {DropdownPanel, Iconfont} from '@textory/editor-common';
 import type {Editor} from '@tiptap/core';
 import Overflow from 'rc-overflow';
 import AlignButton from './components/AlignButton/index.tsx';

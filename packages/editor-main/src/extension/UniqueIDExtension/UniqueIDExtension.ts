@@ -1,5 +1,5 @@
 import {Extension} from '@tiptap/core';
-import {BLOCK_TYPES} from '@textory/editor-common';
+import {BLOCK_TYPES} from '@textory/editor-utils';
 import createUniqueIdPluginNew from "./UniqueIdPlugin.ts";
 
 export const UniqueIDExtension = Extension.create({

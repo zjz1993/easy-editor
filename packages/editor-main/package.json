@@ -27,6 +27,7 @@
         "@textory/context": "workspace:^",
         "@textory/editor-common": "workspace:^",
         "@textory/editor-toolbar": "workspace:^",
+        "@textory/editor-utils": "workspace:^",
         "@textory/extension-bold": "workspace:^",
         "@textory/extension-code-block": "workspace:^",
         "@textory/extension-export": "workspace:^",

@@ -25,6 +25,7 @@
   "dependencies": {
     "@textory/editor-common": "workspace:^",
     "@textory/editor-toolbar": "workspace:^",
+    "@textory/editor-utils": "workspace:^",
     "@floating-ui/react": "^0.27.4",
     "ahooks": "^3.8.4"
   },

@@ -4,7 +4,8 @@ import classNames from 'classnames';
 import type React from 'react';
 import {useCallback, useMemo, useRef, useState} from 'react';
 import {getLanguageByValue, getLanguageByValueOrAlias, languages,} from './languages';
-import {BLOCK_TYPES, Dropdown, Iconfont, message, smartClipboardCopy,} from '@textory/editor-common';
+import {BLOCK_TYPES, smartClipboardCopy} from '@textory/editor-utils';
+import {Dropdown, Iconfont, message} from '@textory/editor-common';
 import {get} from 'lodash-es';
 import {exportCode} from './utils.ts';
 

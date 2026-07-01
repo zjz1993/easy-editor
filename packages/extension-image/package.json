@@ -25,6 +25,7 @@
   "dependencies": {
     "@textory/context": "workspace:^",
     "@textory/editor-common": "workspace:^",
+    "@textory/editor-utils": "workspace:^",
     "classnames": "^2.5.1",
     "lodash-es": "^4.18.0"
   },

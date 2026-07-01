@@ -2,7 +2,7 @@ import {mergeAttributes, Node, nodeInputRule} from '@tiptap/core';
 import {ReactNodeViewRenderer} from '@tiptap/react';
 import ImageView from './ImageView.tsx';
 import type {ImageOptions} from './types/index.ts';
-import {BLOCK_TYPES} from '@textory/editor-common';
+import {BLOCK_TYPES} from '@textory/editor-utils';
 import type {ImageNodeAttributes} from '@textory/context';
 
 /**

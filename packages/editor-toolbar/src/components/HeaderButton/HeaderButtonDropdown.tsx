@@ -1,5 +1,6 @@
 import {type FC, useCallback, useContext} from 'react';
-import {BLOCK_TYPES, headers, Iconfont, IntlComponent} from '@textory/editor-common';
+import {BLOCK_TYPES, headers} from '@textory/editor-utils';
+import {Iconfont, IntlComponent} from '@textory/editor-common';
 import cx from 'classnames';
 import ToolbarContext from '../../context/toolbarContext.ts';
 import {command, option} from '../../utils/index.ts';

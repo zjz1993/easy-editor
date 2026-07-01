@@ -1,4 +1,5 @@
-import {Iconfont, MARK_TYPES, Popover} from '@textory/editor-common';
+import {MARK_TYPES} from '@textory/editor-utils';
+import {Iconfont, Popover} from '@textory/editor-common';
 import {type FC, useContext, useState} from 'react';
 import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 import ToolbarContext from '../../context/toolbarContext.ts';

@@ -28,6 +28,7 @@
   "dependencies": {
     "@textory/context": "workspace:^",
     "@textory/editor-common": "workspace:^",
+    "@textory/editor-utils": "workspace:^",
     "@textory/extension-image": "workspace:^",
     "classnames": "^2.5.1",
     "lodash-es": "^4.18.0",

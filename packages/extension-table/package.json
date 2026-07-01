@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@textory/editor-common": "workspace:^",
+    "@textory/editor-utils": "workspace:^",
     "@textory/styles": "workspace:^",
     "classnames": "^2.5.1"
   },

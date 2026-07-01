@@ -1,4 +1,4 @@
-import { isWindows } from '@textory/editor-common';
+import { isWindows } from '@textory/editor-utils';
 import type { Editor } from '@tiptap/core';
 
 export const command = isWindows() ? 'Ctrl' : '⌘';
