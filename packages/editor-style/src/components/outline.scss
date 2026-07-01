@@ -1,7 +1,68 @@
 @use "../variable/index" as var;
-.#{var.$editor-name}-outline{
+@use "../colors/colors" as styles;
+
+.#{var.$editor-name}-outline {
   width: 260px;
-  border-right: 1px solid #eee;
+  border-left: 1px solid #eee;
   padding: 8px;
   box-sizing: border-box;
+  // Make the panel its own scroll container so long outlines stay fully usable.
+  // Without this, `position: sticky` pins the panel to the top of
+  // `.textory-body` and any node extending below the viewport is unreachable.
+  align-self: stretch;
+  height: 100%;
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
+}
+
+// Scope outline-specific tree node styling to `.textory-outline` so we don't
+// fight the base rules in `tree.scss` (which is forwarded later and would win
+// at equal specificity). Higher specificity here intentionally overrides base.
+.#{var.$editor-name}-outline {
+  .node-header {
+    border-left: 2px solid transparent;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+
+    &:hover {
+      background: styles.$hover-grey;
+    }
+
+    &.is-active {
+      border-left-color: styles.$primary-color;
+      background: styles.$hover-grey;
+
+      .node-label {
+        color: styles.$primary-black;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .node-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+// Flash animation applied to a heading inside the editor body after the user
+// clicks the corresponding outline node. Kept here (rather than in tree.scss)
+// because it belongs to the outline feature.
+.textory-outline-flash {
+  animation: textory-outline-flash 0.6s ease-in-out 3;
+  // Make the pulse visible even on headings with their own background.
+  box-shadow: 0 0 0 0 rgba(styles.$primary-yellow, 0);
+  border-radius: 4px;
+}
+
+@keyframes textory-outline-flash {
+  0%, 100% {
+    background-color: transparent;
+    box-shadow: 0 0 0 0 rgba(styles.$primary-color, 0);
+  }
+  50% {
+    background-color: rgba(styles.$primary-color, 0.35);
+    box-shadow: 0 0 0 4px rgba(styles.$primary-color, 0.15);
+  }
 }

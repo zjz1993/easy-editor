@@ -35,7 +35,9 @@
       "Bash(lsof:*)",
       "Bash(curl:*)",
       "Bash(pnpm --filter @textory/extension-export build:*)",
-      "Bash(pnpm exec tsc:*)"
+      "Bash(pnpm exec tsc:*)",
+      "Bash(npx tsc:*)",
+      "Bash(find:*)"
     ]
   }
 }

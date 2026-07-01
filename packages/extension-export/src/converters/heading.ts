@@ -1,6 +1,6 @@
 import { HeadingLevel, Paragraph } from 'docx';
 
-import { type HeadingNode } from '../types';
+import type { HeadingNode } from '../types';
 import { mapAlignment } from './paragraph';
 import { convertHardBreak, convertText } from './text';
 
@@ -19,7 +19,8 @@ export function convertHeading(node: HeadingNode): Paragraph {
     node.content?.flatMap((contentNode) => {
       if (contentNode.type === 'text') {
         return convertText(contentNode);
-      } else if (contentNode.type === 'hardBreak') {
+      }
+      if (contentNode.type === 'hardBreak') {
         return convertHardBreak();
       }
 

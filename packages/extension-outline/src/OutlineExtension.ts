@@ -1,5 +1,7 @@
 // OutlineExtension.ts
-import {Extension} from '@tiptap/core'
+import {Extension} from '@tiptap/core';
+import {Plugin, PluginKey} from '@tiptap/pm/state';
+import {Decoration, DecorationSet} from '@tiptap/pm/view';
 
 export interface OutlineItem {
   level: number;
@@ -7,6 +9,12 @@ export interface OutlineItem {
   pos: number;
   children: OutlineItem[];
 }
+
+/**
+ * Plugin key for the heading-flash decoration plugin.
+ * Shared with `OutlineView` so the view can dispatch flash / clear transactions.
+ */
+export const flashPluginKey = new PluginKey<DecorationSet>('headingFlash');
 
 export const OutlineExtension = Extension.create({
   name: 'outline',
@@ -54,8 +62,49 @@ export const OutlineExtension = Extension.create({
 
       stack.push(item);
     });
-
     this.storage.outline = items;
+  },
+
+  addProseMirrorPlugins() {
+    return [
+      new Plugin({
+        key: flashPluginKey,
+        state: {
+          init(): DecorationSet {
+            return DecorationSet.empty;
+          },
+          apply(tr, old: DecorationSet): DecorationSet {
+            const meta = tr.getMeta(flashPluginKey);
+            if (meta) {
+              // Clear all flash decorations.
+              if (meta.action === 'clear') {
+                return DecorationSet.empty;
+              }
+              // Add a flash decoration on the node at `pos`.
+              if (meta.action === 'flash' && typeof meta.pos === 'number') {
+                const node = tr.doc.nodeAt(meta.pos);
+                if (node) {
+                  const deco = Decoration.node(
+                    meta.pos,
+                    meta.pos + node.nodeSize,
+                    {class: 'textory-outline-flash'},
+                  );
+                  return DecorationSet.empty.add(tr.doc, [deco]);
+                }
+                return DecorationSet.empty;
+              }
+            }
+            // Map existing decorations through document changes.
+            return old.map(tr.mapping, tr.doc);
+          },
+        },
+        props: {
+          decorations(state) {
+            return flashPluginKey.getState(state);
+          },
+        },
+      }),
+    ];
   },
 
   addCommands() {
