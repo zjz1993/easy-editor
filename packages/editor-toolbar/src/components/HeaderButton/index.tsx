@@ -44,6 +44,7 @@ const HeaderButton: FC<TToolbarWrapperProps> = ({
         disabled={disabled}
         className={cx(
           'textory-toolbar__item__dropdown',
+          'textory-toolbar__heading_btn',
           disabled && 'dropdown-disabled',
         )}
         getPopupContainer={node => node.parentNode as HTMLElement}
@@ -56,7 +57,7 @@ const HeaderButton: FC<TToolbarWrapperProps> = ({
           />
         }
       >
-        <div>{getHeadingText()}</div>
+        <div className="textory-toolbar__heading_btn_text">{getHeadingText()}</div>
       </Dropdown>
     </ToolbarItemButtonWrapper>
   );

@@ -54,6 +54,7 @@
 
       li {
         list-style-type: inherit;
+        margin: 6px 0;
         // margin-left: 22px;
 
         &.align-center {
@@ -182,6 +183,11 @@
       // margin-bottom: 8px;
       & > *{
         margin-top: 8px;
+      }
+      &:first-of-type{
+         > * {
+           margin-top: 0px;
+         }
       }
 
       .#{var.$editor-name}-table-scroll-wrapper {

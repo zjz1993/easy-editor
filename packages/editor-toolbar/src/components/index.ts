@@ -8,3 +8,4 @@ export * from './ListButton';
 export * from './TextColorPicker';
 export * from './ToolbarItem';
 export * from './TableButton';
+export * from './ExportButton';

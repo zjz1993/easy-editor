@@ -108,4 +108,4 @@ export const exportWORD = async (options: ExportOptions = {}) => {
 };
 
 export type { ExportOptions, DocxOptions } from './option';
-export type { IExportWatermark } from './types';
+export type { IExportWatermark } from '@textory/context';

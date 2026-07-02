@@ -152,7 +152,7 @@ const Editor = forwardRef<EditorRef, TEasyEditorProps>((props, ref) => {
     <EditorProvider editor={editor} props={mergedProps}>
       <div className={cx('textory', className)} style={style}>
         {intlInit && (
-          <EditorToolbar editor={editor} imageProps={mergedProps.imageProps} />
+          <EditorToolbar editor={editor} imageProps={mergedProps.imageProps} exportProps={mergedProps.exportProps}/>
         )}
         <EditorContent
           autoFocus={autoFocus}

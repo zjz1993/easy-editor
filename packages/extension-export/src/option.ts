@@ -10,7 +10,7 @@ import type {
   ITableRowOptions,
   OutputType,
 } from 'docx';
-import type { IExportWatermark } from './types';
+import type { ExportProps } from '@textory/context';
 
 /**
  * Options for generating DOCX documents
@@ -112,13 +112,9 @@ export interface DocxOptions<T extends OutputType = OutputType> {
 /**
  * Export options for the public exportWORD API.
  */
-export interface ExportOptions {
+export interface ExportOptions extends Partial<ExportProps>{
   data?: {
     title?: string;
     content?: JSONContent;
   };
-  watermark?: IExportWatermark | false;
-  onExportStarted?: () => void;
-  onExportFailed?: () => void;
-  onExportComplete?: () => void;
 }

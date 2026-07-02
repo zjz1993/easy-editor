@@ -1,7 +1,7 @@
 // createFrontIconfont.tsx
 import React from 'react';
 import type {IconProps} from './Icon'; // 修改导入路径
-import {Icon} from './Icon'; // 导入 Icon 组件
+import {Icon} from './Icon';
 
 const loaded = new Set<string>();
 

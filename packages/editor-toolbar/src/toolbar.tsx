@@ -1,5 +1,5 @@
 import {cloneElement, type FC, useMemo, useRef} from 'react';
-import type {IImageProps} from '@textory/context';
+import type {IImageProps, ExportProps} from '@textory/context';
 import {useEditorContext} from '@textory/context';
 import {
   BLOCK_TYPES,
@@ -22,10 +22,12 @@ import type {IToolbarCommonProps} from './types/index.ts';
 import ImageButton from './components/ImageButton/index.tsx';
 import TableButton from './components/TableButton/index.tsx';
 import {useEditorStateTrigger} from './hook/useEditorStateTrigger.ts';
+import ExportButton from "./components/ExportButton/index.tsx";
 
 export interface IToolbarProps {
   editor: Editor | null;
   imageProps: Partial<IImageProps>;
+  exportProps: Partial<ExportProps>
 }
 
 const Toolbar: FC<IToolbarProps> = props => {
@@ -33,7 +35,7 @@ const Toolbar: FC<IToolbarProps> = props => {
   const {
     props: { editable },
   } = useEditorContext();
-  const { editor, imageProps = {} } = props;
+  const { editor, imageProps = {}, exportProps={} } = props;
   const canIndent = editor.isActive('paragraph') || editor.isActive('heading');
   const editorView = editor.view;
   const commonProps: IToolbarCommonProps = {
@@ -183,6 +185,12 @@ const Toolbar: FC<IToolbarProps> = props => {
         component: <TableButton editor={editor} />,
         intlStr: 'table',
         disabled: disabled || editor.isActive(BLOCK_TYPES.CODE),
+      },
+      {
+        key: 'export',
+        component: <ExportButton editor={editor} exportProps={exportProps}/>,
+        intlStr: 'export',
+        disabled: disabled,
       },
     ];
   }, [editor, editable]);

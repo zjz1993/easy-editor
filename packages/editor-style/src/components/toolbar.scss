@@ -143,6 +143,12 @@
         background: none;
       }
     }
+    .textory-toolbar__heading_btn{
+      .textory-toolbar__heading_btn_text{
+        width: 50px;
+        text-align: left;
+      }
+    }
     .#{var.$editor-name}-toolbar__item.#{var.$editor-name}-toolbar__item__dropdown{
       width: fit-content;
     }

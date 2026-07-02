@@ -358,6 +358,9 @@ importers:
       '@textory/editor-utils':
         specifier: workspace:^
         version: link:../editor-utils
+      '@textory/extension-export':
+        specifier: workspace:^
+        version: link:../extension-export
       '@textory/extension-image':
         specifier: workspace:^
         version: link:../extension-image
