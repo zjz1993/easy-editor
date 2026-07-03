@@ -1,6 +1,7 @@
 // OutlineView.tsx
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useMemo, useRef, useState} from 'react';
 import type {Editor} from '@tiptap/core';
+import {Tooltip, Iconfont, IntlComponent} from '@textory/editor-common';
 import {flashPluginKey} from './OutlineExtension';
 import Tree from './components/Tree';
 import type {TreeNodeProps} from './components/Tree/type';
@@ -66,6 +67,21 @@ function flatten(
     }
   }
   return result;
+}
+
+/** Collect ids of every node that has children (i.e. is expandable). */
+function collectExpandableIds(nodes: TreeNodeProps[]): string[] {
+  const ids: string[] = [];
+  const walk = (list: TreeNodeProps[]) => {
+    for (const n of list) {
+      if (n.children && n.children.length > 0) {
+        ids.push(n.id);
+        walk(n.children);
+      }
+    }
+  };
+  walk(nodes);
+  return ids;
 }
 
 /** Walk up from `id` to collect all ancestor ids (excluding self). */
@@ -169,6 +185,7 @@ export const OutlineView = ({editor}: OutlineViewProps) => {
   const [treeData, setTreeData] = useState<TreeNodeProps[]>([]);
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set());
+  const [collapsed, setCollapsed] = useState(false);
 
   // Refs that survive re-renders and are readable inside event handlers.
   const flatRef = useRef<FlatItem[]>([]);
@@ -306,12 +323,68 @@ export const OutlineView = ({editor}: OutlineViewProps) => {
     });
   };
 
+  const expandableIds = useMemo(
+    () => collectExpandableIds(treeData),
+    [treeData],
+  );
+  const allExpanded =
+    expandableIds.length > 0 &&
+    expandableIds.every(id => expandedKeys.has(id));
+
+  const handleToggleAll = () => {
+    setExpandedKeys(
+      allExpanded ? new Set<string>() : new Set(expandableIds),
+    );
+  };
+
   if (treeData.length === 0) {
     return null;
   }
 
+  if (collapsed) {
+    return (
+      <div className="textory-outline is-collapsed" ref={outlineRootRef}>
+        <Tooltip
+          content={IntlComponent.get('outline.show')}
+          placement="left"
+          className="textory-outline-collapsed-trigger"
+        >
+          <Iconfont
+            type='icon-menu-fold'
+            className="textory-outline-toggle-panel"
+            onClick={() => setCollapsed(false)}
+          />
+        </Tooltip>
+      </div>
+    );
+  }
+
   return (
     <div className="textory-outline" ref={outlineRootRef}>
+      <div className="textory-outline-toolbar">
+        {expandableIds.length > 0 && (
+          <Tooltip
+            content={allExpanded ? '全部收起' : '全部展开'}
+            placement="left"
+          >
+            <Iconfont
+              className={`textory-outline-toggle-all${
+                allExpanded ? ' is-expanded' : ''
+              }`}
+              onClick={handleToggleAll}
+              type={!allExpanded ? 'zhedie' : 'zhankai'}
+            />
+          </Tooltip>
+        )}
+        <Tooltip content={IntlComponent.get('outline.hide')} placement="left">
+          <Iconfont
+            type="close"
+            className="textory-outline-toggle-panel"
+            onClick={() => setCollapsed(true)}
+          >
+          </Iconfont>
+        </Tooltip>
+      </div>
       <Tree
         data={treeData}
         activeKey={activeKey}

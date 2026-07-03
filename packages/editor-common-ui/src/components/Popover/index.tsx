@@ -17,7 +17,7 @@ import {
   useTransitionStyles,
 } from '@floating-ui/react';
 import type {MutableRefObject, PropsWithChildren, ReactNode} from 'react';
-import {forwardRef, useImperativeHandle, useMemo, useRef} from 'react';
+import {useState, forwardRef, useImperativeHandle, useMemo, useRef} from 'react';
 import useControlledValue from '../../hooks/useControlledValue.ts'; // 自定义箭头组件
 
 // 自定义箭头组件
@@ -45,11 +45,11 @@ const Popover = forwardRef<any, TPopoverProps>((props, ref) => {
     open,
     triggerAction = 'click',
   } = props;
-  const [isOpen, setIsOpen] = useControlledValue<boolean>({
-    value: open,
-    defaultValue: false,
-    onChange: onOpenChange,
-  });
+  const [isOpen, setIsOpen] = useState(false);
+  //const [isOpen, setIsOpen] = useControlledValue<boolean>({
+  //  value: open,
+  //  defaultValue: false,
+  //});
   // const [isOpen, setIsOpen] = useState(false);
   const arrowRef = useRef(null);
   const popoverRef = useRef(null);
@@ -65,6 +65,7 @@ const Popover = forwardRef<any, TPopoverProps>((props, ref) => {
   } = useFloating({
     open: isOpen,
     onOpenChange: tempOpen => {
+      console.log('onOpenChange触发', tempOpen);
       setIsOpen(tempOpen);
       onOpenChange?.(tempOpen);
     },
@@ -82,6 +83,7 @@ const Popover = forwardRef<any, TPopoverProps>((props, ref) => {
   const click = useClick(context);
   const hover = useHover(context, {
     handleClose: safePolygon(),
+    move: false,
   });
 
   const dismiss = useDismiss(context, {

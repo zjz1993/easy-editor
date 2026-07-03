@@ -1,19 +1,20 @@
 import {MARK_TYPES} from '@textory/editor-utils';
-import {Iconfont, Popover} from '@textory/editor-common';
+import {Iconfont, Dropdown} from '@textory/editor-common';
 import {type FC, useContext, useState} from 'react';
 import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 import ToolbarContext from '../../context/toolbarContext.ts';
 import type {TToolbarWrapperProps} from '../../types/index.ts';
 import {LinkPanelPopup} from './LinkPanel.tsx';
-import Button from '../Button';
+import cx from "classnames";
 
 const LinkButton: FC<TToolbarWrapperProps> = props => {
-  const { intlStr, className, style, disabled } = props;
-  const { editor } = useContext(ToolbarContext);
+  const {intlStr, className, style, disabled} = props;
+  const {editor} = useContext(ToolbarContext);
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [popoverOpen, setPopoverOpen] = useState(false);
+
   function getSelectionTextWithMarks() {
-    const { from, to } = editor.state.selection;
+    const {from, to} = editor.state.selection;
     let text = '';
     editor.state.doc.nodesBetween(from, to, (node, pos) => {
       if (node.isText) {
@@ -24,6 +25,7 @@ const LinkButton: FC<TToolbarWrapperProps> = props => {
     });
     return text;
   }
+
   const text = getSelectionTextWithMarks();
 
   return (
@@ -34,23 +36,21 @@ const LinkButton: FC<TToolbarWrapperProps> = props => {
       disabled={disabled}
       tooltipVisible={tooltipVisible}
     >
-      <Popover
+      <Dropdown
+        visible={popoverOpen}
+        showIcon={false}
         disabled={disabled}
-        open={popoverOpen}
-        onOpenChange={open => {
-          if (open) {
-            setTooltipVisible(!open);
-          } else {
-            setTooltipVisible(false);
-            setPopoverOpen(false);
-          }
-        }}
-        placement="bottom-start"
-        content={
+        className={cx(
+          'textory-toolbar__item__dropdown',
+          disabled && 'dropdown-disabled',
+        )}
+        getPopupContainer={node => node.parentNode as HTMLElement}
+        onVisibleChange={setPopoverOpen}
+        popup={
           <LinkPanelPopup
             text={text}
-            onConfirm={({ text, href }) => {
-              const { from, to } = editor.state.selection; // 保存当前选区
+            onConfirm={({text, href}) => {
+              const {from, to} = editor.state.selection; // 保存当前选区
               const isEmptySelection = from === to;
               console.log('原来的from to', from, to);
               editor
@@ -62,14 +62,14 @@ const LinkButton: FC<TToolbarWrapperProps> = props => {
                   marks: [
                     {
                       type: MARK_TYPES.LK,
-                      attrs: { href },
+                      attrs: {href},
                     },
                   ],
                 })
                 .setTextSelection(
                   isEmptySelection
                     ? to + text.length
-                    : { from: to, to: to + text.length },
+                    : {from: to, to: to + text.length},
                 )
                 .unsetMark(MARK_TYPES.LK) // 确保后续输入的文字不带链接
                 .run();
@@ -79,26 +79,21 @@ const LinkButton: FC<TToolbarWrapperProps> = props => {
           />
         }
       >
-        <Button
-          disabled={disabled}
+        <Iconfont
           onClick={() => {
-            if (disabled) {
-              return;
-            }
-            setPopoverOpen(true);
+            setTooltipVisible(false);
           }}
+          type="link"
           onMouseLeave={() => {
             setTooltipVisible(false);
           }}
           onMouseEnter={() => {
             setTooltipVisible(true);
           }}
-        >
-          <Iconfont type="icon-link" />
-        </Button>
-      </Popover>
+        />
+      </Dropdown>
     </ToolbarItemButtonWrapper>
   );
 };
 export default LinkButton;
-export { LinkPanelPopup };
+export {LinkPanelPopup};

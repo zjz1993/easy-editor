@@ -133,7 +133,6 @@
       &-item {
         flex: none;
         max-width: 100%;
-        // margin-right: 100px;
       }
     }
 
@@ -173,6 +172,9 @@
         background: none;
         &--active{
           background-color: styles.$background-grey;
+        }
+        .#{var.$editor-name}-icon{
+          width: 100%;
         }
       }
       &:hover{

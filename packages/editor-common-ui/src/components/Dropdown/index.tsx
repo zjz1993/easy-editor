@@ -4,10 +4,12 @@ import DropdownPanel from '../DropdownPanel/index.tsx';
 import cx from 'classnames';
 import useControlledValue from '../../hooks/useControlledValue.ts';
 import type {TDropDownRefProps} from '../../types/index.ts';
+import type {AlignType} from "rc-trigger/es/interface";
 
 const Dropdown = forwardRef<
   TDropDownRefProps,
   {
+    popupAlign?: AlignType,
     showIcon?: boolean;
     visible?: boolean;
     children: ReactElement;
@@ -29,6 +31,7 @@ const Dropdown = forwardRef<
     popup,
     className,
     onVisibleChange,
+    popupAlign,
   } = props;
   const [isOpen, setIsOpen] = useControlledValue<boolean>({
     value: visible,
@@ -65,6 +68,7 @@ const Dropdown = forwardRef<
       popupVisible={isOpen}
       onPopupVisibleChange={handleVisibleChange}
       getPopupContainer={getPopupContainer}
+      popupAlign={popupAlign}
     >
       <div className="textory-dropdown">
         {children}

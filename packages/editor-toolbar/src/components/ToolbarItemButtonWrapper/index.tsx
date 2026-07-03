@@ -22,20 +22,20 @@ const ToolbarItemButtonWrapper: FC<{
     disabled,
   } = props;
   return (
-    <ToolBarItem
-      onclick={onClick}
-      className={className}
-      style={style}
+    <Tooltip
       disabled={disabled}
+      content={IntlComponent.get(intlStr, {command, option})}
+      open={tooltipVisible}
     >
-      <Tooltip
+      <ToolBarItem
+        onclick={onClick}
+        className={className}
+        style={style}
         disabled={disabled}
-        content={IntlComponent.get(intlStr, { command, option })}
-        open={tooltipVisible}
       >
         {children}
-      </Tooltip>
-    </ToolBarItem>
+      </ToolBarItem>
+    </Tooltip>
   );
 };
 export default ToolbarItemButtonWrapper;

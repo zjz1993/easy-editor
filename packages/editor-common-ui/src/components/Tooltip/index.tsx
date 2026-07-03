@@ -30,7 +30,6 @@ const NewTooltip: FC<TPopoverProps> = props => {
   const [isOpen, setIsOpen] = useControlledValue<boolean>({
     value: open,
     defaultValue: false,
-    // onChange: onOpenChange,
   });
   const arrowRef = useRef(null);
 

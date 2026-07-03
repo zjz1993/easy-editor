@@ -52,4 +52,7 @@ export default {
   'table.delete.col': '删除列',
   'table.delete.table': '删除表格',
   'table.copy.table': '复制表格',
+  'outline':'大纲',
+  'outline.hide':'隐藏大纲',
+  'outline.show':'展开大纲',
 };

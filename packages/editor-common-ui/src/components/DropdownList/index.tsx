@@ -66,7 +66,7 @@ const DropdownList = forwardRef<
   return (
     <DropdownPanel
       forceRender
-      className={cx('textory-toolbar__item', className)}
+      className={cx(className)}
       popup={
         <div className="textory-dropdown__content">
           {options.map(item => (

@@ -27,13 +27,6 @@ const ExportButton:FC<ExportButtonProps> = ({exportProps = {}, editor,intlStr, s
       tooltipVisible={tooltipVisible}
     >
       <DropdownList
-        onVisibleChange={open => {
-          if (open) {
-            setTooltipVisible(!open);
-          } else {
-            setTooltipVisible(false);
-          }
-        }}
         disabled={disabled}
         options={[
           {
@@ -56,7 +49,18 @@ const ExportButton:FC<ExportButtonProps> = ({exportProps = {}, editor,intlStr, s
           },
         ]}
       >
-        <Iconfont type="daochu"/>
+        <Iconfont
+          onClick={() => {
+            setTooltipVisible(false);
+          }}
+          type="daochu"
+          onMouseLeave={() => {
+            setTooltipVisible(false);
+          }}
+          onMouseEnter={() => {
+            setTooltipVisible(true);
+          }}
+        />
       </DropdownList>
     </ToolbarItemButtonWrapper>
   );

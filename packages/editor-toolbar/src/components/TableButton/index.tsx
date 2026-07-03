@@ -1,15 +1,15 @@
-import {Iconfont, Popover,} from '@textory/editor-common';
+import {Dropdown, Iconfont,} from '@textory/editor-common';
 import type {FC} from 'react';
 import {useContext, useState} from 'react';
 import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 import ToolbarContext from '../../context/toolbarContext.ts';
 import type {TToolbarWrapperProps} from '../../types/index.ts';
 import InsertTablePanel from "./insertTablePanel";
-import Button from '../Button';
+import cx from "classnames";
 
 const TableButton: FC<TToolbarWrapperProps> = props => {
-  const { intlStr, style, disabled } = props;
-  const { editor } = useContext(ToolbarContext);
+  const {intlStr, style, disabled} = props;
+  const {editor} = useContext(ToolbarContext);
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
   return (
@@ -18,52 +18,45 @@ const TableButton: FC<TToolbarWrapperProps> = props => {
       style={style}
       disabled={disabled}
       tooltipVisible={tooltipVisible}
+      className='textory-toolbar__item__btn'
     >
-      <Popover
+      <Dropdown
+        visible={popoverOpen}
+        showIcon={false}
         disabled={disabled}
-        open={popoverOpen}
-        onOpenChange={open => {
-          if (open) {
-            setTooltipVisible(!open);
-          } else {
-            setTooltipVisible(false);
-            setPopoverOpen(false);
-          }
-        }}
-        placement="bottom-start"
-        content={
+        className={cx(
+          'textory-toolbar__item__dropdown',
+          disabled && 'dropdown-disabled',
+        )}
+        getPopupContainer={node => node.parentNode as HTMLElement}
+        popupAlign={{points: ['tr', 'br']}}
+        onVisibleChange={setPopoverOpen}
+        popup={
           <InsertTablePanel
             onClick={(rows, cols) => {
-              console.log('editor', editor);
-              console.log(editor.schema.nodes.tableRow.spec);
               editor
                 .chain()
                 .focus()
-                .insertTable({ rows, cols, withHeaderRow: true })
+                .insertTable({rows, cols, withHeaderRow: true})
                 .run();
               setPopoverOpen(false);
             }}
           />
         }
       >
-        <Button
-          disabled={disabled}
+        <Iconfont
           onClick={() => {
-            if (disabled) {
-              return;
-            }
-            setPopoverOpen(true);
+            setTooltipVisible(false);
           }}
+          type="icon-table"
           onMouseLeave={() => {
             setTooltipVisible(false);
           }}
           onMouseEnter={() => {
             setTooltipVisible(true);
           }}
-        >
-          <Iconfont type="icon-table" />
-        </Button>
-      </Popover>
+        />
+      </Dropdown>
     </ToolbarItemButtonWrapper>
   );
 };
