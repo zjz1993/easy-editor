@@ -11,7 +11,7 @@ import {
   selectRow,
   toggleSelectTable,
 } from '../utils/index.ts';
-import {addColumn, addRow, selectedRect, TableMap} from '@tiptap/pm/tables';
+import {addColumn, addRow, CellSelection, selectedRect, TableMap} from '@tiptap/pm/tables';
 import classNames from 'classnames';
 
 export const TableCell = TTableCell.extend<TTableCellOptions>({
@@ -206,6 +206,38 @@ export const TableCell = TTableCell.extend<TTableCellOptions>({
                 decorations.push(deco);
               });
             }
+
+            // === 为每个单元格附加点击选中按钮 ===
+            // 遍历整张表的所有 cell，挂一个 DOM 节点，点击后选中当前单元格
+            const allCellOffsets = map.cellsInRect({
+              left: 0,
+              right: map.width,
+              top: 0,
+              bottom: map.height,
+            });
+            allCellOffsets.forEach(cellOffset => {
+              const cellPos = cellOffset + table.start;
+              decorations.push(
+                Decoration.widget(cellPos + 1, () => {
+                  const btn = document.createElement('span');
+                  btn.className = 'textory-table-cell-select-btn';
+                  btn.setAttribute('contenteditable', 'false');
+                  btn.addEventListener('mousedown', event => {
+                    event.preventDefault();
+                    event.stopImmediatePropagation();
+                    // 用最新的 editor.state，避免闭包内 state 过期
+                    const editorState = this.editor.state;
+                    const $cell = editorState.doc.resolve(cellPos);
+                    this.editor.view.dispatch(
+                      editorState.tr.setSelection(
+                        new CellSelection($cell),
+                      ),
+                    );
+                  });
+                  return btn;
+                }),
+              );
+            });
 
             return DecorationSet.create(doc, decorations);
           },
