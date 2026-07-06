@@ -15,6 +15,9 @@ import {addColumn, addRow, selectedRect, TableMap} from '@tiptap/pm/tables';
 import classNames from 'classnames';
 
 export const TableCell = TTableCell.extend<TTableCellOptions>({
+  renderHTML(){
+    return ['td',{class:'textory-table-cell'},0];
+  },
   addProseMirrorPlugins() {
     const pluginKey = new PluginKey('tableCellControlBtn');
     return [
