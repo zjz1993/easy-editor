@@ -38,7 +38,8 @@
       "Bash(pnpm exec tsc:*)",
       "Bash(npx tsc:*)",
       "Bash(find:*)",
-      "Bash(pnpm --filter @textory/extension-outline build:*)"
+      "Bash(pnpm --filter @textory/extension-outline build:*)",
+      "Bash(npx vite:*)"
     ]
   }
 }

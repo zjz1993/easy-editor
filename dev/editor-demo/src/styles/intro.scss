@@ -1,0 +1,468 @@
+// ============ Textory 介绍页样式 ============
+$primary: #0082fc;
+$primary-dark: #0067d0;
+$text-main: #1a2233;
+$text-sub: #5b6678;
+$border: #e6ebf2;
+$bg-soft: #f7f9fc;
+$radius: 14px;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Microsoft YaHei', sans-serif;
+  color: $text-main;
+  background: #fff;
+}
+
+.intro-page {
+  min-height: 100vh;
+}
+
+// ============ 顶部导航 ============
+.intro-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 40px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid $border;
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 18px;
+    color: $text-main;
+  }
+
+  &__logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, $primary, #4aa8ff);
+    color: #fff;
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: -0.5px;
+  }
+
+  &__links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+
+    a {
+      color: $text-sub;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+
+      &:hover {
+        color: $primary;
+      }
+    }
+  }
+
+  &__tag {
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba($primary, 0.1);
+    color: $primary;
+    font-size: 12px;
+    font-weight: 600;
+  }
+}
+
+// ============ Hero ============
+.intro-hero {
+  position: relative;
+  padding: 80px 40px 60px;
+  text-align: center;
+  overflow: hidden;
+  background:
+    radial-gradient(1200px 400px at 50% -10%, rgba($primary, 0.12), transparent 60%),
+    linear-gradient(180deg, #fbfdff 0%, #ffffff 100%);
+
+  &__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid $border;
+    color: $primary;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  &__title {
+    margin: 0 0 20px;
+    font-size: 52px;
+    line-height: 1.15;
+    font-weight: 800;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, #0a1834 0%, $primary 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  &__subtitle {
+    margin: 0 auto 36px;
+    max-width: 680px;
+    font-size: 18px;
+    line-height: 1.7;
+    color: $text-sub;
+  }
+
+  &__cta {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 26px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    text-decoration: none;
+
+    &--primary {
+      background: $primary;
+      color: #fff;
+      box-shadow: 0 6px 18px rgba($primary, 0.3);
+
+      &:hover {
+        background: $primary-dark;
+        transform: translateY(-1px);
+        box-shadow: 0 8px 22px rgba($primary, 0.4);
+      }
+    }
+
+    &--ghost {
+      background: #fff;
+      color: $text-main;
+      border: 1px solid $border;
+
+      &:hover {
+        border-color: $primary;
+        color: $primary;
+      }
+    }
+  }
+
+  &__stats {
+    display: flex;
+    justify-content: center;
+    gap: 56px;
+    margin-top: 56px;
+    flex-wrap: wrap;
+  }
+
+  &__stat {
+    text-align: center;
+
+    &-value {
+      font-size: 32px;
+      font-weight: 800;
+      color: $primary;
+      line-height: 1;
+    }
+
+    &-label {
+      margin-top: 6px;
+      font-size: 13px;
+      color: $text-sub;
+    }
+  }
+}
+
+// ============ 通用区块 ============
+.intro-section {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 72px 40px;
+
+  &__head {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  &__tagline {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: rgba($primary, 0.08);
+    color: $primary;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+
+  &__title {
+    margin: 0 0 12px;
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+
+  &__desc {
+    margin: 0 auto;
+    max-width: 620px;
+    font-size: 16px;
+    line-height: 1.7;
+    color: $text-sub;
+  }
+}
+
+// ============ 特性卡片 ============
+.intro-features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+
+  &__card {
+    padding: 28px 24px;
+    border-radius: $radius;
+    border: 1px solid $border;
+    background: #fff;
+    transition: all 0.25s;
+
+    &:hover {
+      border-color: rgba($primary, 0.4);
+      box-shadow: 0 12px 28px rgba(0, 50, 120, 0.08);
+      transform: translateY(-3px);
+    }
+
+    &-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: $bg-soft;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+
+    &-title {
+      margin: 0 0 8px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    &-desc {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.6;
+      color: $text-sub;
+    }
+  }
+}
+
+// ============ 编辑器演示 ============
+.intro-demo {
+  border-radius: 16px;
+  border: 1px solid $border;
+  background: #fff;
+  box-shadow: 0 20px 50px rgba(0, 30, 80, 0.08);
+  overflow: hidden;
+
+  &__bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: $bg-soft;
+    border-bottom: 1px solid $border;
+
+    span {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #e1e6ee;
+
+      &:nth-child(1) { background: #ff5f57; }
+      &:nth-child(2) { background: #febc2e; }
+      &:nth-child(3) { background: #28c840; }
+    }
+  }
+
+  &__title {
+    margin-left: 12px;
+    font-size: 13px;
+    color: $text-sub;
+  }
+
+  &__editor {
+    height: 560px;
+    overflow: auto;
+  }
+}
+
+// ============ Quick Start ============
+.intro-code {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: center;
+
+  &__col {
+    h3 {
+      margin: 0 0 12px;
+      font-size: 20px;
+    }
+    p {
+      margin: 0 0 10px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: $text-sub;
+    }
+    ul {
+      margin: 12px 0 0;
+      padding-left: 18px;
+      li {
+        font-size: 14px;
+        line-height: 2;
+        color: $text-sub;
+        code {
+          background: $bg-soft;
+          padding: 2px 6px;
+          border-radius: 4px;
+          font-size: 13px;
+          color: $primary;
+        }
+      }
+    }
+  }
+
+  &__block {
+    background: #0d1526;
+    border-radius: $radius;
+    padding: 24px;
+    overflow: auto;
+
+    pre {
+      margin: 0;
+      code {
+        font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+        font-size: 13.5px;
+        line-height: 1.7;
+        color: #d6deeb;
+      }
+    }
+
+    .c-key { color: #c792ea; }
+    .c-str { color: #c3e88d; }
+    .c-fn { color: #82aaff; }
+    .c-tag { color: #f07178; }
+    .c-com { color: #637777; font-style: italic; }
+    .c-pun { color: #89ddff; }
+  }
+}
+
+// ============ 高亮区 ============
+.intro-highlights {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+
+  &__item {
+    display: flex;
+    gap: 16px;
+    padding: 24px;
+    border-radius: $radius;
+    background: $bg-soft;
+    border: 1px solid $border;
+
+    &-icon {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    h4 {
+      margin: 0 0 6px;
+      font-size: 15px;
+    }
+    p {
+      margin: 0;
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: $text-sub;
+    }
+  }
+}
+
+// ============ 页脚 ============
+.intro-footer {
+  margin-top: 40px;
+  padding: 32px 40px;
+  text-align: center;
+  border-top: 1px solid $border;
+  background: $bg-soft;
+
+  p {
+    margin: 0;
+    font-size: 13px;
+    color: $text-sub;
+
+    a {
+      color: $primary;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  }
+}
+
+// ============ 响应式 ============
+@media (max-width: 900px) {
+  .intro-nav {
+    padding: 12px 20px;
+    &__links a:not(.intro-nav__tag) {
+      display: none;
+    }
+  }
+  .intro-hero {
+    padding: 56px 20px 40px;
+    &__title { font-size: 36px; }
+    &__subtitle { font-size: 16px; }
+    &__stats { gap: 28px; }
+  }
+  .intro-section { padding: 48px 20px; }
+  .intro-features { grid-template-columns: 1fr; }
+  .intro-code { grid-template-columns: 1fr; }
+  .intro-highlights { grid-template-columns: 1fr; }
+  .intro-demo__editor { height: 420px; }
+}
