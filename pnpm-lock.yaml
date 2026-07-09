@@ -289,6 +289,9 @@ importers:
         specifier: ^11.1.0
         version: 11.1.0
     devDependencies:
+      '@textory/extension-highlight':
+        specifier: workspace:^
+        version: link:../extension-highlight
       '@textory/styles':
         specifier: workspace:^
         version: link:../editor-style
@@ -548,6 +551,21 @@ importers:
       docx:
         specifier: ^9.6.1
         version: 9.7.1
+      tsup:
+        specifier: ^8.5.1
+        version: 8.5.1(@swc/core@1.15.3)(postcss@8.5.6)(typescript@5.6.2)
+      typescript:
+        specifier: ^5.6.0
+        version: 5.6.2
+
+  packages/extension-highlight:
+    devDependencies:
+      '@tiptap/core':
+        specifier: ^3.13.0
+        version: 3.13.0(@tiptap/pm@3.13.0)
+      '@tiptap/extension-highlight':
+        specifier: ^3.13.0
+        version: 3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))
       tsup:
         specifier: ^8.5.1
         version: 8.5.1(@swc/core@1.15.3)(postcss@8.5.6)(typescript@5.6.2)

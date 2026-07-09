@@ -4,6 +4,25 @@ import type {ImageNodeAttributes} from "./imageProps.ts";
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
+    highlight: {
+      /**
+       * Set a highlight mark
+       * @param attributes The highlight attributes
+       * @example editor.commands.setHighlight({ color: 'red' })
+       */
+      setHighlight: (attributes?: { color: string }) => ReturnType
+      /**
+       * Toggle a highlight mark
+       * @param attributes The highlight attributes
+       * @example editor.commands.toggleHighlight({ color: 'red' })
+       */
+      toggleHighlight: (attributes?: { color: string }) => ReturnType
+      /**
+       * Unset a highlight mark
+       * @example editor.commands.unsetHighlight()
+       */
+      unsetHighlight: () => ReturnType
+    },
     indentation: {
       /**
        * Set the indent attribute

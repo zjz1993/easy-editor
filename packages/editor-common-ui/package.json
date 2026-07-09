@@ -13,7 +13,13 @@
   "files": [
     "dist"
   ],
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css",
+    "*.scss",
+    "**/*.css",
+    "**/*.scss",
+    "**/IconFont/iconfont.js"
+  ],
   "scripts": {
     "clean": "rm -rf dist && rm -rf .turbo",
     "dev": "tsup src/index.ts --format esm --watch --silent --dts",

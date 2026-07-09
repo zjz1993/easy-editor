@@ -6,6 +6,7 @@ export default {
   header: '标题',
   search: '搜索',
   color: '字体颜色',
+  highlight:'背景色',
   'header.level': '标题{level}',
   paragraph: '正文',
   delete: '删除',

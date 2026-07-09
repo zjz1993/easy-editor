@@ -1,76 +1,77 @@
 {
-    "name": "@textory/editor",
-    "version": "0.1.0-beta.0",
-    "private": false,
-    "files": [
-        "dist"
-    ],
-    "module": "dist/index.mjs",
-    "types": "dist/index.d.mts",
-    "exports": {
-        ".": {
-            "types": "./dist/index.d.mts",
-            "import": "./dist/index.mjs"
-        },
-        "./theme/normal.css": "./dist/theme/normal.css"
+  "name": "@textory/editor",
+  "version": "0.1.0-beta.0",
+  "private": false,
+  "files": [
+    "dist"
+  ],
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.mts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
     },
-    "scripts": {
-        "clean": "rm -rf dist && rm -rf .turbo",
-        "dev": "tsup src/index.ts --format esm --watch --silent --dts",
-        "build": "tsup --config tsup.config.ts && node scripts/copy-theme.mjs"
-    },
-    "description": "基于tiptap的编辑器",
-    "publishConfig": {
-        "access": "public"
-    },
-    "dependencies": {
-        "@textory/context": "workspace:^",
-        "@textory/editor-common": "workspace:^",
-        "@textory/editor-toolbar": "workspace:^",
-        "@textory/editor-utils": "workspace:^",
-        "@textory/extension-bold": "workspace:^",
-        "@textory/extension-code-block": "workspace:^",
-        "@textory/extension-export": "workspace:^",
-        "@textory/extension-image": "workspace:^",
-        "@textory/extension-indent": "workspace:^",
-        "@textory/extension-link": "workspace:^",
-        "@textory/extension-outline": "workspace:^",
-        "@textory/extension-table": "workspace:^",
-        "@textory/extension-task-item": "workspace:^",
-        "classnames": "^2.5.1",
-        "lodash-es": "^4.18.0",
-        "uuid": "^11.1.0"
-    },
-    "devDependencies": {
-        "@textory/styles": "workspace:^",
-        "@tiptap/core": "^3.13.0",
-        "@tiptap/extension-color": "^3.13.0",
-        "@tiptap/extension-highlight": "^3.13.0",
-        "@tiptap/extension-paragraph": "^3.13.0",
-        "@tiptap/extension-text-align": "^3.13.0",
-        "@tiptap/extension-text-style": "^3.13.0",
-        "@tiptap/extension-underline": "^3.13.0",
-        "@tiptap/pm": "^3.13.0",
-        "@tiptap/react": "^3.13.0",
-        "@tiptap/starter-kit": "^3.13.0",
-        "@types/lodash-es": "^4.17.12",
-        "@types/react": "^18",
-        "@types/react-dom": "^18",
-        "tsup": "^8.5.1",
-        "typescript": "^5.6.0"
-    },
-    "peerDependencies": {
-        "@tiptap/core": "^3.13.0",
-        "@tiptap/extension-color": "^3.13.0",
-        "@tiptap/extension-highlight": "^3.13.0",
-        "@tiptap/extension-paragraph": "^3.13.0",
-        "@tiptap/extension-text-align": "^3.13.0",
-        "@tiptap/extension-text-style": "^3.13.0",
-        "@tiptap/extension-underline": "^3.13.0",
-        "@tiptap/pm": "^3.13.0",
-        "@tiptap/starter-kit": "^3.13.0",
-        "docx": "^9.6.1",
-        "react": "^18 || ^19",
-        "react-dom": "^18 || ^19"
-    }
+    "./theme/normal.css": "./dist/theme/normal.css"
+  },
+  "scripts": {
+    "clean": "rm -rf dist && rm -rf .turbo",
+    "dev": "tsup src/index.ts --format esm --watch --silent --dts",
+    "build": "tsup --config tsup.config.ts && node scripts/copy-theme.mjs"
+  },
+  "description": "基于tiptap的编辑器",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@textory/context": "workspace:^",
+    "@textory/editor-common": "workspace:^",
+    "@textory/editor-toolbar": "workspace:^",
+    "@textory/editor-utils": "workspace:^",
+    "@textory/extension-bold": "workspace:^",
+    "@textory/extension-code-block": "workspace:^",
+    "@textory/extension-export": "workspace:^",
+    "@textory/extension-image": "workspace:^",
+    "@textory/extension-indent": "workspace:^",
+    "@textory/extension-link": "workspace:^",
+    "@textory/extension-outline": "workspace:^",
+    "@textory/extension-table": "workspace:^",
+    "@textory/extension-task-item": "workspace:^",
+    "classnames": "^2.5.1",
+    "lodash-es": "^4.18.0",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@textory/extension-highlight": "workspace:^",
+    "@textory/styles": "workspace:^",
+    "@tiptap/core": "^3.13.0",
+    "@tiptap/extension-color": "^3.13.0",
+    "@tiptap/extension-highlight": "^3.13.0",
+    "@tiptap/extension-paragraph": "^3.13.0",
+    "@tiptap/extension-text-align": "^3.13.0",
+    "@tiptap/extension-text-style": "^3.13.0",
+    "@tiptap/extension-underline": "^3.13.0",
+    "@tiptap/pm": "^3.13.0",
+    "@tiptap/react": "^3.13.0",
+    "@tiptap/starter-kit": "^3.13.0",
+    "@types/lodash-es": "^4.17.12",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "tsup": "^8.5.1",
+    "typescript": "^5.6.0"
+  },
+  "peerDependencies": {
+    "@tiptap/core": "^3.13.0",
+    "@tiptap/extension-color": "^3.13.0",
+    "@tiptap/extension-highlight": "^3.13.0",
+    "@tiptap/extension-paragraph": "^3.13.0",
+    "@tiptap/extension-text-align": "^3.13.0",
+    "@tiptap/extension-text-style": "^3.13.0",
+    "@tiptap/extension-underline": "^3.13.0",
+    "@tiptap/pm": "^3.13.0",
+    "@tiptap/starter-kit": "^3.13.0",
+    "docx": "^9.6.1",
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19"
+  }
 }

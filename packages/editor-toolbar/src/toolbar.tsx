@@ -23,6 +23,7 @@ import ImageButton from './components/ImageButton/index.tsx';
 import TableButton from './components/TableButton/index.tsx';
 import {useEditorStateTrigger} from './hook/useEditorStateTrigger.ts';
 import ExportButton from "./components/ExportButton/index.tsx";
+import HighlightColorPicker from "./components/HighlightColorPicker/index.tsx";
 
 export interface IToolbarProps {
   editor: Editor | null;
@@ -112,6 +113,13 @@ const Toolbar: FC<IToolbarProps> = props => {
         key: 'textColorPicker',
         component: <TextColorPicker editor={editor} />,
         intlStr: 'color',
+        disabled:
+          disabled || isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
+      },
+      {
+        key: 'highlightColorPicker',
+        component: <HighlightColorPicker editor={editor} />,
+        intlStr: 'highlight',
         disabled:
           disabled || isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
       },

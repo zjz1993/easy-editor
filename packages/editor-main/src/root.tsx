@@ -12,6 +12,7 @@ import {Indent} from '@textory/extension-indent';
 import {CustomLink} from '@textory/extension-link';
 import {TaskItem, TaskList} from '@textory/extension-task-item';
 import {Color} from '@tiptap/extension-color';
+import {Highlight} from '@textory/extension-highlight';
 import {AttachmentExtension} from '@textory/extension-image';
 import {Table, TableBubbleMenu, TableCell, TableHeader, TableRow,} from '@textory/extension-table';
 import {Placeholder} from './extension/Placeholder';
@@ -80,6 +81,7 @@ const Editor = forwardRef<EditorRef, TEasyEditorProps>((props, ref) => {
     TableCell,
     TextStyle,
     Color,
+    Highlight,
     Underline,
     CustomLink,
     CodeBlock,
