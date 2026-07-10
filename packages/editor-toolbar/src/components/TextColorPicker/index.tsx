@@ -1,11 +1,11 @@
-import {Dropdown, Iconfont} from '@textory/editor-common';
+import {Dropdown, Iconfont, PRESET_COLORS} from '@textory/editor-common';
 import type {FC} from 'react';
 import {useContext} from 'react';
 import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 import cx from 'classnames';
 import type {TToolbarWrapperProps} from 'src/types/index.ts';
 import ToolbarContext from '../../context/toolbarContext.ts';
-import ColorPickerDropdown, {colorArray} from './colorPickerDropdown.tsx';
+import ColorPickerDropdown from './colorPickerDropdown.tsx';
 
 const TextColorPicker: FC<TToolbarWrapperProps> = ({
   style,
@@ -14,7 +14,7 @@ const TextColorPicker: FC<TToolbarWrapperProps> = ({
 }) => {
   const { editor } = useContext(ToolbarContext);
   const getActiveColor = () => {
-    const res = colorArray.find(color =>
+    const res = PRESET_COLORS.find(color =>
       editor.isActive('textStyle', { color }),
     );
     if (res) {

@@ -1,4 +1,5 @@
 import {TableCell as TTableCell, type TableCellOptions as TTableCellOptions,} from '@tiptap/extension-table';
+import {mergeAttributes} from '@tiptap/core';
 import {Plugin, PluginKey} from '@tiptap/pm/state';
 import {Decoration, DecorationSet} from '@tiptap/pm/view';
 import {
@@ -14,9 +15,31 @@ import {
 import {addColumn, addRow, CellSelection, selectedRect, TableMap} from '@tiptap/pm/tables';
 import classNames from 'classnames';
 
+// 共享的单元格背景色属性定义，TableHeader 也复用
+export const cellBackgroundAttribute = {
+  default: null as string | null,
+  parseHTML: (el: HTMLElement) =>
+    el.getAttribute('data-background-color') ||
+    el.style.backgroundColor ||
+    null,
+  renderHTML: (attrs: { background?: string | null }) =>
+    attrs.background
+      ? {
+          'data-background-color': attrs.background,
+          style: `background-color: ${attrs.background}`,
+        }
+      : {},
+};
+
 export const TableCell = TTableCell.extend<TTableCellOptions>({
-  renderHTML(){
-    return ['td',{class:'textory-table-cell'},0];
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      background: cellBackgroundAttribute,
+    };
+  },
+  renderHTML({ HTMLAttributes }){
+    return ['td', mergeAttributes(HTMLAttributes, { class: 'textory-table-cell' }), 0];
   },
   addProseMirrorPlugins() {
     const pluginKey = new PluginKey('tableCellControlBtn');

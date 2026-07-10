@@ -1,29 +1,8 @@
-import {Iconfont} from '@textory/editor-common';
+import {Iconfont, PRESET_COLORS} from '@textory/editor-common';
 import {chunk} from 'lodash-es';
 import type {FC} from 'react';
 import {useContext} from 'react';
 import ToolbarContext from '../../context/toolbarContext.ts';
-
-export const colorArray = [
-  '#222e4d',
-  'rgba(0, 0, 0, 0.2)',
-  'rgba(0, 0, 0, 0.4)',
-  'rgba(0, 0, 0, 0.6)',
-  'rgba(0, 0, 0, 0.8)',
-  '#000000',
-  '#FFEDEA',
-  '#FFF7EB',
-  '#FCFAEA',
-  '#EDF6E8',
-  '#EBF6FE',
-  '#F0F0F8',
-  '#EF3638',
-  '#FA6400',
-  '#FAAD14',
-  '#52C41A',
-  '#2579F4',
-  '#7C5BE0',
-];
 
 const HighlightPickerDropdown: FC = () => {
   const { editor } = useContext(ToolbarContext);
@@ -32,7 +11,7 @@ const HighlightPickerDropdown: FC = () => {
       <div className="textory-color-picker-default-btn" onClick={() => {
         editor.chain().focus().unsetHighlight().run();
       }}>恢复默认</div>
-      {chunk(colorArray, 6).map((colorTempArray, index) => {
+      {chunk(PRESET_COLORS, 6).map((colorTempArray, index) => {
         const array = colorTempArray.map(color => {
           return (
             <div

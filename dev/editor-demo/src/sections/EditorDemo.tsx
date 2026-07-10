@@ -30,10 +30,9 @@ const EditorDemo: FC<EditorDemoProps> = ({ editorRef }) => {
             title="Textory 示例文档"
             outputHTML
             editable
-            onChange={() => {
+            onChange={(data) => {
               // 演示 onChange 回调，可在控制台查看输出
-              // eslint-disable-next-line no-console
-              console.log('[demo] content changed');
+              console.log('[demo] content changed', data);
             }}
           />
         </div>

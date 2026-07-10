@@ -10,4 +10,5 @@ export {
   MIN_COL_WIDTH,
   AttachmentExtensionName,
   PasteExtensionName,
+  PRESET_COLORS,
 } from '@textory/editor-utils';

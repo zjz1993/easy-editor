@@ -755,3 +755,29 @@ export const MIN_COL_WIDTH = 100;
 
 export const AttachmentExtensionName = 'attachment';
 export const PasteExtensionName = 'custom_paste';
+
+/**
+ * 编辑器预设颜色色板。
+ * 同时用于：文本高亮（highlight）、文本颜色（textStyle color）、表格单元格背景色等场景。
+ * 6 个一行展示（前端布局按 6 分块）。
+ */
+export const PRESET_COLORS: string[] = [
+  '#222e4d',
+  'rgba(0, 0, 0, 0.2)',
+  'rgba(0, 0, 0, 0.4)',
+  'rgba(0, 0, 0, 0.6)',
+  'rgba(0, 0, 0, 0.8)',
+  '#000000',
+  '#FFEDEA',
+  '#FFF7EB',
+  '#FCFAEA',
+  '#EDF6E8',
+  '#EBF6FE',
+  '#F0F0F8',
+  '#EF3638',
+  '#FA6400',
+  '#FAAD14',
+  '#52C41A',
+  '#2579F4',
+  '#7C5BE0',
+];

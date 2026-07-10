@@ -1,11 +1,11 @@
-import {Dropdown, Iconfont} from '@textory/editor-common';
+import {Dropdown, Iconfont, PRESET_COLORS} from '@textory/editor-common';
 import type {FC} from 'react';
 import {useContext} from 'react';
 import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 import cx from 'classnames';
 import type {TToolbarWrapperProps} from '../../types/index.ts';
 import ToolbarContext from '../../context/toolbarContext.ts';
-import HighlightPickerDropdown, {colorArray} from './highlightPickerDropdown.tsx';
+import HighlightPickerDropdown from './highlightPickerDropdown.tsx';
 
 const HighlightColorPicker: FC<TToolbarWrapperProps> = ({
   style,
@@ -14,7 +14,7 @@ const HighlightColorPicker: FC<TToolbarWrapperProps> = ({
 }) => {
   const { editor } = useContext(ToolbarContext);
   const getActiveColor = () => {
-    const res = colorArray.find(color =>
+    const res = PRESET_COLORS.find(color =>
       editor.isActive('highlight', { color }),
     );
     if (res) {

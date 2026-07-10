@@ -39,7 +39,8 @@
       "Bash(npx tsc:*)",
       "Bash(find:*)",
       "Bash(pnpm --filter @textory/extension-outline build:*)",
-      "Bash(npx vite:*)"
+      "Bash(npx vite:*)",
+      "Bash(pnpm --filter @textory/extension-table build:*)"
     ]
   }
 }
