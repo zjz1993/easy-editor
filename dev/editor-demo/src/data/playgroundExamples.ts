@@ -1,6 +1,6 @@
 // Playground 预设示例代码
-// 用户代码作为 react-live 的渲染体（等同于一个函数组件的函数体），
-// 因此可以直接使用 useState 等 hooks 并 return JSX。
+// 使用 react-live 的 noInline 模式：用户代码作为函数体执行，
+// 可以使用多条语句、useState 等 hooks，但末尾必须显式调用 render(<JSX />)。
 
 export interface PlaygroundExample {
   id: string;
@@ -9,85 +9,98 @@ export interface PlaygroundExample {
   code: string;
 }
 
-const BASIC = `<Editor
-  content="<h1>你好，Textory</h1><p>开始你的创作...</p>"
-  placeholder="写点什么"
-  editable
-  outputHTML
-  onChange={(data) => console.log(data)}
-/>`;
+const BASIC = `// 最小可运行示例
+render(
+  <Editor
+    content="<h1>你好，Textory</h1><p>开始你的创作...</p>"
+    placeholder="写点什么"
+    editable
+    outputHTML
+    onChange={(data) => console.log(data)}
+  />
+);`;
 
 const CONTROLLED = `// 用 useState 控制 content
-const [content, setContent] = useState(
-  '<h1>初始内容</h1><p>点下面的按钮切换内容</p>'
-);
-
-return (
-  <div>
-    <div style={{ marginBottom: 12, display: 'flex', gap: 8 }}>
-      <button
-        onClick={() =>
-          setContent(
-            '<h1 style="color:#0082fc">蓝色标题</h1><p>由 useState 控制</p>'
-          )
-        }
-      >
-        切换 A
-      </button>
-      <button
-        onClick={() =>
-          setContent(
-            '<h2>二级标题</h2><ul><li>列表项 1</li><li>列表项 2</li></ul>'
-          )
-        }
-      >
-        切换 B
-      </button>
+// 注意：使用 hooks 必须包在函数组件里
+function App() {
+  const [content, setContent] = useState(
+    '<h1>初始内容</h1><p>点下面的按钮切换内容</p>'
+  );
+  return (
+    <div>
+      <div style={{ marginBottom: 12, display: 'flex', gap: 8 }}>
+        <button
+          onClick={() =>
+            setContent(
+              '<h1 style="color:#0082fc">蓝色标题</h1><p>由 useState 控制</p>'
+            )
+          }
+        >
+          切换 A
+        </button>
+        <button
+          onClick={() =>
+            setContent(
+              '<h2>二级标题</h2><ul><li>列表项 1</li><li>列表项 2</li></ul>'
+            )
+          }
+        >
+          切换 B
+        </button>
+      </div>
+      <Editor
+        content={content}
+        editable
+        onChange={(html) => console.log(html)}
+      />
     </div>
-    <Editor
-      content={content}
-      editable
-      onChange={(html) => console.log(html)}
-    />
-  </div>
-);`;
+  );
+}
+
+render(<App />);`;
 
 const ONCHANGE = `// 把 onChange 输出的 HTML 显示在编辑器下方
-const [html, setHtml] = useState('');
+// 使用 hooks 必须包在函数组件里
+function App() {
+  const [html, setHtml] = useState('');
+  return (
+    <div>
+      <Editor
+        content="<p>编辑我，下方会实时显示输出的 HTML</p>"
+        editable
+        outputHTML
+        onChange={(data) => setHtml(data)}
+      />
+      <pre
+        style={{
+          marginTop: 16,
+          padding: 12,
+          background: '#f5f5f5',
+          borderRadius: 6,
+          fontSize: 12,
+          lineHeight: 1.5,
+          overflow: 'auto',
+          maxHeight: 200,
+        }}
+      >
+        {html || '(尚无输出)'}
+      </pre>
+    </div>
+  );
+}
 
-return (
-  <div>
-    <Editor
-      content="<p>编辑我，下方会实时显示输出的 HTML</p>"
-      editable
-      outputHTML
-      onChange={(data) => setHtml(data)}
-    />
-    <pre
-      style={{
-        marginTop: 16,
-        padding: 12,
-        background: '#f5f5f5',
-        borderRadius: 6,
-        fontSize: 12,
-        lineHeight: 1.5,
-        overflow: 'auto',
-        maxHeight: 200,
-      }}
-    >
-      {html || '(尚无输出)'}
-    </pre>
-  </div>
-);`;
+render(<App />);`;
 
 const RICH = `// 直接使用内置示例文档，包含表格、任务清单、代码块等
-<Editor content={DEMO_HTML} editable outputHTML />`;
+render(<Editor content={DEMO_HTML} editable outputHTML />);`;
 
 const READONLY = `// 设置 editable={false} 进入只读模式
-<Editor
-  content="<h1>只读模式</h1><p>editable 为 false 时，用户无法编辑，仅展示。</p><blockquote><p>适合做内容预览 / 详情页。</p></blockquote>"
-  editable={false}
-/>`;
+render(
+  <Editor
+    content="<h1>只读模式</h1><p>editable 为 false 时，用户无法编辑，仅展示。</p><blockquote><p>适合做内容预览 / 详情页。</p></blockquote>"
+    editable={false}
+  />
+);`;
 
 export const PLAYGROUND_EXAMPLES: PlaygroundExample[] = [
   {

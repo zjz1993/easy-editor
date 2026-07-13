@@ -115,6 +115,7 @@ const PlaygroundPage: FC = () => {
       code={committedCode}
       scope={scope}
       theme={themes.vsDark}
+      noInline
     >
       <div className="playground-page">
         <header className="playground-header">
