@@ -17,6 +17,9 @@ const Nav: FC<NavProps> = ({ onTryClick }) => {
         <a href="#demo">演示</a>
         <a href="#quickstart">快速开始</a>
         <a href="#architecture">架构</a>
+        <Link className="intro-nav__link" to="/docs">
+          文档
+        </Link>
         <Link className="intro-nav__link" to="/playground">
           演练场
         </Link>

@@ -44,7 +44,8 @@
       "Bash(pnpm add:*)",
       "Bash(pnpm:*)",
       "Bash(. ~/.nvm/nvm.sh)",
-      "Bash(nvm:*)"
+      "Bash(nvm:*)",
+      "Bash(/Users/zhaojunzhe/Downloads/easy-editor-main/dev/editor-demo/src/styles/docs.scss <<'EOF'\n\n// ============ GitHub 风格 callouts ============\n// 用法：> [!NOTE] / [!TIP] / [!IMPORTANT] / [!WARNING] / [!CAUTION]\n.docs-content {\n  .markdown-alert {\n    margin: 16px 0;\n    padding: 12px 16px;\n    border-left: 4px solid currentColor;\n    border-radius: 0 6px 6px 0;\n    background: $bg-soft;\n\n    & > *:first-child { margin-top: 0; }\n    & > *:last-child { margin-bottom: 0; }\n\n    p { margin: 6px 0; }\n  }\n\n  .markdown-alert-title {\n    display: flex;\n    align-items: center;\n    gap: 8px;\n    margin-bottom: 4px;\n    font-weight: 600;\n    font-size: 14px;\n\n    svg {\n      width: 16px;\n      height: 16px;\n      flex-shrink: 0;\n    }\n  }\n\n  .markdown-alert-note {\n    color: #1f5fb3;\n    background: rgba\\(31, 95, 179, 0.06\\);\n    border-left-color: #1f5fb3;\n  }\n  .markdown-alert-tip {\n    color: #1a7d3d;\n    background: rgba\\(26, 125, 61, 0.06\\);\n    border-left-color: #1a7d3d;\n  }\n  .markdown-alert-important {\n    color: #7c3aed;\n    background: rgba\\(124, 58, 237, 0.06\\);\n    border-left-color: #7c3aed;\n  }\n  .markdown-alert-warning {\n    color: #9a6700;\n    background: rgba\\(154, 103, 0, 0.08\\);\n    border-left-color: #d4a72c;\n  }\n  .markdown-alert-caution {\n    color: #b3241d;\n    background: rgba\\(179, 36, 29, 0.06\\);\n    border-left-color: #b3241d;\n  }\n}\nEOF)"
     ]
   }
 }
