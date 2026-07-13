@@ -40,7 +40,11 @@
       "Bash(find:*)",
       "Bash(pnpm --filter @textory/extension-outline build:*)",
       "Bash(npx vite:*)",
-      "Bash(pnpm --filter @textory/extension-table build:*)"
+      "Bash(pnpm --filter @textory/extension-table build:*)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm:*)",
+      "Bash(. ~/.nvm/nvm.sh)",
+      "Bash(nvm:*)"
     ]
   }
 }

@@ -29,7 +29,7 @@ const alias = [
 
 // https://vite.dev/config/
 export default defineConfig(({command}) => ({
-  base:command === 'build' ? 'editor' : '/',
+  base:command === 'build' ? '/editor/' : '/',
   plugins: [react()],
   build:{
     outDir:"editor"

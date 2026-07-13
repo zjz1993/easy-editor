@@ -1,0 +1,352 @@
+// ============ Playground 页面样式 ============
+$primary: #0082fc;
+$primary-dark: #0067d0;
+$text-main: #1a2233;
+$text-sub: #5b6678;
+$border: #e6ebf2;
+$bg-soft: #f7f9fc;
+$bg-code: #1e1e2e;
+
+.playground-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background: $bg-soft;
+}
+
+// ============ 顶栏 ============
+.playground-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: #fff;
+  border-bottom: 1px solid $border;
+  flex-shrink: 0;
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: $text-main;
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  &__logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    background: linear-gradient(135deg, $primary, #4aa8ff);
+    color: #fff;
+    font-weight: 800;
+    font-size: 13px;
+  }
+
+  &__title {
+    font-size: 15px;
+    font-weight: 600;
+    color: $text-main;
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__select {
+    height: 32px;
+    padding: 0 28px 0 10px;
+    border-radius: 8px;
+    border: 1px solid $border;
+    background: #fff
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%235b6678' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>")
+      no-repeat right 10px center;
+    -webkit-appearance: none;
+    appearance: none;
+    font-size: 13px;
+    color: $text-main;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+      border-color: $primary;
+    }
+  }
+
+  &__btn {
+    height: 32px;
+    padding: 0 14px;
+    border-radius: 8px;
+    border: 1px solid $border;
+    background: #fff;
+    color: $text-main;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    &:hover {
+      border-color: $primary;
+      color: $primary;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+      &:hover {
+        border-color: $border;
+        color: $text-main;
+      }
+    }
+
+    &--primary {
+      background: $primary;
+      color: #fff;
+      border-color: $primary;
+
+      &:hover {
+        background: $primary-dark;
+        color: #fff;
+      }
+    }
+
+    &--run {
+      position: relative;
+      padding-left: 24px;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-left: 7px solid currentColor;
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+      }
+    }
+
+    &--dirty {
+      background: #fff3d6;
+      border-color: #f5a623;
+      color: #b87808;
+      animation: playground-dirty-pulse 1.6s ease-in-out infinite;
+
+      &:hover {
+        background: #ffe9a8;
+        border-color: #e89812;
+        color: #936005;
+      }
+    }
+  }
+
+  &__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: $text-sub;
+    cursor: pointer;
+    user-select: none;
+
+    input {
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+      accent-color: $primary;
+    }
+
+    &:hover {
+      color: $text-main;
+    }
+  }
+}
+
+@keyframes playground-dirty-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(245, 166, 35, 0);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(245, 166, 35, 0.18);
+  }
+}
+
+// ============ 主体分屏 ============
+.playground-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.playground-pane {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+
+  &--code {
+    background: $bg-code;
+  }
+
+  &--preview {
+    background: #fff;
+    border-left: 1px solid $border;
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+
+    .playground-pane--code & {
+      background: rgba(255, 255, 255, 0.04);
+      color: #aab2c5;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .playground-pane--preview & {
+      background: $bg-soft;
+      color: $text-sub;
+      border-bottom: 1px solid $border;
+    }
+  }
+
+  &__body {
+    flex: 1;
+    overflow: auto;
+    min-height: 0;
+
+    // react-live 编辑器
+    .playground-pane--code & {
+      position: relative;
+    }
+
+    // 预览区
+    .playground-pane--preview & {
+      padding: 24px;
+    }
+  }
+}
+
+// 可拖拽分隔条
+.playground-divider {
+  flex-shrink: 0;
+  width: 6px;
+  cursor: col-resize;
+  background: transparent;
+  position: relative;
+  z-index: 5;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0 2px;
+    background: $border;
+    transition: background 0.15s;
+  }
+
+  &:hover::after,
+  &--dragging::after {
+    background: $primary;
+  }
+}
+
+// 错误条
+.playground-error {
+  flex-shrink: 0;
+  padding: 10px 16px;
+  background: #2a0f12;
+  color: #ff9b9b;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 12.5px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border-top: 1px solid rgba(255, 0, 0, 0.3);
+  max-height: 140px;
+  overflow: auto;
+}
+
+// react-live LiveEditor 样式覆盖
+.playground-editor {
+  height: 100%;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace !important;
+  font-size: 13px !important;
+  line-height: 1.6 !important;
+
+  textarea {
+    &:focus {
+      outline: none;
+    }
+  }
+
+  pre {
+    margin: 0 !important;
+    padding: 16px !important;
+    background: transparent !important;
+  }
+}
+
+// 预览区内的 Editor 自适应
+.playground-preview-inner {
+  min-height: 100%;
+}
+
+// ============ 响应式 ============
+@media (max-width: 768px) {
+  .playground-body {
+    flex-direction: column;
+  }
+
+  .playground-pane--preview {
+    border-left: none;
+    border-top: 1px solid $border;
+  }
+
+  .playground-divider {
+    width: 100%;
+    height: 6px;
+    cursor: row-resize;
+
+    &::after {
+      inset: 2px 0;
+    }
+  }
+
+  .playground-header {
+    padding: 10px 14px;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    &__title {
+      display: none;
+    }
+  }
+}

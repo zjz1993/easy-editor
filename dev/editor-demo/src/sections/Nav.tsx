@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import type { FC } from 'react';
 
 interface NavProps {
@@ -16,6 +17,9 @@ const Nav: FC<NavProps> = ({ onTryClick }) => {
         <a href="#demo">演示</a>
         <a href="#quickstart">快速开始</a>
         <a href="#architecture">架构</a>
+        <Link className="intro-nav__link" to="/playground">
+          演练场
+        </Link>
         <a className="intro-nav__tag" href="#demo" onClick={(e) => { e.preventDefault(); onTryClick(); }}>
           立即体验
         </a>
