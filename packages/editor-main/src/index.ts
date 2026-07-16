@@ -8,5 +8,9 @@ export type { ExportOptions, IExportWatermark } from '@textory/extension-export'
 // 导出 Editor ref 句柄类型（用于 editorRef.current.export() 调用）
 export type { EditorRef } from './root.tsx';
 
+// 导出 features 相关常量与类型，便于使用方强类型构造 features prop
+export { FEATURES } from '@textory/context';
+export type { FeatureName, FeatureFlags } from '@textory/context';
+
 export default Editor;
 export type { TEasyEditorProps };

@@ -6,7 +6,7 @@ import {Bold} from '@textory/extension-bold';
 import {EditorContent} from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import cx from 'classnames';
-import {forwardRef, useImperativeHandle, useRef} from 'react';
+import {forwardRef, useEffect, useImperativeHandle, useRef} from 'react';
 import {CodeBlock} from '@textory/extension-code-block';
 import {Indent} from '@textory/extension-indent';
 import {CustomLink} from '@textory/extension-link';
@@ -55,6 +55,9 @@ const Editor = forwardRef<EditorRef, TEasyEditorProps>((props, ref) => {
       minWidth: 100,
       minHeight: 100,
     },
+    features: {
+      outline: true,
+    },
   });
   const {
     content,
@@ -65,6 +68,7 @@ const Editor = forwardRef<EditorRef, TEasyEditorProps>((props, ref) => {
     style,
     outputHTML,
   } = mergedProps;
+  const isOutlineEnabled = mergedProps.features?.outline ?? true;
   const extensions = [
     StarterKit.configure({
       bold: false,
@@ -118,7 +122,7 @@ const Editor = forwardRef<EditorRef, TEasyEditorProps>((props, ref) => {
         [P, H, CL, OL, UL, QUOTE, HR, TL, IMG],
         '',
       ),
-      OutlineExtension,
+      ...(isOutlineEnabled ? [OutlineExtension] : []),
       Placeholder.configure({
         placeholder,
       }),
@@ -150,10 +154,26 @@ const Editor = forwardRef<EditorRef, TEasyEditorProps>((props, ref) => {
   if (process.env.NODE_ENV === 'development') {
     (window as any).__EASY_EDITOR__ = editor;
   }
+
+  // features 只在 mount 时生效，运行时变更不会重新加载扩展
+  const initialFeaturesRef = useRef<string | undefined>(undefined);
+  if (initialFeaturesRef.current === undefined) {
+    initialFeaturesRef.current = JSON.stringify(mergedProps.features ?? {});
+  }
+  useEffect(() => {
+    const current = JSON.stringify(mergedProps.features ?? {});
+    if (current !== initialFeaturesRef.current) {
+      console.warn(
+        '[EasyEditor] features 只在初始化时生效，运行时修改不会重新加载扩展。' +
+          '如需切换，请给 <Editor> 加 key 强制 remount，例如：<Editor key={JSON.stringify(features)} features={features} />',
+      );
+    }
+  }, [mergedProps.features]);
+
   return (
     <EditorProvider editor={editor} props={mergedProps}>
       <div className={cx('textory', className)} style={style}>
-        {intlInit && (
+        {intlInit && editor.isEditable && (
           <EditorToolbar editor={editor} imageProps={mergedProps.imageProps} exportProps={mergedProps.exportProps}/>
         )}
         <EditorContent
@@ -161,7 +181,7 @@ const Editor = forwardRef<EditorRef, TEasyEditorProps>((props, ref) => {
           editor={editor}
           className="textory-body"
         >
-          <OutlineView editor={editor} />
+          {isOutlineEnabled && <OutlineView editor={editor} />}
         </EditorContent>
         <MessageContainer />
         <TableBubbleMenu editor={editor} />

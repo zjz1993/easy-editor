@@ -26,6 +26,40 @@ import Editor from '@textory/editor';
 | `className` | `string` | — | 容器 className |
 | `style` | `CSSProperties` | — | 容器样式 |
 | `autoFocus` | `boolean \| 'start' \| 'end'` | `false` | 是否自动聚焦 |
+| `features` | `FeatureFlags` | `{ outline: true }` | 可选功能的启用/停用开关，详见 [功能开关](#功能开关features) |
+
+## 功能开关（features）
+
+`features` 用于按需关闭某些可选功能。默认全部启用（opt-out），只需在不需要时显式置为 `false`。
+
+| 字段 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| `features.outline` | `boolean` | `true` | 是否启用文档大纲（含 `OutlineExtension` 与右侧大纲面板） |
+
+```jsx
+// 关闭文档大纲：右侧不会出现大纲面板
+<Editor
+  content="<h1>关闭大纲示例</h1><p>右侧不会出现大纲面板。</p>"
+  editable
+  features={{ outline: false }}
+/>
+```
+
+> [!IMPORTANT]
+> `features` **仅在编辑器 mount 时生效**。Tiptap 的扩展集合在创建 editor 时固定，运行时修改 `features` 不会重新加载扩展。
+>
+> 开发环境下修改 `features` 会触发 `console.warn` 提醒。如需运行时切换，请给 `<Editor>` 加 `key` 强制 remount：
+>
+> ```jsx
+> const [outlineOn, setOutlineOn] = useState(true);
+>
+> <Editor
+>   key={outlineOn ? 'with-outline' : 'no-outline'}
+>   features={{ outline: outlineOn }}
+> />
+> ```
+>
+> 注意 remount 会重置 undo/redo 历史与光标位置，仅适合真正需要切换的场景。
 
 ## 图片相关（imageProps）
 
@@ -70,6 +104,9 @@ import Editor from '@textory/editor';
     max: 0,
     minWidth: 100,
     minHeight: 100,
+  },
+  features: {
+    outline: true,
   },
 }
 ```

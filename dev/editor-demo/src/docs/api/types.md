@@ -32,6 +32,7 @@ import type { TEasyEditorProps } from '@textory/editor';
 | `autoFocus` | `boolean \| 'start' \| 'end'` |
 | `imageProps` | 图片上传配置 |
 | `exportProps` | 导出配置 |
+| `features` | 可选功能开关，见 [FEATURES](#features) |
 | `exportWORD` | 见 [Editor API](/docs/api/editor) |
 
 ## EditorRef
@@ -83,6 +84,29 @@ import { BLOCK_TYPES } from '@textory/editor-common';
 
 > [!IMPORTANT]
 > 自定义扩展的 `name` 必须与 `BLOCK_TYPES` 常量保持一致，否则可能引起 schema 冲突。
+
+## FEATURES
+
+可选功能开关的常量集合，用于 `features` prop 的 key。从 `@textory/editor` 或 `@textory/context` 导入：
+
+```ts
+import { FEATURES, type FeatureFlags } from '@textory/editor';
+```
+
+| 常量 | 值 | 对应功能 |
+| --- | --- | --- |
+| `FEATURES.OUTLINE` | `'outline'` | 文档大纲（`OutlineExtension` + `<OutlineView />`） |
+
+```ts
+// FeatureName 由 FEATURES 推导得到，当前为 'outline'
+type FeatureName = (typeof FEATURES)[keyof typeof FEATURES];
+
+// features prop 的形状：每个 feature 都是可选 boolean，缺省视为 true
+type FeatureFlags = Partial<Record<FeatureName, boolean>>;
+```
+
+> [!NOTE]
+> 当前白名单只包含 `outline`。后续会逐步开放更多无 schema 依赖的可选功能（如 `export`、`link` 等）。新功能加入时只需扩展 `FEATURES` 常量，类型会自动推导。
 
 ## 函数组件约定
 

@@ -31,16 +31,51 @@ Textory 把每个功能拆成独立扩展包，按需引入即可。
 render(<Editor content="<p>开箱即用</p>" editable />);
 ```
 
-## 定制方向（占位）
+## 关闭可选功能（features）
+
+`<Editor>` 默认启用全部扩展，但有些功能（如文档大纲）属于"附加"性质，使用方可能不需要。这类功能通过 `features` prop 显式关闭：
+
+```jsx
+// 关闭文档大纲
+<Editor
+  content="<h1>关闭大纲示例</h1><p>右侧不会出现大纲面板。</p>"
+  editable
+  features={{ outline: false }}
+/>
+```
+
+当前可通过 `features` 关闭的功能：
+
+| feature | 默认值 | 说明 |
+| --- | --- | --- |
+| `outline` | `true` | 文档大纲（`OutlineExtension` + 右侧大纲面板） |
+
+> [!IMPORTANT]
+> `features` 仅在编辑器 mount 时生效。运行时修改不会重新加载扩展，开发环境下会触发 `console.warn`。
+>
+> 如需运行时切换，请配合 `key` 强制 remount：
+>
+> ```jsx
+> const [outlineOn, setOutlineOn] = useState(true);
+>
+> <Editor
+>   key={outlineOn ? 'with-outline' : 'no-outline'}
+>   features={{ outline: outlineOn }}
+> />
+> ```
+>
+> 完整说明见 [Editor API · 功能开关](/docs/api/editor#功能开关features)。
+
+## 调整扩展配置（暂未开放）
 
 如果你需要：
 
-- 关闭某个扩展（如不需要表格）
 - 调整扩展配置（如表格列宽限制）
 - 接入新扩展（如 mention、emoji）
+- 关闭核心扩展（如 bold / table / list 等）
 
 > [!NOTE]
-> 当前版本暂未暴露「按需关闭扩展」的 prop，所有扩展均默认启用。后续会通过 `extensions` prop 支持过滤/覆盖，请关注 [API 参考](/docs/api/extensions)。
+> 这些定制能力暂未暴露稳定 API。当前 `features` 白名单仅覆盖 `outline` 这类无 schema 依赖的独立附加功能；涉及核心 schema 的扩展（列表、缩进、对齐等）暂时必须保留默认启用，避免破坏文档结构一致性。后续会逐步开放更多开关。
 
 ## 图片上传
 

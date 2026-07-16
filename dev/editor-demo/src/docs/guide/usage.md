@@ -105,5 +105,16 @@ render(
 render(<Editor content={DEMO_HTML} editable outputHTML />);
 ```
 
+## 关闭可选功能（features）
+
+某些附加功能（如文档大纲）不需要时可以通过 `features` 关闭：
+
+```jsx
+<Editor content={DEMO_HTML} editable features={{ outline: false }} />
+```
+
+> [!WARNING]
+> `features` 仅在 mount 时生效。运行时切换需要配合 `key` 强制 remount，详见 [扩展包接入 · 关闭可选功能](/docs/guide/extensions#关闭可选功能features)。
+
 > [!TIP]
 > 完整 props 列表见 [Editor API](/docs/api/editor)。

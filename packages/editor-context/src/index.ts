@@ -6,3 +6,4 @@ export * from './useEditorInstance.ts';
 export * from './useEditorProps.ts';
 export * from './types/imageProps.ts';
 export * from './types/exportProps.ts';
+export * from './features';
