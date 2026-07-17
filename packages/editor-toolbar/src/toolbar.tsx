@@ -23,12 +23,15 @@ import ImageButton from './components/ImageButton/index.tsx';
 import TableButton from './components/TableButton/index.tsx';
 import {useEditorStateTrigger} from './hook/useEditorStateTrigger.ts';
 import ExportButton from "./components/ExportButton/index.tsx";
+import ImportButton from "./components/ImportButton/index.tsx";
 import HighlightColorPicker from "./components/HighlightColorPicker/index.tsx";
 
 export interface IToolbarProps {
   editor: Editor | null;
   imageProps: Partial<IImageProps>;
-  exportProps: Partial<ExportProps>
+  exportProps: Partial<ExportProps>;
+  /** When provided, the import button is shown. Pass the file to your import handler. */
+  onImportFile?: (file: File) => void;
 }
 
 const Toolbar: FC<IToolbarProps> = props => {
@@ -36,7 +39,7 @@ const Toolbar: FC<IToolbarProps> = props => {
   const {
     props: { editable },
   } = useEditorContext();
-  const { editor, imageProps = {}, exportProps={} } = props;
+  const { editor, imageProps = {}, exportProps={}, onImportFile } = props;
   const canIndent = editor.isActive('paragraph') || editor.isActive('heading');
   const editorView = editor.view;
   const commonProps: IToolbarCommonProps = {
@@ -200,8 +203,14 @@ const Toolbar: FC<IToolbarProps> = props => {
         intlStr: 'export',
         disabled: disabled,
       },
+      ...(onImportFile ? [{
+        key: 'import',
+        component: <ImportButton editor={editor} onImportFile={onImportFile} />,
+        intlStr: 'import',
+        disabled: disabled,
+      }] : []),
     ];
-  }, [editor, editable]);
+  }, [editor, editable, onImportFile]);
   return (
     <ToolbarContext.Provider value={{ ...commonProps, imageProps }}>
       <div className="textory-toolbar" ref={toolbarRef}>

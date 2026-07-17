@@ -1,0 +1,41 @@
+{
+  "name": "@textory/extension-import-word",
+  "version": "0.0.1",
+  "private": false,
+  "files": [
+    "dist"
+  ],
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.mts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rm -rf dist && rm -rf .turbo",
+    "dev": "tsup src/index.ts --format esm --watch --silent --dts",
+    "build": "tsup --config tsup.config.ts"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@textory/context": "workspace:^",
+    "@textory/editor-common-ui": "workspace:^",
+    "mammoth": "^1.8.0"
+  },
+  "devDependencies": {
+    "@tiptap/core": "^3.13.0",
+    "@types/react": "^18",
+    "tsup": "^8.5.1",
+    "typescript": "^5.6.0"
+  },
+  "peerDependencies": {
+    "@tiptap/core": "^3.13.0",
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19"
+  }
+}

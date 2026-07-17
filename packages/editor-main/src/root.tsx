@@ -6,7 +6,7 @@ import {Bold} from '@textory/extension-bold';
 import {EditorContent} from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import cx from 'classnames';
-import {forwardRef, useEffect, useImperativeHandle, useRef} from 'react';
+import {forwardRef, useCallback, useEffect, useImperativeHandle, useRef} from 'react';
 import {CodeBlock} from '@textory/extension-code-block';
 import {Indent} from '@textory/extension-indent';
 import {CustomLink} from '@textory/extension-link';
@@ -39,6 +39,16 @@ export interface EditorRef {
    * Uses the editor's current content if `data.content` is not provided.
    */
   export: (options?: ExportOptions) => Promise<void>;
+  /**
+   * Import a .docx file, replacing the entire document.
+   *
+   * Dynamically loads `@textory/extension-import-word` (and mammoth) on first
+   * call, so the main bundle stays small when the feature is unused.
+   *
+   * Requires `features.importWord` to be enabled. Images are uploaded via
+   * the configured `imageProps.onImageUpload` handler.
+   */
+  import: (file: File) => Promise<void>;
 }
 
 const Editor = forwardRef<EditorRef, TEasyEditorProps>((props, ref) => {
@@ -57,6 +67,7 @@ const Editor = forwardRef<EditorRef, TEasyEditorProps>((props, ref) => {
     },
     features: {
       outline: true,
+      importWord: true,
     },
   });
   const {
@@ -69,6 +80,7 @@ const Editor = forwardRef<EditorRef, TEasyEditorProps>((props, ref) => {
     outputHTML,
   } = mergedProps;
   const isOutlineEnabled = mergedProps.features?.outline ?? true;
+  const isImportWordEnabled = mergedProps.features?.importWord ?? false;
   const extensions = [
     StarterKit.configure({
       bold: false,
@@ -138,6 +150,18 @@ const Editor = forwardRef<EditorRef, TEasyEditorProps>((props, ref) => {
     },
   });
 
+  // Shared import handler — used by both EditorRef.import and the toolbar button.
+  // Dynamic import keeps mammoth (~100KB+) out of the main bundle until first use.
+  const handleImportFile = useCallback(async (file: File) => {
+    if (!editor) return;
+    const {importWORD} = await import('@textory/extension-import-word');
+    return importWORD({
+      file,
+      editor,
+      imageUploadHandler: mergedProps.imageProps?.onImageUpload,
+    });
+  }, [editor, mergedProps.imageProps]);
+
   useImperativeHandle(ref, () => ({
     export: (options: ExportOptions = {}) => {
       const content = options.data?.content ?? editor?.getJSON();
@@ -149,7 +173,8 @@ const Editor = forwardRef<EditorRef, TEasyEditorProps>((props, ref) => {
         },
       });
     },
-  }), [editor, mergedProps.title]);
+    import: handleImportFile,
+  }), [editor, mergedProps.title, handleImportFile]);
 
   if (process.env.NODE_ENV === 'development') {
     (window as any).__EASY_EDITOR__ = editor;
@@ -174,7 +199,12 @@ const Editor = forwardRef<EditorRef, TEasyEditorProps>((props, ref) => {
     <EditorProvider editor={editor} props={mergedProps}>
       <div className={cx('textory', className)} style={style}>
         {intlInit && editor.isEditable && (
-          <EditorToolbar editor={editor} imageProps={mergedProps.imageProps} exportProps={mergedProps.exportProps}/>
+          <EditorToolbar
+            editor={editor}
+            imageProps={mergedProps.imageProps}
+            exportProps={mergedProps.exportProps}
+            onImportFile={isImportWordEnabled ? handleImportFile : undefined}
+          />
         )}
         <EditorContent
           autoFocus={autoFocus}

@@ -13,6 +13,7 @@
  */
 export const FEATURES = {
   OUTLINE: 'outline',
+  IMPORT_WORD: 'importWord',
 } as const;
 
 export type FeatureName = (typeof FEATURES)[keyof typeof FEATURES];

@@ -56,4 +56,5 @@ export default {
   'outline':'大纲',
   'outline.hide':'隐藏大纲',
   'outline.show':'展开大纲',
+  'import':'导入WORD',
 };

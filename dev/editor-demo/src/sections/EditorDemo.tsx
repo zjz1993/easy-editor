@@ -8,7 +8,7 @@ interface EditorDemoProps {
 
 const EditorDemo: FC<EditorDemoProps> = ({ editorRef }) => {
   const [outlineEnabled, setOutlineEnabled] = useState(true);
-  const features = { outline: outlineEnabled };
+  const features = { outline: outlineEnabled, importWord: true };
   return (
     <section className="intro-section" id="demo">
       <div className="intro-section__head">
