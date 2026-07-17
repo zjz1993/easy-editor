@@ -99,8 +99,11 @@ export const convertText = (node: TextNode): TextRun | ExternalHyperlink => {
     // Default to black when no explicit color is set,
     // prevents headings from inheriting blue from Word's default theme
     color: textColor || '000000',
+    // NOTE: ShadingType.CLEAR, not SOLID. With SOLID the visible color is
+    // the pattern `color` (defaults to auto/black when unset), not `fill`,
+    // which causes a black background. CLEAR shows `fill` as the background.
     shading: bgColor
-      ? { type: ShadingType.SOLID, fill: bgColor.replace('#', '') }
+      ? { type: ShadingType.CLEAR, fill: bgColor.replace('#', '') }
       : undefined,
     highlight: hasHighlight ? 'yellow' : undefined,
   };
