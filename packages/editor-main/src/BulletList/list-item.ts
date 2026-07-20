@@ -51,8 +51,6 @@ export const ListItem = Node.create<ListItemOptions>({
   },
 
   renderHTML({ node, HTMLAttributes }) {
-    console.log('list-item HTMLAttributes是');
-    console.log(node);
     return [
       'li',
       mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, {

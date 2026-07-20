@@ -393,7 +393,6 @@ export const Link = Mark.create<LinkOptions>({
                   defaultProtocol,
                 }),
             );
-            console.log('links是', links);
 
             links.forEach(link =>
               foundLinks.push({
@@ -403,7 +402,6 @@ export const Link = Mark.create<LinkOptions>({
               }),
             );
           }
-          console.log('foundLinks是', foundLinks);
           return foundLinks;
         },
         type: this.type,

@@ -27,7 +27,6 @@ export function pasteHandler(options: PasteHandlerOptions): Plugin {
         slice.content.forEach(node => {
           textContent += node.textContent;
         });
-        console.log('textContent是', textContent);
 
         const link = find(textContent, {
           defaultProtocol: options.defaultProtocol,

@@ -22,7 +22,7 @@ const AttachmentExtension = Extension.create<Partial<IImageProps>>({
       updateAttrs:
         options =>
         ({ commands }) => {
-          console.log('updateAttrs调用了', options);
+
           return commands.updateAttributes('image', options);
         },
       setImage:

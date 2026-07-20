@@ -98,7 +98,6 @@ async function createImageRun(
       );
     }
   } catch (error) {
-    console.warn(`Failed to process image:`, error);
 
     return new TextRun({ text: '图片加载失败', color: 'FF0000' });
   }

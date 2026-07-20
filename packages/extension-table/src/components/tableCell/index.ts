@@ -132,7 +132,6 @@ export const TableCell = TTableCell.extend<TTableCellOptions>({
 
                       const rect = selectedRect(state);
                       const target = event.target as HTMLElement;
-                      console.log('target是', target);
                       if (
                         target.classList.contains(
                           'textory-table-tool-row-item',

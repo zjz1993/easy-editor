@@ -11,7 +11,6 @@ const uploadImage = (
 ) => {
   const imgUploader = view.someProp('imgUploader');
   const fileUploader = view.someProp('fileUploader');
-  console.log('imgUploader是', imgUploader, fileUploader);
   if (!isEmpty(files)) {
     if (get(files, [0], {}).type.name === 'table') {
       const { schema } = view.state;
@@ -55,7 +54,6 @@ const uploadImage = (
         // }
       }
       setTimeout(() => {
-        console.log('uploader是', uploader);
         uploader?.uploader.uploadFiles(files);
       }, 0);
       view.dispatch(tr);

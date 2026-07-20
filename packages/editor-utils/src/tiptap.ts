@@ -143,6 +143,15 @@ const closest = (
 
   return null;
 };
+const extendWithoutDeprecatedDefaultOptions = (extension, config) => {
+  const extended = extension.extend(config);
+
+  if (extended.config && 'defaultOptions' in extended.config) {
+    delete extended.config.defaultOptions;
+  }
+
+  return extended;
+};
 
 export {
   isDomElement,
@@ -150,4 +159,5 @@ export {
   isSelectionInsideBlockByType,
   wrapBlockExtensions,
   isViewEditable,
+  extendWithoutDeprecatedDefaultOptions
 };

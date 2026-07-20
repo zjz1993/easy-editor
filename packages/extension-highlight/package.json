@@ -23,14 +23,14 @@
     "build": "tsup --config tsup.config.ts"
   },
   "devDependencies": {
-    "@tiptap/core": "^3.13.0",
-    "@tiptap/extension-highlight": "^3.13.0",
+    "@tiptap/core": "^3.28.0",
+    "@tiptap/extension-highlight": "^3.28.0",
     "tsup": "^8.5.1",
     "typescript": "^5.6.0"
   },
   "peerDependencies": {
-    "@tiptap/core": "^3.13.0",
-    "@tiptap/extension-highlight": "^3.13.0"
+    "@tiptap/core": "^3.28.0",
+    "@tiptap/extension-highlight": "^3.28.0"
   },
   "sideEffects": false
 }

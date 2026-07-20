@@ -301,7 +301,6 @@ export const equalizeWidth = (view: EditorView, posArray: number[]) => {
     return 0;
   }
   let dom: any = view.domAtPos(table.start).node;
-  console.log('dom', dom);
   while (dom && dom.nodeName !== 'TABLE') {
     dom = dom.parentNode;
   }
@@ -309,7 +308,6 @@ export const equalizeWidth = (view: EditorView, posArray: number[]) => {
   const map = TableMap.get(table.node);
   let totalWidth = 0;
   for (let i = 0; i < map.width; i++) {
-    console.log('map.map[i]', map.map[i] + 1);
     if (posArray.find(item => item === map.map[i] + 1)) {
       const cell = view.state.doc.nodeAt(map.map[i] + 1)!;
       const width = currentColWidth(view, map.map[i] + 1, cell.attrs);

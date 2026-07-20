@@ -65,7 +65,6 @@ const Popover = forwardRef<any, TPopoverProps>((props, ref) => {
   } = useFloating({
     open: isOpen,
     onOpenChange: tempOpen => {
-      console.log('onOpenChange触发', tempOpen);
       setIsOpen(tempOpen);
       onOpenChange?.(tempOpen);
     },

@@ -52,7 +52,6 @@ const LinkButton: FC<TToolbarWrapperProps> = props => {
             onConfirm={({text, href}) => {
               const {from, to} = editor.state.selection; // 保存当前选区
               const isEmptySelection = from === to;
-              console.log('原来的from to', from, to);
               editor
                 .chain()
                 .focus()

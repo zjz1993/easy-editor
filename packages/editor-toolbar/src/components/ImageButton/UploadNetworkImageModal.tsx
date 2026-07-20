@@ -31,7 +31,6 @@ const UploadNetworkImageModal: FC<TUploadNetworkImageModalProps> = props => {
     setValue,
   } = useForm<FormInputs>();
   const onSubmit = (data: FormInputs) => {
-    console.log('data是', data);
     sendData({ ...data });
     onClose();
     reset();

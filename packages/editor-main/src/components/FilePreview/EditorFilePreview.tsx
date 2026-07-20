@@ -29,7 +29,6 @@ const EditorFilePreview: FC<EditorFilePreviewProps> = ({
   const [currentPreviewIndex, setCurrentPreviewIndex] = useState(0);
 
   const doFilePreview = $fileEl => {
-    console.log('doFilePreview触发', $fileEl);
     const imageDom = $fileEl.querySelector('img');
     const editorView = editor.view;
     if (!editorView) {

@@ -43,7 +43,6 @@ const EditorDemo: FC<EditorDemoProps> = ({ editorRef }) => {
             content={DEMO_HTML}
             placeholder="开始你的创作..."
             title="Textory 示例文档"
-            outputHTML
             editable
             features={features}
             onChange={(data) => {

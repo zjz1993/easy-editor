@@ -34,7 +34,6 @@ const ExportButton:FC<ExportButtonProps> = ({exportProps = {}, editor,intlStr, s
             label: '导出为WORD',
             value: '1',
             onClick: async () => {
-              console.log('watermark是', watermark);
               await exportWORD({
                 watermark,
                 data: {

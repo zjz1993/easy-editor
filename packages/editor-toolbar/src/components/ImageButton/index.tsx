@@ -81,7 +81,6 @@ const ImageButton: FC<TToolbarWrapperProps> = props => {
                   multiple
                   beforeUpload={onImageBeforeUpload}
                   onError={(_, _a, file) => {
-                    console.log('onError触发');
                     const id = (file as any).__imageId;
                     if (!id) return;
                     editor.commands.updateImageById(id, {
@@ -91,7 +90,6 @@ const ImageButton: FC<TToolbarWrapperProps> = props => {
                     removeUploadProgress(editor, id);
                   }}
                   onProgress={(event, file) => {
-                    console.log('onProgress触发了吗');
                     const id = (file as any).__imageId;
                     if (!id) return;
                     updateUploadProgress(editor, id, event.percent);
@@ -145,7 +143,6 @@ const ImageButton: FC<TToolbarWrapperProps> = props => {
               ),
               value: '2',
               onClick: () => {
-                console.log('触发点击了');
               },
             },
           ]}

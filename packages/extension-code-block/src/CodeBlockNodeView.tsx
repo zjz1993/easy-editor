@@ -75,14 +75,8 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
     }
 
     if (codeBlockNode) {
-      console.log('CodeBlock found:', {
-        from,
-        to,
-        content: codeBlockNode.textContent,
-      });
       return { from, to };
     }
-    console.log('No codeBlock found at cursor position');
     return null;
   }
   const pureCode = useMemo(() => {

@@ -25,6 +25,7 @@ import {useEditorStateTrigger} from './hook/useEditorStateTrigger.ts';
 import ExportButton from "./components/ExportButton/index.tsx";
 import ImportButton from "./components/ImportButton/index.tsx";
 import HighlightColorPicker from "./components/HighlightColorPicker/index.tsx";
+import DividerButton from "./components/DividerButton/index.tsx";
 
 export interface IToolbarProps {
   editor: Editor | null;
@@ -196,6 +197,12 @@ const Toolbar: FC<IToolbarProps> = props => {
         component: <TableButton editor={editor} />,
         intlStr: 'table',
         disabled: disabled || editor.isActive(BLOCK_TYPES.CODE),
+      },
+      {
+        key: 'divider',
+        component: <DividerButton editor={editor}/>,
+        intlStr: 'divider',
+        disabled: disabled,
       },
       {
         key: 'export',

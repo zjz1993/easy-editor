@@ -30,17 +30,17 @@
     "lodash-es": "^4.18.0"
   },
   "devDependencies": {
-    "@tiptap/react": "^3.13.0",
-    "@tiptap/core": "^3.13.0",
-    "@tiptap/pm": "^3.13.0",
+    "@tiptap/react": "^3.28.0",
+    "@tiptap/core": "^3.28.0",
+    "@tiptap/pm": "^3.28.0",
     "@types/lodash-es": "^4.17.12",
     "tsup": "^8.5.1",
     "typescript": "^5.6.0"
   },
   "peerDependencies": {
-    "@tiptap/react": "^3.13.0",
-    "@tiptap/core": "^3.13.0",
-    "@tiptap/pm": "^3.13.0",
+    "@tiptap/react": "^3.28.0",
+    "@tiptap/core": "^3.28.0",
+    "@tiptap/pm": "^3.28.0",
     "react": "^18 || ^19",
     "react-dom": "^18 || ^19"
   },

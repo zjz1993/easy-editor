@@ -136,7 +136,6 @@ export async function createWatermarkHeader(
       displayWidth = 450;
       displayHeight = 450;
     } else {
-      console.warn('[Watermark] Unsupported image source');
       return children.length > 0 ? new Header({ children }) : null;
     }
   } else if (config.text) {
@@ -186,14 +185,6 @@ export async function createWatermarkHeader(
     }),
   );
 
-  console.log('[Watermark] Header created:', {
-    text: config.text,
-    imageType,
-    displayWidth,
-    displayHeight,
-    clockwiseDeg,
-    paragraphsCount: children.length,
-  });
 
   return new Header({ children });
 }

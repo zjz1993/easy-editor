@@ -130,7 +130,6 @@ const FileUpload: FC<IUploadProps> = props => {
     const attachmentOptions = editor.extensionManager.extensions.find(
       ext => ext.name === 'attachment',
     )?.options;
-    console.log('beforeUploadFun触发', file, attachmentOptions);
 
     const maxFileSize = props.maxFileSize ?? attachmentOptions?.maxFileSize;
     if (beforeUpload && !beforeUpload(file, fileList)) {
@@ -151,7 +150,6 @@ const FileUpload: FC<IUploadProps> = props => {
     try {
       customRequest?.(option);
     } catch (err) {
-      console.log('出错了', err);
       option.onError(err, { message: '上传失败' });
     }
   };

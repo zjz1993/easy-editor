@@ -53,7 +53,6 @@ export async function smartClipboardCopy(html: string, text?: string) {
       textarea.select();
       document.execCommand('copy');
       document.body.removeChild(textarea);
-      console.log('⚠️ 已回退为纯文本复制');
     }
   } catch (err) {
     message.success(IntlComponent.get('common.copy.fail'));

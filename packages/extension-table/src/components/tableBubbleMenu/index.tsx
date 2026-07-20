@@ -277,10 +277,6 @@ export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
           <Tooltip content="均分">
             <div
               onClick={() => {
-                console.log(
-                  'selectedState.columnSelected',
-                  selectedState.columnSelected,
-                );
                 const startPos = selectedState.columnSelected.map(
                   item => item.pos,
                 );

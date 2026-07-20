@@ -191,7 +191,6 @@ export async function getImageDataAndMeta(
       meta = getImageMetadata(data);
     } catch (error) {
       // If metadata extraction fails, use default values
-      console.warn(`Failed to extract image metadata:${error}`);
       meta = {
         width: undefined,
         height: undefined,

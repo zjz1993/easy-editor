@@ -1,5 +1,6 @@
 import {BLOCK_TYPES, wrapBlockExtensions} from '@textory/editor-utils';
 import {MessageContainer} from '@textory/editor-common';
+import {extendWithoutDeprecatedDefaultOptions} from '@textory/editor-utils';
 import {isUndefined} from 'lodash-es';
 import {EditorToolbar} from '@textory/editor-toolbar';
 import {Bold} from '@textory/extension-bold';
@@ -28,7 +29,8 @@ import {useEditorProps} from './hooks/useEditorProps.ts';
 import {EditorProvider, type TEasyEditorProps} from '@textory/context';
 import {useTiptapWithSync} from './hooks/useTiptapWithSync.ts';
 import {exportWORD, type ExportOptions} from '@textory/extension-export';
-
+import HorizontalRule from '@tiptap/extension-horizontal-rule'
+import UniqueID from '@tiptap/extension-unique-id'
 /**
  * Ref handle exposed by the Editor component.
  * Allows parent components to call imperative methods.
@@ -50,6 +52,7 @@ export interface EditorRef {
    */
   import: (file: File) => Promise<void>;
 }
+
 
 const Editor = forwardRef<EditorRef, TEasyEditorProps>((props, ref) => {
   const imgUploader = useRef<any>();
@@ -87,8 +90,15 @@ const Editor = forwardRef<EditorRef, TEasyEditorProps>((props, ref) => {
       codeBlock: false,
       underline: false,
       link: false,
+      horizontalRule: false,
     }),
     Bold,
+    UniqueID.configure({
+      types: 'all',
+    }),
+    extendWithoutDeprecatedDefaultOptions(HorizontalRule, {
+      name: BLOCK_TYPES.HR,
+    }),
     Table.configure({
       resizable: true,
     }),
