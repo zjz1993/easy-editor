@@ -62,8 +62,6 @@ const Toolbar: FC<IToolbarProps> = props => {
         !!editor.state.schema.marks[MARK_TYPES.LK] &&
         editor.can().chain().focus().toggleMark(MARK_TYPES.LK).run(),
       canInlineCode: editor.can().chain().focus().toggleCode?.().run(),
-      isParagraphOrHeading:
-        editor.isActive('paragraph') || editor.isActive('heading'),
       isCodeBlock: editor.isActive(BLOCK_TYPES.CODE),
       isInCodeBlock: isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
     }),
@@ -162,12 +160,19 @@ const Toolbar: FC<IToolbarProps> = props => {
       {
         key: INDENT_TYPES.Inc,
         component: <IndentButton />,
-        disabled: disabled || !caps.canIndent,
+        disabled: disabled || !caps.canIndent || caps.isInCodeBlock,
       },
       {
         key: INDENT_TYPES.Desc,
         component: <IndentButton />,
-        disabled: disabled || !caps.isParagraphOrHeading || !caps.canOutdent,
+        // 历史 bug：
+        // 1. 旧条件 `!isParagraphOrHeading` 把代码块和列表项一起误伤了。
+        //    IndentButton 自己的 checkDisabled 已经针对 list item 走
+        //    liftListItem/sinkListItem 单独处理，工具栏这层不该重复限制。
+        // 2. 代码块里的「缩进」由 Tab 键插空格负责（见 CodeBlock.ts 的
+        //    addKeyboardShortcuts），块级 data-indent 在 React NodeView 下
+        //    也不渲染，所以这里直接禁掉。
+        disabled: disabled || !caps.canOutdent || caps.isInCodeBlock,
       },
       {
         key: 'link',

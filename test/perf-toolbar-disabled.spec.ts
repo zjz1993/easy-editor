@@ -113,4 +113,82 @@ test.describe('P0 性能改造：Toolbar caps 派生的 disabled 状态', () => 
     await expect.poll(() => isDisabled(boldBtn)).toBe(false);
     await expect.poll(() => isDisabled(italicBtn)).toBe(false);
   });
+
+  // ──────────────────────────────────────────────────────────────
+  // indent / outdent 按钮 disabled 行为
+  //
+  // 历史 bug：
+  // - 旧条件 `!isParagraphOrHeading` 把代码块和列表项一起误伤
+  // - indent 按钮在代码块里没禁，点了之后 indent 命令会改 attrs 但 React
+  //   NodeView 不渲染 data-indent，视觉上没变化
+  // - 修复：indent/outdent 在代码块里都禁掉；list item 里靠 IndentButton
+  //   自己的 checkDisabled 处理（走 liftListItem/sinkListItem）
+  // ──────────────────────────────────────────────────────────────
+
+  test('光标在代码块内：indent 和 outdent 按钮都应 disabled', async ({page}) => {
+    await page.evaluate(() => {
+      // @ts-ignore
+      window.__EASY_EDITOR__?.commands.setContent(
+        '<pre><code class="language-typescript">const x = 1;</code></pre>',
+      );
+    });
+
+    const indentBtn = getToolbarButtonByIcon(page, 'icon-indent-inc');
+    const outdentBtn = getToolbarButtonByIcon(page, 'icon-indent-desc');
+
+    await page.click('.ProseMirror pre');
+    await expect.poll(() => isDisabled(indentBtn)).toBe(true);
+    await expect.poll(() => isDisabled(outdentBtn)).toBe(true);
+  });
+
+  test('光标在段落：indent 按钮可用', async ({page}) => {
+    // 这条主要守护 indent 按钮在普通段落里依然可用（不要被代码块逻辑误伤）。
+    // 不对 outdent 在 indent=0 时的状态做断言 —— Indent 扩展的 outdent 命令在
+    // `can()` 探测时永远返回 true（见 extension-indent/src/indentation.ts:163
+    // 的 `isUndefined(dispatch)` 兜底），不反映实际能否减小缩进，超出本次修复范围。
+    await page.evaluate(() => {
+      // @ts-ignore
+      window.__EASY_EDITOR__?.commands.setContent('<p>hello</p>');
+    });
+
+    const indentBtn = getToolbarButtonByIcon(page, 'icon-indent-inc');
+
+    await page.click('.ProseMirror p');
+    await expect.poll(() => isDisabled(indentBtn)).toBe(false);
+
+    // 点击后段落 indent attr 应被改写
+    const before = await page.evaluate(() => {
+      // @ts-ignore
+      const node = window.__EASY_EDITOR__.state.selection.$anchor.parent;
+      return node.attrs.indent;
+    });
+    await indentBtn.click();
+    const after = await page.evaluate(() => {
+      // @ts-ignore
+      const node = window.__EASY_EDITOR__.state.selection.$anchor.parent;
+      return node.attrs.indent;
+    });
+    expect(after).toBe(before + 1);
+  });
+
+  test('光标在列表项：indent 和 outdent 按钮可用（旧条件误伤 list item）', async ({page}) => {
+    // 这个用例守护 list item 不再被工具栏层的 `!isParagraphOrHeading` 误关
+    await page.evaluate(() => {
+      // @ts-ignore
+      window.__EASY_EDITOR__?.commands.setContent(
+        '<ul><li><p>first</p></li><li><p>second</p></li></ul>',
+      );
+    });
+
+    const indentBtn = getToolbarButtonByIcon(page, 'icon-indent-inc');
+    const outdentBtn = getToolbarButtonByIcon(page, 'icon-indent-desc');
+
+    // 点第二个 list item（可以 sink 成嵌套列表）
+    await page.click('.ProseMirror li:nth-child(2) p');
+
+    // 列表项已有内容时 outdent 可用（可 lift 出去）
+    // sink 也可用（可下沉一级）
+    await expect.poll(() => isDisabled(indentBtn)).toBe(false);
+    await expect.poll(() => isDisabled(outdentBtn)).toBe(false);
+  });
 });
