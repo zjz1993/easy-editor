@@ -2,25 +2,25 @@ import type {AlignType} from "@textory/context";
 import {DropdownList, Iconfont, IntlComponent} from '@textory/editor-common';
 import type {FC} from 'react';
 import {useContext} from 'react';
+import {useEditorState} from '@tiptap/react';
 import ToolbarContext from '../../context/toolbarContext.ts';
 import type {TToolbarWrapperProps} from '../../types/index.ts';
 import cx from "classnames";
 import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 
+const alignArray: AlignType[] = ['left', 'center', 'right'];
+
 const AlignButton: FC<TToolbarWrapperProps> = props => {
   const { editor } = useContext(ToolbarContext);
   const { disabled, intlStr, style } = props;
-  const alignArray: AlignType[] = ['left', 'center', 'right'];
-  const getActiveAlignBtn = () => {
-    const activeAlign = alignArray.find(item =>
-      editor.isActive({ textAlign: item }),
-    );
-    if (activeAlign) {
-      return activeAlign;
-    }
-    return 'left';
-  };
-  const activeAlign = getActiveAlignBtn();
+  const { activeAlign } = useEditorState({
+    editor,
+    selector: ({ editor }) => ({
+      activeAlign:
+        alignArray.find(item => editor.isActive({ textAlign: item })) ??
+        'left',
+    }),
+  });
   return (
     <ToolbarItemButtonWrapper
       intlStr={intlStr}

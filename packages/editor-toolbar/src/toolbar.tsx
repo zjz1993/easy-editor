@@ -9,6 +9,7 @@ import {
 } from '@textory/editor-utils';
 import {DropdownPanel, Iconfont} from '@textory/editor-common';
 import type {Editor} from '@tiptap/core';
+import {useEditorState} from '@tiptap/react';
 import Overflow from 'rc-overflow';
 import AlignButton from './components/AlignButton/index.tsx';
 import CodeButton from './components/CodeButton/index.tsx';
@@ -21,7 +22,6 @@ import ToolbarContext from './context/toolbarContext.ts';
 import type {IToolbarCommonProps} from './types/index.ts';
 import ImageButton from './components/ImageButton/index.tsx';
 import TableButton from './components/TableButton/index.tsx';
-import {useEditorStateTrigger} from './hook/useEditorStateTrigger.ts';
 import ExportButton from "./components/ExportButton/index.tsx";
 import ImportButton from "./components/ImportButton/index.tsx";
 import HighlightColorPicker from "./components/HighlightColorPicker/index.tsx";
@@ -41,7 +41,33 @@ const Toolbar: FC<IToolbarProps> = props => {
     props: { editable },
   } = useEditorContext();
   const { editor, imageProps = {}, exportProps={}, onImportFile } = props;
-  const canIndent = editor.isActive('paragraph') || editor.isActive('heading');
+  // 用 useEditorState 订阅 Toolbar 自身需要的派生状态（disabled 计算）。
+  // Tiptap 默认 deep compare，只在任一值变化时才触发本组件重渲染。
+  // 详见 .ai/tiptap-performance-guide.md 第 2、3 节。
+  const caps = useEditorState({
+    editor,
+    selector: ({ editor }) => ({
+      canUndo: editor.can().chain().focus().undo?.().run(),
+      canRedo: editor.can().chain().focus().redo?.().run(),
+      canBold: editor.can().chain().focus().toggleBold().run(),
+      canItalic: editor.can().chain().focus().toggleItalic().run(),
+      canUnderline: editor.can().chain().focus().toggleUnderline().run(),
+      canStrike: editor.can().chain().focus().toggleStrike().run(),
+      canUL: editor.can().chain().focus().toggleBulletList?.().run(),
+      canOL: editor.can().chain().focus().toggleOrderedList?.().run(),
+      canCL: editor.can().chain().focus().toggleTaskList?.().run(),
+      canIndent: editor.can().chain().focus().indent().run(),
+      canOutdent: editor.can().chain().focus().outdent().run(),
+      canLink:
+        !!editor.state.schema.marks[MARK_TYPES.LK] &&
+        editor.can().chain().focus().toggleMark(MARK_TYPES.LK).run(),
+      canInlineCode: editor.can().chain().focus().toggleCode?.().run(),
+      isParagraphOrHeading:
+        editor.isActive('paragraph') || editor.isActive('heading'),
+      isCodeBlock: editor.isActive(BLOCK_TYPES.CODE),
+      isInCodeBlock: isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
+    }),
+  });
   const editorView = editor.view;
   const commonProps: IToolbarCommonProps = {
     dispatch: editorView.dispatch,
@@ -50,21 +76,21 @@ const Toolbar: FC<IToolbarProps> = props => {
     editor,
     disabled: !editor.isEditable,
   };
-  useEditorStateTrigger(editor); // 只触发 Toolbar 自身刷新
   const menuArray = useMemo(() => {
+    if (!caps) return [];
     const disabled = !editable;
     return [
       {
         key: 'undo',
         component: <Undo editor={editor} />,
         intlStr: 'toolbar.undo',
-        disabled: disabled || !editor.can().chain().focus().undo?.().run(),
+        disabled: disabled || !caps.canUndo,
       },
       {
         key: 'redo',
         component: <Redo editor={editor} />,
         intlStr: 'toolbar.redo',
-        disabled: disabled || !editor.can().chain().focus().redo?.().run(),
+        disabled: disabled || !caps.canRedo,
       },
       {
         key: 'divider',
@@ -74,96 +100,74 @@ const Toolbar: FC<IToolbarProps> = props => {
         key: 'HeaderButton',
         component: <HeaderButton editor={editor} />,
         intlStr: 'header',
-        disabled:
-          disabled || isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
+        disabled: disabled || caps.isInCodeBlock,
       },
       {
         key: 'bold',
         component: <Bold editor={editor} />,
         intlStr: 'bold',
-        disabled:
-          disabled ||
-          !editor.can().chain().focus().toggleBold().run() ||
-          isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
+        disabled: disabled || !caps.canBold || caps.isInCodeBlock,
       },
       {
         key: 'italic',
         component: <Italic editor={editor} />,
         intlStr: 'italic',
-        disabled:
-          disabled ||
-          !editor.can().chain().focus().toggleItalic().run() ||
-          isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
+        disabled: disabled || !caps.canItalic || caps.isInCodeBlock,
       },
       {
         key: 'underline',
         component: <Underline editor={editor} />,
         intlStr: 'underline',
-        disabled:
-          disabled ||
-          !editor.can().chain().focus().toggleUnderline().run() ||
-          isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
+        disabled: disabled || !caps.canUnderline || caps.isInCodeBlock,
       },
       {
         key: 'strike',
         component: <Strike editor={editor} />,
         intlStr: 'strike',
-        disabled:
-          disabled ||
-          !editor.can().chain().focus().toggleStrike().run() ||
-          isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
+        disabled: disabled || !caps.canStrike || caps.isInCodeBlock,
       },
       {
         key: 'textColorPicker',
         component: <TextColorPicker editor={editor} />,
         intlStr: 'color',
-        disabled:
-          disabled || isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
+        disabled: disabled || caps.isInCodeBlock,
       },
       {
         key: 'highlightColorPicker',
         component: <HighlightColorPicker editor={editor} />,
         intlStr: 'highlight',
-        disabled:
-          disabled || isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
+        disabled: disabled || caps.isInCodeBlock,
       },
       {
         key: 'align',
         component: <AlignButton editor={editor} />,
         intlStr: 'align',
-        disabled:
-          disabled || isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
+        disabled: disabled || caps.isInCodeBlock,
       },
       {
         key: BLOCK_TYPES.OL,
         component: <ListButton />,
-        disabled:
-          disabled || !editor.can().chain().focus().toggleBulletList?.().run(),
+        disabled: disabled || !caps.canUL,
       },
       {
         key: BLOCK_TYPES.UL,
         component: <ListButton />,
-        disabled:
-          disabled || !editor.can().chain().focus().toggleOrderedList?.().run(),
+        disabled: disabled || !caps.canOL,
       },
       {
         key: BLOCK_TYPES.CL,
         component: <ListButton />,
-        disabled:
-          disabled || !editor.can().chain().focus().toggleTaskList?.().run(),
+        disabled: disabled || !caps.canCL,
       },
       {
         key: INDENT_TYPES.Inc,
         component: <IndentButton />,
-        disabled: disabled || !editor.can().chain().focus().indent().run(),
+        disabled: disabled || !caps.canIndent,
       },
       {
         key: INDENT_TYPES.Desc,
         component: <IndentButton />,
-        disabled:
-          disabled ||
-          !canIndent ||
-          !editor.can().chain().focus().outdent().run(),
+        disabled: disabled || !caps.isParagraphOrHeading || !caps.canOutdent,
       },
       {
         key: 'link',
@@ -171,9 +175,8 @@ const Toolbar: FC<IToolbarProps> = props => {
         intlStr: 'tool.link',
         disabled:
           disabled ||
-          !editor.state.schema.marks[MARK_TYPES.LK] ||
-          !editor.can().chain().focus().toggleMark(MARK_TYPES.LK).run() ||
-          isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
+          !caps.canLink ||
+          caps.isInCodeBlock,
       },
       {
         key: 'code',
@@ -181,22 +184,21 @@ const Toolbar: FC<IToolbarProps> = props => {
         intlStr: 'code',
         disabled:
           disabled ||
-          isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE) ||
+          caps.isInCodeBlock ||
           // !editor.can().chain().focus().toggleCodeBlock?.().run() ||
-          !editor.can().chain().focus().toggleCode?.().run(),
+          !caps.canInlineCode,
       },
       {
         key: BLOCK_TYPES.IMG,
         component: <ImageButton editor={editor} />,
         intlStr: 'image',
-        disabled:
-          disabled || isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
+        disabled: disabled || caps.isInCodeBlock,
       },
       {
         key: BLOCK_TYPES.TABLE,
         component: <TableButton editor={editor} />,
         intlStr: 'table',
-        disabled: disabled || editor.isActive(BLOCK_TYPES.CODE),
+        disabled: disabled || caps.isCodeBlock,
       },
       {
         key: 'divider',
@@ -217,7 +219,7 @@ const Toolbar: FC<IToolbarProps> = props => {
         disabled: disabled,
       }] : []),
     ];
-  }, [editor, editable, onImportFile]);
+  }, [editor, editable, onImportFile, caps]);
   return (
     <ToolbarContext.Provider value={{ ...commonProps, imageProps }}>
       <div className="textory-toolbar" ref={toolbarRef}>

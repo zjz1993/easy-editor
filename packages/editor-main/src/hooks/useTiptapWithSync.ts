@@ -23,12 +23,21 @@ export function useTiptapWithSync({
   editorProps,
 }: UseTiptapWithSyncOptions) {
   // 👇 第一次渲染时创建 editor，不在 props 改变时重新创建
+  // shouldRerenderOnTransaction: false 关闭「每个 transaction 重渲染整个组件树」，
+  //   由依赖 editor state 的子组件自行通过 useEditorState 订阅。
+  //   详见 .ai/tiptap-performance-guide.md 第 3 节。
+  //
+  // 注意：不要在这里加 `immediatelyRender: false`。该选项会把 editor 创建推迟到
+  // useEffect，导致首次渲染时 editor 为 null，破坏本仓库中所有假设 editor 非 null
+  // 的子组件（TableBubbleMenu、OutlineView、EditorFilePreview 等）。
+  // immediatelyRender: false 主要面向 SSR；本仓库是纯 CSR，不需要。
   const editor = useEditor({
     content,
     editable,
     extensions: [...extensions],
     autofocus,
     editorProps,
+    shouldRerenderOnTransaction: false,
     onUpdate: ({ editor, appendedTransactions, transaction }) => {
       onUpdate?.({ appendedTransactions, transaction, editor });
     },

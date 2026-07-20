@@ -1,6 +1,7 @@
 import {BLOCK_TYPES} from '@textory/editor-utils';
 import {Iconfont} from '@textory/editor-common';
 import {useContext} from 'react';
+import {useEditorState} from '@tiptap/react';
 import Button from '../../components/Button';
 import ToolbarItemButtonWrapper from '..//ToolbarItemButtonWrapper';
 import ToolbarContext from '../../context/toolbarContext.ts';
@@ -31,7 +32,10 @@ function ListButton(props: any) {
   const { editor } = useContext(ToolbarContext);
   const { type, disabled } = props;
   const { tooltip, icon } = getConstants(type);
-  const isActive = editor.isActive(type);
+  const { isActive } = useEditorState({
+    editor,
+    selector: ({ editor }) => ({ isActive: editor.isActive(type) }),
+  });
   const toggle = (chain: {
     toggleBulletList: () => any;
     toggleOrderedList: () => any;

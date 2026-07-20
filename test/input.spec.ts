@@ -1,9 +1,12 @@
 import {expect, test} from '@playwright/test';
-import {BASE_URL} from "./utils";
+import {BASE_URL, clearEditor} from "./utils";
 
 //@ts-ignore
 test('测试能正确响应用户输入', async ({ page }) => {
   await page.goto(BASE_URL); // editor-demo 地址
+
+  // demo 默认带示例内容，先清空避免干扰
+  await clearEditor(page);
 
   // 聚焦编辑器
   await page.click('.ProseMirror');

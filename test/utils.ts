@@ -4,6 +4,21 @@ export async function focusEditor(page: Page) {
   await page.click('.ProseMirror');
 }
 
+/**
+ * 把编辑器内容清空（保留一个空段落），并 focus。
+ *
+ * Demo (`dev/editor-demo/src/data/demoContent.ts`) 默认带了一段示例 HTML，
+ * 直接跑测试会被默认内容干扰。调用此函数让测试从一个已知的空白状态开始。
+ */
+export async function clearEditor(page: Page) {
+  await page.evaluate(() => {
+    // @ts-ignore
+    const editor = window.__EASY_EDITOR__;
+    editor?.commands.clearContent();
+    editor?.commands.focus();
+  });
+}
+
 export async function getEditorJSON(page: Page) {
   return page.evaluate(() => {
     // @ts-ignore
@@ -59,6 +74,42 @@ export function findNode(json: any, nodeType: string): any | undefined {
     }
   }
   return undefined;
+}
+
+/**
+ * 通过图标 id 定位工具栏按钮。
+ *
+ * 大部分按钮（Italic/Underline/Strike/Undo/Redo 等）没有传 ariaLabel，
+ * 无法用 `getByRole('button', { name })` 查找。这里走图标 `<use xlink:href="#xxx">`
+ * 来定位父级 `.textory-toolbar__item__btn`。
+ *
+ * 注意：`xlink:href` 是命名空间属性，CSS 属性选择器里要用 `*|href` 这种
+ * 命名空间通配写法（escape `\\:` 不work）。
+ *
+ * 例：`getToolbarButtonByIcon(page, 'icon-bold')`
+ */
+export function getToolbarButtonByIcon(page: Page, iconType: string): Locator {
+  return page
+    .locator('.textory-toolbar__item__btn')
+    .filter({ has: page.locator(`use[*|href="#${iconType}"]`) });
+}
+
+/**
+ * 当前是否处于 active 状态（高亮）
+ */
+export function isBtnActive(btn: Locator): Promise<boolean> {
+  return btn.evaluate(el =>
+    el.classList.contains('textory-toolbar__item__btn--active'),
+  );
+}
+
+/**
+ * 当前是否处于 disabled 状态
+ */
+export function isDisabled(btn: Locator): Promise<boolean> {
+  return btn.evaluate(el =>
+    el.classList.contains('textory-toolbar__item__btn--disabled'),
+  );
 }
 
 export async function expectReadonly(editor: Locator) {

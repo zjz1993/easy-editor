@@ -1,5 +1,6 @@
 import {Iconfont} from '@textory/editor-common';
 import {type FC, useContext} from 'react';
+import {useEditorState} from '@tiptap/react';
 import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 import ToolbarContext from '../../context/toolbarContext.ts';
 import type {TToolbarWrapperProps} from '../../types/index.ts';
@@ -13,6 +14,10 @@ const Bold: FC<TToolbarWrapperProps> = ({
   disabled,
 }) => {
   const { editor } = useContext(ToolbarContext);
+  const { isActive } = useEditorState({
+    editor,
+    selector: ({ editor }) => ({ isActive: editor.isActive('bold') }),
+  });
   return (
     <ToolbarItemButtonWrapper
       intlStr={intlStr}
@@ -22,7 +27,7 @@ const Bold: FC<TToolbarWrapperProps> = ({
     >
       <Button
         ariaLabel={intlStr}
-        isActive={editor.isActive('bold')}
+        isActive={isActive}
         onClick={() =>
           setTextSelectionAfterChange(editor, () => {
             editor.chain().focus().toggleBold().run();

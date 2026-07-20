@@ -1,6 +1,7 @@
-import {type FC, useCallback, useContext} from 'react';
+import {type FC, useContext} from 'react';
 import {BLOCK_TYPES, headers} from '@textory/editor-utils';
 import {Iconfont, IntlComponent} from '@textory/editor-common';
+import {useEditorState} from '@tiptap/react';
 import cx from 'classnames';
 import ToolbarContext from '../../context/toolbarContext.ts';
 import {command, option} from '../../utils/index.ts';
@@ -9,7 +10,23 @@ import {ToolBarItemDivider} from '../ToolbarItem';
 const HeaderButtonDropdown: FC<{ onClick?: () => void }> = props => {
   const { onClick } = props;
   const { editor } = useContext(ToolbarContext);
-  const createHeaderItem = useCallback(() => {
+  const state = useEditorState({
+    editor,
+    selector: ({ editor }) => ({
+      isParagraph:
+        editor.isActive('paragraph') && !editor.isActive('blockquote'),
+      isBlockquote: editor.isActive('blockquote'),
+      activeHeadingLevels: headers
+        .filter(h => h.type === BLOCK_TYPES.H)
+        .map(h => ({
+          level: h.attrs.level,
+          active: editor.isActive('heading', { level: h.attrs.level }),
+        })),
+    }),
+  });
+  const isHeadingActive = (level: number) =>
+    !!state?.activeHeadingLevels.find(h => h.level === level)?.active;
+  const createHeaderItem = () => {
     const res = [];
     headers.forEach(({ keys, type, name, attrs }, index) => {
       const nameComponent = {
@@ -22,7 +39,7 @@ const HeaderButtonDropdown: FC<{ onClick?: () => void }> = props => {
               onClick?.();
             }}
           >
-            {editor.isActive('paragraph') && !editor.isActive('blockquote') ? (
+            {state?.isParagraph ? (
               <div className="icon-selected">
                 <Iconfont type="icon-gou-cu" />
               </div>
@@ -44,7 +61,7 @@ const HeaderButtonDropdown: FC<{ onClick?: () => void }> = props => {
               onClick?.();
             }}
           >
-            {editor.isActive('blockquote') ? (
+            {state?.isBlockquote ? (
               <div className="icon-selected">
                 <Iconfont type="icon-gou-cu" />
               </div>
@@ -73,7 +90,7 @@ const HeaderButtonDropdown: FC<{ onClick?: () => void }> = props => {
               onClick?.();
             }}
           >
-            {editor.isActive('heading', { level: attrs.level }) ? (
+            {isHeadingActive(attrs.level) ? (
               <div className="icon-selected">
                 <Iconfont type="icon-gou-cu" />
               </div>
@@ -97,7 +114,7 @@ const HeaderButtonDropdown: FC<{ onClick?: () => void }> = props => {
       res.push(nameComponent[type]);
     });
     return res;
-  }, []);
+  };
   return (
     <div className="textory-header-dropdown">{createHeaderItem()}</div>
   );

@@ -142,35 +142,23 @@ test('图片功能测试', async ({page}) => {
   });
 
   // ────────────────────────────────────────────
-  // 8. 清空编辑器，测试 loading 状态渲染进度圈
+  // 8. (已跳过) 清空编辑器，测试 loading 状态渲染进度圈
+  //
+  // 原本通过 `setImage({ loadingProgress: 50 })` attr 触发 placeholder，
+  // 但当前 Image 扩展把上传进度改成了 `attachmentUploadPluginKey` 上的 plugin
+  // state（见 packages/extension-image/src/plugin/ImagePlaceholderPlugin.ts），
+  // `loadingProgress` 这个 attr 已不存在。
+  // 要恢复测试需要从外部 dispatch 一个 `setMeta(attachmentUploadPluginKey, ...)`
+  // 进去，但 PluginKey 实例未对外暴露。如果以后扩展导出了该 key 或者提供
+  // `setUploadProgress(id, progress)` 命令，可以补回这个用例。
   // ────────────────────────────────────────────
-  await test.step('图片loading状态渲染进度圈', async () => {
-    // 清空编辑器后插入带 loading 的图片
-    await page.evaluate((url) => {
-      const editor = (window as any).__EASY_EDITOR__;
-      editor.commands.clearContent();
-      editor
-        .chain()
-        .focus()
-        .setImage({
-          id: 'test-image-loading',
-          src: url,
-          width: 200,
-          height: 200,
-          loadingProgress: 50,
-        })
-        .run();
-    }, TEST_IMAGE_URL);
-
-    const placeholder = page.locator('.textory-image__placeholder');
-    await expect(placeholder).toHaveCount(1);
-
-    const imageToolbar = page.locator('.textory-image-toolbar');
-    await expect(imageToolbar).toHaveCount(0);
-  });
 
   // ────────────────────────────────────────────
   // 9. updateImageById 命令能更新指定图片
+  //
+  // 注意：`UniqueID.configure({ types: 'all' })`（见 editor-main/src/root.tsx）
+  // 会给所有节点生成 id，覆盖 setImage 传入的 id。所以测试要先读出实际 id
+  // 再用该 id 调 updateImageById。
   // ────────────────────────────────────────────
   await test.step('updateImageById命令能更新指定图片', async () => {
     const imageUrl2 =
@@ -196,16 +184,21 @@ test('图片功能测试', async ({page}) => {
     let imgNode = findNode(json, 'image');
     expect(imgNode.attrs.src).toBe(TEST_IMAGE_URL);
 
-    await page.evaluate((newUrl) => {
-      (window as any).__EASY_EDITOR__.commands.updateImageById('img-to-update', {
+    // 读出 UniqueID 实际生成的 id
+    const actualId = imgNode.attrs.id;
+    expect(typeof actualId).toBe('string');
+
+    const updated = await page.evaluate(({newUrl, id}) => {
+      return (window as any).__EASY_EDITOR__.commands.updateImageById(id, {
         src: newUrl,
       });
-    }, imageUrl2);
+    }, {newUrl: imageUrl2, id: actualId});
+    expect(updated).toBe(true);
 
     json = await getEditorJSON(page);
     imgNode = findNode(json, 'image');
     expect(imgNode.attrs.src).toBe(imageUrl2);
-    expect(imgNode.attrs.id).toBe('img-to-update');
+    expect(imgNode.attrs.id).toBe(actualId);
   });
 
   // ────────────────────────────────────────────

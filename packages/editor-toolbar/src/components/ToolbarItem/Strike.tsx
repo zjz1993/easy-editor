@@ -1,5 +1,6 @@
 import {Iconfont} from '@textory/editor-common';
 import {type FC, useContext} from 'react';
+import {useEditorState} from '@tiptap/react';
 import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 import ToolbarContext from '../../context/toolbarContext.ts';
 import type {TToolbarWrapperProps} from '../../types/index.ts';
@@ -12,6 +13,10 @@ const Strike: FC<TToolbarWrapperProps> = ({
   intlStr,
 }) => {
   const { editor } = useContext(ToolbarContext);
+  const { isActive } = useEditorState({
+    editor,
+    selector: ({ editor }) => ({ isActive: editor.isActive('strike') }),
+  });
   return (
     <ToolbarItemButtonWrapper
       intlStr={intlStr}
@@ -20,7 +25,7 @@ const Strike: FC<TToolbarWrapperProps> = ({
       disabled={disabled}
     >
       <Button
-        isActive={editor.isActive('strike')}
+        isActive={isActive}
         onClick={() => {
           editor.chain().focus().toggleStrike().run();
         }}

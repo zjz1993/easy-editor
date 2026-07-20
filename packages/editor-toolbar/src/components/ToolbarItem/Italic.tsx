@@ -1,5 +1,6 @@
 import {Iconfont} from '@textory/editor-common';
 import {type FC, useContext} from 'react';
+import {useEditorState} from '@tiptap/react';
 import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 import ToolbarContext from '../../context/toolbarContext.ts';
 import type {TToolbarWrapperProps} from '../../types/index.ts';
@@ -13,6 +14,10 @@ const Italic: FC<TToolbarWrapperProps> = ({
   disabled,
 }) => {
   const { editor } = useContext(ToolbarContext);
+  const { isActive } = useEditorState({
+    editor,
+    selector: ({ editor }) => ({ isActive: editor.isActive('italic') }),
+  });
   return (
     <ToolbarItemButtonWrapper
       intlStr={intlStr}
@@ -21,7 +26,7 @@ const Italic: FC<TToolbarWrapperProps> = ({
       disabled={disabled}
     >
       <Button
-        isActive={editor.isActive('italic')}
+        isActive={isActive}
         onClick={() => {
           setTextSelectionAfterChange(editor, () => {
             editor.chain().focus().toggleItalic().run();

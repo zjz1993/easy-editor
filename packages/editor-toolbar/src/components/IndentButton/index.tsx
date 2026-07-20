@@ -2,6 +2,7 @@ import {BLOCK_TYPES, INDENT_TYPES} from '@textory/editor-utils';
 import {Iconfont} from '@textory/editor-common';
 import {isTextSelection} from '@tiptap/core';
 import {useContext} from 'react';
+import {useEditorState} from '@tiptap/react';
 import Button from '../Button';
 import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 import ToolbarContext from '../../context/toolbarContext.ts';
@@ -26,6 +27,13 @@ function IndentButton(props: any) {
   const { type, disabled } = props;
   const { CLI, LI } = BLOCK_TYPES;
   const inc = type === INDENT_TYPES.Inc;
+  const { isActiveCLI, isActiveLI } = useEditorState({
+    editor,
+    selector: ({ editor }) => ({
+      isActiveCLI: editor.isActive(CLI),
+      isActiveLI: editor.isActive(LI),
+    }),
+  });
   const checkDisabled = () => {
     if (disabled) {
       return true;
@@ -33,7 +41,7 @@ function IndentButton(props: any) {
     if (!isTextSelection(editor.state.selection)) {
       return true;
     }
-    const listItem = [CLI, LI].find(name => editor.isActive(name));
+    const listItem = isActiveCLI ? CLI : isActiveLI ? LI : null;
     if (listItem) {
       if (inc) {
         return !editor.can().sinkListItem(listItem);
@@ -49,18 +57,18 @@ function IndentButton(props: any) {
     outdent: () => any;
   }) => {
     if (type === INDENT_TYPES.Inc) {
-      if (editor.isActive(CLI)) {
+      if (isActiveCLI) {
         return chain.sinkListItem(CLI);
       }
-      if (editor.isActive(LI)) {
+      if (isActiveLI) {
         return chain.sinkListItem(LI);
       }
       return chain.indent();
     }
-    if (editor.isActive(CLI)) {
+    if (isActiveCLI) {
       return chain.liftListItem(CLI);
     }
-    if (editor.isActive(LI)) {
+    if (isActiveLI) {
       return chain.liftListItem(LI);
     }
     return chain.outdent();

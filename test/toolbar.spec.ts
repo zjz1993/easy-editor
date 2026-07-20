@@ -1,8 +1,11 @@
 import {expect, test} from '@playwright/test';
-import {BASE_URL} from "./utils";
+import {BASE_URL, clearEditor} from "./utils";
 
 test('测试加粗按钮能否正常工作', async ({ page }) => {
   await page.goto(BASE_URL);
+
+  // demo 默认带示例内容（包含多个 <strong>），先清空避免 strict mode 报错
+  await clearEditor(page);
 
   const editor = page.locator('.ProseMirror');
 

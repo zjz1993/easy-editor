@@ -1,6 +1,7 @@
 import {Dropdown, Iconfont, PRESET_COLORS} from '@textory/editor-common';
 import type {FC} from 'react';
 import {useContext} from 'react';
+import {useEditorState} from '@tiptap/react';
 import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 import cx from 'classnames';
 import type {TToolbarWrapperProps} from 'src/types/index.ts';
@@ -13,16 +14,14 @@ const TextColorPicker: FC<TToolbarWrapperProps> = ({
   disabled,
 }) => {
   const { editor } = useContext(ToolbarContext);
-  const getActiveColor = () => {
-    const res = PRESET_COLORS.find(color =>
-      editor.isActive('textStyle', { color }),
-    );
-    if (res) {
-      return res;
-    }
-    return '#222e4d';
-  };
-  const activeColor = getActiveColor();
+  const { activeColor } = useEditorState({
+    editor,
+    selector: ({ editor }) => ({
+      activeColor:
+        PRESET_COLORS.find(color => editor.isActive('textStyle', { color })) ??
+        '#222e4d',
+    }),
+  });
   return (
     <ToolbarItemButtonWrapper
       intlStr={intlStr}
