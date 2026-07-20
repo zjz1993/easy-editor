@@ -34,14 +34,12 @@
     "@tiptap/extension-table-header": "^3.28.0",
     "@tiptap/extension-table-row": "^3.28.0",
     "@tiptap/react": "^3.28.0",
-    "prosemirror-model": "^1.25.4",
     "@tiptap/core": "^3.28.0",
     "@tiptap/pm": "^3.28.0",
     "tsup": "^8.5.1",
     "typescript": "^5.6.0"
   },
   "peerDependencies": {
-    "prosemirror-model": "^1.25.4",
     "@tiptap/core": "^3.28.0",
     "@tiptap/pm": "^3.28.0",
     "@tiptap/extension-table": "^3.28.0",

@@ -4,6 +4,52 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  prosemirror-model: ^1.25.11
+  prosemirror-transform: ^1.12.0
+  prosemirror-view: ^1.42.1
+  prosemirror-state: ^1.4.4
+  prosemirror-tables: ^1.8.5
+  '@tiptap/core': 3.28.0
+  '@tiptap/pm': 3.28.0
+  '@tiptap/react': 3.28.0
+  '@tiptap/starter-kit': 3.28.0
+  '@tiptap/extensions': 3.28.0
+  '@tiptap/extension-bold': 3.28.0
+  '@tiptap/extension-bubble-menu': 3.28.0
+  '@tiptap/extension-code': 3.28.0
+  '@tiptap/extension-code-block': 3.28.0
+  '@tiptap/extension-code-block-lowlight': 3.28.0
+  '@tiptap/extension-color': 3.28.0
+  '@tiptap/extension-document': 3.28.0
+  '@tiptap/extension-dropcursor': 3.28.0
+  '@tiptap/extension-floating-menu': 3.28.0
+  '@tiptap/extension-gapcursor': 3.28.0
+  '@tiptap/extension-hard-break': 3.28.0
+  '@tiptap/extension-heading': 3.28.0
+  '@tiptap/extension-highlight': 3.28.0
+  '@tiptap/extension-horizontal-rule': 3.28.0
+  '@tiptap/extension-italic': 3.28.0
+  '@tiptap/extension-link': 3.28.0
+  '@tiptap/extension-list': 3.28.0
+  '@tiptap/extension-list-item': 3.28.0
+  '@tiptap/extension-list-keymap': 3.28.0
+  '@tiptap/extension-blockquote': 3.28.0
+  '@tiptap/extension-bullet-list': 3.28.0
+  '@tiptap/extension-ordered-list': 3.28.0
+  '@tiptap/extension-paragraph': 3.28.0
+  '@tiptap/extension-strike': 3.28.0
+  '@tiptap/extension-text': 3.28.0
+  '@tiptap/extension-text-align': 3.28.0
+  '@tiptap/extension-text-style': 3.28.0
+  '@tiptap/extension-underline': 3.28.0
+  '@tiptap/extension-unique-id': 3.28.0
+  '@tiptap/extension-history': 3.28.0
+  '@tiptap/extension-table': 3.28.0
+  '@tiptap/extension-table-cell': 3.28.0
+  '@tiptap/extension-table-header': 3.28.0
+  '@tiptap/extension-table-row': 3.28.0
+
 importers:
 
   .:
@@ -152,13 +198,13 @@ importers:
         version: 2.12.0(react@18.3.1)
     devDependencies:
       '@tiptap/core':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/pm@3.28.0)
       '@tiptap/extension-bubble-menu':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)
       '@tiptap/pm':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0
       '@types/lodash-es':
         specifier: ^4.17.12
@@ -238,13 +284,13 @@ importers:
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@tiptap/core':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/pm@3.28.0)
       '@tiptap/pm':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0
       '@tiptap/react':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@floating-ui/dom@1.7.4)(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/react':
         specifier: ^18
@@ -329,40 +375,40 @@ importers:
         specifier: workspace:^
         version: link:../editor-style
       '@tiptap/core':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/pm@3.28.0)
       '@tiptap/extension-color':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/extension-text-style@3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0)))
       '@tiptap/extension-highlight':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))
       '@tiptap/extension-horizontal-rule':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)
       '@tiptap/extension-paragraph':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))
       '@tiptap/extension-text-align':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))
       '@tiptap/extension-text-style':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))
       '@tiptap/extension-underline':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))
       '@tiptap/extension-unique-id':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)
       '@tiptap/pm':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0
       '@tiptap/react':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@floating-ui/dom@1.7.4)(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tiptap/starter-kit':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0
       '@types/lodash-es':
         specifier: ^4.17.12
@@ -429,13 +475,13 @@ importers:
         version: 11.1.0
     devDependencies:
       '@tiptap/core':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/pm@3.28.0)
       '@tiptap/pm':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0
       '@tiptap/react':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@floating-ui/dom@1.7.4)(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/lodash-es':
         specifier: ^4.17.12
@@ -466,10 +512,10 @@ importers:
         version: 2.12.0(react@18.3.1)
     devDependencies:
       '@tiptap/core':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/pm@3.28.0)
       '@tiptap/pm':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0
       '@types/lodash-es':
         specifier: ^4.17.12
@@ -490,10 +536,10 @@ importers:
   packages/extension-bold:
     devDependencies:
       '@tiptap/core':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/pm@3.28.0)
       '@tiptap/extension-bold':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))
       tsup:
         specifier: ^8.5.1
@@ -530,19 +576,19 @@ importers:
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@tiptap/core':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/pm@3.28.0)
       '@tiptap/extension-code-block':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)
       '@tiptap/extension-code-block-lowlight':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/extension-code-block@3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)(highlight.js@11.11.1)(lowlight@2.9.0)
       '@tiptap/pm':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0
       '@tiptap/react':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@floating-ui/dom@1.7.4)(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/lodash-es':
         specifier: ^4.17.12
@@ -579,7 +625,7 @@ importers:
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@tiptap/core':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/pm@3.28.0)
       '@types/react':
         specifier: ^18
@@ -600,10 +646,10 @@ importers:
   packages/extension-highlight:
     devDependencies:
       '@tiptap/core':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/pm@3.28.0)
       '@tiptap/extension-highlight':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))
       tsup:
         specifier: ^8.5.1
@@ -637,13 +683,13 @@ importers:
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@tiptap/core':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/pm@3.28.0)
       '@tiptap/pm':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0
       '@tiptap/react':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@floating-ui/dom@1.7.4)(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/lodash-es':
         specifier: ^4.17.12
@@ -674,7 +720,7 @@ importers:
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@tiptap/core':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/pm@3.28.0)
       '@types/react':
         specifier: ^18
@@ -699,10 +745,10 @@ importers:
         version: 4.18.1
     devDependencies:
       '@tiptap/core':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/pm@3.28.0)
       '@tiptap/pm':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0
       '@types/lodash-es':
         specifier: ^4.17.12
@@ -733,13 +779,13 @@ importers:
         version: 3.8.4(react@18.3.1)
     devDependencies:
       '@tiptap/core':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/pm@3.28.0)
       '@tiptap/pm':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0
       '@tiptap/react':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@floating-ui/dom@1.7.4)(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/react-dom':
         specifier: ^18.3.1
@@ -747,9 +793,6 @@ importers:
       linkifyjs:
         specifier: ^4.2.0
         version: 4.2.0
-      prosemirror-state:
-        specifier: ^1.4.4
-        version: 1.4.4
       react:
         specifier: ^18.3.0
         version: 18.3.1
@@ -782,13 +825,13 @@ importers:
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@tiptap/core':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/pm@3.28.0)
       '@tiptap/pm':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0
       '@tiptap/react':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@floating-ui/dom@1.7.4)(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/react-dom':
         specifier: ^18.3.1
@@ -822,29 +865,26 @@ importers:
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@tiptap/core':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/pm@3.28.0)
       '@tiptap/extension-table':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)
       '@tiptap/extension-table-cell':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/extension-table@3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0))
       '@tiptap/extension-table-header':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/extension-table@3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0))
       '@tiptap/extension-table-row':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/extension-table@3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0))
       '@tiptap/pm':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0
       '@tiptap/react':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@floating-ui/dom@1.7.4)(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      prosemirror-model:
-        specifier: ^1.25.4
-        version: 1.25.4
       tsup:
         specifier: ^8.5.1
         version: 8.5.1(@swc/core@1.15.43)(postcss@8.5.18)(typescript@5.6.2)(yaml@2.9.0)
@@ -859,10 +899,10 @@ importers:
         version: link:../editor-context
     devDependencies:
       '@tiptap/core':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0(@tiptap/pm@3.28.0)
       '@tiptap/pm':
-        specifier: ^3.28.0
+        specifier: 3.28.0
         version: 3.28.0
       tsup:
         specifier: ^8.5.1
@@ -3151,9 +3191,6 @@ packages:
   prosemirror-model@1.25.11:
     resolution: {integrity: sha512-QWg9RhnpLlogAmp3p96uEFrE5txQpFynd4vhBAELkwgOCWQs/X0yCzB3/hrHqiPwf91RG5KyWq6553zs9JqIOQ==}
 
-  prosemirror-model@1.25.4:
-    resolution: {integrity: sha512-PIM7E43PBxKce8OQeezAs9j4TP+5yDpZVbuurd1h5phUxEKIu+G2a+EUZzIC5nS1mJktDJWzbqS23n1tsAf5QA==}
-
   prosemirror-schema-list@1.5.1:
     resolution: {integrity: sha512-927lFx/uwyQaGwJxLWCZRkjXG0p48KpMj6ueoYiu4JX05GGuGcgzAy62dfiV8eFZftgyBUvLx76RsMe20fJl+Q==}
 
@@ -3163,14 +3200,8 @@ packages:
   prosemirror-tables@1.8.5:
     resolution: {integrity: sha512-V/0cDCsHKHe/tfWkeCmthNUcEp1IVO3p6vwN8XtwE9PZQLAZJigbw3QoraAdfJPir4NKJtNvOB8oYGKRl+t0Dw==}
 
-  prosemirror-transform@1.10.5:
-    resolution: {integrity: sha512-RPDQCxIDhIBb1o36xxwsaeAvivO8VLJcgBtzmOwQ64bMtsVFh5SSuJ6dWSxO1UsHTiTXPCgQm3PDJt7p6IOLbw==}
-
   prosemirror-transform@1.12.0:
     resolution: {integrity: sha512-GxboyN4AMIsoHNtz5uf2r2Ru551i5hWeCMD6E2Ib4Eogqoub0NflniaBPVQ4MrGE5yZ8JV9tUHg9qcZTTrcN4w==}
-
-  prosemirror-view@1.41.4:
-    resolution: {integrity: sha512-WkKgnyjNncri03Gjaz3IFWvCAE94XoiEgvtr0/r2Xw7R8/IjK3sKLSiDoCHWcsXSAinVaKlGRZDvMCsF1kbzjA==}
 
   prosemirror-view@1.42.1:
     resolution: {integrity: sha512-rRqzZnRgkyh69XoOMrfFJHwauHscLBmHbq772kwbic1ymQAM8gXjzEbJse5j1ep2UO2HRIAQL0bY3kZ/RoqjVw==}
@@ -6290,10 +6321,6 @@ snapshots:
     dependencies:
       orderedmap: 2.1.1
 
-  prosemirror-model@1.25.4:
-    dependencies:
-      orderedmap: 2.1.1
-
   prosemirror-schema-list@1.5.1:
     dependencies:
       prosemirror-model: 1.25.11
@@ -6302,9 +6329,9 @@ snapshots:
 
   prosemirror-state@1.4.4:
     dependencies:
-      prosemirror-model: 1.25.4
-      prosemirror-transform: 1.10.5
-      prosemirror-view: 1.41.4
+      prosemirror-model: 1.25.11
+      prosemirror-transform: 1.12.0
+      prosemirror-view: 1.42.1
 
   prosemirror-tables@1.8.5:
     dependencies:
@@ -6314,19 +6341,9 @@ snapshots:
       prosemirror-transform: 1.12.0
       prosemirror-view: 1.42.1
 
-  prosemirror-transform@1.10.5:
-    dependencies:
-      prosemirror-model: 1.25.4
-
   prosemirror-transform@1.12.0:
     dependencies:
       prosemirror-model: 1.25.11
-
-  prosemirror-view@1.41.4:
-    dependencies:
-      prosemirror-model: 1.25.4
-      prosemirror-state: 1.4.4
-      prosemirror-transform: 1.10.5
 
   prosemirror-view@1.42.1:
     dependencies:

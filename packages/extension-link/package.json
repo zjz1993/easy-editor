@@ -35,7 +35,6 @@
     "@tiptap/pm": "^3.28.0",
     "@types/react-dom": "^18.3.1",
     "linkifyjs": "^4.2.0",
-    "prosemirror-state": "^1.4.4",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
     "tsup": "^8.5.1",
@@ -46,7 +45,6 @@
     "@tiptap/pm": "^3.28.0",
     "@tiptap/react": "^3.28.0",
     "linkifyjs": "^4.2.0",
-    "prosemirror-state": "^1.4.4",
     "react": "^18 || ^19",
     "react-dom": "^18 || ^19"
   },

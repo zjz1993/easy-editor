@@ -113,15 +113,18 @@ const isExternalized = (packageName, patterns) => {
   return false;
 };
 
-// Get all dependencies from all package.json files
-const getAllDependencies = () => {
+// Get all package directories under packages/*
+const getPackageDirs = () => {
   const packagesDir = join(rootDir, 'packages');
-
-  // Get all package directories
-  const packageDirs = readdirSync(packagesDir, { withFileTypes: true })
+  return readdirSync(packagesDir, { withFileTypes: true })
     .filter(dirent => dirent.isDirectory())
     .map(dirent => join(packagesDir, dirent.name))
     .filter(dir => existsSync(join(dir, 'package.json')));
+};
+
+// Get all dependencies from all package.json files
+const getAllDependencies = () => {
+  const packageDirs = getPackageDirs();
 
   const dependencies = new Set();
   const peerDependencies = new Set();
@@ -145,6 +148,114 @@ const getAllDependencies = () => {
   });
 
   return { dependencies, peerDependencies };
+};
+
+// Strip leading ^ ~ = from a version specifier and parse the base version
+const parseBaseVersion = (version) => {
+  const match = String(version).match(/^[~^]?\s*(\d+)\.(\d+)\.(\d+)/);
+  if (!match) return null;
+  return `${match[1]}.${match[2]}.${match[3]}`;
+};
+
+// Collect @tiptap/* versions used across all workspace package.json files.
+// Returns a Map<tiptapPkg, Map<baseVersion, Array<{ pkg, depType, raw }>>>
+const collectTiptapVersions = () => {
+  const versionMap = new Map();
+
+  getPackageDirs().forEach(dir => {
+    const packageJsonPath = join(dir, 'package.json');
+    const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
+    const pkgName = packageJson.name || dir;
+
+    ['dependencies', 'devDependencies', 'peerDependencies'].forEach(depType => {
+      const deps = packageJson[depType];
+      if (!deps) return;
+      Object.entries(deps).forEach(([name, version]) => {
+        if (!name.startsWith('@tiptap/')) return;
+        const baseVersion = parseBaseVersion(version);
+        if (!baseVersion) return;
+
+        if (!versionMap.has(name)) {
+          versionMap.set(name, new Map());
+        }
+        const versions = versionMap.get(name);
+        if (!versions.has(baseVersion)) {
+          versions.set(baseVersion, []);
+        }
+        versions.get(baseVersion).push({ pkg: pkgName, depType, raw: version });
+      });
+    });
+  });
+
+  return versionMap;
+};
+
+// Read @tiptap/* versions pinned in root package.json's pnpm.overrides
+const getTiptapOverrides = () => {
+  const rootPkgPath = join(rootDir, 'package.json');
+  if (!existsSync(rootPkgPath)) return {};
+  const rootPkg = JSON.parse(readFileSync(rootPkgPath, 'utf-8'));
+  const overrides = rootPkg?.pnpm?.overrides || {};
+  const tiptapOverrides = {};
+  Object.entries(overrides).forEach(([name, version]) => {
+    if (name.startsWith('@tiptap/')) {
+      tiptapOverrides[name] = parseBaseVersion(version) || version;
+    }
+  });
+  return tiptapOverrides;
+};
+
+// Check @tiptap/* version consistency across workspace packages.
+// Returns { issues: Array, warnings: Array }
+const checkTiptapVersionConsistency = () => {
+  const versionMap = collectTiptapVersions();
+  const overrides = getTiptapOverrides();
+
+  const issues = [];
+  const warnings = [];
+
+  // 1. Cross-package consistency: same @tiptap/* must resolve to same base version
+  versionMap.forEach((versions, tiptapPkg) => {
+    if (versions.size > 1) {
+      const foundVersions = Array.from(versions.keys());
+      const details = [];
+      versions.forEach((locations, baseVersion) => {
+        details.push(`       ${baseVersion}:`);
+        locations.forEach(loc => {
+          details.push(`         - ${loc.pkg} [${loc.depType}]: "${loc.raw}"`);
+        });
+      });
+      issues.push({
+        package: tiptapPkg,
+        foundVersions,
+        detail: details.join('\n'),
+      });
+    }
+  });
+
+  // 2. Drift vs root pnpm.overrides: warn if a package.json uses a different
+  //    base version than the override (overrides still wins at install time,
+  //    but mismatch makes the repo misleading)
+  versionMap.forEach((versions, tiptapPkg) => {
+    const overrideVersion = overrides[tiptapPkg];
+    if (!overrideVersion) return;
+    versions.forEach((locations, baseVersion) => {
+      if (baseVersion !== overrideVersion) {
+        locations.forEach(loc => {
+          warnings.push({
+            package: tiptapPkg,
+            pkg: loc.pkg,
+            depType: loc.depType,
+            raw: loc.raw,
+            baseVersion,
+            overrideVersion,
+          });
+        });
+      }
+    });
+  });
+
+  return { issues, warnings, scannedPackages: versionMap.size };
 };
 
 // Categorize a dependency
@@ -260,12 +371,42 @@ const main = () => {
     });
   }
 
-  // Exit with error if there are critical issues
-  if (issues.length > 0) {
-    console.log(`\n❌ Found ${issues.length} critical issue(s) that must be fixed before publishing!`);
+  // === @tiptap/* version consistency check ===
+  console.log('\n🔬 Checking @tiptap/* version consistency...\n');
+  const tiptapCheck = checkTiptapVersionConsistency();
+  console.log(`📦 Scanned ${tiptapCheck.scannedPackages} @tiptap/* package(s) across workspace.\n`);
+
+  if (tiptapCheck.issues.length > 0) {
+    console.log('❌ TIPTAP VERSION MISMATCH FOUND:\n');
+    tiptapCheck.issues.forEach((issue, i) => {
+      console.log(`  ${i + 1}. ${issue.package}`);
+      console.log(`     Found versions: ${issue.foundVersions.join(', ')}`);
+      console.log(issue.detail);
+      console.log(`     Action: Align all package.json files to the same base version,`);
+      console.log(`             and pin it in root package.json's pnpm.overrides.\n`);
+    });
+  } else {
+    console.log('✅ All @tiptap/* packages use consistent versions across workspace packages.\n');
+  }
+
+  if (tiptapCheck.warnings.length > 0) {
+    console.log('⚠️  TIPTAP VERSION DRIFT (vs pnpm.overrides):\n');
+    tiptapCheck.warnings.forEach((warning, i) => {
+      console.log(`  ${i + 1}. ${warning.package}`);
+      console.log(`     ${warning.pkg} [${warning.depType}] uses "${warning.raw}" (${warning.baseVersion})`);
+      console.log(`     but pnpm.overrides pins it to ${warning.overrideVersion}.`);
+      console.log(`     Action: Update package.json to align with the override for clarity.\n`);
+    });
+  }
+
+  // Exit with error if there are critical issues (including tiptap mismatches)
+  const totalIssues = issues.length + tiptapCheck.issues.length;
+  const totalWarnings = warnings.length + tiptapCheck.warnings.length;
+  if (totalIssues > 0) {
+    console.log(`\n❌ Found ${totalIssues} critical issue(s) that must be fixed before publishing!`);
     process.exit(1);
-  } else if (warnings.length > 0) {
-    console.log(`\n⚠️  Found ${warnings.length} recommendation(s). Consider addressing them for optimal bundle size.`);
+  } else if (totalWarnings > 0) {
+    console.log(`\n⚠️  Found ${totalWarnings} recommendation(s). Consider addressing them for optimal bundle size.`);
     process.exit(0);
   } else {
     console.log('\n✅ External configuration is perfect! Ready to publish.');

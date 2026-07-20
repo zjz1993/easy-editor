@@ -1,6 +1,6 @@
 import {MARK_TYPES} from '@textory/editor-utils';
 import {ReactRenderer} from '@tiptap/react';
-import {Plugin, PluginKey} from 'prosemirror-state';
+import {Plugin, PluginKey} from '@tiptap/pm/state';
 import LinkToolbar from './LinkToolbar.tsx';
 import {Link} from './link.ts';
 
