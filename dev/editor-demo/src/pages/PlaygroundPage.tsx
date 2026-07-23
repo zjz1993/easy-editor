@@ -1,11 +1,11 @@
 import Editor from '@textory/editor';
 import {
   LiveProvider,
-  LiveEditor,
   LivePreview,
   LiveError,
 } from 'react-live';
 import { themes } from 'prism-react-renderer';
+import PlaygroundMonacoEditor from '../playground/PlaygroundMonacoEditor';
 import {Link, useNavigate} from 'react-router-dom';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -192,10 +192,7 @@ const PlaygroundPage: FC = () => {
                   </span>
                 </div>
                 <div className="playground-pane__body">
-                  <LiveEditor
-                    className="playground-editor"
-                    onChange={setCode}
-                  />
+                  <PlaygroundMonacoEditor value={code} onChange={setCode} />
                 </div>
               </div>
               <div

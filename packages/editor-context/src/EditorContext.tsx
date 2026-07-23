@@ -1,11 +1,11 @@
 import type React from 'react';
 import {createContext, useContext} from 'react';
 import type {Editor} from '@tiptap/react';
-import type {TEasyEditorProps} from './types/index.ts';
+import type {TTextoryEditorProps} from './types/index.ts';
 
 export interface EditorContextValue {
   editor: Editor | null;
-  props: TEasyEditorProps;
+  props: TTextoryEditorProps;
 }
 
 const Ctx = createContext<EditorContextValue | null>(null);
@@ -16,7 +16,7 @@ export const EditorProvider = ({
   children,
 }: {
   editor: Editor | null;
-  props: TEasyEditorProps;
+  props: TTextoryEditorProps;
   children: React.ReactNode;
 }) => {
   return <Ctx.Provider value={{ editor, props }}>{children}</Ctx.Provider>;

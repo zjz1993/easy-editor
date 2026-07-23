@@ -3,10 +3,11 @@ import type {IImageProps} from './imageProps.ts';
 import type {CSSProperties} from "react";
 import type {ExportProps} from "./exportProps.ts";
 import type {FeatureFlags} from '../features';
+import type {ITitleProps} from "./titleProps.ts";
 
 export type AlignType = 'left' | 'center' | 'right';
 
-export type TEasyEditorProps = {
+export type TTextoryEditorProps = {
   outputHTML?: boolean;
   title?: string;
   content?: string | JSONContent;
@@ -17,6 +18,7 @@ export type TEasyEditorProps = {
   editable?: boolean;
   imageProps?: Partial<IImageProps>;
   exportProps?: Partial<ExportProps>;
+  titleProps?: Partial<ITitleProps>;
   className?: string;
   style?: CSSProperties;
   /**

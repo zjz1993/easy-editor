@@ -34,7 +34,7 @@ pnpm add @tiptap/extension-text-style @tiptap/extension-underline
 
 ```tsx
 import Editor from '@textory/editor';
-import type { TEasyEditorProps } from '@textory/editor';
+import type { TTextoryEditorProps } from '@textory/editor';
 
 function App() {
   const handleChange = (content: any) => {

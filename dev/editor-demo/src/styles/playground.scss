@@ -294,24 +294,29 @@ $bg-code: #1e1e2e;
   overflow: auto;
 }
 
-// react-live LiveEditor 样式覆盖
+// Monaco 编辑器(MonacoReact 容器)样式
 .playground-editor {
   height: 100%;
+  width: 100%;
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace !important;
-  font-size: 13px !important;
-  line-height: 1.6 !important;
 
-  textarea {
-    &:focus {
-      outline: none;
-    }
+  // 让 Monaco 内层容器也撑满高度
+  .monaco-editor,
+  .monaco-editor .overflow-guard {
+    border-radius: 0;
   }
+}
 
-  pre {
-    margin: 0 !important;
-    padding: 16px !important;
-    background: transparent !important;
-  }
+// Monaco 懒加载占位
+.playground-editor__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  color: #aab2c5;
+  font-size: 13px;
+  background: $bg-code;
 }
 
 // 预览区内的 Editor 自适应

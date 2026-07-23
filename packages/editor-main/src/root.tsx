@@ -1,7 +1,7 @@
 import {BLOCK_TYPES, wrapBlockExtensions} from '@textory/editor-utils';
 import {MessageContainer} from '@textory/editor-common';
 import {extendWithoutDeprecatedDefaultOptions} from '@textory/editor-utils';
-import {isUndefined} from 'lodash-es';
+import {get, isUndefined} from 'lodash-es';
 import {EditorToolbar} from '@textory/editor-toolbar';
 import {Bold} from '@textory/extension-bold';
 import {EditorContent} from '@tiptap/react';
@@ -26,11 +26,13 @@ import EditorFilePreview from './components/FilePreview/EditorFilePreview';
 import Underline from '@tiptap/extension-underline';
 import {OutlineExtension, OutlineView} from '@textory/extension-outline';
 import {useEditorProps} from './hooks/useEditorProps.ts';
-import {EditorProvider, type TEasyEditorProps} from '@textory/context';
+import {EditorProvider, type TTextoryEditorProps} from '@textory/context';
 import {useTiptapWithSync} from './hooks/useTiptapWithSync.ts';
 import {exportWORD, type ExportOptions} from '@textory/extension-export';
 import HorizontalRule from '@tiptap/extension-horizontal-rule'
 import UniqueID from '@tiptap/extension-unique-id'
+import {DocTitle} from './components/Title';
+import {DEFAULT_PROPS} from "./const/index.ts";
 /**
  * Ref handle exposed by the Editor component.
  * Allows parent components to call imperative methods.
@@ -54,25 +56,13 @@ export interface EditorRef {
 }
 
 
-const Editor = forwardRef<EditorRef, TEasyEditorProps>((props, ref) => {
+const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
   const imgUploader = useRef<any>();
   const fileUploader = useRef<any>();
   const { intlInit } = useIntlLoaded();
   const { CL, OL, UL, P, H, CLI, LI, QUOTE, HR, TL, IMG, TABLE } = BLOCK_TYPES;
   const listGroup = `${UL}|${OL}|${CL}`;
-  const mergedProps: TEasyEditorProps = useEditorProps(props, {
-    placeholder: '请输入',
-    editable: true,
-    imageProps: {
-      max: 0,
-      minWidth: 100,
-      minHeight: 100,
-    },
-    features: {
-      outline: true,
-      importWord: true,
-    },
-  });
+  const mergedProps: TTextoryEditorProps = useEditorProps(props, DEFAULT_PROPS);
   const {
     content,
     onChange,
@@ -214,6 +204,13 @@ const Editor = forwardRef<EditorRef, TEasyEditorProps>((props, ref) => {
             imageProps={mergedProps.imageProps}
             exportProps={mergedProps.exportProps}
             onImportFile={isImportWordEnabled ? handleImportFile : undefined}
+          />
+        )}
+        {get(mergedProps,'titleProps.showTitle') && (
+          <DocTitle
+            {...mergedProps.titleProps}
+            autoFocus={autoFocus}
+
           />
         )}
         <EditorContent

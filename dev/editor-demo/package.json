@@ -10,10 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@monaco-editor/react": "^4.6.0",
     "@textory/editor": "workspace:^",
     "@textory/styles": "workspace:^",
     "fast-glob": "^3.3.2",
     "minisearch": "^7.2.0",
+    "monaco-editor": "^0.52.2",
     "prism-react-renderer": "^2.4.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

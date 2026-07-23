@@ -57,7 +57,8 @@
       "Bash(bash -c \"source ~/.nvm/nvm.sh && nvm use v20.19.0 >/dev/null 2>&1 && npx playwright test test/image.spec.ts --reporter=list 2>&1 | tail -60\")",
       "Bash(bash -c \"source ~/.nvm/nvm.sh && nvm use v20.19.0 >/dev/null 2>&1 && npx playwright test test/image.spec.ts --reporter=list 2>&1 | tail -40\")",
       "Bash(bash -c \"source ~/.nvm/nvm.sh && nvm use v20.19.0 >/dev/null 2>&1 && npx playwright test test/image.spec.ts --reporter=list 2>&1 | tail -50\")",
-      "Bash(bash -c:*)"
+      "Bash(bash -c:*)",
+      "Bash(bash:*)"
     ]
   }
 }

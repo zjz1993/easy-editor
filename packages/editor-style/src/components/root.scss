@@ -19,6 +19,64 @@
   &-link {
     cursor: pointer;
   }
+  .disabled.document-title-container {
+    cursor: not-allowed;
+    color: styles.$disabled-grey;
+    .textory-document-title {
+      cursor: not-allowed;
+    }
+  }
+  .document-title-container {
+    margin: 0 30px;
+    padding: 6px 0;
+    height: 60px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    border-bottom: 1px solid styles.$border-color;
+
+    .document-title-wrapper {
+      height: 100%;
+      flex: 1 1;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    &.disabled {
+      .textory-document-title {
+        flex: none;
+      }
+    }
+
+    .forbidden-change-name-tip {
+      margin-left: 10px;
+    }
+
+    .textory-document-title {
+      flex: 1 1;
+      position: relative;
+      height: 100%;
+      font-weight: 600;
+      font-size: 32px;
+      transition: max-width var.$animation-duration-tardy var.$fade;
+
+      & > textarea {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        overflow: hidden;
+        border: none;
+        resize: none;
+        font-weight: 600;
+        font-size: 32px;
+        line-height: 1.4;
+        font-family: sans-serif;
+      }
+    }
+  }
 
   .ProseMirror {
     code {

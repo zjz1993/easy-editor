@@ -2,3 +2,5 @@ $text-font-family: Roboto, PingFang SC, Noto Sans SC, Microsoft YaHei UI,
 Microsoft YaHei, Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif;
 $animation-duration:0.2;
 $editor-name:textory;
+$fade:cubic-bezier(0.19, 1, 0.22, 1);
+$animation-duration-tardy: 600ms;

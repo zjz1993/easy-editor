@@ -1,5 +1,5 @@
 import Editor from './root.tsx';
-import type {TEasyEditorProps} from '@textory/context';
+import type {TTextoryEditorProps} from '@textory/context';
 
 // 导出 DOCX 功能（独立函数，可不依赖 Editor 实例使用）
 export { exportWORD } from '@textory/extension-export';
@@ -17,4 +17,4 @@ export { FEATURES } from '@textory/context';
 export type { FeatureName, FeatureFlags } from '@textory/context';
 
 export default Editor;
-export type { TEasyEditorProps };
+export type { TTextoryEditorProps };

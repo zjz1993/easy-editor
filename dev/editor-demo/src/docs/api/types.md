@@ -2,19 +2,19 @@
 title: 类型定义
 category: API 参考
 order: 3
-description: TEasyEditorProps、EditorRef、ExportOptions 等类型
+description: TTextoryEditorProps、EditorRef、ExportOptions 等类型
 ---
 
 # 类型定义
 
 Textory 完全用 TypeScript 编写，所有类型随包导出。
 
-## TEasyEditorProps
+## TTextoryEditorProps
 
 Editor 组件的完整 props 类型：
 
 ```ts
-import type { TEasyEditorProps } from '@textory/editor';
+import type { TTextoryEditorProps } from '@textory/editor';
 ```
 
 主要字段：
