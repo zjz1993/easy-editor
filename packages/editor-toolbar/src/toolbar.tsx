@@ -33,6 +33,8 @@ export interface IToolbarProps {
   exportProps: Partial<ExportProps>;
   /** When provided, the import button is shown. Pass the file to your import handler. */
   onImportFile?: (file: File) => void;
+  /** 外部强制禁用整个工具栏（例如标题聚焦时）。 */
+  disabled?: boolean;
 }
 
 const Toolbar: FC<IToolbarProps> = props => {
@@ -76,7 +78,7 @@ const Toolbar: FC<IToolbarProps> = props => {
   };
   const menuArray = useMemo(() => {
     if (!caps) return [];
-    const disabled = !editable;
+    const disabled = !editable || !!props.disabled;
     return [
       {
         key: 'undo',
@@ -224,7 +226,7 @@ const Toolbar: FC<IToolbarProps> = props => {
         disabled: disabled,
       }] : []),
     ];
-  }, [editor, editable, onImportFile, caps]);
+  }, [editor, editable, onImportFile, caps, props.disabled]);
   return (
     <ToolbarContext.Provider value={{ ...commonProps, imageProps }}>
       <div className="textory-toolbar" ref={toolbarRef}>

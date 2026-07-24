@@ -45,9 +45,9 @@ const EditorDemo: FC<EditorDemoProps> = ({ editorRef }) => {
             title="Textory 示例文档"
             editable
             features={features}
-            onChange={(data) => {
+            onChange={(data, title) => {
               // 演示 onChange 回调，可在控制台查看输出
-              console.log('[demo] content changed', data);
+              console.log('[demo] content changed', data, title);
             }}
           />
         </div>

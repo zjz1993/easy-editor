@@ -2,7 +2,7 @@
 title: 基本用法
 category: 指南
 order: 2
-description: content / onChange / outputHTML / editable 等常用 props
+description: content / onChange / editable 等常用 props
 ---
 
 # 基本用法
@@ -42,7 +42,7 @@ render(<App />);
 
 ## 内容变化（onChange）
 
-`onChange` 在用户输入时触发。配合 `outputHTML` 决定回调收到的数据格式：
+`onChange` 在用户输入时触发，**同时返回 HTML 与 ProseMirror JSON**，无需再切换格式。第二个参数是当前文档标题（仅当 `titleProps.showTitle` 启用、用户在标题输入框里编辑时才有意义）：
 
 ```jsx
 function App() {
@@ -52,8 +52,11 @@ function App() {
       <Editor
         content="<p>编辑我，下方会实时显示输出的 HTML</p>"
         editable
-        outputHTML
-        onChange={(data) => setHtml(data)}
+        onChange={(content, title) => {
+          setHtml(content.html);
+          // content.json 是 ProseMirror JSON，适合入库回放
+          // title 来自 DocTitle 输入框（启用标题时）
+        }}
       />
       <pre
         style={{
@@ -75,13 +78,15 @@ function App() {
 render(<App />);
 ```
 
+> [!TIP]
+> `content.html` 与 `content.json` 来源相同（都是 ProseMirror doc），只是序列化形式不同。HTML 适合直接展示，JSON 适合入库后无损回放（保留 node attrs 顺序、自定义 mark 等）。
+
 | prop | 类型 | 说明 |
 | --- | --- | --- |
 | `content` | `string \| object` | 初始内容（HTML 字符串或 ProseMirror JSON） |
 | `editable` | `boolean` | 是否可编辑，`false` 时只读 |
 | `placeholder` | `string` | 空内容占位符 |
-| `outputHTML` | `boolean` | `onChange` 输出 HTML 字符串还是 JSON |
-| `onChange` | `(data) => void` | 内容变更回调 |
+| `onChange` | `(content: {html: string, json: JSONContent}, title: string) => void` | 内容变更回调，同时返回 HTML 与 JSON |
 | `title` | `string` | 文档标题（影响导出文件名） |
 
 ## 只读模式
@@ -102,7 +107,7 @@ render(
 直接传包含表格、任务清单、代码块的 HTML：
 
 ```jsx
-render(<Editor content={DEMO_HTML} editable outputHTML />);
+render(<Editor content={DEMO_HTML} editable />);
 ```
 
 ## 关闭可选功能（features）

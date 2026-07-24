@@ -15,8 +15,7 @@ render(
     content="<h1>你好，Textory</h1><p>开始你的创作...</p>"
     placeholder="写点什么"
     editable
-    outputHTML
-    onChange={(data) => console.log(data)}
+    onChange={(content, title) => console.log(content.html, content.json, title)}
   />
 );`;
 
@@ -51,7 +50,7 @@ function App() {
       <Editor
         content={content}
         editable
-        onChange={(html) => console.log(html)}
+        onChange={(content) => console.log(content.html)}
       />
     </div>
   );
@@ -68,8 +67,7 @@ function App() {
       <Editor
         content="<p>编辑我，下方会实时显示输出的 HTML</p>"
         editable
-        outputHTML
-        onChange={(data) => setHtml(data)}
+        onChange={(content) => setHtml(content.html)}
       />
       <pre
         style={{
@@ -92,7 +90,7 @@ function App() {
 render(<App />);`;
 
 const RICH = `// 直接使用内置示例文档，包含表格、任务清单、代码块等
-render(<Editor content={DEMO_HTML} editable outputHTML />);`;
+render(<Editor content={DEMO_HTML} editable />);`;
 
 const READONLY = `// 设置 editable={false} 进入只读模式
 render(

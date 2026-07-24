@@ -50,10 +50,11 @@ function App() {
   return (
     <Editor
       placeholder="请输入正文"
-      outputHTML
       editable
-      onChange={(html) => {
-        console.log('编辑器内容：', html);
+      onChange={(content, title) => {
+        console.log('HTML：', content.html);
+        console.log('JSON：', content.json);
+        console.log('标题：', title);
       }}
       imageProps={{
         maxFileSize: 5 * 1024 * 1024,
@@ -85,8 +86,7 @@ export default App;
 | 属性          | 类型                                  | 说明                                                                 |
 | ------------- | ------------------------------------- | -------------------------------------------------------------------- |
 | `content`     | `string \| JSONContent`               | 初始内容，HTML 字符串或 Tiptap JSON                                  |
-| `onChange`    | `(data: string \| JSONContent) => void` | 内容变化回调，`outputHTML` 为真时返回 HTML，否则返回 JSON            |
-| `outputHTML`  | `boolean`                             | 输出格式开关，默认输出 JSON                                          |
+| `onChange`    | `(content: { html: string, json: JSONContent }, title: string) => void` | 内容变化回调，同时返回 HTML 与 ProseMirror JSON；`title` 为标题输入框当前值 |
 | `editable`    | `boolean`                             | 是否可编辑                                                           |
 | `placeholder` | `string`                              | 占位文本                                                             |
 | `autoFocus`   | `boolean`                             | 自动聚焦                                                             |

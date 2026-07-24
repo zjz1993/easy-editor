@@ -37,7 +37,8 @@ const ExportButton:FC<ExportButtonProps> = ({exportProps = {}, editor,intlStr, s
               await exportWORD({
                 watermark,
                 data: {
-                  title: '测试文档',
+                  // 从 editor.storage.docMeta 读取用户在 DocTitle 里输入的标题
+                  title: editor?.storage.docMeta?.title ?? '',
                   content: editor?.getJSON(),
                 },
                 onExportStarted,

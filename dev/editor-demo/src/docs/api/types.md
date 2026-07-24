@@ -24,8 +24,7 @@ import type { TTextoryEditorProps } from '@textory/editor';
 | `content` | `string \| object` |
 | `editable` | `boolean` |
 | `placeholder` | `string` |
-| `outputHTML` | `boolean` |
-| `onChange` | `(data: string \| object) => void` |
+| `onChange` | `(content: { html: string, json: JSONContent }, title: string) => void` |
 | `title` | `string` |
 | `className` | `string` |
 | `style` | `CSSProperties` |

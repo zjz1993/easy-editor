@@ -39,14 +39,15 @@ import '@textory/editor/theme/normal.css';
 - 只在初始化时传入 `content`，之后不再变化
 - 或通过 `useRef<EditorRef>` 拿到 editor 实例后用 imperative 方法控制
 
-### `onChange` 拿到的内容类型不对
+### `onChange` 拿到的内容形式
 
-`onChange` 收到 HTML 还是 JSON 由 `outputHTML` prop 决定：
+`onChange` 回调签名是 `(content, title) => void`：
 
-| `outputHTML` | `onChange(data)` 的 data |
-| --- | --- |
-| `true` | HTML 字符串 |
-| `false` | ProseMirror JSON |
+- `content.html`：HTML 字符串，适合直接展示或粘贴到富文本邮件
+- `content.json`：ProseMirror JSON，适合入库后无损回放（保留 node attrs 顺序、自定义 mark 等）
+- `title`：文档标题输入框的当前值（仅在启用了 `titleProps.showTitle` 时有意义）
+
+两种格式由同一份 ProseMirror doc 序列化得到，不需要切换开关。如果你只想要其中一种，直接忽略另一个字段即可。
 
 ### 任务列表不生效
 

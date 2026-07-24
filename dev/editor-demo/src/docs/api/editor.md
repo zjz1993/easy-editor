@@ -20,8 +20,7 @@ import Editor from '@textory/editor';
 | `content` | `string \| object` | `''` | 初始内容（HTML 字符串或 ProseMirror JSON） |
 | `editable` | `boolean` | `true` | 是否可编辑 |
 | `placeholder` | `string` | `'请输入'` | 空内容占位符 |
-| `outputHTML` | `boolean` | `false` | `onChange` 输出 HTML（`true`）还是 JSON（`false`） |
-| `onChange` | `(data: string \| object) => void` | — | 内容变更回调 |
+| `onChange` | `(content: { html: string, json: JSONContent }, title: string) => void` | — | 内容变更回调，同时返回 HTML 与 ProseMirror JSON；`title` 为标题输入框当前值（仅在启用 `titleProps.showTitle` 时有意义） |
 | `title` | `string` | — | 文档标题（影响导出文件名） |
 | `className` | `string` | — | 容器 className |
 | `style` | `CSSProperties` | — | 容器样式 |

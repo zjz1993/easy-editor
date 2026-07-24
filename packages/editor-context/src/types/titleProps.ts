@@ -1,5 +1,4 @@
 export interface ITitleProps {
-  title: string;
   onTitleChange: (title: string | undefined) => void;
   canEditTitle: boolean;
   showTitle: boolean;

@@ -7,7 +7,8 @@ import {Bold} from '@textory/extension-bold';
 import {EditorContent} from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import cx from 'classnames';
-import {forwardRef, useCallback, useEffect, useImperativeHandle, useRef} from 'react';
+import {forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef, useState} from 'react';
+import type {Editor as TiptapEditor, JSONContent} from '@tiptap/core';
 import {CodeBlock} from '@textory/extension-code-block';
 import {Indent} from '@textory/extension-indent';
 import {CustomLink} from '@textory/extension-link';
@@ -17,6 +18,7 @@ import {Highlight} from '@textory/extension-highlight';
 import {AttachmentExtension} from '@textory/extension-image';
 import {Table, TableBubbleMenu, TableCell, TableHeader, TableRow,} from '@textory/extension-table';
 import {Placeholder} from './extension/Placeholder';
+import {DocMetaExtension} from './extension/DocMeta';
 import {TextAlign} from '@tiptap/extension-text-align';
 import {TextStyle} from '@tiptap/extension-text-style';
 import BulletList from './BulletList/bullet-list.ts';
@@ -38,6 +40,7 @@ import {DEFAULT_PROPS} from "./const/index.ts";
  * Allows parent components to call imperative methods.
  */
 export interface EditorRef {
+  getData:() => {title: string; content: {html: string; json: JSONContent}}
   /**
    * Export the editor content as a DOCX file.
    * Uses the editor's current content if `data.content` is not provided.
@@ -55,6 +58,43 @@ export interface EditorRef {
   import: (file: File) => Promise<void>;
 }
 
+/**
+ * 隔离后的编辑器主舞台（EditorContent + OutlineView）。
+ *
+ * 这些子树本身不依赖 root.tsx 里的 UI state（如 isTitleFocused），用 memo
+ * 避免父级无关 re-render 拖累 ProseMirror 同步渲染路径。
+ *
+ * 详见 .ai/tiptap-performance-guide.md 第 1 节「Isolate the editor in a
+ * separate component」与 .ai/performance-issues.md P1-1。
+ */
+interface EditorStageProps {
+  editor: TiptapEditor;
+  autoFocus?: boolean;
+  isOutlineEnabled: boolean;
+}
+const EditorStage = memo<EditorStageProps>(({ editor, autoFocus, isOutlineEnabled }) => (
+  <EditorContent autoFocus={autoFocus} editor={editor} className="textory-body">
+    {isOutlineEnabled && <OutlineView editor={editor} />}
+  </EditorContent>
+));
+EditorStage.displayName = 'EditorStage';
+
+/**
+ * 隔离 TableBubbleMenu —— 仅依赖 editor 实例。
+ */
+const BubbleLayer = memo<{ editor: TiptapEditor }>(({ editor }) => (
+  <TableBubbleMenu editor={editor} />
+));
+BubbleLayer.displayName = 'BubbleLayer';
+
+/**
+ * 隔离 EditorFilePreview —— 仅依赖 editor 实例。
+ */
+const FilePreviewLayer = memo<{ editor: TiptapEditor }>(({ editor }) => (
+  <EditorFilePreview editor={editor} />
+));
+FilePreviewLayer.displayName = 'FilePreviewLayer';
+
 
 const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
   const imgUploader = useRef<any>();
@@ -63,6 +103,9 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
   const { CL, OL, UL, P, H, CLI, LI, QUOTE, HR, TL, IMG, TABLE } = BLOCK_TYPES;
   const listGroup = `${UL}|${OL}|${CL}`;
   const mergedProps: TTextoryEditorProps = useEditorProps(props, DEFAULT_PROPS);
+  const [isTitleFocused, setIsTitleFocused] = useState(false);
+  const titleContentRef = useRef('');
+  const contentRef = useRef<{ html: string; json: JSONContent; }>({html:'', json: {}});
   const {
     content,
     onChange,
@@ -70,10 +113,13 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
     placeholder,
     className,
     style,
-    outputHTML,
+    title,
   } = mergedProps;
   const isOutlineEnabled = mergedProps.features?.outline ?? true;
   const isImportWordEnabled = mergedProps.features?.importWord ?? false;
+  // DocMeta 初始 title：从顶层 title prop 拿。
+  // 即便 DocTitle 不渲染（showTitle=false），export 仍能从 storage 读到这个回退值。
+  const initialDocTitle = typeof title === 'string' ? title : '';
   const extensions = [
     StarterKit.configure({
       bold: false,
@@ -135,6 +181,7 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
         '',
       ),
       ...(isOutlineEnabled ? [OutlineExtension] : []),
+      DocMetaExtension.configure({ title: initialDocTitle }),
       Placeholder.configure({
         placeholder,
       }),
@@ -142,11 +189,9 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
     content,
     editable: mergedProps.editable,
     onUpdate: ({ editor }) => {
-      if (outputHTML) {
-        onChange?.(editor.getHTML());
-      } else {
-        onChange?.(editor.state.doc.toJSON());
-      }
+      const content = {html: editor.getHTML(), json: editor.state.doc.toJSON()}
+      contentRef.current = content;
+      onChange?.(content, titleContentRef.current);
     },
   });
 
@@ -163,12 +208,22 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
   }, [editor, mergedProps.imageProps]);
 
   useImperativeHandle(ref, () => ({
+    getData: () => {
+      return {
+        title: titleContentRef.current,
+        content: contentRef.current,
+      }
+    },
     export: (options: ExportOptions = {}) => {
       const content = options.data?.content ?? editor?.getJSON();
+      // 优先用调用方传入的 title，其次读 editor.storage.docMeta.title
+      // （由 DocTitle 用户输入同步），最后回退到顶层 title prop。
       return exportWORD({
         ...options,
         data: {
-          title: options.data?.title ?? mergedProps.title,
+          title: options.data?.title
+            ?? editor?.storage.docMeta?.title
+            ?? mergedProps.title,
           content,
         },
       });
@@ -204,25 +259,41 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
             imageProps={mergedProps.imageProps}
             exportProps={mergedProps.exportProps}
             onImportFile={isImportWordEnabled ? handleImportFile : undefined}
+            disabled={isTitleFocused}
           />
         )}
         {get(mergedProps,'titleProps.showTitle') && (
           <DocTitle
             {...mergedProps.titleProps}
+            title={title}
             autoFocus={autoFocus}
-
+            onChange={(val) => {
+              const next = val ?? '';
+              titleContentRef.current = next;
+              // 同步到 editor.storage.docMeta.title，让 export 等场景能读到最新值
+              if (editor) {
+                editor.storage.docMeta.title = next;
+              }
+              mergedProps.titleProps?.onTitleChange?.(val);
+            }}
+            onFocus={() => {
+              setIsTitleFocused(true);
+              mergedProps.titleProps?.onFocus?.();
+            }}
+            onBlur={() => {
+              setIsTitleFocused(false);
+              mergedProps.titleProps?.onBlur?.();
+            }}
           />
         )}
-        <EditorContent
-          autoFocus={autoFocus}
+        <EditorStage
           editor={editor}
-          className="textory-body"
-        >
-          {isOutlineEnabled && <OutlineView editor={editor} />}
-        </EditorContent>
+          autoFocus={autoFocus}
+          isOutlineEnabled={isOutlineEnabled}
+        />
         <MessageContainer />
-        <TableBubbleMenu editor={editor} />
-        <EditorFilePreview editor={editor} />
+        <BubbleLayer editor={editor} />
+        <FilePreviewLayer editor={editor} />
       </div>
     </EditorProvider>
   );

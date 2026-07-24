@@ -41,8 +41,7 @@ function App() {
     <Editor
       placeholder="开始书写..."
       title="我的文档"
-      outputHTML
-      onChange={(html) => console.log(html)}
+      onChange={(content, title) => console.log(content.html, content.json, title)}
       exportProps={{
         watermark: { text: '机密', fontSize: 52 },
       }}
@@ -67,10 +66,9 @@ function App() {
             <li><code>content</code> — 初始内容（HTML 或 JSON）</li>
             <li><code>editable</code> — 是否可编辑</li>
             <li><code>placeholder</code> — 空内容占位符</li>
-            <li><code>outputHTML</code> — 输出 HTML 或 JSON</li>
+            <li><code>onChange</code> — 内容变更回调，同时返回 <code>{'{ html, json }'}</code> 与标题</li>
             <li><code>exportProps</code> — 导出 Word 配置（含水印）</li>
             <li><code>imageProps</code> — 图片上传与校验配置</li>
-            <li><code>onChange</code> — 内容变更回调</li>
           </ul>
         </div>
       </div>

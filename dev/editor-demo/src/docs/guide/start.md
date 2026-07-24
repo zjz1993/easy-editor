@@ -39,8 +39,7 @@ render(
     content="<h1>你好，Textory</h1><p>开始你的创作...</p>"
     placeholder="写点什么"
     editable
-    outputHTML
-    onChange={(data) => console.log(data)}
+    onChange={(content, title) => console.log(content.html, content.json, title)}
   />
 );
 ```

@@ -22,7 +22,7 @@ function App() {
   return (
     &lt;Editor
       placeholder="开始书写..."
-      onChange={(html) => console.log(html)}
+      onChange={(content) => console.log(content.html, content.json)}
     /&gt;
   );
 }</code></pre>

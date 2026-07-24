@@ -8,11 +8,10 @@ import type {ITitleProps} from "./titleProps.ts";
 export type AlignType = 'left' | 'center' | 'right';
 
 export type TTextoryEditorProps = {
-  outputHTML?: boolean;
   title?: string;
   content?: string | JSONContent;
   maxCount?: number;
-  onChange?: (data: string | JSONContent) => void;
+  onChange?: (content: {json: JSONContent, html: string}, title: string) => void;
   placeholder?: string;
   autoFocus?: boolean;
   editable?: boolean;

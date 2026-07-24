@@ -86,7 +86,7 @@ useEditor({
 
 **修复方向**：把 `EditorContent` 抽成独立子组件（只接收 editor 实例），其余 UI 各自独立组件，靠 Context 拿 editor。
 
-- [ ] 未修复
+- [x] 已修复（2026-07-24）：root.tsx 拆出三个 `memo` 化子组件 —— `EditorStage`（EditorContent + OutlineView）、`BubbleLayer`（TableBubbleMenu）、`FilePreviewLayer`（EditorFilePreview），均只接收 `editor` 实例（EditorStage 额外接 `autoFocus` / `isOutlineEnabled`）。同时给 `@textory/context` 的 `EditorProvider` 用 `useMemo` 包裹 context value，避免 provider 父级 re-render 时（例如 `isTitleFocused` 切换）所有 `useEditorContext` 消费者跟随重渲染。`EditorToolbar` 与 `DocTitle` 保留在 root 中 —— 前者消费 `isTitleFocused`，后者生产。
 
 ---
 
@@ -232,3 +232,4 @@ placeholder 同步通过 `dispatch(empty tr)` 触发重绘，开销不小。
 | 时间 | 问题 | 做法 | 提交 |
 | ---- | ---- | ---- | ---- |
 | 2026-07-20 | P0-1 + P0-2 | 删除 `useEditorStateTrigger`；Toolbar 与每个 leaf 按钮改用 `useEditorState`；`useTiptapWithSync` 加 `immediatelyRender: false` + `shouldRerenderOnTransaction: false` | （未提交） |
+| 2026-07-24 | P1-1 | root.tsx 拆出 `EditorStage` / `BubbleLayer` / `FilePreviewLayer` 三个 `memo` 化子组件；`EditorProvider` 的 context value 用 `useMemo` 包裹 | （未提交） |
