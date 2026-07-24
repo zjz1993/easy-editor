@@ -27,7 +27,7 @@ export const BubbleMenu = (props: BubbleMenuProps) => {
       return;
     }
 
-    if (editor.isDestroyed) {
+    if (editor.isDestroyed || !editor.isEditable) {
       return;
     }
 

@@ -360,7 +360,7 @@ export const OutlineView = ({editor}: OutlineViewProps) => {
   }
 
   return (
-    <div className="textory-outline" ref={outlineRootRef}>
+    <div className="textory-outline is-show" ref={outlineRootRef}>
       <div className="textory-outline-toolbar">
         {expandableIds.length > 0 && (
           <Tooltip

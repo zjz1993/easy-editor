@@ -17,6 +17,7 @@ import {Color} from '@tiptap/extension-color';
 import {Highlight} from '@textory/extension-highlight';
 import {AttachmentExtension} from '@textory/extension-image';
 import {Table, TableBubbleMenu, TableCell, TableHeader, TableRow,} from '@textory/extension-table';
+import {FontSize} from '@textory/extension-fontsize';
 import {Placeholder} from './extension/Placeholder';
 import {DocMetaExtension} from './extension/DocMeta';
 import {TextAlign} from '@tiptap/extension-text-align';
@@ -25,6 +26,7 @@ import BulletList from './BulletList/bullet-list.ts';
 import {ListItem} from './BulletList/list-item.ts'; // import {UniqueIDExtension} from './extension/UniqueIDExtension/index.ts';
 import useIntlLoaded from './hooks/useIntlLoaded.ts';
 import EditorFilePreview from './components/FilePreview/EditorFilePreview';
+import {TextBubbleMenu} from './components/TextBubbleMenu';
 import Underline from '@tiptap/extension-underline';
 import {OutlineExtension, OutlineView} from '@textory/extension-outline';
 import {useEditorProps} from './hooks/useEditorProps.ts';
@@ -95,6 +97,15 @@ const FilePreviewLayer = memo<{ editor: TiptapEditor }>(({ editor }) => (
 ));
 FilePreviewLayer.displayName = 'FilePreviewLayer';
 
+/**
+ * 隔离 TextBubbleMenu —— 仅依赖 editor 实例。
+ * 由 features.textBubbleToolbar 控制是否挂载。
+ */
+const TextBubbleLayer = memo<{ editor: TiptapEditor }>(({ editor }) => (
+  <TextBubbleMenu editor={editor} />
+));
+TextBubbleLayer.displayName = 'TextBubbleLayer';
+
 
 const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
   const imgUploader = useRef<any>();
@@ -117,6 +128,7 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
   } = mergedProps;
   const isOutlineEnabled = mergedProps.features?.outline ?? true;
   const isImportWordEnabled = mergedProps.features?.importWord ?? false;
+  const isTextBubbleEnabled = mergedProps.features?.textBubbleToolbar ?? true;
   // DocMeta 初始 title：从顶层 title prop 拿。
   // 即便 DocTitle 不渲染（showTitle=false），export 仍能从 storage 读到这个回退值。
   const initialDocTitle = typeof title === 'string' ? title : '';
@@ -144,6 +156,7 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
     TextStyle,
     Color,
     Highlight,
+    FontSize,
     Underline,
     CustomLink,
     CodeBlock,
@@ -293,6 +306,7 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
         />
         <MessageContainer />
         <BubbleLayer editor={editor} />
+        {isTextBubbleEnabled && <TextBubbleLayer editor={editor} />}
         <FilePreviewLayer editor={editor} />
       </div>
     </EditorProvider>

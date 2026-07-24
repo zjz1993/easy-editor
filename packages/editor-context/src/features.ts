@@ -14,6 +14,7 @@
 export const FEATURES = {
   OUTLINE: 'outline',
   IMPORT_WORD: 'importWord',
+  TEXT_BUBBLE_TOOLBAR: 'textBubbleToolbar',
 } as const;
 
 export type FeatureName = (typeof FEATURES)[keyof typeof FEATURES];

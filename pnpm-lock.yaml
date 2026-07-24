@@ -334,6 +334,9 @@ importers:
       '@textory/extension-export':
         specifier: workspace:^
         version: link:../extension-export
+      '@textory/extension-fontsize':
+        specifier: workspace:^
+        version: link:../extension-fontsize
       '@textory/extension-image':
         specifier: workspace:^
         version: link:../extension-image
@@ -642,6 +645,18 @@ importers:
       docx:
         specifier: ^9.6.1
         version: 9.7.1
+      tsup:
+        specifier: ^8.5.1
+        version: 8.5.1(@swc/core@1.15.43)(postcss@8.5.18)(typescript@5.6.2)(yaml@2.9.0)
+      typescript:
+        specifier: ^5.6.0
+        version: 5.6.2
+
+  packages/extension-fontsize:
+    devDependencies:
+      '@tiptap/core':
+        specifier: 3.28.0
+        version: 3.28.0(@tiptap/pm@3.28.0)
       tsup:
         specifier: ^8.5.1
         version: 8.5.1(@swc/core@1.15.43)(postcss@8.5.18)(typescript@5.6.2)(yaml@2.9.0)

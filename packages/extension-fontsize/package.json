@@ -1,0 +1,34 @@
+{
+  "name": "@textory/extension-fontsize",
+  "version": "0.0.1",
+  "private": false,
+  "files": [
+    "dist"
+  ],
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.mts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean": "rm -rf dist && rm -rf .turbo",
+    "dev": "tsup src/index.ts --format esm --watch --silent --dts",
+    "build": "tsup --config tsup.config.ts"
+  },
+  "devDependencies": {
+    "@tiptap/core": "^3.28.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.6.0"
+  },
+  "peerDependencies": {
+    "@tiptap/core": "^3.28.0"
+  },
+  "sideEffects": false
+}

@@ -31,6 +31,7 @@
     "@textory/extension-bold": "workspace:^",
     "@textory/extension-code-block": "workspace:^",
     "@textory/extension-export": "workspace:^",
+    "@textory/extension-fontsize": "workspace:^",
     "@textory/extension-image": "workspace:^",
     "@textory/extension-import-word": "workspace:^",
     "@textory/extension-indent": "workspace:^",
