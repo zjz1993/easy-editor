@@ -8,6 +8,7 @@ import useHandleChangeImageSize from './hooks/useHandleChangeImageSize.ts';
 import ImageNodeToolbar from './ImageNodeToolbar.tsx';
 import {attachmentUploadPluginKey} from './plugin/ImagePlaceholderPlugin.ts';
 import ImageErrorView from './ImageErrorView.tsx';
+import {isEmpty, isNil} from "lodash-es";
 
 const fileToObjectUrl = (file: Blob | MediaSource) => {
   const url = window.URL || window.webkitURL;
@@ -32,7 +33,7 @@ const ImageView: FC<NodeViewProps> = props => {
   const [imageRatio, setImageRatio] = useState<number | undefined>();
   const { updateAttributes, node, selected, editor, view, getPos } = props;
   const { attrs } = node;
-  const { width, height, src, textAlign, id, hasBorder, isError } = attrs;
+  const { width, height, src, textAlign, id, uploadKey, hasBorder, isError } = attrs;
   const containerRef = useRef(null);
   const { handleMouseDown, size, changeSize } = useHandleChangeImageSize({
     containerRef,
@@ -117,18 +118,22 @@ const ImageView: FC<NodeViewProps> = props => {
 
   const progress = useEditorState({
     editor,
-
+    // Prefer uploadKey — survives UniqueID rewrites of `id`. Fall back to id
+    // for legacy nodes inserted before uploadKey existed.
     selector: ({ editor }) => {
       const pluginState = attachmentUploadPluginKey.getState(editor.state);
-      return pluginState?.progressMap?.[id] ?? 0;
+      const map = pluginState?.progressMap;
+      if (!map || isEmpty(map)) return undefined;
+      return uploadKey ? (map[uploadKey] ?? 0) : (map[id] ?? 0);
     },
   });
+  console.log('progress是', progress);
   const normalImg = (
     <>
       <div className={PREVIEW_CLS.FULL_SCREEN}>
         <Iconfont type="icon-enterfs" />
       </div>
-      {progress ? (
+      {!isNil(progress) ? (
         <>
           <div className="textory-image__placeholder">
             {getProgressCircleHTML(progress)}

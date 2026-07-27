@@ -63,17 +63,43 @@ export const ImageNode = Node.create<ImageOptions>({
       id: {
         default: null,
       },
+      /**
+       * Internal upload-tracking key. Stable across `UniqueID` rewrites of
+       * the `id` attribute, so the toolbar's upload pipeline can still
+       * find the inserted node after UniqueID has run.
+       */
+      uploadKey: {
+        default: null,
+      },
     };
   },
 
   parseHTML() {
-    return [
+    const rules: any[] = [
+      // Import-time failure marker: data: URLs are normally rejected, but
+      // when the import pipeline sets `data-import-error="1"` the image is
+      // kept in the doc as an error placeholder node (isError=true) so the
+      // user sees what failed instead of the node silently disappearing.
       {
-        tag: this.options.allowBase64
-          ? 'img[src]'
-          : 'img[src]:not([src^="data:"])',
+        tag: 'img[data-import-error]',
+        getAttrs: (el: HTMLElement) => ({
+          isError: true,
+          src: el.getAttribute('src'),
+          alt: el.getAttribute('alt'),
+          title: el.getAttribute('title'),
+          width: coerceDim(el.getAttribute('width')),
+          height: coerceDim(el.getAttribute('height')),
+          textAlign: el.getAttribute('data-text-align') || 'left',
+          hasBorder: el.getAttribute('data-has-border') === '1',
+        }),
       },
     ];
+    rules.push({
+      tag: this.options.allowBase64
+        ? 'img[src]'
+        : 'img[src]:not([src^="data:"])',
+    });
+    return rules;
   },
 
   renderHTML({ HTMLAttributes }) {
@@ -101,3 +127,10 @@ export const ImageNode = Node.create<ImageOptions>({
     return ReactNodeViewRenderer(ImageView);
   },
 });
+
+/** Parse an HTML dimension attribute to a number, or null when missing/invalid. */
+function coerceDim(raw: string | null): number | null {
+  if (!raw) return null;
+  const n = Number.parseInt(raw, 10);
+  return Number.isFinite(n) && n > 0 ? n : null;
+}

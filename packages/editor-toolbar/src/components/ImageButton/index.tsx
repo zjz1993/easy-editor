@@ -1,5 +1,5 @@
 import {DropdownList, Iconfont, Upload} from '@textory/editor-common';
-import {type FC, useContext, useState} from 'react';
+import React, {type ComponentProps, type FC, useContext, useState} from 'react';
 import type {TToolbarWrapperProps} from 'src/types/index.ts';
 import UploadNetworkImageModal from './UploadNetworkImageModal.tsx';
 import ToolbarContext from '../../context/toolbarContext.ts';
@@ -8,6 +8,12 @@ import {v4 as uuid} from 'uuid';
 import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 import type {Editor} from '@tiptap/core';
 import {removeUploadProgress, updateUploadProgress,} from '@textory/extension-image';
+import type {IImageProps, IImagePropsUploadOption} from '@textory/context';
+
+/** Minimal rc-upload customRequest option shape (avoids deep-importing types). */
+type CustomRequestOption = Parameters<
+  NonNullable<ComponentProps<typeof Upload>['customRequest']>
+>[0];
 
 function getEditorWidth(editor: Editor) {
   return editor.view.dom.clientWidth;
@@ -46,11 +52,66 @@ function getImageSizeFromFile(file: File) {
   });
 }
 
+/**
+ * Adapt `onImageUpload` (which may return `void`, `string`, or `Promise<string>`)
+ * into a rc-upload-compatible `customRequest` that always signals completion
+ * via `option.onSuccess` / `option.onError`.
+ *
+ * - Return style: `string` / `Promise<string>` — await and call onSuccess.
+ * - Callback style: `void` — assume the handler manages onSuccess/onError
+ *   itself (legacy contract).
+ *
+ * Async rejections from the return style bubble up to Upload's outer
+ * try/catch, which also forwards to `option.onError`.
+ */
+function makeCustomRequest(
+  handler: IImageProps['onImageUpload'] | undefined,
+): (option: CustomRequestOption) => void {
+  return option => {
+    if (!handler) return;
+    const uploadOption = option as CustomRequestOption &
+      IImagePropsUploadOption;
+    let settled = false;
+    const markSettled = () => {
+      settled = true;
+    };
+
+    try {
+      const ret = handler(uploadOption) as unknown;
+      // Return style: string | Promise<string>
+      if (typeof ret === 'string') {
+        markSettled();
+        uploadOption.onSuccess?.({ data: ret } as any, uploadOption.file);
+      } else if (ret != null && typeof (ret as Promise<unknown>).then === 'function') {
+        Promise.resolve(ret as Promise<string>).then(
+          url => {
+            if (settled) return;
+            markSettled();
+            uploadOption.onSuccess?.({ data: url } as any, uploadOption.file);
+          },
+          err => {
+            console.log('有错误吗', err, settled);
+            if (settled) return;
+            markSettled();
+            uploadOption.onError?.(err as Error);
+          },
+        );
+      }
+      // else void: caller owns the callback contract — do nothing.
+    } catch (err) {
+      if (!settled) {
+        markSettled();
+        uploadOption.onError?.(err as Error);
+      }
+    }
+  };
+}
+
 const ImageButton: FC<TToolbarWrapperProps> = props => {
   const { disabled, intlStr, style, editor } = props;
   const { imageProps } = useContext(ToolbarContext);
   const [open, setOpen] = useState(false);
-  const { onImageUpload, onImageBeforeUpload, maxFileSize } = imageProps;
+  const { onImageUpload, onImageBeforeUpload, maxFileSize, onImageStartUpload, onImageEndUpload } = imageProps;
   return (
     <>
       <ToolbarItemButtonWrapper
@@ -81,21 +142,23 @@ const ImageButton: FC<TToolbarWrapperProps> = props => {
                   multiple
                   beforeUpload={onImageBeforeUpload}
                   onError={(_, _a, file) => {
-                    const id = (file as any).__imageId;
-                    if (!id) return;
-                    editor.commands.updateImageById(id, {
+                    const uploadKey = (file as any).__imageUploadKey;
+                    if (!uploadKey) return;
+                    editor.commands.updateImageByUploadKey(uploadKey, {
                       src: undefined,
                       isError: true,
                     });
-                    removeUploadProgress(editor, id);
+                    removeUploadProgress(editor, uploadKey);
                   }}
                   onProgress={(event, file) => {
-                    const id = (file as any).__imageId;
-                    if (!id) return;
-                    updateUploadProgress(editor, id, event.percent);
+                    const uploadKey = (file as any).__imageUploadKey;
+                    if (!uploadKey) return;
+                    updateUploadProgress(editor, uploadKey, event.percent);
                   }}
                   onStart={async file => {
-                    // 2️⃣ 获取真实尺寸
+                    const uploadKey = uuid();
+                    (file as any).__imageUploadKey = uploadKey;
+                    onImageStartUpload?.();
                     const { width: naturalWidth, height: naturalHeight } =
                       await getImageSizeFromFile(file);
 
@@ -106,37 +169,30 @@ const ImageButton: FC<TToolbarWrapperProps> = props => {
                       naturalHeight,
                       editorWidth,
                     );
-                    const id = uuid();
                     editor
                       .chain()
                       .focus()
                       .setImage({
-                        id,
+                        uploadKey,
                         src: URL.createObjectURL(file),
                         width,
                         height,
                       })
                       .run();
-                    // 把 id 挂到 file 上（关键）
-                    (file as any).__imageId = id;
-                    updateUploadProgress(editor, id, 0);
+                    updateUploadProgress(editor, uploadKey, 0);
                   }}
                   onSuccess={async (res, file) => {
-                    const id = (file as any).__imageId;
-                    if (!id) return;
+                    const uploadKey = (file as any).__imageUploadKey;
+                    if (!uploadKey) return;
 
-                    /**
-                     * const previewSrc = node.attrs.src;
-                     * URL.revokeObjectURL(previewSrc);
-                     * */
-
-                    editor.commands.updateImageById(id, {
+                    editor.commands.updateImageByUploadKey(uploadKey, {
                       src: res.data,
                     });
-                    removeUploadProgress(editor, id);
+                    removeUploadProgress(editor, uploadKey);
+                    onImageEndUpload?.();
                   }}
                   maxFileSize={maxFileSize}
-                  customRequest={onImageUpload}
+                  customRequest={makeCustomRequest(onImageUpload)}
                 >
                   上传本地图片
                 </Upload>

@@ -147,11 +147,20 @@ const FileUpload: FC<IUploadProps> = props => {
   };
 
   const getCustomRequest = (option: UploadRequestOption) => {
-    try {
-      customRequest?.(option);
-    } catch (err) {
-      option.onError(err, { message: '上传失败' });
-    }
+    if (!customRequest) return;
+    // IIFE so we can `await` even though rc-upload's customRequest type
+    // expects `void` synchronously. Async rejections inside the user's
+    // uploader are caught here and surfaced via `option.onError`;
+    // previously this was a fire-and-forget call, so any async failure
+    // (rejected fetch/XHR) bypassed the try/catch and the upstream
+    // `onError` prop never fired.
+    void (async () => {
+      try {
+        await customRequest(option);
+      } catch (err) {
+        option.onError?.(err as Error, { message: '上传失败' });
+      }
+    })();
   };
 
   return (

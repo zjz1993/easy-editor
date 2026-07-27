@@ -64,10 +64,15 @@ import Editor from '@textory/editor';
 
 | 属性 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `imageProps.max` | `number` | `0` | 单次最多上传数量（0 = 不限） |
-| `imageProps.minWidth` | `number` | `100` | 最小宽度 |
-| `imageProps.minHeight` | `number` | `100` | 最小高度 |
-| `imageProps.onImageUpload` | `(option) => void` | — | 自定义上传函数 |
+| `imageProps.max` | `number` | `0` | 单次最多上传张数（0 = 不限） |
+| `imageProps.minWidth` | `number` | `100` | 最小宽度（px） |
+| `imageProps.minHeight` | `number` | `100` | 最小高度（px） |
+| `imageProps.maxFileSize` | `number` | `500` | 单张最大体积（KB） |
+| `imageProps.onImageBeforeUpload` | `(file, fileList) => boolean` | — | 上传前校验，返回 `false` 取消 |
+| `imageProps.onImageStartUpload` | `() => void` | — | 单张图开始上传时触发 |
+| `imageProps.onImageEndUpload` | `() => void` | — | 单张图上传完成（成功/失败均触发） |
+| `imageProps.onImageUpload` | `(option) => void \| string \| Promise<string>` | — | 自定义上传函数，**推荐返回 URL**，详见 [图片上传](/docs/guide/image-upload) |
+| `imageProps.onImagePaste` | `(url) => Promise<{data:{id,url}}>` | — | 粘贴网络图片时的远程抓取回调 |
 
 ## 导出相关（exportProps）
 

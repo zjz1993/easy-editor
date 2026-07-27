@@ -79,28 +79,24 @@ render(<Editor content="<p>开箱即用</p>" editable />);
 
 ## 图片上传
 
-`@textory/extension-image` 提供图片上传能力，通过 `imageProps` 配置：
+`@textory/extension-image` 提供图片上传能力。最小写法（推荐返回值风格）：
 
 ```jsx
-render(
-  <Editor
-    editable
-    imageProps={{
-      max: 5,
-      minWidth: 100,
-      minHeight: 100,
-      onImageUpload: async (option) => {
-        const fd = new FormData();
-        fd.append('file', option.file);
-        const res = await fetch('/api/upload', {
-          method: 'POST',
-          body: fd,
-        }).then((r) => r.json());
-        option.onSuccess?.({ data: res.url });
-      },
-    }}
-  />
-);
+<Editor
+  editable
+  imageProps={{
+    maxFileSize: 5,
+    onImageUpload: async ({ file }) => {
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: fd,
+      });
+      return (await res.json()).url; // 返回 URL，throw 自动转失败 UI
+    },
+  }}
+/>
 ```
 
-完整 props 见 [Editor API](/docs/api/editor)。
+支持两种调用风格（返回值 / 回调）、上传生命周期钩子、体积限制、粘贴与拖拽上传等。详见 [图片上传](/docs/guide/image-upload)。

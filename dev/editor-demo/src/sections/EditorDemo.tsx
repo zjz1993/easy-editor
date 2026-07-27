@@ -6,6 +6,14 @@ interface EditorDemoProps {
   editorRef: MutableRefObject<EditorRef | null>;
 }
 
+export function delay(delayTime: number = 2) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve('resolved');
+    }, delayTime * 1000);
+  });
+}
+
 const EditorDemo: FC<EditorDemoProps> = ({ editorRef }) => {
   const [outlineEnabled, setOutlineEnabled] = useState(true);
   const features = { outline: outlineEnabled, importWord: true };
@@ -46,16 +54,46 @@ const EditorDemo: FC<EditorDemoProps> = ({ editorRef }) => {
             editable
             features={features}
             imageProps={{
-              onImageUpload: async (option) => {
-                console.log('onImageUpload触发', option);
-                const fd = new FormData();
-                fd.append('file', option.file);
-                const res = await fetch('/api/upload', {
-                  method: 'POST',
-                  body: fd,
-                }).then((r) => r.json());
-                option.onSuccess?.({ data: res.url });
+              maxFileSize: 5 * 1024 * 1024,
+              onImageStartUpload:() => {
+                console.log('开始上传')
               },
+              onImageEndUpload:() => {
+                console.log('结束上传')
+              },
+              onImageUpload: (option) =>
+                new Promise<string>((resolve, reject) => {
+                  console.log('onImageUpload触发', option);
+                  const fd = new FormData();
+                  fd.append('file', option.file);
+
+                  const xhr = new XMLHttpRequest();
+                  xhr.open('POST', '/api/upload');
+
+                  // 上传进度 → 图片节点上的内置进度环自动更新
+                  xhr.upload.onprogress = (e) => {
+                    if (!e.lengthComputable) return;
+                    const percent = (e.loaded / e.total) * 100;
+                    console.log('percent是', percent);
+                    option.onProgress?.({ percent });
+                  };
+
+                  xhr.onload = () => {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                      try {
+                        const url = JSON.parse(xhr.responseText).url;
+                        resolve(url);
+                      } catch (err) {
+                        reject(err as Error);
+                      }
+                    } else {
+                      reject(new Error(`HTTP ${xhr.status}`));
+                    }
+                  };
+
+                  xhr.onerror = () => reject(new Error('network error'));
+                  xhr.send(fd);
+                }),
             }}
             onChange={(data, title) => {
               // 演示 onChange 回调，可在控制台查看输出

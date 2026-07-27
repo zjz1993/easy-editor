@@ -364,6 +364,10 @@ declare module '@tiptap/core' {
       setImage: (obj: ImageNodeAttributes) => ReturnType;
       updateAttrs: (obj: ImageNodeAttributes) => ReturnType;
       updateImageById: (id: string, attrs: ImageNodeAttributes) => ReturnType;
+      updateImageByUploadKey: (
+        uploadKey: string,
+        attrs: ImageNodeAttributes,
+      ) => ReturnType;
     };
   }
 }
