@@ -45,6 +45,18 @@ const EditorDemo: FC<EditorDemoProps> = ({ editorRef }) => {
             title="Textory 示例文档"
             editable
             features={features}
+            imageProps={{
+              onImageUpload: async (option) => {
+                console.log('onImageUpload触发', option);
+                const fd = new FormData();
+                fd.append('file', option.file);
+                const res = await fetch('/api/upload', {
+                  method: 'POST',
+                  body: fd,
+                }).then((r) => r.json());
+                option.onSuccess?.({ data: res.url });
+              },
+            }}
             onChange={(data, title) => {
               // 演示 onChange 回调，可在控制台查看输出
               console.log('[demo] content changed', data, title);

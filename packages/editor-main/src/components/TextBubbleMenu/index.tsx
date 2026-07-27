@@ -23,7 +23,8 @@ export const TextBubbleMenu: FC<TextBubbleMenuProps> = ({editor}) => {
     if (from === to) return false;
     if (editor.isActive(BLOCK_TYPES.CODE)) return false;
     if (editor.isActive(BLOCK_TYPES.TABLE)) return false;
-    return true;
+    return !editor.isActive(BLOCK_TYPES.IMG);
+
   }, []);
 
   return (

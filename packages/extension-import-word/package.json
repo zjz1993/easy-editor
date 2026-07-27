@@ -25,6 +25,7 @@
   "dependencies": {
     "@textory/context": "workspace:^",
     "@textory/editor-common-ui": "workspace:^",
+    "image-meta": "^0.2.2",
     "mammoth": "^1.8.0"
   },
   "devDependencies": {

@@ -730,6 +730,9 @@ importers:
       '@textory/editor-common-ui':
         specifier: workspace:^
         version: link:../editor-common-ui
+      image-meta:
+        specifier: ^0.2.2
+        version: 0.2.2
       mammoth:
         specifier: ^1.8.0
         version: 1.12.0

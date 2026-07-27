@@ -1,5 +1,6 @@
 import {Mark} from '@tiptap/core';
 
+// biome-ignore lint/suspicious/noEmptyInterface: <explanation>
 export interface FontSizeOptions {}
 
 // 把 setFontSize / unsetFontSize 注册到 editor.commands 的类型上

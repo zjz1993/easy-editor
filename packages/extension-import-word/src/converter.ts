@@ -1,4 +1,5 @@
 import mammoth from 'mammoth';
+import { imageMeta } from 'image-meta';
 
 import type {
   DocxToHTMLOptions,
@@ -7,11 +8,35 @@ import type {
 } from './types';
 
 /**
+ * Read intrinsic pixel dimensions from raw image bytes via `image-meta`.
+ * Returns `{}` when parsing fails so callers can simply skip the attribute.
+ */
+function getImageDimensions(
+  bytes: ArrayBuffer,
+): { width?: number; height?: number } {
+  try {
+    const meta = imageMeta(new Uint8Array(bytes));
+    return {
+      width: typeof meta.width === 'number' ? meta.width : undefined,
+      height: typeof meta.height === 'number' ? meta.height : undefined,
+    };
+  } catch {
+    return {};
+  }
+}
+
+/**
  * Convert a .docx ArrayBuffer to clean HTML using mammoth.
  *
  * mammoth strips Word-specific markup (`mso-*` styles, `<o:p>` tags, etc.)
  * and produces semantic HTML that maps directly to the editor's schema
  * (headings, lists, tables, blockquotes, etc.).
+ *
+ * Every `<img>` emitted carries `width` and `height` attributes parsed
+ * from the image's intrinsic pixels via `image-meta`. This keeps the
+ * editor's image node from defaulting to `null` dimensions, which would
+ * break resize-drag math (`useHandleChangeImageSize` reads `startWidth`
+ * directly off the node attribute).
  *
  * @param arrayBuffer - The .docx file as an ArrayBuffer
  * @param options - Optional conversion options (style map, image converter)
@@ -27,26 +52,38 @@ export async function convertDocxToHTML(
     mammothOptions.styleMap = options.styleMap;
   }
 
-  if (options?.convertImage) {
-    // Wrap the user's convertImage callback with mammoth's imgElement adapter
-    mammothOptions.convertImage = mammoth.images.imgElement(
-      async (image) => {
-        const mammothImage: MammothImage = {
-          contentType: image.contentType,
-          readAsBase64String: () => image.readAsBase64String(),
-          readAsArrayBuffer: () => image.readAsArrayBuffer(),
-        };
-        return options.convertImage!(mammothImage);
-      },
-    );
-  } else {
-    // Default: inline images as base64 data URIs.
-    // The editor schema strips data: URLs by default, so callers that
-    // want images should pass a convertImage / imageUploadHandler.
-    mammothOptions.convertImage = mammoth.images.dataUri;
-  }
+  // Image converter: read raw bytes once to extract intrinsic dimensions,
+  // then forward to the user's converter (or inline as a base64 data URI).
+  // mammoth's `imgElement` adapter turns every attribute on the returned
+  // object into an `<img>` attribute, so `{ src, width, height }` becomes
+  // `<img src="..." width="..." height="...">`.
+  mammothOptions.convertImage = mammoth.images.imgElement(async (image) => {
+    const arrayBuf = await image.readAsArrayBuffer();
+    const { width, height } = getImageDimensions(arrayBuf);
 
-  const result = await mammoth.convertToHtml({arrayBuffer}, mammothOptions);
+    const mammothImage: MammothImage = {
+      contentType: image.contentType,
+      readAsBase64String: () => image.readAsBase64String(),
+      readAsArrayBuffer: () => Promise.resolve(arrayBuf),
+    };
+
+    let src: string;
+    if (options?.convertImage) {
+      const result = await options.convertImage!(mammothImage);
+      src = result.src;
+    } else {
+      // Default: inline as base64 data URI.
+      const base64 = await image.readAsBase64String();
+      src = `data:${image.contentType};base64,${base64}`;
+    }
+
+    const attributes: Record<string, string> = { src };
+    if (width) attributes.width = String(width);
+    if (height) attributes.height = String(height);
+    return attributes;
+  });
+
+  const result = await mammoth.convertToHtml({ arrayBuffer }, mammothOptions);
   return result.value;
 }
 
