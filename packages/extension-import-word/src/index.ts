@@ -63,6 +63,10 @@ export async function importWORD(options: ImportWORDOptions): Promise<void> {
 
     const arrayBuffer = await file.arrayBuffer();
 
+    // Track per-image upload failures so the whole import no longer aborts
+    // when a single image fails to upload.
+    const imageErrors: Error[] = [];
+
     // Build convertImage: upload via handler if available, else inline base64
     const html = await convertDocxToHTML(arrayBuffer, {
       convertImage: imageUploadHandler
@@ -73,6 +77,9 @@ export async function importWORD(options: ImportWORDOptions): Promise<void> {
             return {src: remoteUrl};
           }
         : undefined,
+      onImageError: (err) => {
+        imageErrors.push(err);
+      },
     });
 
     // Warn about skipped images when no upload handler is configured
@@ -83,6 +90,12 @@ export async function importWORD(options: ImportWORDOptions): Promise<void> {
           `未配置图片上传功能，${skipped} 张图片已跳过`,
         );
       }
+    } else if (imageErrors.length > 0) {
+      // Some images failed to upload but the rest of the document imported.
+      // Failed images are kept as error-placeholder nodes in the editor.
+      message.warning(
+        `${imageErrors.length} 张图片导入失败，已标记为错误占位，其余内容已导入`,
+      );
     }
 
     // Replace entire document content

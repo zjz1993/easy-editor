@@ -41,19 +41,39 @@ export function base64ToFile(base64: string, contentType: string): File {
 }
 
 /**
- * Upload an image via the user's callback-based upload handler,
- * wrapped in a Promise.
+ * Upload an image via the user's upload handler, wrapped in a Promise.
  *
- * The handler's `onSuccess` receives the response body. The existing
- * `ImageButton` convention is `body.data` = URL string, but we also
- * handle `body.data.url` and plain string responses for flexibility.
+ * Supports two handler styles (mirrors `imageProps.onImageUpload`):
+ *   - **Return style**: handler returns `string` / `Promise<string>` —
+ *     resolved directly to the URL.
+ *   - **Callback style**: handler returns `void` and signals completion
+ *     via `options.onSuccess` / `options.onError`.
+ *
+ * The handler's `onSuccess` body accepts `body.data` (URL string),
+ * `body.data.url`, or a plain string for flexibility.
+ *
+ * A settled guard ensures whichever signal fires first wins; later
+ * callbacks are ignored.
  */
 export function uploadImage(
   handler: ImageUploadHandler,
   file: File,
 ): Promise<string> {
   return new Promise((resolve, reject) => {
-    handler({
+    let settled = false;
+    const resolveOnce = (url?: string) => {
+      if (settled) return;
+      settled = true;
+      if (url) resolve(url);
+      else reject(new Error('图片上传成功但未返回 URL'));
+    };
+    const rejectOnce = (err: unknown) => {
+      if (settled) return;
+      settled = true;
+      reject(err instanceof Error ? err : new Error('图片上传失败'));
+    };
+
+    const option = {
       file: file as any,
       onSuccess: (body: any) => {
         const url =
@@ -62,16 +82,22 @@ export function uploadImage(
             : typeof body?.data === 'string'
               ? body.data
               : body?.data?.url;
-        if (url) {
-          resolve(url);
-        } else {
-          reject(new Error('图片上传成功但未返回 URL'));
-        }
+        resolveOnce(url);
       },
-      onError: (event: any) => {
-        reject(event instanceof Error ? event : new Error('图片上传失败'));
-      },
-    });
+      onError: (event: any) => rejectOnce(event),
+    };
+
+    try {
+      const ret = handler(option);
+      if (typeof ret === 'string') {
+        resolveOnce(ret);
+      } else if (ret && typeof (ret as Promise<any>).then === 'function') {
+        Promise.resolve(ret as Promise<string>).then(resolveOnce, rejectOnce);
+      }
+      // else void: wait for onSuccess/onError callback.
+    } catch (err) {
+      rejectOnce(err);
+    }
   });
 }
 

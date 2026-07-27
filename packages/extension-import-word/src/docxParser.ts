@@ -399,15 +399,32 @@ class DocxParser {
       if (cy) heightPx = Math.round(cy / 9525);
     }
 
-    let src: string;
+    let src: string | null;
+    let failed = false;
     if (this.options?.convertImage) {
       const mammothImage: MammothImage = {
         contentType,
         readAsBase64String: () => arrayBufferToBase64(buffer),
         readAsArrayBuffer: () => Promise.resolve(buffer),
       };
-      const result = await this.options.convertImage(mammothImage);
-      src = result.src;
+      try {
+        const result = await this.options.convertImage(mammothImage);
+        src = result.src;
+      } catch (err) {
+        // Don't abort the whole import on a single upload failure.
+        // Mark the image as failed and emit a placeholder node carrying
+        // only width/height + the `data-import-error` marker. No src is
+        // attached — ImageView renders ImageErrorView instead of <img>
+        // when isError is true, so the doc JSON stays small.
+        const error = err instanceof Error ? err : new Error(String(err));
+        try {
+          this.options.onImageError?.(error, mammothImage);
+        } catch {
+          // ignore callback errors
+        }
+        src = null;
+        failed = true;
+      }
     } else {
       const base64 = await arrayBufferToBase64(buffer);
       src = `data:${contentType};base64,${base64}`;
@@ -424,9 +441,11 @@ class DocxParser {
       }
     }
 
-    const attrs: Record<string, string> = { src };
+    const attrs: Record<string, string> = {};
+    if (src) attrs.src = src;
     if (widthPx) attrs.width = String(widthPx);
     if (heightPx) attrs.height = String(heightPx);
+    if (failed) attrs['data-import-error'] = '1';
     const attrStr = Object.entries(attrs)
       .map(([k, v]) => `${k}="${escapeAttr(v)}"`)
       .join(' ');

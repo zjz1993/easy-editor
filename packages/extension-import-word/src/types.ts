@@ -4,8 +4,12 @@ import type {IImagePropsUploadOption} from '@textory/context';
 
 /**
  * The user-provided image upload handler (from `imageProps.onImageUpload`).
+ * Supports both return style (`string | Promise<string>`) and callback
+ * style (`void` + onSuccess/onError).
  */
-export type ImageUploadHandler = (options: IImagePropsUploadOption) => void;
+export type ImageUploadHandler = (
+  options: IImagePropsUploadOption,
+) => void | string | Promise<string>;
 
 /**
  * Callbacks for the import lifecycle.
@@ -49,12 +53,24 @@ export interface DocxToHTMLOptions {
   /**
    * Custom mammoth style map(s) for mapping Word styles to HTML.
    * @see https://github.com/mwilliamson/mammoth.js
+   * @deprecated Retained for backwards compatibility; no longer used
+   * since the custom docx parser replaced mammoth.
    */
   styleMap?: string | string[];
   /**
    * Custom image converter. Receives each image and should return
    * `{ src }` with the URL to use in the resulting `<img>` tag.
    * If omitted, images are inlined as base64 data URIs.
+   *
+   * If this throws, the parser does NOT abort the whole import. The
+   * image falls back to a base64 data URI inline and `onImageError`
+   * is invoked (if provided) so callers can surface the failure.
    */
   convertImage?: (image: MammothImage) => Promise<{src: string}>;
+  /**
+   * Per-image error callback. Invoked once for every image whose
+   * `convertImage` rejected. The image is still emitted (as a base64
+   * data URI) so the rest of the document imports normally.
+   */
+  onImageError?: (error: Error, image: MammothImage) => void;
 }
