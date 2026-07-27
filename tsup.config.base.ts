@@ -42,10 +42,9 @@ export default defineConfig({
     /^linkifyjs\/.*/,
     // 导出 DOCX 用到的依赖
     "docx",
-    "image-meta",
-    // 导入 DOCX 用到的依赖（mammoth 含 jszip，体积较大，必须 external）
-    "mammoth",
-    /^mammoth\/.*/
+    // 导入 DOCX 用到的依赖（jszip + image-meta，体积较大，必须 external）
+    "jszip",
+    "image-meta"
   ],
   platform: "browser",
   splitting: false,

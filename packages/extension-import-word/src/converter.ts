@@ -1,90 +1,28 @@
-import mammoth from 'mammoth';
-import { imageMeta } from 'image-meta';
-
-import type {
-  DocxToHTMLOptions,
-  ImageUploadHandler,
-  MammothImage,
-} from './types';
+import { parseDocx } from './docxParser';
+import type { DocxToHTMLOptions, ImageUploadHandler } from './types';
 
 /**
- * Read intrinsic pixel dimensions from raw image bytes via `image-meta`.
- * Returns `{}` when parsing fails so callers can simply skip the attribute.
- */
-function getImageDimensions(
-  bytes: ArrayBuffer,
-): { width?: number; height?: number } {
-  try {
-    const meta = imageMeta(new Uint8Array(bytes));
-    return {
-      width: typeof meta.width === 'number' ? meta.width : undefined,
-      height: typeof meta.height === 'number' ? meta.height : undefined,
-    };
-  } catch {
-    return {};
-  }
-}
-
-/**
- * Convert a .docx ArrayBuffer to clean HTML using mammoth.
+ * Convert a .docx ArrayBuffer to clean HTML via the in-house parser.
  *
- * mammoth strips Word-specific markup (`mso-*` styles, `<o:p>` tags, etc.)
- * and produces semantic HTML that maps directly to the editor's schema
- * (headings, lists, tables, blockquotes, etc.).
+ * Implementation lives in `./docxParser`. Mammoth was replaced because it
+ * strips direct character formatting (color, highlight) by design — that
+ * loses user intent on import. The custom parser keeps color, highlight,
+ * bold, italic, underline, strike, headings, lists (incl. nesting),
+ * tables, hyperlinks, and images (with width/height).
  *
- * Every `<img>` emitted carries `width` and `height` attributes parsed
- * from the image's intrinsic pixels via `image-meta`. This keeps the
- * editor's image node from defaulting to `null` dimensions, which would
- * break resize-drag math (`useHandleChangeImageSize` reads `startWidth`
- * directly off the node attribute).
+ * `options.styleMap` is no longer supported; it only made sense for
+ * mammoth's style mapping. The argument is still accepted for backwards
+ * compatibility but ignored.
  *
  * @param arrayBuffer - The .docx file as an ArrayBuffer
- * @param options - Optional conversion options (style map, image converter)
+ * @param options - Optional conversion options (image converter only)
  * @returns The generated HTML string
  */
 export async function convertDocxToHTML(
   arrayBuffer: ArrayBuffer,
   options?: DocxToHTMLOptions,
 ): Promise<string> {
-  const mammothOptions: Parameters<typeof mammoth.convertToHtml>[1] = {};
-
-  if (options?.styleMap) {
-    mammothOptions.styleMap = options.styleMap;
-  }
-
-  // Image converter: read raw bytes once to extract intrinsic dimensions,
-  // then forward to the user's converter (or inline as a base64 data URI).
-  // mammoth's `imgElement` adapter turns every attribute on the returned
-  // object into an `<img>` attribute, so `{ src, width, height }` becomes
-  // `<img src="..." width="..." height="...">`.
-  mammothOptions.convertImage = mammoth.images.imgElement(async (image) => {
-    const arrayBuf = await image.readAsArrayBuffer();
-    const { width, height } = getImageDimensions(arrayBuf);
-
-    const mammothImage: MammothImage = {
-      contentType: image.contentType,
-      readAsBase64String: () => image.readAsBase64String(),
-      readAsArrayBuffer: () => Promise.resolve(arrayBuf),
-    };
-
-    let src: string;
-    if (options?.convertImage) {
-      const result = await options.convertImage!(mammothImage);
-      src = result.src;
-    } else {
-      // Default: inline as base64 data URI.
-      const base64 = await image.readAsBase64String();
-      src = `data:${image.contentType};base64,${base64}`;
-    }
-
-    const attributes: Record<string, string> = { src };
-    if (width) attributes.width = String(width);
-    if (height) attributes.height = String(height);
-    return attributes;
-  });
-
-  const result = await mammoth.convertToHtml({ arrayBuffer }, mammothOptions);
-  return result.value;
+  return parseDocx(arrayBuffer, options);
 }
 
 /**
