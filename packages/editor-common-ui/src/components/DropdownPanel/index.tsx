@@ -53,6 +53,11 @@ const DropdownPanel: FC<IDropdownPanelProps> = props => {
           'textory-dropdown-container',
           sameWidth && 'textory-dropdown-container-same-width',
         )}
+        onMouseDown={e => {
+          // 阻止编辑器失焦：保留 Tiptap 当前选区，
+          // 否则后续 editor.chain().focus() 会回落到文档开头。
+          e.preventDefault();
+        }}
       >
         {children}
       </div>
