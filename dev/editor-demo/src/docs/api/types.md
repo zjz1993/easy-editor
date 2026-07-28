@@ -30,6 +30,7 @@ import type { TTextoryEditorProps } from '@textory/editor';
 | `style` | `CSSProperties` |
 | `autoFocus` | `boolean \| 'start' \| 'end'` |
 | `imageProps` | 图片上传配置 |
+| `fileProps` | 文件附件配置 |
 | `exportProps` | 导出配置 |
 | `features` | 可选功能开关，见 [FEATURES](#features) |
 | `exportWORD` | 见 [Editor API](/docs/api/editor) |
@@ -95,6 +96,7 @@ import { FEATURES, type FeatureFlags } from '@textory/editor';
 | 常量 | 值 | 对应功能 |
 | --- | --- | --- |
 | `FEATURES.OUTLINE` | `'outline'` | 文档大纲（`OutlineExtension` + `<OutlineView />`） |
+| `FEATURES.FILE_UPLOAD` | `'fileUpload'` | 文件附件（`FileExtension` + `UploadExtension` + 工具栏 FileButton） |
 
 ```ts
 // FeatureName 由 FEATURES 推导得到，当前为 'outline'
@@ -105,7 +107,7 @@ type FeatureFlags = Partial<Record<FeatureName, boolean>>;
 ```
 
 > [!NOTE]
-> 当前白名单只包含 `outline`。后续会逐步开放更多无 schema 依赖的可选功能（如 `export`、`link` 等）。新功能加入时只需扩展 `FEATURES` 常量，类型会自动推导。
+> 当前白名单包含 `outline` 与 `fileUpload`。后续会逐步开放更多无 schema 依赖的可选功能（如 `export`、`link` 等）。新功能加入时只需扩展 `FEATURES` 常量，类型会自动推导。
 
 ## 函数组件约定
 

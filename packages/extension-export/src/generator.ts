@@ -20,6 +20,7 @@ import type {
 
 import {convertBlockquote} from './converters/blockquote';
 import {convertCodeBlock} from './converters/code-block';
+import {convertFile} from './converters/file';
 import {convertHeading} from './converters/heading';
 import {convertHorizontalRule} from './converters/horizontal-rule';
 import {convertImage} from './converters/image';
@@ -36,6 +37,7 @@ import type {
   BulletListNode,
   CodeBlockNode,
   DividerNode,
+  FileNode,
   HeadingNode,
   HorizontalRuleNode,
   ImageNode,
@@ -75,6 +77,9 @@ export async function convertNode(
 
     case 'image':
       return await convertImage(node as ImageNode, options.image);
+
+    case 'file':
+      return convertFile(node as FileNode);
 
     case 'table':
       return await convertTable(node as TableNode, options.table);

@@ -31,6 +31,7 @@
     "@textory/extension-bold": "workspace:^",
     "@textory/extension-code-block": "workspace:^",
     "@textory/extension-export": "workspace:^",
+    "@textory/extension-file": "workspace:^",
     "@textory/extension-fontsize": "workspace:^",
     "@textory/extension-image": "workspace:^",
     "@textory/extension-import-word": "workspace:^",
@@ -39,6 +40,7 @@
     "@textory/extension-outline": "workspace:^",
     "@textory/extension-table": "workspace:^",
     "@textory/extension-task-item": "workspace:^",
+    "@textory/extension-upload": "workspace:^",
     "classnames": "^2.5.1",
     "lodash-es": "^4.18.0",
     "uuid": "^11.1.0"

@@ -18,6 +18,10 @@
 
   &-link {
     cursor: pointer;
+    color: styles.$primary-color;
+    &:hover{
+      text-decoration: underline;
+    }
   }
   .disabled.document-title-container {
     cursor: not-allowed;

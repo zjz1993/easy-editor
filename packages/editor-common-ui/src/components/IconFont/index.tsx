@@ -1,6 +1,6 @@
 // index.tsx
 import cx from 'classnames';
-import type {CSSProperties, FC} from 'react';
+import type {CSSProperties, FC, MouseEvent} from 'react';
 import {createFromIconfont} from './createFrontIconfont';
 import './iconfont.js'
 
@@ -12,9 +12,9 @@ const IconComponent: FC<{
   type: string;
   style?: CSSProperties;
   className?: string;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
-  onClick?: () => void;
+  onMouseEnter?: (e: MouseEvent<SVGElement>) => void;
+  onMouseLeave?: (e: MouseEvent<SVGElement>) => void;
+  onClick?: (e: MouseEvent<SVGElement>) => void;
   disabled?: boolean;
 }> = props => {
   const {

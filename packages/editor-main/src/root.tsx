@@ -16,6 +16,8 @@ import {TaskItem, TaskList} from '@textory/extension-task-item';
 import {Color} from '@tiptap/extension-color';
 import {Highlight} from '@textory/extension-highlight';
 import {AttachmentExtension} from '@textory/extension-image';
+import {FileExtension} from '@textory/extension-file';
+import {UploadExtension} from '@textory/extension-upload';
 import {Table, TableBubbleMenu, TableCell, TableHeader, TableRow,} from '@textory/extension-table';
 import {FontSize} from '@textory/extension-fontsize';
 import {Placeholder} from './extension/Placeholder';
@@ -111,7 +113,7 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
   const imgUploader = useRef<any>();
   const fileUploader = useRef<any>();
   const { intlInit } = useIntlLoaded();
-  const { CL, OL, UL, P, H, CLI, LI, QUOTE, HR, TL, IMG, TABLE } = BLOCK_TYPES;
+  const { CL, OL, UL, P, H, CLI, LI, QUOTE, HR, TL, IMG, FILE, TABLE } = BLOCK_TYPES;
   const listGroup = `${UL}|${OL}|${CL}`;
   const mergedProps: TTextoryEditorProps = useEditorProps(props, DEFAULT_PROPS);
   const [isTitleFocused, setIsTitleFocused] = useState(false);
@@ -125,10 +127,12 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
     className,
     style,
     title,
+    transformContent,
   } = mergedProps;
   const isOutlineEnabled = mergedProps.features?.outline ?? true;
   const isImportWordEnabled = mergedProps.features?.importWord ?? false;
   const isTextBubbleEnabled = mergedProps.features?.textBubbleToolbar ?? true;
+  const isFileUploadEnabled = mergedProps.features?.fileUpload ?? true;
   // DocMeta 初始 title：从顶层 title prop 拿。
   // 即便 DocTitle 不渲染（showTitle=false），export 仍能从 storage 读到这个回退值。
   const initialDocTitle = typeof title === 'string' ? title : '';
@@ -179,6 +183,12 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
     TaskList,
     TaskItem,
     AttachmentExtension.configure(props.imageProps),
+    // FileExtension gated by features.fileUpload. When disabled, neither
+    // the extension nor the toolbar button are mounted — paste/drop of
+    // non-image files becomes a no-op (fileUploader ref is not assigned).
+    ...(isFileUploadEnabled
+      ? [FileExtension.configure(mergedProps.fileProps)]
+      : []),
     // CustomParagraph,
   ];
   const editor = useTiptapWithSync({
@@ -190,9 +200,13 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
     extensions: [
       ...wrapBlockExtensions(
         extensions,
-        [P, H, CL, OL, UL, QUOTE, HR, TL, IMG],
+        [P, H, CL, OL, UL, QUOTE, HR, TL, IMG, BLOCK_TYPES.FILE],
         '',
       ),
+      // UploadExtension must be registered once globally — image and file
+      // extensions both rely on its progress plugin + paste/drop dispatcher
+      // but neither registers their own (would cause plugin-key conflicts).
+      UploadExtension,
       ...(isOutlineEnabled ? [OutlineExtension] : []),
       DocMetaExtension.configure({ title: initialDocTitle }),
       Placeholder.configure({
@@ -200,6 +214,7 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
       }),
     ],
     content,
+    transformContent,
     editable: mergedProps.editable,
     onUpdate: ({ editor }) => {
       const content = {html: editor.getHTML(), json: editor.state.doc.toJSON()}
@@ -270,6 +285,7 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
           <EditorToolbar
             editor={editor}
             imageProps={mergedProps.imageProps}
+            fileProps={isFileUploadEnabled ? mergedProps.fileProps : undefined}
             exportProps={mergedProps.exportProps}
             onImportFile={isImportWordEnabled ? handleImportFile : undefined}
             disabled={isTitleFocused}

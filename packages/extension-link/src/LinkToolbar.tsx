@@ -116,8 +116,10 @@ const LinkToolbar = ({
   // 工具栏的鼠标进入事件
   const handleToolbarMouseEnter = useCallback(() => {
     clearCloseTimer();
-    setShowToolbar(true);
-  }, [clearCloseTimer]);
+    if (editor.isEditable) {
+      setShowToolbar(true);
+    }
+  }, [clearCloseTimer, editor]);
 
   // 工具栏的鼠标离开事件
   const handleToolbarMouseLeave = useCallback(() => {
@@ -156,7 +158,9 @@ const LinkToolbar = ({
               type="icon-edit"
               className="textory-link-toolbar-icon-edit"
               onClick={() => {
-                setShowEditPopup(true);
+                if (editor.isEditable) {
+                  setShowEditPopup(true);
+                }
               }}
             />
           </Tooltip>

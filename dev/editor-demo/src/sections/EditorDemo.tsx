@@ -16,7 +16,7 @@ export function delay(delayTime: number = 2) {
 
 const EditorDemo: FC<EditorDemoProps> = ({ editorRef }) => {
   const [outlineEnabled, setOutlineEnabled] = useState(true);
-  const features = { outline: outlineEnabled, importWord: true };
+  const features = { outline: outlineEnabled, importWord: true, fileUpload: true };
   return (
     <section className="intro-section" id="demo">
       <div className="intro-section__head">
@@ -75,6 +75,45 @@ const EditorDemo: FC<EditorDemoProps> = ({ editorRef }) => {
                     if (!e.lengthComputable) return;
                     const percent = (e.loaded / e.total) * 100;
                     console.log('percent是', percent);
+                    option.onProgress?.({ percent });
+                  };
+
+                  xhr.onload = () => {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                      try {
+                        const url = JSON.parse(xhr.responseText).url;
+                        resolve(url);
+                      } catch (err) {
+                        reject(err as Error);
+                      }
+                    } else {
+                      reject(new Error(`HTTP ${xhr.status}`));
+                    }
+                  };
+
+                  xhr.onerror = () => reject(new Error('network error'));
+                  xhr.send(fd);
+                }),
+            }}
+            fileProps={{
+              accept:
+                '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.rar,.txt',
+              // 50 MB in KB (maxFileSize is KB-based, see checkMaxSize).
+              maxFileSize: 50 * 1024,
+              onFileStartUpload: () => console.log('开始上传文件'),
+              onFileEndUpload: () => console.log('结束上传文件'),
+              onFileUpload: option =>
+                new Promise<string>((resolve, reject) => {
+                  console.log('onFileUpload触发', option);
+                  const fd = new FormData();
+                  fd.append('file', option.file);
+
+                  const xhr = new XMLHttpRequest();
+                  xhr.open('POST', '/api/upload');
+
+                  xhr.upload.onprogress = e => {
+                    if (!e.lengthComputable) return;
+                    const percent = (e.loaded / e.total) * 100;
                     option.onProgress?.({ percent });
                   };
 

@@ -1,5 +1,5 @@
 import {IntlComponent, Tooltip} from '@textory/editor-common';
-import type {CSSProperties, FC, ReactElement} from 'react';
+import type {CSSProperties, FC, ReactElement, MouseEvent} from 'react';
 import {command, option} from '../../utils/index.ts';
 import ToolBarItem from '../ToolbarItem/ToolBarItem';
 
@@ -10,7 +10,7 @@ const ToolbarItemButtonWrapper: FC<{
   style?: CSSProperties;
   disabled?: boolean;
   tooltipVisible?: boolean;
-  onClick?: () => void;
+  onClick?: (e: MouseEvent<HTMLDivElement>) => void;
 }> = props => {
   const {
     onClick,

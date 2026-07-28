@@ -69,6 +69,17 @@ export interface IUploadProps {
   className?: string;
   id?: string;
   editor: Editor;
+  /**
+   * Which editor-view prop holds the rc-upload ref this component binds to.
+   *
+   * - `'imgUploader'` (default): binds to the image-upload ref set on
+   *   `editorProps.imgUploader` in `root.tsx`. Backwards compatible.
+   * - `'fileUploader'`: binds to the file-upload ref. Used by `FileButton`.
+   *
+   * The ref itself is created in `editor-main/root.tsx` and exposed via
+   * ProseMirror `editorProps` so the paste/drop plugin can also reach it.
+   */
+  uploaderKey?: 'imgUploader' | 'fileUploader';
 }
 
 const FileUpload: FC<IUploadProps> = props => {
@@ -92,8 +103,9 @@ const FileUpload: FC<IUploadProps> = props => {
     multiple = false,
     autoScrollIntoView = false,
     editor,
+    uploaderKey = 'imgUploader',
   } = props;
-  const uploadRef = editor.view.someProp('imgUploader');
+  const uploadRef = editor.view.someProp(uploaderKey);
   const uploadBtnRef = useRef<any>();
 
   const upload = files => {
@@ -127,23 +139,16 @@ const FileUpload: FC<IUploadProps> = props => {
   };
 
   const beforeUploadFun = (file: RcFile, fileList: RcFile[]) => {
-    const attachmentOptions = editor.extensionManager.extensions.find(
-      ext => ext.name === 'attachment',
-    )?.options;
-
-    const maxFileSize = props.maxFileSize ?? attachmentOptions?.maxFileSize;
     if (beforeUpload && !beforeUpload(file, fileList)) {
       return false;
     }
-    if (maxFileSize) {
-      return checkMaxSize(file, maxFileSize).catch(e => {
+    if (props.maxFileSize) {
+      return checkMaxSize(file, props.maxFileSize).catch(e => {
         message.error(e.message);
         return Promise.reject(e);
       });
     }
-    return new Promise<string>(resolve => {
-      resolve('');
-    });
+    return true;
   };
 
   const getCustomRequest = (option: UploadRequestOption) => {

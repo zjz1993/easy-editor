@@ -1,5 +1,5 @@
 import {DropdownList, Iconfont, Upload} from '@textory/editor-common';
-import React, {type ComponentProps, type FC, useContext, useState} from 'react';
+import React, {type FC, useContext, useState} from 'react';
 import type {TToolbarWrapperProps} from 'src/types/index.ts';
 import UploadNetworkImageModal from './UploadNetworkImageModal.tsx';
 import ToolbarContext from '../../context/toolbarContext.ts';
@@ -8,12 +8,8 @@ import {v4 as uuid} from 'uuid';
 import ToolbarItemButtonWrapper from '../ToolbarItemButtonWrapper';
 import type {Editor} from '@tiptap/core';
 import {removeUploadProgress, updateUploadProgress,} from '@textory/extension-image';
-import type {IImageProps, IImagePropsUploadOption} from '@textory/context';
-
-/** Minimal rc-upload customRequest option shape (avoids deep-importing types). */
-type CustomRequestOption = Parameters<
-  NonNullable<ComponentProps<typeof Upload>['customRequest']>
->[0];
+import {makeCustomRequest} from '../../utils/makeCustomRequest.ts';
+import type {IImageProps} from '@textory/context';
 
 function getEditorWidth(editor: Editor) {
   return editor.view.dom.clientWidth;
@@ -50,61 +46,6 @@ function getImageSizeFromFile(file: File) {
     };
     img.src = URL.createObjectURL(file);
   });
-}
-
-/**
- * Adapt `onImageUpload` (which may return `void`, `string`, or `Promise<string>`)
- * into a rc-upload-compatible `customRequest` that always signals completion
- * via `option.onSuccess` / `option.onError`.
- *
- * - Return style: `string` / `Promise<string>` — await and call onSuccess.
- * - Callback style: `void` — assume the handler manages onSuccess/onError
- *   itself (legacy contract).
- *
- * Async rejections from the return style bubble up to Upload's outer
- * try/catch, which also forwards to `option.onError`.
- */
-function makeCustomRequest(
-  handler: IImageProps['onImageUpload'] | undefined,
-): (option: CustomRequestOption) => void {
-  return option => {
-    if (!handler) return;
-    const uploadOption = option as CustomRequestOption &
-      IImagePropsUploadOption;
-    let settled = false;
-    const markSettled = () => {
-      settled = true;
-    };
-
-    try {
-      const ret = handler(uploadOption) as unknown;
-      // Return style: string | Promise<string>
-      if (typeof ret === 'string') {
-        markSettled();
-        uploadOption.onSuccess?.({ data: ret } as any, uploadOption.file);
-      } else if (ret != null && typeof (ret as Promise<unknown>).then === 'function') {
-        Promise.resolve(ret as Promise<string>).then(
-          url => {
-            if (settled) return;
-            markSettled();
-            uploadOption.onSuccess?.({ data: url } as any, uploadOption.file);
-          },
-          err => {
-            console.log('有错误吗', err, settled);
-            if (settled) return;
-            markSettled();
-            uploadOption.onError?.(err as Error);
-          },
-        );
-      }
-      // else void: caller owns the callback contract — do nothing.
-    } catch (err) {
-      if (!settled) {
-        markSettled();
-        uploadOption.onError?.(err as Error);
-      }
-    }
-  };
 }
 
 const ImageButton: FC<TToolbarWrapperProps> = props => {

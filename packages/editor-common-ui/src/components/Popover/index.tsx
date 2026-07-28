@@ -38,6 +38,7 @@ export interface TPopoverProps extends PropsWithChildren {
 
 const Popover = forwardRef<any, TPopoverProps>((props, ref) => {
   const {
+    disabled,
     onOpenChange,
     children,
     content,
@@ -46,11 +47,6 @@ const Popover = forwardRef<any, TPopoverProps>((props, ref) => {
     triggerAction = 'click',
   } = props;
   const [isOpen, setIsOpen] = useState(false);
-  //const [isOpen, setIsOpen] = useControlledValue<boolean>({
-  //  value: open,
-  //  defaultValue: false,
-  //});
-  // const [isOpen, setIsOpen] = useState(false);
   const arrowRef = useRef(null);
   const popoverRef = useRef(null);
 
@@ -65,6 +61,9 @@ const Popover = forwardRef<any, TPopoverProps>((props, ref) => {
   } = useFloating({
     open: isOpen,
     onOpenChange: tempOpen => {
+      if (disabled){
+        return;
+      }
       setIsOpen(tempOpen);
       onOpenChange?.(tempOpen);
     },

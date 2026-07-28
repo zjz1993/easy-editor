@@ -1,0 +1,192 @@
+@use "../colors/colors" as styles;
+@use "../variable/index" as var;
+
+$file-circle-size: 40px;
+
+.#{var.$editor-name}-file-container {
+  position: relative;
+  width: 100%;
+  margin: 8px 0;
+}
+
+.#{var.$editor-name}-file-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 100%;
+  min-width: 280px;
+  padding: 12px 16px;
+  background: #fafafa;
+  border: 1px solid #e8e8e8;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #f0f0f0;
+    border-color: #d9d9d9;
+  }
+
+  &--selected {
+    border-color: styles.$primary-color;
+    box-shadow: 0 0 0 2px rgba(styles.$primary-color, 0.15);
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    font-size: 32px;
+    color: styles.$primary-color;
+  }
+
+  &__info {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__name {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.85);
+    line-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__size {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.45);
+    line-height: 16px;
+  }
+
+  &__remove {
+    flex-shrink: 0;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.45);
+    cursor: pointer;
+    transition: color 0.2s;
+
+    &:hover {
+      color: styles.$primary-red;
+    }
+  }
+
+  &__download {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    color: rgba(0, 0, 0, 0.65);
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.2s;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.06);
+      color: styles.$primary-color;
+    }
+
+    > i {
+      font-size: 16px;
+    }
+  }
+
+  &__circle {
+    position: relative;
+    flex-shrink: 0;
+    width: $file-circle-size;
+    height: $file-circle-size;
+    text-align: center;
+    border: solid 2px styles.$primary-color;
+    border-radius: 50%;
+
+    .circle-left {
+      position: absolute;
+      top: -2px;
+      bottom: -2px;
+      left: -2px;
+      width: calc($file-circle-size / 2);
+      overflow: hidden;
+
+      .inner {
+        width: $file-circle-size;
+        height: $file-circle-size;
+        border: solid 2px white;
+        border-right-color: transparent;
+        border-bottom-color: transparent;
+        border-radius: 50%;
+
+        &.has-animation {
+          transition: transform 200ms ease-in-out;
+        }
+      }
+    }
+
+    .circle-right {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      bottom: -2px;
+      width: calc($file-circle-size / 2);
+      overflow: hidden;
+
+      .inner {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: $file-circle-size;
+        height: $file-circle-size;
+        border: solid 2px white;
+        border-top-color: transparent;
+        border-left-color: transparent;
+        border-radius: 50%;
+
+        &.has-animation {
+          transition: transform 200ms ease;
+        }
+      }
+    }
+
+    .circle-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      color: styles.$primary-color;
+      font-size: 12px;
+      white-space: nowrap;
+      transform: translate(-50%, -50%);
+    }
+  }
+}
+
+.#{var.$editor-name}-file-upload-error {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 220px;
+  height: 40px;
+  padding: 0 16px;
+  background: #fff6d6;
+  border-radius: 4px;
+
+  .inner-wrapper {
+    display: inline-flex;
+    align-items: center;
+    user-select: none;
+    height: 100%;
+    line-height: 40px;
+
+    > i {
+      padding-right: 5px;
+      color: #fdc31c;
+    }
+  }
+
+  .close-icon {
+    cursor: pointer;
+  }
+}

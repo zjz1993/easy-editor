@@ -1,8 +1,8 @@
 ---
 title: 导出能力
 category: 指南
-order: 5
-description: 导出 Word / 设置水印 / 图片处理
+order: 6
+description: 导出 Word / 设置水印 / 图片与附件处理
 ---
 
 # 导出能力
@@ -64,6 +64,23 @@ render(
 
 > [!TIP]
 > 想直接调用导出函数而不依赖组件实例？`exportWORD` 也可以从 `@textory/editor` 直接 import 调用。
+
+## 图片与附件
+
+导出 DOCX 时：
+
+- **图片节点**：编辑器会把远程图片下载并内嵌到 docx；失败则导出 `[图片]` 占位。
+- **文件节点**：导出为带超链接的段落，链接文本为文件名，指向 `attrs.src`。若上传未完成或失败（`src` 为空），导出纯文本文件名。
+
+附件超链接示例：
+
+```docx
+段落
+  ├ 文本 "项目计划.pdf"（Hyperlink 样式，链接到 https://cdn.example.com/项目计划.pdf）
+```
+
+> [!NOTE]
+> Word 内 `download` 属性不被识别，但点击链接会打开 URL，使用方能正常下载。
 
 ## 完整 API
 

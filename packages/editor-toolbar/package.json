@@ -26,6 +26,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@textory/extension-upload": "workspace:^",
     "@textory/extension-export": "workspace:^",
     "@textory/context": "workspace:^",
     "@textory/editor-common": "workspace:^",

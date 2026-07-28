@@ -1,12 +1,12 @@
 import classNames from 'classnames';
-import type { CSSProperties, FC, ReactNode } from 'react';
+import type { CSSProperties, FC, ReactNode, MouseEvent } from 'react';
 
 export type MenuBarItemProps = {
   className?: string;
   style?: CSSProperties;
   children: ReactNode;
   disabled?: boolean;
-  onclick?: () => void;
+  onclick?: (e: MouseEvent<HTMLDivElement>) => void;
 };
 
 const ToolBarItem: FC<MenuBarItemProps> = ({
@@ -18,7 +18,13 @@ const ToolBarItem: FC<MenuBarItemProps> = ({
 }) => {
   return (
     <div
-      onClick={onclick}
+      onClick={(e) => {
+        e.preventDefault();
+        if (disabled){
+          return;
+        }
+        onclick?.(e);
+      }}
       className={classNames(
         'textory-toolbar__item',
         disabled && 'disabled',

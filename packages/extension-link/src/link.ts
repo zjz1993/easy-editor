@@ -231,6 +231,18 @@ export const Link = Mark.create<LinkOptions>({
           return element.getAttribute('href');
         },
       },
+      // 别名 attr：兼容外部系统（如简道云）JSON 中用 `attrs.link` 存储 URL。
+      // 渲染时由 mark 的 renderHTML 统一映射到 href，不输出 link HTML attr。
+      link: {
+        default: null,
+        parseHTML(element) {
+          return (
+            element.getAttribute('data-link') ||
+            element.getAttribute('link') ||
+            null
+          );
+        },
+      },
       target: {
         default: this.options.HTMLAttributes.target,
       },
@@ -269,9 +281,13 @@ export const Link = Mark.create<LinkOptions>({
   },
 
   renderHTML({ HTMLAttributes }) {
+    // 兼容 attrs.link：href 优先，否则回落到 link
+    const { link, ...restAttrs } = HTMLAttributes;
+    const resolvedHref = restAttrs.href || link;
+
     // prevent XSS attacks
     if (
-      !this.options.isAllowedUri(HTMLAttributes.href, {
+      !this.options.isAllowedUri(resolvedHref, {
         defaultValidate: href => !!isAllowedUri(href, this.options.protocols),
         protocols: this.options.protocols,
         defaultProtocol: this.options.defaultProtocol,
@@ -281,7 +297,7 @@ export const Link = Mark.create<LinkOptions>({
       return [
         'a',
         mergeAttributes(this.options.HTMLAttributes, {
-          ...HTMLAttributes,
+          ...restAttrs,
           href: '',
         }),
         0,
@@ -290,7 +306,9 @@ export const Link = Mark.create<LinkOptions>({
 
     return [
       'a',
-      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
+      mergeAttributes(this.options.HTMLAttributes, restAttrs, {
+        href: resolvedHref,
+      }),
       0,
     ];
   },
@@ -322,7 +340,7 @@ export const Link = Mark.create<LinkOptions>({
               marks: [
                 {
                   type: this.name,
-                  attrs: attributes,
+                  attrs: { href },
                 },
               ],
             })

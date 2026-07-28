@@ -1,5 +1,5 @@
 import {cloneElement, type FC, useMemo, useRef} from 'react';
-import type {IImageProps, ExportProps} from '@textory/context';
+import type {IFileProps, IImageProps, ExportProps} from '@textory/context';
 import {useEditorContext} from '@textory/context';
 import {
   BLOCK_TYPES,
@@ -21,6 +21,7 @@ import {Bold, IndentButton, Italic, Redo, Strike, ToolBarItemDivider, Underline,
 import ToolbarContext from './context/toolbarContext.ts';
 import type {IToolbarCommonProps} from './types/index.ts';
 import ImageButton from './components/ImageButton/index.tsx';
+import FileButton from './components/FileButton/index.tsx';
 import TableButton from './components/TableButton/index.tsx';
 import ExportButton from "./components/ExportButton/index.tsx";
 import ImportButton from "./components/ImportButton/index.tsx";
@@ -30,6 +31,8 @@ import DividerButton from "./components/DividerButton/index.tsx";
 export interface IToolbarProps {
   editor: Editor | null;
   imageProps: Partial<IImageProps>;
+  /** Optional. When undefined, FileButton is not rendered (features.fileUpload=false). */
+  fileProps?: Partial<IFileProps>;
   exportProps: Partial<ExportProps>;
   /** When provided, the import button is shown. Pass the file to your import handler. */
   onImportFile?: (file: File) => void;
@@ -42,7 +45,7 @@ const Toolbar: FC<IToolbarProps> = props => {
   const {
     props: { editable },
   } = useEditorContext();
-  const { editor, imageProps = {}, exportProps={}, onImportFile } = props;
+  const { editor, imageProps = {}, fileProps, exportProps={}, onImportFile } = props;
   // 用 useEditorState 订阅 Toolbar 自身需要的派生状态（disabled 计算）。
   // Tiptap 默认 deep compare，只在任一值变化时才触发本组件重渲染。
   // 详见 .ai/tiptap-performance-guide.md 第 2、3 节。
@@ -201,6 +204,19 @@ const Toolbar: FC<IToolbarProps> = props => {
         intlStr: 'image',
         disabled: disabled || caps.isInCodeBlock,
       },
+      // Only render the file button when fileProps is provided (i.e. when
+      // features.fileUpload is enabled). Saves a slot in the toolbar when
+      // the feature is off.
+      ...(fileProps
+        ? [
+            {
+              key: BLOCK_TYPES.FILE,
+              component: <FileButton editor={editor} />,
+              intlStr: 'file.toolbar',
+              disabled: disabled || caps.isInCodeBlock,
+            },
+          ]
+        : []),
       {
         key: BLOCK_TYPES.TABLE,
         component: <TableButton editor={editor} />,
@@ -226,9 +242,9 @@ const Toolbar: FC<IToolbarProps> = props => {
         disabled: disabled,
       }] : []),
     ];
-  }, [editor, editable, onImportFile, caps, props.disabled]);
+  }, [editor, editable, onImportFile, caps, props.disabled, fileProps]);
   return (
-    <ToolbarContext.Provider value={{ ...commonProps, imageProps }}>
+    <ToolbarContext.Provider value={{ ...commonProps, imageProps, fileProps }}>
       <div className="textory-toolbar" ref={toolbarRef}>
         <Overflow
           data={menuArray}

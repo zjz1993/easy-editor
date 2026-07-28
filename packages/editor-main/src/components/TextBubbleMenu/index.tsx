@@ -20,9 +20,11 @@ export const TextBubbleMenu: FC<TextBubbleMenuProps> = ({editor}) => {
   const shouldShow = useCallback<BubbleMenuProps['shouldShow']>(props => {
     const {editor, from, to} = props;
     if (!editor.isEditable) return false;
+    if (editor.isEmpty) return false;
     if (from === to) return false;
     if (editor.isActive(BLOCK_TYPES.CODE)) return false;
     if (editor.isActive(BLOCK_TYPES.TABLE)) return false;
+    if (editor.isActive(BLOCK_TYPES.FILE)) return false;
     return !editor.isActive(BLOCK_TYPES.IMG);
 
   }, []);

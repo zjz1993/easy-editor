@@ -58,4 +58,5 @@ export default {
   'outline.show':'展开大纲',
   'import':'导入WORD',
   'divider':'分割线',
+  'file.toolbar':'上传文件'
 };

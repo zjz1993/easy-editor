@@ -214,17 +214,25 @@ export interface ImageNode extends JSONContent {
   };
 }
 
-// File attachment node type (digit-editor custom)
+// File attachment node type.
+// Attributes aligned with `@textory/extension-file`'s FileNodeAttributes
+// (see packages/editor-context/src/types/imageProps.ts).
 export interface FileNode extends JSONContent {
   type: 'file';
   attrs?: {
-    size?: number;
-    type?: string;
-    url?: string;
-    downloadUrl?: string;
+    /** Download URL. Empty during upload. */
+    src?: string;
+    /** File name including extension. */
     name?: string;
-    fileKey?: string;
-    background?: string | null;
+    /** File size in bytes. */
+    size?: number;
+    /** Lower-cased extension without dot (e.g. `pdf`). */
+    ext?: string;
+    /** Upload-tracking key, independent of `id`. */
+    uploadKey?: string;
+    id?: string;
+    /** Render the error placeholder when true. */
+    isError?: boolean;
   };
 }
 

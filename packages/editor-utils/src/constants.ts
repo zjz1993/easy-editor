@@ -682,7 +682,7 @@ export const MARK_TYPES = {
   C: 'color',
   SUP: 'superscript',
   SUB: 'subscript',
-  LK: 'customLink',
+  LK: 'link',
   AN: 'annotation',
   ANNOTATION: 'annotation',
   MARK_TEXT_SELECTION: 'mark_text_selection',

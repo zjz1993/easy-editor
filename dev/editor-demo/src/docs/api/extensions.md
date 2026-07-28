@@ -27,14 +27,37 @@ description: 各扩展包的 props 与配置项
 
 ## @textory/extension-image
 
-图片插入、上传与预览。
+图片插入、上传与预览。上传基建（进度插件、paste/drop 分发）已抽出到 `@textory/extension-upload`，由 `@textory/editor` 在内部统一注册。
 
 | 配置 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | `max` | `number` | `0` | 单次上传上限 |
 | `minWidth` | `number` | `100` | 最小宽度限制 |
 | `minHeight` | `number` | `100` | 最小高度限制 |
-| `onImageUpload` | `(option) => void` | — | 自定义上传通道 |
+| `maxFileSize` | `number` | `500` | 单张最大体积（KB） |
+| `onImageUpload` | `(option) => void` | — | 自定义上传通道，详见 [图片上传](/docs/guide/image-upload) |
+
+## @textory/extension-file
+
+文件附件节点 + 上传，序列化为 `<a href download>`。
+
+| 配置 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| `accept` | `string` | `'*'` | 文件选择框 accept |
+| `maxFileSize` | `number` | `51200` | 单个文件最大体积（KB），50MB |
+| `onFileUpload` | `(option) => void` | — | 自定义上传通道，详见 [文件上传](/docs/guide/file-upload) |
+
+提供 3 个命令：`setFile(attrs)`、`updateFileById(id, attrs)`、`updateFileByUploadKey(uploadKey, attrs)`。
+
+## @textory/extension-upload
+
+image 与 file 共享的上传基建包：
+
+- 进度状态插件（`uploadPluginKey` / 兼容别名 `attachmentUploadPluginKey`）
+- paste/drop 分发器（按 MIME 分流到 `imgUploader` / `fileUploader`）
+- 工具函数：`updateUploadProgress(editor, key, percent)`、`removeUploadProgress(editor, key)`
+
+通常**不需要单独引入**，`@textory/editor` 内部已注册一次。仅在自定义集成时按需引入。
 
 ## @textory/extension-indent
 

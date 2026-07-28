@@ -15,6 +15,7 @@ description: Textory 文档首页
 - **实时大纲**：自动根据标题生成可点击导航
 - **导出 Word**：一键导出 DOCX，支持自定义水印
 - **图片上传**：支持自定义上传通道与大小限制
+- **文件附件**：独立 file 节点 + 文件上传，工具栏一键插入，DOCX 导出为超链接
 
 ## 从这里开始
 
@@ -23,6 +24,8 @@ description: Textory 文档首页
 | [快速开始](/docs/guide/start) | 第一次接入 Textory 的开发者 |
 | [基本用法](/docs/guide/usage) | 想了解常用 props 的开发者 |
 | [扩展包接入](/docs/guide/extensions) | 想按需开启/关闭扩展的开发者 |
+| [图片上传](/docs/guide/image-upload) | 想自定义图片上传通道的开发者 |
+| [文件上传](/docs/guide/file-upload) | 想接入文件附件的开发者 |
 | [导出能力](/docs/guide/export) | 想导出 Word 或图片的开发者 |
 | [Editor API](/docs/api/editor) | 完整 props 与事件参考 |
 

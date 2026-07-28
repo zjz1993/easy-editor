@@ -1,6 +1,6 @@
 import '@tiptap/pm/view';
 import type {FileUploader, ImgUploader} from './ImgUploader.ts';
-import type {ImageNodeAttributes} from "./imageProps.ts";
+import type {FileNodeAttributes, ImageNodeAttributes} from "./imageProps.ts";
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
@@ -367,6 +367,14 @@ declare module '@tiptap/core' {
       updateImageByUploadKey: (
         uploadKey: string,
         attrs: ImageNodeAttributes,
+      ) => ReturnType;
+    };
+    file: {
+      setFile: (attrs: FileNodeAttributes) => ReturnType;
+      updateFileById: (id: string, attrs: FileNodeAttributes) => ReturnType;
+      updateFileByUploadKey: (
+        uploadKey: string,
+        attrs: FileNodeAttributes,
       ) => ReturnType;
     };
   }
