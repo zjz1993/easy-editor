@@ -1,5 +1,5 @@
-import {attachmentUploadPluginKey} from '../plugin/ImagePlaceholderPlugin.ts';
-import type {Editor} from "@tiptap/core";
+import type {Editor} from '@tiptap/core';
+import {uploadPluginKey} from '../plugin/ProgressPlugin.ts';
 
 export const updateUploadProgress = (
   editor: Editor,
@@ -8,7 +8,7 @@ export const updateUploadProgress = (
 ) => {
   const tr = editor.state.tr;
 
-  tr.setMeta(attachmentUploadPluginKey, {
+  tr.setMeta(uploadPluginKey, {
     type: 'progress',
 
     id,
@@ -22,7 +22,7 @@ export const updateUploadProgress = (
 export const removeUploadProgress = (editor: Editor, id: string) => {
   const tr = editor.state.tr;
 
-  tr.setMeta(attachmentUploadPluginKey, {
+  tr.setMeta(uploadPluginKey, {
     type: 'remove',
     id,
   });

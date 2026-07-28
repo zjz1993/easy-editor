@@ -1,5 +1,6 @@
 export * from './blockquote';
 export * from './code-block';
+export * from './file';
 export * from './heading';
 export * from './horizontal-rule';
 export * from './image';

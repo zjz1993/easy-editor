@@ -6,7 +6,7 @@ import {Iconfont, Popover} from '@textory/editor-common';
 import {type FC, useEffect, useRef, useState} from 'react';
 import useHandleChangeImageSize from './hooks/useHandleChangeImageSize.ts';
 import ImageNodeToolbar from './ImageNodeToolbar.tsx';
-import {attachmentUploadPluginKey} from './plugin/ImagePlaceholderPlugin.ts';
+import {attachmentUploadPluginKey} from '@textory/extension-upload';
 import ImageErrorView from './ImageErrorView.tsx';
 import {isEmpty, isNil} from "lodash-es";
 
@@ -127,7 +127,7 @@ const ImageView: FC<NodeViewProps> = props => {
       return uploadKey ? (map[uploadKey] ?? 0) : (map[id] ?? 0);
     },
   });
-  console.log('progress是', progress);
+
   const normalImg = (
     <>
       <div className={PREVIEW_CLS.FULL_SCREEN}>
@@ -142,6 +142,7 @@ const ImageView: FC<NodeViewProps> = props => {
         </>
       ) : (
         <Popover
+          disabled={!editor.isEditable}
           ref={popoverRef}
           content={
             <ImageNodeToolbar

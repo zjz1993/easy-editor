@@ -44,6 +44,9 @@ const CustomLink = Link.extend({
             const target = event.target;
             if (!(target instanceof HTMLElement) || !target.closest('a'))
               return false;
+            if (!this.editor.isEditable){
+              return false;
+            }
             const linkElement = target.closest('a');
 
             const textNode = [...linkElement.childNodes].find(

@@ -3,12 +3,25 @@ import {Plugin, PluginKey} from '@tiptap/pm/state';
 export interface UploadState {
   progressMap: Record<string, number>;
 }
-export const attachmentUploadPluginKey = new PluginKey('ImageUploadPlugin');
+
+/**
+ * Plugin key for the upload-progress plugin.
+ *
+ * Renamed from `attachmentUploadPluginKey` when this code lived in
+ * `@textory/extension-image`. The alias below preserves backwards-compatible
+ * imports; new code should import `uploadPluginKey` directly.
+ */
+export const uploadPluginKey = new PluginKey('UploadPlugin');
+
+/** @deprecated use `uploadPluginKey` instead. Kept for backwards compatibility. */
+export const attachmentUploadPluginKey = uploadPluginKey;
+
 export const createUploadPlugin = () => {
-  return ImagePlaceholderPlugin;
+  return UploadProgressPlugin;
 };
-export const ImagePlaceholderPlugin = new Plugin<UploadState>({
-  key: attachmentUploadPluginKey,
+
+export const UploadProgressPlugin = new Plugin<UploadState>({
+  key: uploadPluginKey,
   state: {
     init() {
       return {
@@ -17,7 +30,7 @@ export const ImagePlaceholderPlugin = new Plugin<UploadState>({
     },
 
     apply(tr, value) {
-      const meta = tr.getMeta(attachmentUploadPluginKey);
+      const meta = tr.getMeta(uploadPluginKey);
 
       if (!meta) {
         return value;

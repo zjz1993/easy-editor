@@ -2,20 +2,19 @@ import {Extension} from '@tiptap/core';
 import {ImageNode} from './ImageNode.ts';
 import type {IImageProps} from '@textory/context';
 import {BLOCK_TYPES} from '@textory/editor-utils';
-import {createUploadPlugin} from './plugin/ImagePlaceholderPlugin.ts';
-import uploadPasteAndDropPlugin from './plugin/pasteDrop.ts';
 
+/**
+ * Image attachment extension.
+ *
+ * Historically this extension also registered the upload progress plugin
+ * and the paste/drop dispatcher. Those concerns have been extracted into
+ * `@textory/extension-upload`'s `UploadExtension`, which must be registered
+ * once at the editor root for image (and file) uploads to work.
+ */
 const AttachmentExtension = Extension.create<Partial<IImageProps>>({
   name: 'attachment',
   addExtensions() {
     return [ImageNode];
-  },
-  addProseMirrorPlugins() {
-    const array = [createUploadPlugin()];
-    if (this.editor.isEditable) {
-      array.push(uploadPasteAndDropPlugin());
-    }
-    return array;
   },
   addCommands() {
     return {

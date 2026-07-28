@@ -6,6 +6,23 @@
 
 Easy Editor 是一个基于 [Tiptap](https://www.tiptap.dev/) 的模块化富文本编辑器，采用 TypeScript + pnpm workspaces 的 monorepo 架构。每个功能以独立扩展包的形式存在，便于按需组合与扩展。
 
+## 环境前置（必读）
+
+**所有开发命令执行前，必须先切换到 Node.js 20+（推荐 20.19 或更高）。**
+
+仓库 `package.json` 的 `engines.node: ">=20.19"`，且 demo 走 rolldown，依赖 Node 20+ 的 `node:util` `styleText` API。Node 18 会导致 `pnpm install` 警告、`pnpm start` 崩溃。
+
+使用 [nvm](https://github.com/nvm-sh/nvm) 切换：
+
+```bash
+nvm install 20.19.0      # 首次安装
+nvm use 20.19.0          # 切到当前 shell
+nvm alias default 20.19.0 # 设为默认
+node -v             # 验证 >= v20.19
+```
+
+每次新开 shell 开始工作前先 `nvm use 20.19.0` 再执行 `pnpm install` / `pnpm start` / `pnpm build`。
+
 ## 常用命令
 
 ### 构建 / 启动
@@ -216,6 +233,14 @@ packages/extension-xxx/
 - 列表实现为自定义版本，与 Tiptap 默认不同
 - 表格内置 BubbleMenu
 - 构建期图片以 data URL 形式内联
+- **所有面向用户可见的字符串必须走 intl**：禁止在 JSX / 组件 props 里硬编码中文（或任何文案），统一把键值对加到 `packages/editor-common/src/locales/zh_cn.ts`，使用处通过 `intlStr` / `intl.get(key)` 读取。新增功能时先扩 locale 再用，避免遗漏
+- **改 editor 属性后必须同步 demo**：任何对 `<Editor>` props 形态的变更（新增 prop、改默认值、改类型、新增 features 字段、改 commands 等），必须同步更新 `dev/editor-demo/` 下的相关文件：
+  - `src/sections/EditorDemo.tsx`：mock 完整接入示例
+  - `src/docs/api/editor.md` + `src/docs/api/types.md`：API 表与类型表
+  - `src/docs/guide/*.md`：如有新增 guide 主题，更新 `intro.md` 导航
+  - `src/docs/api/extensions.md`：如涉及扩展包 props 变化
+
+  验证 checklist：build 通过 → demo 启动无 console error → 文档侧 grep 能搜到新 prop 名
 
 ## 依赖外置（external）规则
 

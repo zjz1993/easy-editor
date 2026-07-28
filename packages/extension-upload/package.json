@@ -1,5 +1,5 @@
 {
-  "name": "@textory/extension-image",
+  "name": "@textory/extension-upload",
   "version": "0.0.1",
   "private": false,
   "files": [
@@ -23,15 +23,10 @@
     "build": "tsup --config tsup.config.ts"
   },
   "dependencies": {
-    "@textory/context": "workspace:^",
-    "@textory/editor-common": "workspace:^",
     "@textory/editor-utils": "workspace:^",
-    "@textory/extension-upload": "workspace:^",
-    "classnames": "^2.5.1",
     "lodash-es": "^4.18.0"
   },
   "devDependencies": {
-    "@tiptap/react": "^3.28.0",
     "@tiptap/core": "^3.28.0",
     "@tiptap/pm": "^3.28.0",
     "@types/lodash-es": "^4.17.12",
@@ -39,11 +34,8 @@
     "typescript": "^5.6.0"
   },
   "peerDependencies": {
-    "@tiptap/react": "^3.28.0",
     "@tiptap/core": "^3.28.0",
-    "@tiptap/pm": "^3.28.0",
-    "react": "^18 || ^19",
-    "react-dom": "^18 || ^19"
+    "@tiptap/pm": "^3.28.0"
   },
   "sideEffects": false
 }

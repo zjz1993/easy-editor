@@ -1,16 +1,21 @@
-// import { updateTableIndices } from '@/Editor/components/core/src/plugins/table/TableCommands';
 import {getFilesFromEvent, isImageExt, isVideoExt, parseMIMEType,} from '@textory/editor-utils';
 import {filter, get, isEmpty} from 'lodash-es';
 import {Plugin, TextSelection} from '@tiptap/pm/state';
 import type {EditorView} from '@tiptap/pm/view';
 
+// `imgUploader` / `fileUploader` 是我们扩展注入的自定义 EditorProps key，
+// 不在 prosemirror-view 的官方 EditorProps 类型里，用 any 视图绕过类型校验。
+type AnyEditorView = Omit<EditorView, 'someProp'> & {
+  someProp(propName: string): any;
+};
+
 const uploadImage = (
-  view: EditorView,
+  view: AnyEditorView,
   files: any[],
   coords: { x: any; y: any },
 ) => {
-  const imgUploader = view.someProp('imgUploader');
-  const fileUploader = view.someProp('fileUploader');
+  const imgUploader = view.someProp('imgUploader') as any;
+  const fileUploader = view.someProp('fileUploader') as any;
   if (!isEmpty(files)) {
     if (get(files, [0], {}).type.name === 'table') {
       const { schema } = view.state;
@@ -71,7 +76,8 @@ const uploadImage = (
     //  uploadImageSuccess = true;
     //}
     if (fileUploader?.current) {
-      const attachmentEnable = !fileUploader.current.props.disabled;
+      // 安全化：FileButton 未挂载时（如 features.fileUpload=false）跳过
+      const attachmentEnable = !fileUploader.current.props?.disabled;
       if (attachmentEnable && !isEmpty(attachments)) {
         upload(fileUploader.current, attachments);
         uploadFileSuccess = true;
@@ -96,7 +102,7 @@ const getCoords = e => {
 const dropPaste = (view: EditorView, e: any, ignoreCoords?: any) => {
   const files = getFilesFromEvent(e, view);
   const coords = ignoreCoords ? null : getCoords(e);
-  if (uploadImage(view, files, coords)) {
+  if (uploadImage(view as unknown as AnyEditorView, files, coords)) {
     e.preventDefault();
     e.__hasUpload = true;
     return true;

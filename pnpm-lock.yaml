@@ -334,6 +334,9 @@ importers:
       '@textory/extension-export':
         specifier: workspace:^
         version: link:../extension-export
+      '@textory/extension-file':
+        specifier: workspace:^
+        version: link:../extension-file
       '@textory/extension-fontsize':
         specifier: workspace:^
         version: link:../extension-fontsize
@@ -358,6 +361,9 @@ importers:
       '@textory/extension-task-item':
         specifier: workspace:^
         version: link:../extension-task-item
+      '@textory/extension-upload':
+        specifier: workspace:^
+        version: link:../extension-upload
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -461,6 +467,9 @@ importers:
       '@textory/extension-image':
         specifier: workspace:^
         version: link:../extension-image
+      '@textory/extension-upload':
+        specifier: workspace:^
+        version: link:../extension-upload
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -652,6 +661,52 @@ importers:
         specifier: ^5.6.0
         version: 5.6.2
 
+  packages/extension-file:
+    dependencies:
+      '@textory/context':
+        specifier: workspace:^
+        version: link:../editor-context
+      '@textory/editor-common':
+        specifier: workspace:^
+        version: link:../editor-common
+      '@textory/editor-utils':
+        specifier: workspace:^
+        version: link:../editor-utils
+      '@textory/extension-upload':
+        specifier: workspace:^
+        version: link:../extension-upload
+      classnames:
+        specifier: ^2.5.1
+        version: 2.5.1
+      lodash-es:
+        specifier: ^4.18.0
+        version: 4.18.1
+      react:
+        specifier: ^18 || ^19
+        version: 18.3.1
+      react-dom:
+        specifier: ^18 || ^19
+        version: 18.3.1(react@18.3.1)
+    devDependencies:
+      '@tiptap/core':
+        specifier: 3.28.0
+        version: 3.28.0(@tiptap/pm@3.28.0)
+      '@tiptap/pm':
+        specifier: 3.28.0
+        version: 3.28.0
+      '@tiptap/react':
+        specifier: 3.28.0
+        version: 3.28.0(@floating-ui/dom@1.7.4)(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/lodash-es':
+        specifier: ^4.17.12
+        version: 4.17.12
+      tsup:
+        specifier: ^8.5.1
+        version: 8.5.1(@swc/core@1.15.43)(postcss@8.5.18)(typescript@5.6.2)(yaml@2.9.0)
+      typescript:
+        specifier: ^5.6.0
+        version: 5.6.2
+
   packages/extension-fontsize:
     devDependencies:
       '@tiptap/core':
@@ -690,6 +745,9 @@ importers:
       '@textory/editor-utils':
         specifier: workspace:^
         version: link:../editor-utils
+      '@textory/extension-upload':
+        specifier: workspace:^
+        version: link:../extension-upload
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -928,6 +986,31 @@ importers:
       '@tiptap/pm':
         specifier: 3.28.0
         version: 3.28.0
+      tsup:
+        specifier: ^8.5.1
+        version: 8.5.1(@swc/core@1.15.43)(postcss@8.5.18)(typescript@5.6.2)(yaml@2.9.0)
+      typescript:
+        specifier: ^5.6.0
+        version: 5.6.2
+
+  packages/extension-upload:
+    dependencies:
+      '@textory/editor-utils':
+        specifier: workspace:^
+        version: link:../editor-utils
+      lodash-es:
+        specifier: ^4.18.0
+        version: 4.18.1
+    devDependencies:
+      '@tiptap/core':
+        specifier: 3.28.0
+        version: 3.28.0(@tiptap/pm@3.28.0)
+      '@tiptap/pm':
+        specifier: 3.28.0
+        version: 3.28.0
+      '@types/lodash-es':
+        specifier: ^4.17.12
+        version: 4.17.12
       tsup:
         specifier: ^8.5.1
         version: 8.5.1(@swc/core@1.15.43)(postcss@8.5.18)(typescript@5.6.2)(yaml@2.9.0)

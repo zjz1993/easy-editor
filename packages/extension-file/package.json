@@ -1,5 +1,5 @@
 {
-  "name": "@textory/extension-image",
+  "name": "@textory/extension-file",
   "version": "0.0.1",
   "private": false,
   "files": [
