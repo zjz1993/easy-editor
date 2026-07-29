@@ -32,7 +32,7 @@
     "@tiptap/pm": "^3.28.0",
     "@types/lodash-es": "^4.17.12",
     "tsup": "^8.5.1",
-    "typescript": "^5.6.0"
+    "typescript": "^6.0.3"
   },
   "peerDependencies": {
     "@tiptap/core": "^3.28.0",

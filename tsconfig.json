@@ -24,7 +24,8 @@
     "sourceMap": true,
     "jsx": "react-jsx",
     "emitDeclarationOnly": true,
-    "allowImportingTsExtensions": true
+    "allowImportingTsExtensions": true,
+    "ignoreDeprecations": "6.0"
   },
   "files": [
     "./types.d.ts"
