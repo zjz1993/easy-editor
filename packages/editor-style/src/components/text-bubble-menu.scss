@@ -1,6 +1,29 @@
 @use "../colors/colors" as styles;
 @use "../variable/index" as var;
 
+// Bubble 菜单通用入场动画。
+// Tiptap bubble plugin show() 时会把 element appendChild 回 DOM，
+// 同时把 inline opacity 从 0 置为 1。这里靠两件事一起触发入场：
+//   1) opacity transition：淡入
+//   2) @keyframes scaleIn：scale(.92) → scale(1)，因为节点重新插入
+//      DOM 时 CSS animation 会重新播放
+// hide() 紧接着 element.remove()，淡出动画来不及播，因此只做出场动画。
+.textory-text-bubble,
+.textory-table-menu {
+  transition: opacity .14s ease-out;
+  transform-origin: center bottom;
+  animation: textory-bubble-pop-in .14s ease-out;
+}
+
+@keyframes textory-bubble-pop-in {
+  from {
+    transform: scale(.92) translateY(2px);
+  }
+  to {
+    transform: scale(1) translateY(0);
+  }
+}
+
 .textory-text-bubble {
   background: styles.$primary-white;
   height: 36px;
