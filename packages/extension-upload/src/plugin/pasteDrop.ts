@@ -16,6 +16,7 @@ const uploadImage = (
 ) => {
   const imgUploader = view.someProp('imgUploader') as any;
   const fileUploader = view.someProp('fileUploader') as any;
+  const videoUploader = view.someProp('videoUploader') as any;
   if (!isEmpty(files)) {
     if (get(files, [0], {}).type.name === 'table') {
       const { schema } = view.state;
@@ -38,6 +39,7 @@ const uploadImage = (
     );
     let uploadImageSuccess = false;
     let uploadFileSuccess = false;
+    let uploadVideoSuccess = false;
 
     const upload = (uploader, files) => {
       let { tr } = view.state;
@@ -71,10 +73,14 @@ const uploadImage = (
         uploadImageSuccess = true;
       }
     }
-    //if (videoUploader?.current && !isEmpty(videos)) {
-    //  upload(videoUploader.current, videos);
-    //  uploadImageSuccess = true;
-    //}
+    if (videoUploader?.current) {
+      // 安全化：VideoButton 未挂载时（如 features.videoUpload=false）跳过
+      const videoEnable = !videoUploader.current.props?.disabled;
+      if (videoEnable && !isEmpty(videos)) {
+        upload(videoUploader.current, videos);
+        uploadVideoSuccess = true;
+      }
+    }
     if (fileUploader?.current) {
       // 安全化：FileButton 未挂载时（如 features.fileUpload=false）跳过
       const attachmentEnable = !fileUploader.current.props?.disabled;
@@ -84,7 +90,7 @@ const uploadImage = (
       }
     }
 
-    return uploadImageSuccess || uploadFileSuccess;
+    return uploadImageSuccess || uploadFileSuccess || uploadVideoSuccess;
   }
   return false;
 };

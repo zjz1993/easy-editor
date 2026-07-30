@@ -16,6 +16,7 @@ export const FEATURES = {
   IMPORT_WORD: 'importWord',
   TEXT_BUBBLE_TOOLBAR: 'textBubbleToolbar',
   FILE_UPLOAD: 'fileUpload',
+  VIDEO_UPLOAD: 'videoUpload',
 } as const;
 
 export type FeatureName = (typeof FEATURES)[keyof typeof FEATURES];

@@ -5,6 +5,8 @@ import type {
   IFilePropsUploadOption,
   IImageProps,
   IImagePropsUploadOption,
+  IVideoProps,
+  IVideoPropsUploadOption,
 } from '@textory/context';
 
 /** Minimal rc-upload customRequest option shape (avoids deep-importing types). */
@@ -31,12 +33,15 @@ export function makeCustomRequest(
   handler:
     | IImageProps['onImageUpload']
     | IFileProps['onFileUpload']
+    | IVideoProps['onVideoUpload']
     | undefined,
 ): (option: CustomRequestOption) => void {
   return option => {
     if (!handler) return;
     const uploadOption = option as CustomRequestOption &
-      (IImagePropsUploadOption & IFilePropsUploadOption);
+      (IImagePropsUploadOption &
+        IFilePropsUploadOption &
+        IVideoPropsUploadOption);
     let settled = false;
     const markSettled = () => {
       settled = true;

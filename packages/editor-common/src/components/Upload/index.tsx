@@ -79,7 +79,7 @@ export interface IUploadProps {
    * The ref itself is created in `editor-main/root.tsx` and exposed via
    * ProseMirror `editorProps` so the paste/drop plugin can also reach it.
    */
-  uploaderKey?: 'imgUploader' | 'fileUploader';
+  uploaderKey?: 'imgUploader' | 'fileUploader' | 'videoUploader';
 }
 
 const FileUpload: FC<IUploadProps> = props => {

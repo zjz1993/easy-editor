@@ -4,3 +4,6 @@ export type ImgUploader = {
 export type FileUploader = {
   current: any;
 };
+export type VideoUploader = {
+  current: any;
+};

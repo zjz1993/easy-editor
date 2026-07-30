@@ -41,6 +41,7 @@
     "@textory/extension-table": "workspace:^",
     "@textory/extension-task-item": "workspace:^",
     "@textory/extension-upload": "workspace:^",
+    "@textory/extension-video": "workspace:^",
     "classnames": "^2.5.1",
     "lodash-es": "^4.18.0",
     "uuid": "^11.1.0"

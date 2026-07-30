@@ -370,7 +370,7 @@
   }
 }
 
-.#{var.$editor-name}-network-image-modal{
+.#{var.$editor-name}-network-image-modal,.#{var.$editor-name}-network-video-modal{
   &_panel{
     &__inner{
       display: flex;

@@ -17,6 +17,7 @@ import {Color} from '@tiptap/extension-color';
 import {Highlight} from '@textory/extension-highlight';
 import {AttachmentExtension} from '@textory/extension-image';
 import {FileExtension} from '@textory/extension-file';
+import {VideoExtension} from '@textory/extension-video';
 import {UploadExtension} from '@textory/extension-upload';
 import {Table, TableBubbleMenu, TableCell, TableHeader, TableRow,} from '@textory/extension-table';
 import {FontSize} from '@textory/extension-fontsize';
@@ -112,8 +113,9 @@ TextBubbleLayer.displayName = 'TextBubbleLayer';
 const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
   const imgUploader = useRef<any>();
   const fileUploader = useRef<any>();
+  const videoUploader = useRef<any>();
   const { intlInit } = useIntlLoaded();
-  const { CL, OL, UL, P, H, CLI, LI, QUOTE, HR, TL, IMG, FILE, TABLE } = BLOCK_TYPES;
+  const { CL, OL, UL, P, H, CLI, LI, QUOTE, HR, TL, IMG, FILE, VIDEO, TABLE } = BLOCK_TYPES;
   const listGroup = `${UL}|${OL}|${CL}`;
   const mergedProps: TTextoryEditorProps = useEditorProps(props, DEFAULT_PROPS);
   const [isTitleFocused, setIsTitleFocused] = useState(false);
@@ -133,6 +135,7 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
   const isImportWordEnabled = mergedProps.features?.importWord ?? false;
   const isTextBubbleEnabled = mergedProps.features?.textBubbleToolbar ?? true;
   const isFileUploadEnabled = mergedProps.features?.fileUpload ?? true;
+  const isVideoUploadEnabled = mergedProps.features?.videoUpload ?? true;
   // DocMeta 初始 title：从顶层 title prop 拿。
   // 即便 DocTitle 不渲染（showTitle=false），export 仍能从 storage 读到这个回退值。
   const initialDocTitle = typeof title === 'string' ? title : '';
@@ -189,18 +192,25 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
     ...(isFileUploadEnabled
       ? [FileExtension.configure(mergedProps.fileProps)]
       : []),
+    // VideoExtension gated by features.videoUpload. Same pattern as file:
+    // extension + toolbar button + videoUploader ref are all skipped when
+    // disabled, so paste/drop of video files becomes a no-op.
+    ...(isVideoUploadEnabled
+      ? [VideoExtension.configure(mergedProps.videoProps)]
+      : []),
     // CustomParagraph,
   ];
   const editor = useTiptapWithSync({
     editorProps: {
       imgUploader,
       fileUploader,
+      videoUploader,
     },
     autofocus: !isUndefined(autoFocus) ? 'end' : undefined,
     extensions: [
       ...wrapBlockExtensions(
         extensions,
-        [P, H, CL, OL, UL, QUOTE, HR, TL, IMG, BLOCK_TYPES.FILE],
+        [P, H, CL, OL, UL, QUOTE, HR, TL, IMG, BLOCK_TYPES.FILE, BLOCK_TYPES.VIDEO],
         '',
       ),
       // UploadExtension must be registered once globally — image and file
@@ -286,6 +296,7 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
             editor={editor}
             imageProps={mergedProps.imageProps}
             fileProps={isFileUploadEnabled ? mergedProps.fileProps : undefined}
+            videoProps={isVideoUploadEnabled ? mergedProps.videoProps : undefined}
             exportProps={mergedProps.exportProps}
             onImportFile={isImportWordEnabled ? handleImportFile : undefined}
             disabled={isTitleFocused}

@@ -49,12 +49,32 @@ description: 各扩展包的 props 与配置项
 
 提供 3 个命令：`setFile(attrs)`、`updateFileById(id, attrs)`、`updateFileByUploadKey(uploadKey, attrs)`。
 
+## @textory/extension-video
+
+视频节点（block 级），支持本地上传 + 网络视频 embed 两种来源。
+
+- 本地：渲染为 `<video controls src poster>`
+- 网络：渲染为 `<iframe src allowfullscreen>`
+
+两种来源通过同一个 `video` 节点的 `type` 属性（`'local' | 'embed'`）区分。
+
+| 配置 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| `accept` | `string` | `'.mp4,.webm,.mov,.m4v'` | 视频选择框 accept |
+| `maxFileSize` | `number` | `102400` | 单个视频最大体积（KB），100MB |
+| `onVideoUpload` | `(option) => void` | — | 自定义上传通道，详见 [视频上传](/docs/guide/video-upload) |
+
+提供 3 个命令：`setVideo(attrs)`、`updateVideoById(id, attrs)`、`updateVideoByUploadKey(uploadKey, attrs)`。
+
+> [!NOTE]
+> 网络视频 URL 不做 watch→embed 自动转换。用户需粘贴平台提供的 embed 地址（如 `//player.bilibili.com/player.html?bvid=...`）。
+
 ## @textory/extension-upload
 
-image 与 file 共享的上传基建包：
+image、file、video 共享的上传基建包：
 
 - 进度状态插件（`uploadPluginKey` / 兼容别名 `attachmentUploadPluginKey`）
-- paste/drop 分发器（按 MIME 分流到 `imgUploader` / `fileUploader`）
+- paste/drop 分发器（按 MIME 分流到 `imgUploader` / `fileUploader` / `videoUploader`）
 - 工具函数：`updateUploadProgress(editor, key, percent)`、`removeUploadProgress(editor, key)`
 
 通常**不需要单独引入**，`@textory/editor` 内部已注册一次。仅在自定义集成时按需引入。

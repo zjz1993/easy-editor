@@ -22,6 +22,7 @@ export const TextBubbleMenu: FC<TextBubbleMenuProps> = ({editor}) => {
     if (!editor.isEditable) return false;
     if (editor.isEmpty) return false;
     if (from === to) return false;
+    if (editor.isActive(BLOCK_TYPES.VIDEO)) return false;
     if (editor.isActive(BLOCK_TYPES.CODE)) return false;
     if (editor.isActive(BLOCK_TYPES.TABLE)) return false;
     if (editor.isActive(BLOCK_TYPES.FILE)) return false;

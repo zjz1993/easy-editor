@@ -36,6 +36,7 @@ import Editor from '@textory/editor';
 | --- | --- | --- | --- |
 | `features.outline` | `boolean` | `true` | 是否启用文档大纲（含 `OutlineExtension` 与右侧大纲面板） |
 | `features.fileUpload` | `boolean` | `true` | 是否启用文件附件（含 `FileExtension`、工具栏附件按钮与 paste/drop 上传） |
+| `features.videoUpload` | `boolean` | `true` | 是否启用视频（含 `VideoExtension`、工具栏视频按钮与 paste/drop 上传） |
 
 ```jsx
 // 关闭文档大纲：右侧不会出现大纲面板
@@ -160,6 +161,25 @@ function remapLinkAttr(node) {
 | `fileProps.onFileEndUpload` | `() => void` | — | 单个文件上传完成（成功/失败均触发） |
 | `fileProps.onFileUpload` | `(option) => void \| string \| Promise<string>` | — | 自定义上传函数，**推荐返回 URL**，详见 [文件上传](/docs/guide/file-upload) |
 
+## 视频相关（videoProps）
+
+| 属性 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| `videoProps.accept` | `string` | `'.mp4,.webm,.mov,.m4v'` | 工具栏视频选择框的 accept 属性 |
+| `videoProps.maxFileSize` | `number` | `102400` | 单个视频最大体积（**KB**），100MB |
+| `videoProps.onVideoBeforeUpload` | `(file, fileList) => boolean` | — | 上传前校验，返回 `false` 取消 |
+| `videoProps.onVideoStartUpload` | `() => void` | — | 单个视频开始上传时触发 |
+| `videoProps.onVideoEndUpload` | `() => void` | — | 单个视频上传完成（成功/失败均触发） |
+| `videoProps.onVideoUpload` | `(option) => void \| string \| Promise<string>` | — | 自定义上传函数，**推荐返回 URL**，详见 [视频上传](/docs/guide/video-upload) |
+
+视频节点支持两种来源：
+
+- **本地上传**：通过工具栏「上传本地视频」或拖拽/粘贴视频文件触发，渲染为 `<video controls>`。
+- **网络视频**：通过工具栏「插入网络视频」填写视频 embed 地址插入，渲染为 `<iframe allowfullscreen>`。
+
+> [!NOTE]
+> 网络视频不会自动把观看页 URL（如 `https://www.bilibili.com/video/BV1xx`）转换为 embed URL。请直接粘贴对应平台的 embed 地址（如 `//player.bilibili.com/player.html?bvid=BV1xx`）。
+
 ## 导出相关（exportProps）
 
 | 属性 | 类型 | 默认值 | 说明 |
@@ -200,9 +220,14 @@ function remapLinkAttr(node) {
     accept: '*',
     maxFileSize: 51200, // KB，50MB
   },
+  videoProps: {
+    accept: '.mp4,.webm,.mov,.m4v',
+    maxFileSize: 102400, // KB，100MB
+  },
   features: {
     outline: true,
     fileUpload: true,
+    videoUpload: true,
   },
 }
 ```

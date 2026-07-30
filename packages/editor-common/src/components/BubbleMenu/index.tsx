@@ -33,6 +33,10 @@ export const BubbleMenu = (props: BubbleMenuProps) => {
   // 用 inline transition + opacity 0→0 的方式触发淡出，
   // 淡出结束再真正 remove。
   const fadeOutTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // 是否已经至少 show 过一次。初始 mount 时 plugin 会立刻调一次 hide
+  // （因为 shouldShow 返回 false），那次 hide 不应该播淡出，否则用户会看到
+  // bubble 在加载内容时闪一下再消失。
+  const hasBeenShownRef = useRef(false);
 
   useEffect(() => {
     if (!element) {
@@ -51,6 +55,7 @@ export const BubbleMenu = (props: BubbleMenuProps) => {
       shouldShow,
       options: {
         onShow: () => {
+          hasBeenShownRef.current = true;
           // 取消 pending 淡出，避免 hide 紧接 show 时动画错乱
           if (fadeOutTimerRef.current) {
             clearTimeout(fadeOutTimerRef.current);
@@ -61,6 +66,11 @@ export const BubbleMenu = (props: BubbleMenuProps) => {
           element.style.transition = '';
         },
         onHide: () => {
+          // 初次 hide（mount 后 plugin 第一次评估，shouldShow=false）
+          // 直接放过，让 plugin 自己 remove，不播淡出，避免加载时闪现。
+          if (!hasBeenShownRef.current) {
+            return;
+          }
           // plugin hide() 已把 opacity 设为 0、visibility 设为 hidden，
           // 并已 element.remove()。这里手动复活节点播一段淡出。
           const appendToProp = props.appendTo;
@@ -103,7 +113,11 @@ export const BubbleMenu = (props: BubbleMenuProps) => {
   return (
     <>
       {editor.isEditable && (
-        <div ref={setElement} className={className}>
+        <div
+          ref={setElement}
+          className={className}
+          style={{visibility: 'hidden', opacity: '0', position: 'absolute'}}
+        >
           {props.children}
         </div>
       )}

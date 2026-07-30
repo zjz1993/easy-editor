@@ -1,5 +1,5 @@
 import type {JSONContent} from '@tiptap/core';
-import type {IFileProps, IImageProps} from './imageProps.ts';
+import type {IFileProps, IImageProps, IVideoProps} from './imageProps.ts';
 import type {CSSProperties} from "react";
 import type {ExportProps} from "./exportProps.ts";
 import type {FeatureFlags} from '../features';
@@ -17,6 +17,7 @@ export type TTextoryEditorProps = {
   editable?: boolean;
   imageProps?: Partial<IImageProps>;
   fileProps?: Partial<IFileProps>;
+  videoProps?: Partial<IVideoProps>;
   exportProps?: Partial<ExportProps>;
   titleProps?: Partial<ITitleProps>;
   className?: string;

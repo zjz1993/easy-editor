@@ -142,3 +142,66 @@ export type FileNodeAttributes = {
   id?: string;
   isError?: boolean;
 };
+
+/**
+ * Upload option shape for video uploads. Mirrors `IImagePropsUploadOption`
+ * because the upload contract (return string | Promise<string>, or use
+ * callbacks) is identical.
+ */
+export interface IVideoPropsUploadOption<T = any>
+  extends IImagePropsUploadOption<T> {}
+
+/**
+ * Props for the video feature, parallel to `IFileProps`.
+ *
+ * Differences vs file:
+ * - `accept`: defaults to a video-specific list (mp4/webm/mov/m4v).
+ * - No size dimension fields — video uses width:100%/height:auto by default.
+ */
+export type IVideoProps = {
+  /**
+   * HTML file-input `accept` attribute. Defaults to `.mp4,.webm,.mov,.m4v`.
+   */
+  accept?: string;
+  /** Max file size in KB. Videos are typically much larger than images. */
+  maxFileSize: number;
+  onVideoBeforeUpload: (file: File, fileList: File[]) => boolean;
+  onVideoStartUpload: () => void;
+  onVideoEndUpload: () => void;
+  /**
+   * Custom upload implementation. Same two calling styles as
+   * `IImageProps.onImageUpload`:
+   *
+   * 1. Return `string` / `Promise<string>` containing the uploaded URL.
+   * 2. Return `void` and call `options.onSuccess` / `onError` / `onProgress`
+   *    manually (legacy contract).
+   */
+  onVideoUpload: (
+    options: IVideoPropsUploadOption,
+  ) => void | string | Promise<string>;
+};
+
+/**
+ * Schema attributes for the `video` node.
+ *
+ * Always rendered as `<video controls src poster>` — uploaded files and
+ * network URLs share the same path. The browser handles whichever
+ * codec/protocol the src points at.
+ */
+export type VideoNodeAttributes = {
+  /** `undefined` is allowed to support error-placeholder nodes (no src). */
+  src?: string;
+  /** Poster / preview image. */
+  poster?: string;
+  width?: number;
+  height?: number;
+  /** File name for local uploads (used by alt text / error display). */
+  name?: string;
+  /** File size in bytes for local uploads. */
+  size?: number;
+  textAlign?: 'center' | 'left' | 'right';
+  /** @see ImageNodeAttributes.uploadKey */
+  uploadKey?: string;
+  id?: string;
+  isError?: boolean;
+};

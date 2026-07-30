@@ -1,6 +1,6 @@
 import '@tiptap/pm/view';
-import type {FileUploader, ImgUploader} from './ImgUploader.ts';
-import type {FileNodeAttributes, ImageNodeAttributes} from "./imageProps.ts";
+import type {FileUploader, ImgUploader, VideoUploader} from './ImgUploader.ts';
+import type {FileNodeAttributes, ImageNodeAttributes, VideoNodeAttributes} from "./imageProps.ts";
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
@@ -377,6 +377,14 @@ declare module '@tiptap/core' {
         attrs: FileNodeAttributes,
       ) => ReturnType;
     };
+    video: {
+      setVideo: (attrs: VideoNodeAttributes) => ReturnType;
+      updateVideoById: (id: string, attrs: VideoNodeAttributes) => ReturnType;
+      updateVideoByUploadKey: (
+        uploadKey: string,
+        attrs: VideoNodeAttributes,
+      ) => ReturnType;
+    };
   }
 }
 
@@ -385,5 +393,7 @@ declare module '@tiptap/pm/view' {
     imgUploader?: ImgUploader;
 
     fileUploader?: FileUploader;
+
+    videoUploader?: VideoUploader;
   }
 }

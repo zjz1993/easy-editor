@@ -41,7 +41,7 @@ export default {
   'code.inline.remove': '清除行内代码',
   'codeBlock.inline.insert': '插入代码块',
   'codeBlock.inline.remove': '移除代码块',
-  image: '图片',
+  "image.insert": '插入图片',
   'zoom-in': '放大',
   'zoom-out': '缩小',
   'image.not.support': '不支持预览超过20M的图片，请下载后查看',
@@ -58,5 +58,17 @@ export default {
   'outline.show':'展开大纲',
   'import':'导入WORD',
   'divider':'分割线',
-  'file.toolbar':'上传文件'
+  'file.toolbar':'上传文件',
+  'video.insert':'插入视频',
+  'video.network.insert':'插入网络视频',
+  'video.local.upload':'上传本地视频',
+  'video.upload.failed':'视频上传失败',
+  'video.playback.failed':'视频播放失败',
+  'video.modal.title':'插入网络视频',
+  'video.modal.placeholder':'请输入视频 embed 地址（以 https://或http:// 开头）',
+  'video.modal.confirm':'确定',
+  'video.modal.cancel':'取消',
+  'video.modal.url.label':'视频地址',
+  'video.modal.url.required':'请填写视频地址',
+  'video.modal.url.invalid':'请输入合法的 http/https 地址'
 };

@@ -35,5 +35,7 @@ function App() {
     <tr><td>Outline</td><td>大纲导航</td><td>已内置</td></tr>
   </tbody>
 </table>
+<h2>视频示例</h2>
+<video data-id="3dff6312-c400-4ed4-80d9-87454b04d647" width="470" height="264.375" textalign="left" id="3dff6312-c400-4ed4-80d9-87454b04d647" iserror="false" src="https://eduvod.fanruan.com/asset/3e4a59510999ddba8b0f3aa974f0004f/play_video/7392eda787318bcadaa84d3f0c4d3184.mp4" controls="true" data-video="1"></video>
 <blockquote><p>专注内容，让编辑器替你处理格式。</p></blockquote>
 `;
