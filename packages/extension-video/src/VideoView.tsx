@@ -2,8 +2,9 @@ import {NodeViewWrapper, useEditorState} from '@tiptap/react';
 import type {NodeViewProps} from '@tiptap/core';
 import cx from 'classnames';
 import {isViewEditable} from '@textory/editor-utils';
-import {Popover} from '@textory/editor-common';
-import {type FC, useEffect, useRef, useState} from 'react';
+import {IntlComponent, message, Popover} from '@textory/editor-common';
+import {useEditorContext} from '@textory/context';
+import {type FC, useCallback, useEffect, useRef, useState} from 'react';
 import {isEmpty, isNil} from 'lodash-es';
 import useHandleChangeVideoSize from './hooks/useHandleChangeVideoSize.ts';
 import VideoNodeToolbar from './VideoNodeToolbar.tsx';
@@ -33,6 +34,9 @@ const VideoView: FC<NodeViewProps> = props => {
   const videoRef = useRef<HTMLVideoElement>();
   const popoverRef = useRef<any>();
   const [videoRatio, setVideoRatio] = useState<number | undefined>();
+  const [isPosterLoading, setIsPosterLoading] = useState(false);
+  const {props: editorProps} = useEditorContext();
+  const onPosterUpload = editorProps.videoProps?.onPosterUpload;
   const {updateAttributes, node, selected, editor, view, getPos} = props;
   const {attrs} = node;
   const {
@@ -71,6 +75,200 @@ const VideoView: FC<NodeViewProps> = props => {
     const pos = getPos();
     editor.chain().setNodeSelection(pos).run();
   };
+
+  /**
+   * Capture the current playback frame to a PNG and persist it as the
+   * node's `poster`.
+   *
+   * Flow:
+   * 1. Capture canvas → Blob (try direct; on taint, retry via offscreen
+   *    `<video crossOrigin="anonymous">` for CORS-enabled hosts).
+   * 2. If `videoProps.onPosterUpload` is configured → upload the Blob,
+   *    store returned URL. Avoids multi-MB base64 dataURLs bloating
+   *    editor state.
+   * 3. Otherwise → fall back to dataURL (works but heavy).
+   *
+   * Same-origin / blob: / data: / CORS-enabled sources: step 1 succeeds
+   * directly. Cross-origin without CORS headers: step 2 of capture fails,
+   * localized error shown, any existing poster stays intact.
+   */
+  const handleSetPoster = useCallback(async () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (isPosterLoading) return;
+    setIsPosterLoading(true);
+    const targetTime = video.currentTime;
+
+    const captureBlob = (v: HTMLVideoElement): Promise<Blob | null> => {
+      const w = v.videoWidth;
+      const h = v.videoHeight;
+      if (!w || !h) return Promise.resolve(null);
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return Promise.resolve(null);
+      try {
+        ctx.drawImage(v, 0, 0, w, h);
+      } catch {
+        return Promise.resolve(null);
+      }
+      // Some browsers (WebKit/Safari) throw SecurityError synchronously
+      // when toBlob is called on a tainted canvas. Chrome/Firefox just
+      // invoke the callback with null. Wrap the call so both forms
+      // resolve to null instead of rejecting.
+      return new Promise(resolve => {
+        try {
+          canvas.toBlob(b => resolve(b), 'image/png');
+        } catch {
+          resolve(null);
+        }
+      });
+    };
+
+    const reportCaptureError = () => {
+      message.error(IntlComponent.get('video.poster.capture.failed'));
+    };
+    const reportUploadError = () => {
+      message.error(IntlComponent.get('video.poster.upload.failed'));
+    };
+
+    try {
+      // 1) Direct capture. Defensive .catch — captureBlob is expected to
+      //    resolve null on taint, but a rejected promise here would
+      //    short-circuit the entire handler before the fallback runs.
+      let blob = await captureBlob(video).catch(() => null);
+
+      // 2) Fallback for tainted canvas: offscreen <video crossOrigin="anonymous">
+      //    reloaded at the same timestamp. Only succeeds if the server
+      //    sends `Access-Control-Allow-Origin`.
+      if (!blob) {
+        const fallbackSrc = video.src || video.currentSrc;
+        if (!fallbackSrc) {
+          reportCaptureError();
+          return;
+        }
+        blob = await new Promise<Blob | null>(resolve => {
+          const off = document.createElement('video');
+          off.crossOrigin = 'anonymous';
+          off.muted = true;
+          off.playsInline = true;
+          off.preload = 'auto';
+          let settled = false;
+          const done = (b: Blob | null) => {
+            if (!settled) {
+              settled = true;
+              resolve(b);
+            }
+          };
+          off.onloadedmetadata = () => {
+            try {
+              off.currentTime = targetTime;
+            } catch {
+              captureBlob(off)
+                .catch(() => null)
+                .then(done);
+            }
+          };
+          off.onseeked = () => {
+            captureBlob(off)
+              .catch(() => null)
+              .then(done);
+          };
+          off.onerror = () => done(null);
+          off.src = fallbackSrc;
+        });
+      }
+
+      if (!blob) {
+        reportCaptureError();
+        return;
+      }
+
+      // 3) Upload if handler is configured; otherwise fall back to dataURL.
+      //    Both paths are awaited so the loading flag clears only after
+      //    the poster is actually written into attrs.
+      if (!onPosterUpload) {
+        await new Promise<void>(resolve => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            updateAttributes({poster: reader.result as string});
+            resolve();
+          };
+          reader.onerror = () => {
+            reportCaptureError();
+            resolve();
+          };
+          reader.readAsDataURL(blob!);
+        });
+        return;
+      }
+
+      try {
+        const file = new File([blob], 'poster.png', {type: 'image/png'});
+        const url = await new Promise<string>((resolve, reject) => {
+          let settled = false;
+          try {
+            const ret = onPosterUpload({
+              file,
+              onSuccess: (body: unknown) => {
+                if (settled) return;
+                settled = true;
+                resolve(
+                  typeof body === 'string' ? body : ((body as any)?.url ?? ''),
+                );
+              },
+              onError: (err: unknown) => {
+                if (settled) return;
+                settled = true;
+                reject(err);
+              },
+            });
+            if (typeof ret === 'string') {
+              if (!settled) {
+                settled = true;
+                resolve(ret);
+              }
+            } else if (ret && typeof (ret as any).then === 'function') {
+              (ret as Promise<string>).then(
+                u => {
+                  if (!settled) {
+                    settled = true;
+                    resolve(u);
+                  }
+                },
+                e => {
+                  if (!settled) {
+                    settled = true;
+                    reject(e);
+                  }
+                },
+              );
+            }
+            // callback-style: wait for onSuccess/onError
+          } catch (err) {
+            if (!settled) {
+              settled = true;
+              reject(err);
+            }
+          }
+        });
+        if (url) {
+          updateAttributes({poster: url});
+        } else {
+          reportUploadError();
+        }
+      } catch {
+        reportUploadError();
+      }
+    } finally {
+      setIsPosterLoading(false);
+    }
+  }, [updateAttributes, onPosterUpload, isPosterLoading]);
+
+  const handleClearPoster = useCallback(() => {
+    updateAttributes({poster: null});
+  }, [updateAttributes]);
 
   const handleRemove = () => {
     const pos = getPos();
@@ -201,6 +399,10 @@ const VideoView: FC<NodeViewProps> = props => {
             align={textAlign}
             defaultWidth={width}
             onRemove={handleRemove}
+            onSetPoster={handleSetPoster}
+            onClearPoster={handleClearPoster}
+            hasPoster={!!poster}
+            posterLoading={isPosterLoading}
             onWidthChange={value => {
               if (videoRatio) {
                 const newHeight = value / videoRatio;

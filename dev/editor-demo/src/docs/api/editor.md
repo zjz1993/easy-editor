@@ -170,15 +170,25 @@ function remapLinkAttr(node) {
 | `videoProps.onVideoBeforeUpload` | `(file, fileList) => boolean` | — | 上传前校验，返回 `false` 取消 |
 | `videoProps.onVideoStartUpload` | `() => void` | — | 单个视频开始上传时触发 |
 | `videoProps.onVideoEndUpload` | `() => void` | — | 单个视频上传完成（成功/失败均触发） |
-| `videoProps.onVideoUpload` | `(option) => void \| string \| Promise<string>` | — | 自定义上传函数，**推荐返回 URL**，详见 [视频上传](/docs/guide/video-upload) |
+| `videoProps.onVideoUpload` | `(option) => void \| string \| Promise<string>` | — | 视频自定义上传函数，**推荐返回 URL** |
+| `videoProps.onPosterUpload` | `(option) => void \| string \| Promise<string>` | — | 封面图自定义上传函数，**推荐返回 URL**。仅在用户点击工具栏「设为封面」抓帧后触发；未配置则封面以 base64 dataURL 形式存入文档 JSON（不推荐用于生产） |
 
-视频节点支持两种来源：
+视频节点统一渲染为 `<video controls src poster>`，支持两种来源：
 
-- **本地上传**：通过工具栏「上传本地视频」或拖拽/粘贴视频文件触发，渲染为 `<video controls>`。
-- **网络视频**：通过工具栏「插入网络视频」填写视频 embed 地址插入，渲染为 `<iframe allowfullscreen>`。
+- **本地上传**：通过工具栏「上传本地视频」或拖拽/粘贴视频文件触发。
+- **网络视频**：通过工具栏「插入网络视频」弹窗填写视频地址插入。弹窗同时支持可选的「封面地址」字段，填写后直接写入 `<video poster>`。
+
+### 封面（poster）的三种来源
+
+1. **网络视频弹窗贴 URL** — 在「插入网络视频」弹窗的「封面地址」输入框粘贴图片 URL，提交后直接写入 `attrs.poster`。
+2. **工具栏抓帧上传** — 视频节点选中后 hover 出工具栏，点击「设为封面」(image 图标) 抓取当前播放帧 → 转为 PNG File → 调用 `onPosterUpload` 上传 → 返回 URL 写入 `attrs.poster`。点击「清除封面」(close 图标) 可移除。
+3. **降级 dataURL** — 若未配置 `onPosterUpload`，抓取的帧会以 base64 dataURL 直接存入文档 JSON。大视频高分辨率帧会生成数 MB 字符串，拖累编辑器性能，**生产环境建议配置 `onPosterUpload`**。
 
 > [!NOTE]
-> 网络视频不会自动把观看页 URL（如 `https://www.bilibili.com/video/BV1xx`）转换为 embed URL。请直接粘贴对应平台的 embed 地址（如 `//player.bilibili.com/player.html?bvid=BV1xx`）。
+> 跨域视频抓帧受浏览器 CORS 限制：服务器需返回 `Access-Control-Allow-Origin` 头才能成功捕获。完全无 CORS 的跨域视频无法生成封面，会弹出 `video.poster.capture.failed` 提示。
+
+> [!NOTE]
+> 网络视频不会自动把观看页 URL（如 `https://www.bilibili.com/video/BV1xx`）转换为可播放 URL。请粘贴对应平台支持直接播放的地址。
 
 ## 导出相关（exportProps）
 

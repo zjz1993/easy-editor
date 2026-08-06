@@ -14,3 +14,4 @@ export * from './table-row';
 export * from './task-item';
 export * from './task-list';
 export * from './text';
+export * from './video';

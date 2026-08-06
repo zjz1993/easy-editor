@@ -31,7 +31,7 @@ import type { TTextoryEditorProps } from '@textory/editor';
 | `autoFocus` | `boolean \| 'start' \| 'end'` |
 | `imageProps` | 图片上传配置 |
 | `fileProps` | 文件附件配置 |
-| `videoProps` | 视频上传配置 |
+| `videoProps` | 视频与封面配置 |
 | `exportProps` | 导出配置 |
 | `features` | 可选功能开关，见 [FEATURES](#features) |
 | `exportWORD` | 见 [Editor API](/docs/api/editor) |

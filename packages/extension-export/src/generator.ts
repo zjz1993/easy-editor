@@ -31,6 +31,7 @@ import {convertTable} from './converters/table';
 import {convertTaskItem} from './converters/task-item';
 import {convertTaskList} from './converters/task-list';
 import {convertHardBreak} from './converters/text';
+import {convertVideo} from './converters/video';
 import type {DocxOptions} from './option';
 import type {
   BlockquoteNode,
@@ -47,6 +48,7 @@ import type {
   TableNode,
   TaskItemNode,
   TaskListNode,
+  VideoNode,
 } from './types';
 import {createWatermarkHeader} from './watermark';
 
@@ -80,6 +82,9 @@ export async function convertNode(
 
     case 'file':
       return convertFile(node as FileNode);
+
+    case 'video':
+      return await convertVideo(node as VideoNode, options.video);
 
     case 'table':
       return await convertTable(node as TableNode, options.table);

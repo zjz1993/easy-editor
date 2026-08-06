@@ -1,5 +1,6 @@
 import {
   AlignmentType,
+  ExternalHyperlink,
   Paragraph,
   TextRun,
   type IParagraphOptions,
@@ -51,9 +52,24 @@ export async function convertParagraph(
       } else if (contentNode.type === 'image') {
         return convertImageRun(contentNode, imageOptions);
       } else if (contentNode.type === 'video') {
+        // Inline video fallback (video is normally block-level). Render as
+        // a hyperlink so the user can jump to the source — full poster
+        // treatment lives in the block-level converter (convertVideo).
         const videoNode = contentNode as VideoNode;
-        const videoName = videoNode.attrs?.name || '未知视频';
-        return new TextRun({ text: `[_${videoName}]` });
+        const videoName = videoNode.attrs?.name || '视频';
+        const videoSrc = videoNode.attrs?.src || '';
+        if (!videoSrc) {
+          return new TextRun({ text: `[${videoName}]` });
+        }
+        return new ExternalHyperlink({
+          children: [
+            new TextRun({
+              text: `[${videoName}]`,
+              style: 'Hyperlink',
+            }),
+          ],
+          link: videoSrc,
+        });
       }
       /**
        * else if (contentNode.type === 'emoji') {

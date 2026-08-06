@@ -179,6 +179,34 @@ export type IVideoProps = {
   onVideoUpload: (
     options: IVideoPropsUploadOption,
   ) => void | string | Promise<string>;
+  /**
+   * Custom upload for the captured poster image. Triggered when the user
+   * clicks "设为封面" — the editor captures the current playback frame to
+   * a PNG `File`, then hands it to this handler.
+   *
+   * If omitted, the poster is persisted as a base64 dataURL inside the
+   * document JSON (large, bloats editor state — not recommended for
+   * production).
+   *
+   * Same calling-style contract as `onVideoUpload`:
+   *
+   * 1. **Return style** (preferred): return `string` / `Promise<string>`
+   *    with the uploaded poster URL.
+   *    ```ts
+   *    onPosterUpload: async ({ file }) => {
+   *      const fd = new FormData();
+   *      fd.append('file', file);
+   *      const res = await fetch('/api/upload', { method: 'POST', body: fd });
+   *      return (await res.json()).url;
+   *    }
+   *    ```
+   *
+   * 2. **Callback style** (legacy): return `void` and call
+   *    `options.onSuccess(url)` / `options.onError(err)` / `options.onProgress`.
+   */
+  onPosterUpload?: (
+    options: IVideoPropsUploadOption,
+  ) => void | string | Promise<string>;
 };
 
 /**

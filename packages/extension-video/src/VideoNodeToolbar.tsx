@@ -10,6 +10,7 @@ import type {AlignType} from '@textory/context';
  * have a border affordance. Provides:
  * - numeric width input (height auto-derives from ratio)
  * - left / center / right alignment
+ * - set / clear poster (captures the current playback frame via canvas)
  * - remove node
  */
 const VideoNodeToolbar: FC<{
@@ -17,9 +18,28 @@ const VideoNodeToolbar: FC<{
   onWidthChange: (width: number) => void;
   onAlignChange: (align: AlignType) => void;
   onRemove: () => void;
+  onSetPoster: () => void;
+  onClearPoster: () => void;
   align: AlignType;
+  hasPoster: boolean;
+  /**
+   * True while the poster is being captured / uploaded. Swaps the set
+   * button to a spinning loader and disables both poster buttons so the
+   * user can't fire a second capture concurrently.
+   */
+  posterLoading?: boolean;
 }> = props => {
-  const { onAlignChange, align, onRemove, defaultWidth, onWidthChange } = props;
+  const {
+    onAlignChange,
+    align,
+    onRemove,
+    defaultWidth,
+    onWidthChange,
+    onSetPoster,
+    onClearPoster,
+    hasPoster,
+    posterLoading,
+  } = props;
   const [width, setWidth] = useControlledValue<number>({
     value: defaultWidth,
     defaultValue: 1,
@@ -50,6 +70,19 @@ const VideoNodeToolbar: FC<{
           tooltip={`align.${item}`}
         />
       ))}
+      <ToolbarButton
+        icon={posterLoading ? 'loading' : 'image'}
+        iconClassName={posterLoading ? 'icon-spin' : undefined}
+        disabled={posterLoading}
+        onClick={onSetPoster}
+        tooltip="video.poster.set"
+      />
+      <ToolbarButton
+        icon="close"
+        disabled={!hasPoster || posterLoading}
+        onClick={onClearPoster}
+        tooltip="video.poster.clear"
+      />
       <ToolbarButton
         iconClassName="icon icon-delete"
         icon="remove"

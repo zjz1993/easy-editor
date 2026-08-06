@@ -166,6 +166,36 @@ const EditorDemo: FC<EditorDemoProps> = ({ editorRef }) => {
                   xhr.onerror = () => reject(new Error('network error'));
                   xhr.send(fd);
                 }),
+              // Captured poster upload — same handler shape as onVideoUpload.
+              // Receives a PNG File captured from the current playback frame.
+              // If omitted, poster is persisted as a base64 dataURL (heavy).
+              onPosterUpload: option =>
+                new Promise<string>((resolve, reject) => {
+                  console.log('onPosterUpload触发', option);
+                  const fd = new FormData();
+                  fd.append('file', option.file);
+                  const xhr = new XMLHttpRequest();
+                  xhr.open('POST', '/api/upload');
+                  xhr.upload.onprogress = e => {
+                    if (!e.lengthComputable) return;
+                    const percent = (e.loaded / e.total) * 100;
+                    option.onProgress?.({ percent });
+                  };
+                  xhr.onload = () => {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                      try {
+                        const url = JSON.parse(xhr.responseText).url;
+                        resolve(url);
+                      } catch (err) {
+                        reject(err as Error);
+                      }
+                    } else {
+                      reject(new Error(`HTTP ${xhr.status}`));
+                    }
+                  };
+                  xhr.onerror = () => reject(new Error('network error'));
+                  xhr.send(fd);
+                }),
             }}
             onChange={(data, title) => {
               // 演示 onChange 回调，可在控制台查看输出

@@ -19,4 +19,15 @@ export type ExportProps = {
   onExportComplete: () => void,
   onExportFailed: () => void,
   watermark: IExportWatermark | false;
+  /**
+   * URL prefix for proxying cross-origin image / poster resources at export
+   * time. Cross-origin resources are rewritten to:
+   *   `${imageProxy}${encodeURIComponent(originalUrl)}`
+   * and routed through the proxy (which fetches server-side, bypassing the
+   * browser CORS policy). Applies to images, video posters, and the
+   * watermark image. Base64 data URLs are not proxied.
+   *
+   * Example: `'https://your-host/upload/proxy?url='`
+   */
+  imageProxy?: string;
 };

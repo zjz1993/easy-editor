@@ -51,23 +51,25 @@ description: 各扩展包的 props 与配置项
 
 ## @textory/extension-video
 
-视频节点（block 级），支持本地上传 + 网络视频 embed 两种来源。
-
-- 本地：渲染为 `<video controls src poster>`
-- 网络：渲染为 `<iframe src allowfullscreen>`
-
-两种来源通过同一个 `video` 节点的 `type` 属性（`'local' | 'embed'`）区分。
+视频节点（block 级），统一渲染为 `<video controls src poster>`。本地上传与网络视频走同一个 `<video>` 元素，浏览器按 src 指向的 codec/protocol 处理。
 
 | 配置 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | `accept` | `string` | `'.mp4,.webm,.mov,.m4v'` | 视频选择框 accept |
 | `maxFileSize` | `number` | `102400` | 单个视频最大体积（KB），100MB |
-| `onVideoUpload` | `(option) => void` | — | 自定义上传通道，详见 [视频上传](/docs/guide/video-upload) |
+| `onVideoUpload` | `(option) => void \| string \| Promise<string>` | — | 视频自定义上传通道 |
+| `onPosterUpload` | `(option) => void \| string \| Promise<string>` | — | 封面图自定义上传通道。用户在工具栏点击「设为封面」抓取当前播放帧后触发；不配置则降级为 base64 dataURL |
+
+### 封面（poster）能力
+
+- **网络视频弹窗**支持可选「封面地址」字段，粘贴图片 URL 直接写入 `attrs.poster`
+- **节点工具栏**提供「设为封面」/「清除封面」按钮：抓取当前播放帧 → PNG File → 调 `onPosterUpload` 上传 → URL 写入 `attrs.poster`
+- 跨域视频抓帧受浏览器 CORS 限制，需服务器返回 `Access-Control-Allow-Origin`
 
 提供 3 个命令：`setVideo(attrs)`、`updateVideoById(id, attrs)`、`updateVideoByUploadKey(uploadKey, attrs)`。
 
 > [!NOTE]
-> 网络视频 URL 不做 watch→embed 自动转换。用户需粘贴平台提供的 embed 地址（如 `//player.bilibili.com/player.html?bvid=...`）。
+> 网络视频不会自动把观看页 URL 转换为可播放地址，请直接粘贴平台支持直接播放的 URL。
 
 ## @textory/extension-upload
 

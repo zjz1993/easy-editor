@@ -59,7 +59,13 @@ export interface ParagraphNode extends JSONContent {
 export interface VideoNode extends JSONContent {
   type: 'video';
   attrs?: {
-    name?: string;
+    src?: string | null;
+    poster?: string | null;
+    width?: number | null;
+    height?: number | null;
+    name?: string | null;
+    size?: number | null;
+    textAlign?: 'left' | 'center' | 'right' | null;
     [key: string]: unknown;
   };
 }

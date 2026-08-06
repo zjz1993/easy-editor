@@ -26,6 +26,7 @@ description: Textory 文档首页
 | [扩展包接入](/docs/guide/extensions) | 想按需开启/关闭扩展的开发者 |
 | [图片上传](/docs/guide/image-upload) | 想自定义图片上传通道的开发者 |
 | [文件上传](/docs/guide/file-upload) | 想接入文件附件的开发者 |
+| [视频上传](/docs/guide/video-upload) | 想接入视频与封面的开发者 |
 | [导出能力](/docs/guide/export) | 想导出 Word 或图片的开发者 |
 | [Editor API](/docs/api/editor) | 完整 props 与事件参考 |
 

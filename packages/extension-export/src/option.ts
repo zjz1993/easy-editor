@@ -81,7 +81,31 @@ export interface DocxOptions<T extends OutputType = OutputType> {
   };
 
   horizontalRule?: {
+    /**
+     * Border color as 6-digit hex (no `#`). Word has no alpha — to match an
+     * editor color with opacity, pre-blend it on white. Defaults to 'auto'
+     * (black) for horizontalRule and '#DDDEDF' (editor $divider-grey blended
+     * on white) for the custom divider node.
+     */
+    color?: string;
     paragraph?: Partial<IParagraphOptions>;
+  };
+
+  video?: {
+    /**
+     * Paragraph-level options applied to the generated video paragraph
+     * (alignment, spacing, etc.). Align is also derived from
+     * `attrs.textAlign` automatically.
+     */
+    paragraph?: Partial<IParagraphOptions>;
+    /**
+     * Optional overrides for the poster image run. Same shape as
+     * `image.run` — `transformation.width/height` here takes priority over
+     * the video node's `width`/`height` attrs.
+     */
+    run?: {
+      transformation?: IImageOptions['transformation'];
+    };
   };
 
   /**
@@ -107,6 +131,24 @@ export interface DocxOptions<T extends OutputType = OutputType> {
 
   // Export options
   outputType: T;
+
+  /**
+   * URL prefix for proxying cross-origin image / poster resources during
+   * export. Browser `fetch` is subject to CORS — if a poster or image host
+   * doesn't return `Access-Control-Allow-Origin`, the export pipeline can't
+   * fetch its bytes and silently degrades to a text hyperlink.
+   *
+   * When set, every cross-origin image / poster URL is rewritten to:
+   *   `${imageProxy}${encodeURIComponent(originalUrl)}`
+   * and routed through the proxy server, which fetches server-side (no CORS)
+   * and returns the bytes with `Access-Control-Allow-Origin: *`.
+   *
+   * Applies to: poster images (video export), regular images, and the
+   * watermark image. Does NOT apply to base64 data URLs.
+   *
+   * Example: `'https://your-host/upload/proxy?url='`
+   */
+  imageProxy?: string;
 }
 
 /**

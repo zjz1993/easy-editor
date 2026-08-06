@@ -70,5 +70,12 @@ export default {
   'video.modal.cancel':'取消',
   'video.modal.url.label':'视频地址',
   'video.modal.url.required':'请填写视频地址',
-  'video.modal.url.invalid':'请输入合法的 http/https 地址'
+  'video.modal.url.invalid':'请输入合法的 http/https 地址',
+  'video.modal.poster.label':'封面地址',
+  'video.modal.poster.placeholder':'请输入封面图地址（可选,以 https://或http:// 开头）',
+  'video.modal.poster.invalid':'请输入合法的 http/https 封面地址',
+  'video.poster.set':'设为封面',
+  'video.poster.clear':'清除封面',
+  'video.poster.capture.failed':'当前视频帧无法捕获,可能是跨域限制。请使用同源视频或配置 CORS。',
+  'video.poster.upload.failed':'封面上传失败,请稍后重试。'
 };

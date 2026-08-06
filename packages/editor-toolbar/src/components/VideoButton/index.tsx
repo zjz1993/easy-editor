@@ -131,6 +131,7 @@ const VideoButton: FC<TToolbarWrapperProps> = props => {
             .focus()
             .setVideo({
               src: data.src,
+              ...(data.poster ? {poster: data.poster} : {}),
             })
             .run();
         }}
