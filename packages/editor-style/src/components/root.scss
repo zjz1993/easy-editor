@@ -23,6 +23,9 @@
       text-decoration: underline;
     }
   }
+  &-divider{
+    border-color: styles.$divider-grey;
+  }
   .disabled.document-title-container {
     cursor: not-allowed;
     color: styles.$disabled-grey;
@@ -238,18 +241,13 @@
     flex: 1 1;
     word-wrap: break-word;
     width: 100%;
-    padding: 8px;
+    padding: 0 8px;
     box-sizing: border-box;
 
     .#{var.$editor-name}-block-container {
       // margin-bottom: 8px;
       & > *{
-        margin-top: 8px;
-      }
-      &:first-of-type{
-         > * {
-           margin-top: 0px;
-         }
+        margin: 8px 0;
       }
 
       .#{var.$editor-name}-table-scroll-wrapper {

@@ -151,8 +151,12 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
     UniqueID.configure({
       types: 'all',
     }),
-    extendWithoutDeprecatedDefaultOptions(HorizontalRule, {
-      name: BLOCK_TYPES.HR,
+    HorizontalRule.extend({
+      name:BLOCK_TYPES.HR,
+    }).configure({
+      HTMLAttributes: {
+        class: 'textory-divider',
+      },
     }),
     Table.configure({
       resizable: true,
