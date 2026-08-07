@@ -34,6 +34,7 @@ import type { TTextoryEditorProps } from '@textory/editor';
 | `videoProps` | 视频与封面配置 |
 | `exportProps` | 导出配置 |
 | `features` | 可选功能开关，见 [FEATURES](#features) |
+| `onEditorReady` | `(editor: Editor) => void`，Tiptap editor 就绪后触发一次（主要给 UMD 桥接层用） |
 | `exportWORD` | 见 [Editor API](/docs/api/editor) |
 
 ## EditorRef

@@ -130,6 +130,7 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
     style,
     title,
     transformContent,
+    onEditorReady,
   } = mergedProps;
   const isOutlineEnabled = mergedProps.features?.outline ?? true;
   const isImportWordEnabled = mergedProps.features?.importWord ?? false;
@@ -272,6 +273,14 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
     },
     import: handleImportFile,
   }), [editor, mergedProps.title, handleImportFile]);
+
+  // 通知外部 editor 已就绪。供 @textory/standalone UMD 桥接层等非 React 集成场景使用。
+  // editor 在 useTiptapWithSync 首次创建后不会重新创建，所以会触发一次。
+  useEffect(() => {
+    if (editor && onEditorReady) {
+      onEditorReady(editor);
+    }
+  }, [editor, onEditorReady]);
 
   if (process.env.NODE_ENV === 'development') {
     (window as any).__EASY_EDITOR__ = editor;

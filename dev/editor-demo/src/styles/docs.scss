@@ -838,3 +838,74 @@ $toc-w: 200px;
     border-left-color: #b3241d;
   }
 }
+
+// ============ standalone iframe 嵌入块 ============
+.docs-iframe-wrap {
+  margin: 24px 0;
+  border: 1px solid $border;
+  border-radius: $radius;
+  overflow: hidden;
+  background: #fff;
+}
+
+.docs-iframe-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: $bg-soft;
+  border-bottom: 1px solid $border;
+  font-size: 12px;
+  color: $text-sub;
+}
+
+.docs-iframe-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  flex-shrink: 0;
+}
+
+.docs-iframe-path {
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 12px;
+  color: $text-sub;
+}
+
+.docs-iframe-open {
+  margin-left: auto;
+  color: $primary;
+  text-decoration: none;
+  font-size: 12px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.docs-iframe {
+  display: block;
+  width: 100%;
+  border: none;
+  background: #fff;
+}
+
+.docs-iframe-fallback {
+  margin: 24px 0;
+  padding: 16px 20px;
+  border: 1px dashed $border;
+  border-radius: $radius;
+  background: $bg-soft;
+  font-size: 13px;
+  color: $text-sub;
+
+  code {
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: #fff;
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    font-size: 12px;
+    color: #c05621;
+  }
+}

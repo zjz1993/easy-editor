@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Textory Standalone — 自定义上传</title>
+  <link rel="stylesheet" href="../../packages/standalone/dist/textory.min.css">
+  <style>
+    body { font-family: -apple-system, system-ui, sans-serif; max-width: 960px; margin: 20px auto; padding: 0 20px; color: #1f2328; }
+    #editor { border: 1px solid #d0d7de; border-radius: 6px; min-height: 400px; }
+    a { color: #0969da; }
+    .note { background: #ddf4ff; padding: 8px 12px; border-radius: 4px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <h1>自定义上传 — <code>upload.image</code> / <code>upload.file</code></h1>
+  <p class="note">本示例 mock 一个上传接口：把图片转 dataURL 立即返回。实际项目替换为 fetch(POST)。</p>
+  <p><a href="index.html">← 返回</a></p>
+  <div id="editor"></div>
+
+  <script src="../../packages/standalone/dist/textory.standalone.min.js"></script>
+  <script>
+    function fileToDataURL(file) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    Textory.create(document.getElementById('editor'), {
+      content: '<p>点击工具栏图片按钮上传,或粘贴图片,或拖入。</p>',
+      upload: {
+        image: async (file) => {
+          console.log('[demo] uploading image', file.name, file.size);
+          return await fileToDataURL(file);
+        },
+        file: async (file) => {
+          console.log('[demo] uploading file', file.name);
+          return await fileToDataURL(file);
+        },
+      },
+    });
+  </script>
+</body>
+</html>

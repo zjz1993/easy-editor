@@ -65,7 +65,8 @@
       "Bash([ -s \"$NVM_DIR/nvm.sh\" ])",
       "Bash(. \"$NVM_DIR/nvm.sh\")",
       "Bash(source:*)",
-      "WebFetch(domain:tiptap.dev)"
+      "WebFetch(domain:tiptap.dev)",
+      "Bash(export PATH:*)"
     ]
   }
 }

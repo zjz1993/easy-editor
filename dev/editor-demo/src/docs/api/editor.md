@@ -27,6 +27,7 @@ import Editor from '@textory/editor';
 | `autoFocus` | `boolean \| 'start' \| 'end'` | `false` | 是否自动聚焦 |
 | `features` | `FeatureFlags` | `{ outline: true }` | 可选功能的启用/停用开关，详见 [功能开关](#功能开关features) |
 | `transformContent` | `(json: JSONContent) => JSONContent` | — | JSON content 预处理钩子，在传入 Tiptap 前对 JSON 做清洗/转换，详见 [内容预处理](#内容预处理transformcontent) |
+| `onEditorReady` | `(editor: Editor) => void` | — | 内部 Tiptap Editor 实例就绪后触发一次。一般 React 项目无需使用（拿 editor 走 `useEditorInstance()`），主要给 UMD 桥接层（`@textory/standalone`）等非 React 集成场景用 |
 
 ## 功能开关（features）
 

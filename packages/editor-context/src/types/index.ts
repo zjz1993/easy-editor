@@ -1,9 +1,16 @@
 import type {JSONContent} from '@tiptap/core';
+import type {Editor as TiptapEditor} from '@tiptap/react';
 import type {IFileProps, IImageProps, IVideoProps} from './imageProps.ts';
 import type {CSSProperties} from "react";
 import type {ExportProps} from "./exportProps.ts";
 import type {FeatureFlags} from '../features';
 import type {ITitleProps} from "./titleProps.ts";
+
+// re-export 供外部直接 import 类型用
+export type {IFileProps, IImageProps, IVideoProps} from './imageProps.ts';
+export type {ExportProps} from "./exportProps.ts";
+export type {FeatureFlags} from '../features';
+export type {ITitleProps} from "./titleProps.ts";
 
 export type AlignType = 'left' | 'center' | 'right';
 
@@ -69,4 +76,13 @@ export type TTextoryEditorProps = {
    * <Editor features={{ outline: false }} />
    */
   features?: FeatureFlags;
+  /**
+   * 内部 Tiptap Editor 实例就绪后触发。
+   *
+   * 供 UMD 桥接层（`@textory/standalone`）等非 React 集成场景拿到原始 editor 引用。
+   * 一般 React 项目无需使用，需要 editor 时优先用 `useEditorInstance()`。
+   *
+   * 在 editor 首次非空时触发一次；不会在 unmount 时再触发（unmount 由父组件自己处理）。
+   */
+  onEditorReady?: (editor: TiptapEditor) => void;
 };

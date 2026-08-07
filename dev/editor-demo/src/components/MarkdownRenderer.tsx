@@ -7,6 +7,7 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import type { FC } from 'react';
 import DemoBlock from './DemoBlock';
 import CodeBlock from './CodeBlock';
+import StandaloneIframe from './StandaloneIframe';
 import { getDemoSource } from '../utils/docsGraph';
 
 interface MarkdownRendererProps {
@@ -28,6 +29,23 @@ const expandCodeSrc = (content: string): string => {
       }
       const lang = src.match(/\.(\w+)$/)?.[1].toLowerCase() || 'text';
       return '\n\n```' + lang + '\n' + code.trim() + '\n```\n\n';
+    },
+  );
+};
+
+/**
+ * 把 <standalone-iframe src="X" title="Y" /> 标记展开为围栏代码块，
+ * lang=standalone-iframe，正文为 `src|title`。MarkdownRenderer 的 code
+ * 处理器识别该 lang 并渲染 StandaloneIframe 组件。
+ *
+ * 不直接写 <iframe> 是因为 react-markdown v9 默认不渲染 raw HTML，
+ * 又不想全局引入 rehype-raw（影响其他文档）。
+ */
+const expandStandaloneIframe = (content: string): string => {
+  return content.replace(
+    /<standalone-iframe\s+src=["']([^"']+)["'](?:\s+title=["']([^"']*)["'])?\s*\/?>(?:<\/standalone-iframe>)?/g,
+    (_match, src: string, title: string = '') => {
+      return '\n\n```standalone-iframe\n' + src + '|' + title + '\n```\n\n';
     },
   );
 };
@@ -73,7 +91,7 @@ const MarkdownRenderer: FC<MarkdownRendererProps> = ({ content }) => {
             return <>{children}</>;
           },
           code({ className, children, ...rest }) {
-            const match = /language-(\w+)/.exec(className || '');
+            const match = /language-(\w[\w-]*)/.exec(className || '');
             const text = String(children);
             const isBlock = !!match || text.includes('\n');
             const lang = match?.[1];
@@ -83,6 +101,13 @@ const MarkdownRenderer: FC<MarkdownRendererProps> = ({ content }) => {
                 <code className="docs-inline-code" {...rest}>
                   {children}
                 </code>
+              );
+            }
+
+            if (lang === 'standalone-iframe') {
+              const [src, title] = text.trim().split('|');
+              return (
+                <StandaloneIframe src={src} title={title || src} />
               );
             }
 
@@ -114,7 +139,7 @@ const MarkdownRenderer: FC<MarkdownRendererProps> = ({ content }) => {
           },
         }}
       >
-        {expandCodeSrc(content)}
+        {expandStandaloneIframe(expandCodeSrc(content))}
       </ReactMarkdown>
     </div>
   );

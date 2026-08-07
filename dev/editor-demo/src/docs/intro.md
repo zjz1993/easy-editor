@@ -28,6 +28,8 @@ description: Textory 文档首页
 | [文件上传](/docs/guide/file-upload) | 想接入文件附件的开发者 |
 | [视频上传](/docs/guide/video-upload) | 想接入视频与封面的开发者 |
 | [导出能力](/docs/guide/export) | 想导出 Word 或图片的开发者 |
+| [`<script>` 标签引入](/docs/guide/script-tag) | 非 React 项目用 UMD bundle 直接挂编辑器 |
+| [Standalone 在线示例](/docs/guide/standalone-demos) | 在文档里直接体验 5 个 UMD 用法 |
 | [Editor API](/docs/api/editor) | 完整 props 与事件参考 |
 
 > [!TIP]

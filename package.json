@@ -6,8 +6,9 @@
   "scripts": {
     "clean": "pnpm turbo run clean --filter=@textory/* --concurrency=16",
     "start": "pnpm turbo run dev --filter=editor-demo",
+    "start:standalone": "pnpm turbo run build --filter=@textory/standalone && pnpm --filter standalone-demo dev",
     "build": "turbo run build --filter=@textory/*",
-    "build:docs": "cd dev/editor-demo && npm run build",
+    "build:docs": "pnpm --filter @textory/standalone build && cd dev/editor-demo && npm run build",
     "pre:enter": "changeset pre enter beta",
     "pre:exit": "changeset pre exit",
     "changeset": "changeset",

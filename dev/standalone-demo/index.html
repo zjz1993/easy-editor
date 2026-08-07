@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Textory Standalone Demo</title>
+  <style>
+    body { font-family: -apple-system, system-ui, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 20px; color: #1f2328; }
+    h1 { font-size: 24px; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 8px 0; }
+    a { color: #0969da; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .meta { color: #57606a; font-size: 13px; margin-left: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Textory Standalone Demo</h1>
+  <p>本目录验证 <code>@textory/standalone</code> 包的 UMD 产物。每个示例都是独立 HTML，复现真实 CDN 用户场景。</p>
+  <ul>
+    <li><a href="basic.html">basic.html</a><span class="meta">— standalone bundle，零依赖引入</span></li>
+    <li><a href="external-react.html">external-react.html</a><span class="meta">— externals bundle，需先引 React CDN</span></li>
+    <li><a href="upload.html">upload.html</a><span class="meta">— 自定义 upload.image 适配器</span></li>
+    <li><a href="features.html">features.html</a><span class="meta">— features 开关</span></li>
+    <li><a href="destroy.html">destroy.html</a><span class="meta">— destroy + recreate + 失效保护</span></li>
+  </ul>
+  <hr>
+  <p style="color: #57606a; font-size: 13px;">
+    启动：<code>pnpm --filter standalone-demo dev</code> 或 <code>pnpm start:standalone</code><br>
+    构建产物路径：<code>../../packages/standalone/dist/</code>
+  </p>
+</body>
+</html>

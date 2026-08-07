@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Textory Standalone — features 开关</title>
+  <link rel="stylesheet" href="../../packages/standalone/dist/textory.min.css">
+  <style>
+    body { font-family: -apple-system, system-ui, sans-serif; max-width: 960px; margin: 20px auto; padding: 0 20px; color: #1f2328; }
+    #editor { border: 1px solid #d0d7de; border-radius: 6px; min-height: 400px; }
+    a { color: #0969da; }
+    label { display: inline-block; margin-right: 16px; }
+    .note { background: #dafbe1; padding: 8px 12px; border-radius: 4px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <h1>features 开关</h1>
+  <p class="note">勾选/取消后点「应用」会 destroy + recreate 编辑器(features 仅 mount 时生效)。</p>
+  <p>
+    <label><input type="checkbox" id="f-outline" checked> outline</label>
+    <label><input type="checkbox" id="f-importWord" checked> importWord</label>
+    <label><input type="checkbox" id="f-fileUpload" checked> fileUpload</label>
+    <label><input type="checkbox" id="f-videoUpload" checked> videoUpload</label>
+    <button id="apply">应用</button>
+    <a href="index.html">← 返回</a>
+  </p>
+  <div id="editor"></div>
+
+  <script src="../../packages/standalone/dist/textory.standalone.min.js"></script>
+  <script>
+    let instance;
+
+    function applyFeatures() {
+      if (instance) instance.destroy();
+      const features = {
+        outline: document.getElementById('f-outline').checked,
+        importWord: document.getElementById('f-importWord').checked,
+        fileUpload: document.getElementById('f-fileUpload').checked,
+        videoUpload: document.getElementById('f-videoUpload').checked,
+      };
+      instance = Textory.create(document.getElementById('editor'), {
+        content: '<p>features 已应用。</p>',
+        features,
+      });
+    }
+
+    document.getElementById('apply').addEventListener('click', applyFeatures);
+    applyFeatures();
+  </script>
+</body>
+</html>

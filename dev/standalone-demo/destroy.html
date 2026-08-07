@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Textory Standalone — destroy + 失效保护</title>
+  <link rel="stylesheet" href="../../packages/standalone/dist/textory.min.css">
+  <style>
+    body { font-family: -apple-system, system-ui, sans-serif; max-width: 960px; margin: 20px auto; padding: 0 20px; color: #1f2328; }
+    #editor { border: 1px solid #d0d7de; border-radius: 6px; min-height: 400px; }
+    button { padding: 6px 12px; cursor: pointer; }
+    a { color: #0969da; }
+    pre { background: #1f2328; color: #f0f6fc; padding: 12px; border-radius: 6px; font-size: 12px; max-height: 200px; overflow: auto; }
+  </style>
+</head>
+<body>
+  <h1>destroy + 失效保护</h1>
+  <p>destroy 后所有方法调用应 <code>console.warn</code> 不 throw。</p>
+  <p>
+    <button id="recreate">recreate</button>
+    <button id="destroy">destroy</button>
+    <button id="get-html">destroyed 后 getHTML()</button>
+    <button id="set-html">destroyed 后 setHTML()</button>
+    <a href="index.html">← 返回</a>
+  </p>
+  <div id="editor"></div>
+  <h3>Console 输出：</h3>
+  <pre id="log"></pre>
+
+  <script src="../../packages/standalone/dist/textory.standalone.min.js"></script>
+  <script>
+    const logEl = document.getElementById('log');
+    const origWarn = console.warn;
+    console.warn = (...args) => {
+      logEl.textContent += args.join(' ') + '\n';
+      origWarn.apply(console, args);
+    };
+
+    let instance;
+    function recreate() {
+      if (instance) instance.destroy();
+      instance = Textory.create(document.getElementById('editor'), {
+        content: '<p>实例 #' + Date.now() + '</p>',
+      });
+      logEl.textContent += '[demo] create ok\n';
+    }
+
+    document.getElementById('recreate').addEventListener('click', recreate);
+    document.getElementById('destroy').addEventListener('click', () => {
+      instance?.destroy();
+      logEl.textContent += '[demo] destroy called\n';
+    });
+    document.getElementById('get-html').addEventListener('click', () => {
+      const html = instance?.getHTML();
+      logEl.textContent += '[demo] getHTML returned: ' + JSON.stringify(html) + '\n';
+    });
+    document.getElementById('set-html').addEventListener('click', () => {
+      instance?.setHTML('<p>attempted</p>');
+    });
+
+    recreate();
+  </script>
+</body>
+</html>

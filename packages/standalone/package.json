@@ -1,0 +1,53 @@
+{
+  "name": "@textory/standalone",
+  "version": "0.0.1",
+  "private": false,
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "main": "dist/textory.externals.min.js",
+  "module": "dist/textory.externals.min.js",
+  "types": "dist/index.d.ts",
+  "unpkg": "dist/textory.standalone.min.js",
+  "jsdelivr": "dist/textory.standalone.min.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs"
+    },
+    "./standalone": "./dist/textory.standalone.min.js",
+    "./externals": "./dist/textory.externals.min.js",
+    "./style": "./dist/textory.min.css"
+  },
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rm -rf dist && rm -rf .turbo",
+    "build": "node scripts/build-umd.mjs && node scripts/copy-css.mjs && tsc --emitDeclarationOnly",
+    "dev": "node scripts/build-umd.mjs --watch"
+  },
+  "description": "Easy Editor 的 UMD/CDN 入口包，用于非 React 环境通过 <script> 标签引入",
+  "peerDependencies": {
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19"
+  },
+  "dependencies": {
+    "@textory/editor": "workspace:^"
+  },
+  "devDependencies": {
+    "@textory/context": "workspace:^",
+    "@textory/editor": "workspace:^",
+    "@tiptap/core": "^3.28.0",
+    "@tiptap/react": "^3.28.0",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "esbuild": "^0.25.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "typescript": "^6.0.3"
+  }
+}
