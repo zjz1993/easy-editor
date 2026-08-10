@@ -1094,6 +1094,9 @@ importers:
       esbuild:
         specifier: ^0.25.0
         version: 0.25.12
+      lowlight:
+        specifier: ^2.9.0
+        version: 2.9.0
       react:
         specifier: ^18
         version: 18.3.1

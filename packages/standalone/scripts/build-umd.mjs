@@ -214,6 +214,30 @@ async function run() {
     footer: {js: iifeFooter},
   });
 
+  // 4. IIFE highlight —— 仅语法高亮 bundle，无 React/Tiptap 依赖
+  //    场景：渲染侧（论坛 post 详情页等）对编辑器产出的 <pre><code> 重新应用
+  //    lowlight 高亮。bundle 体积 << standalone（仅含 lowlight + 9 语言）
+  //    全部内联（lowlight 本身依赖 highlight.js common languages）
+  await build({
+    bundle: true,
+    entryPoints: [resolve(pkgRoot, 'src/highlight.ts')],
+    outfile: resolve(outDir, 'highlight.min.js'),
+    format: 'iife',
+    globalName: 'TextoryHighlight',
+    target: 'es2018',
+    platform: 'browser',
+    minify: true,
+    sourcemap: true,
+    external: [],
+    treeShaking: true,
+    legalComments: 'none',
+    loader: loaders,
+    // globalName IIFE footer: 把 namespace.default 暴露到 window
+    footer: {
+      js: 'if(typeof window!=="undefined"){window.TextoryHighlight=(TextoryHighlight&&TextoryHighlight.default)||TextoryHighlight;}',
+    },
+  });
+
   console.log('[build-umd] done');
 }
 

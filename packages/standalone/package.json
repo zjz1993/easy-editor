@@ -18,7 +18,9 @@
     },
     "./standalone": "./dist/textory.standalone.min.js",
     "./externals": "./dist/textory.externals.min.js",
-    "./style": "./dist/textory.min.css"
+    "./style": "./dist/textory.min.css",
+    "./highlight": "./dist/highlight.min.js",
+    "./highlight-style": "./dist/highlight.min.css"
   },
   "license": "ISC",
   "publishConfig": {
@@ -46,6 +48,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "esbuild": "^0.25.0",
+    "lowlight": "^2.9.0",
     "react": "^18",
     "react-dom": "^18",
     "typescript": "^6.0.3"

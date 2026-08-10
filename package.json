@@ -16,7 +16,8 @@
     "release:beta": "pnpm changeset:version && turbo run build --filter=@textory/* && changeset publish",
     "release": "pnpm pre:exit && pnpm changeset:version && turbo run build --filter=@textory/* && changeset publish",
     "check:external": "node scripts/check-external.mjs",
-    "prepublish": "pnpm check:external"
+    "prepublish": "pnpm check:external",
+    "deploy:forum": "mkdir -p /Users/zhaojunzhe/shequweb/static/textory && cp packages/standalone/dist/textory.standalone.min.js packages/standalone/dist/textory.standalone.min.js.map packages/standalone/dist/textory.min.css packages/standalone/dist/highlight.min.js packages/standalone/dist/highlight.min.js.map packages/standalone/dist/highlight.min.css /Users/zhaojunzhe/shequweb/static/textory/"
   },
   "workspaces": [
     "packages/*"

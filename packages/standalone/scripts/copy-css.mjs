@@ -31,3 +31,13 @@ if (!existsSync(src)) {
 mkdirSync(dirname(dest), {recursive: true});
 copyFileSync(src, dest);
 console.log(`[copy-css] ${src} → ${dest}`);
+
+// highlight 主题：复制 src/highlight-theme.css → dist/highlight.min.css
+// 配套 highlight.min.js（语法高亮 bundle）使用，调色板与编辑器内部一致
+const highlightSrc = resolve(__dirname, '../src/highlight-theme.css');
+const highlightDest = resolve(__dirname, '../dist/highlight.min.css');
+if (!existsSync(highlightSrc)) {
+  throw new Error(`[copy-css] 找不到 highlight theme 源: ${highlightSrc}`);
+}
+copyFileSync(highlightSrc, highlightDest);
+console.log(`[copy-css] ${highlightSrc} → ${highlightDest}`);

@@ -15,6 +15,7 @@ export function delay(delayTime: number = 2) {
 }
 
 const EditorDemo: FC<EditorDemoProps> = ({ editorRef }) => {
+  const [canEdit, setCanEdit] = useState(true);
   const [outlineEnabled, setOutlineEnabled] = useState(true);
   const features = { outline: outlineEnabled, importWord: true, fileUpload: true, videoUpload: true };
   return (
@@ -39,6 +40,14 @@ const EditorDemo: FC<EditorDemoProps> = ({ editorRef }) => {
             />
             Outline 功能
           </label>
+          <label className="intro-demo__toggle">
+            <input
+              type="checkbox"
+              checked={canEdit}
+              onChange={(e) => setCanEdit(e.target.checked)}
+            />
+            是否可编辑
+          </label>
         </div>
         <div className="intro-demo__editor">
           <Editor
@@ -51,7 +60,7 @@ const EditorDemo: FC<EditorDemoProps> = ({ editorRef }) => {
             content={DEMO_HTML}
             placeholder="开始你的创作..."
             title="Textory 示例文档"
-            editable
+            editable={canEdit}
             features={features}
             imageProps={{
               maxFileSize: 5 * 1024 * 1024,
