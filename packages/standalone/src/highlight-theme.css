@@ -26,6 +26,7 @@ pre code.hljs,
 pre code,
 .textory pre code.hljs,
 .textory pre code {
+  text-shadow: none !important;
   background: #282c34 !important;
   color: #abb2bf !important;
   padding: 16px !important;

@@ -92,7 +92,7 @@ function serializeHast(node: HastNode): string {
   if (node.type === 'element') {
     const tag = node.tagName || 'span';
     const classes = node.properties?.className;
-    const attrs = classes && classes.length ? ` class="${classes.join(' ')}"` : '';
+    const attrs = classes?.length ? ` class="${classes.join(' ')}"` : '';
     const inner = (node.children || []).map(serializeHast).join('');
     return `<${tag}${attrs}>${inner}</${tag}>`;
   }

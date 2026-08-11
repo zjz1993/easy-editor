@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Textory Standalone — 图片预览 lightbox</title>
+  <link rel="stylesheet" href="../../packages/standalone/dist/textory.min.css">
+  <link rel="stylesheet" href="../../packages/standalone/dist/highlight.min.css">
+  <style>
+    body { font-family: -apple-system, system-ui, sans-serif; margin: 0; color: #1f2328; }
+    .topbar {
+      padding: 12px 24px; background: #f6f8fa;
+      border-bottom: 1px solid #d0d7de;
+      position: sticky; top: 0; z-index: 10;
+      height: 44px; box-sizing: border-box;
+    }
+    .topbar a { color: #0969da; }
+    .note {
+      background: #fff8c5; padding: 8px 12px;
+      border-radius: 4px; font-size: 13px;
+      margin: 12px 24px; line-height: 1.6;
+    }
+    .note kbd {
+      background: #fff; border: 1px solid #d0d7de;
+      border-radius: 3px; padding: 1px 5px;
+      font-family: ui-monospace, monospace;
+      font-size: 12px;
+    }
+    .container { max-width: 800px; margin: 0 auto; padding: 0 24px 60px; }
+    code { background: #f6f8fa; padding: 2px 4px; border-radius: 3px; font-size: 13px; }
+    .toggle-row { margin: 16px 0; }
+    .toggle-row button {
+      padding: 6px 12px; font-size: 13px;
+      cursor: pointer; border: 1px solid #d0d7de;
+      background: #fff; border-radius: 4px;
+    }
+    .toggle-row button:hover { background: #f6f8fa; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    图片预览 lightbox demo —
+    <a href="index.html">← 返回</a>
+  </div>
+
+  <div class="note">
+    点击内容区任意 <code>&lt;img&gt;</code> 弹出全屏预览。
+    快捷键：<kbd>←</kbd> <kbd>→</kbd> 切换，<kbd>+</kbd> <kbd>-</kbd> 缩放，<kbd>0</kbd> 重置，<kbd>Esc</kbd> 关闭。
+    滚轮缩放，放大后可拖拽。链接里的图（如附件/外链）不触发预览，保留默认跳转行为。
+  </div>
+
+  <div class="toggle-row">
+    <button id="rebuild">重建内容（验证 setHTML 后预览仍生效）</button>
+  </div>
+
+  <div class="container">
+    <div id="post-target"></div>
+  </div>
+
+  <script src="../../packages/standalone/dist/render.min.js"></script>
+  <script>
+    // 编辑器 getHTML() 的典型产出：图片是裸 <img>，没有外层 wrapper。
+    // 渲染层 lightbox 靠 querySelectorAll('img') 收集，alt 用作文件名。
+    const html = `<div class="textory-block-container"><h1 data-id="0809080f-036f-4b94-bd01-db0451f61e12">Textory · 开箱即用的富文本编辑器</h1></div><div class="textory-block-container"><p data-id="cbcdec1d-7a0e-4262-9816-ed7eb7beef5b">基于 <strong>Tiptap</strong> 构建的模块化编辑器，采用 TypeScript + pnpm workspaces 的 monorepo 架构。每个功能都是独立扩展包，可按需组合</p></div><div class="textory-block-container"><h2 data-id="be98b56d-a221-4cdc-a35b-4c6129a99806">核心特性</h2></div><ul data-id="84da600c-873c-4aa2-a578-21160eea9ac0"><li data-id="26e77cd9-fdea-4947-8b64-597fb266b53d"><div class="textory-block-container"><p data-id="1cea888a-e98f-4b66-a6b9-ec32ec6fdac4"><strong>模块化扩展</strong>：加粗、图片、表格、代码块、任务列表等均为独立包</p></div></li><li data-id="818349b5-6540-4d00-a4af-557e94f77920"><div class="textory-block-container"><p data-id="93ed538d-079a-4ab0-b3b0-1fbd07a492e2"><strong>实时大纲</strong>：自动根据标题生成可点击导航</p></div></li><li data-id="3e71d59d-f7cb-4650-8fcb-a6cb8e418348"><div class="textory-block-container"><p data-id="35604f4e-d863-462e-87b3-0759753550ee"><strong>导出 Word</strong>：一键导出 DOCX，支持自定义水印</p></div></li><li data-id="fec5b21a-0b86-4f91-b360-df6eee7f77ad"><div class="textory-block-container"><p data-id="e4c2b793-c9a1-415a-8403-d007c4b8cf8a"><strong>图片上传</strong>：支持自定义上传通道与大小限制</p></div></li><li data-id="9bbc3b05-1c16-47ea-977d-de70f1b6aa82"><div class="textory-block-container"><p data-id="9f0967aa-c5b0-481e-894d-e7c48c770780">链接：<a class="textory-link" target="_blank" rel="noopener noreferrer nofollow" href="https://kms.fineres.com/pages/viewpage.action?pageId=151579120">kms</a></p></div></li></ul><div class="textory-block-container"><h2 data-id="6a56a778-f713-4a52-bac2-71ce8e4ebab7">任务清单</h2></div><ul data-id="0f496712-31bc-4b88-821a-99f0ad6565fb"><li data-id="64358689-e1e9-4c8a-a2ef-fd7f47a15953"><div class="textory-block-container"><p data-id="deba1b94-39c2-49d6-87df-3ee5b75bbeaf">搭建编辑器骨架</p></div></li><li data-id="2b2990b1-caaa-40eb-839a-3a5836f10908"><div class="textory-block-container"><p data-id="ffd27827-9836-47a9-91fa-f0c5ed8d9133">接入工具栏与扩展</p></div></li><li data-id="239dad1c-21bf-4021-8d84-ffc74333fa65"><div class="textory-block-container"><p data-id="aa1e6fec-35e0-4852-a1cf-1d8b2d7bd3a9">发布 1.0 正式版</p></div></li></ul><div class="textory-block-container"><h2 data-id="d2e9cdd0-8fc8-4515-8843-70373df2b48a">代码高亮</h2></div><pre data-id="bcd839aa-bb79-4f78-987c-8be0d756ea2d"><code class="language-typescript">import Editor from '@textory/editor';
+function App() {
+&nbsp;&nbsp;return (
+&nbsp; &nbsp; &lt;Editor
+&nbsp; &nbsp;&nbsp; &nbsp;placeholder="开始书写..."
+&nbsp; &nbsp;&nbsp; &nbsp;onChange={(content) =&gt; console.log(content.html, content.json)}
+&nbsp; &nbsp; /&gt;
+&nbsp;&nbsp;);
+}</code></pre><div class="textory-block-container"><h2 data-id="dec24742-6910-400e-8312-a22005268782">表格示例</h2></div><table data-id="9b7c238e-b0f6-448b-b414-05a06c01662e" style="min-width: 775px;"><colgroup><col style="min-width: 100px;"><col style="min-width: 100px;"><col style="width: 575px;"></colgroup><tbody><tr data-id="35dc159a-beee-46ad-8052-5a3be227a0c0"><th data-id="397bacef-a979-476e-b4a2-d329f5822066" colspan="1" rowspan="1"><div class="textory-block-container"><p data-id="396a95d4-043c-4e28-a27a-c73435a5b1ad">扩展</p></div></th><th data-id="624b0164-2703-4903-8698-38b013efb14b" colspan="1" rowspan="1"><div class="textory-block-container"><p data-id="59af91d1-20b5-4b23-81e3-5f4cdff3c075">能力</p></div></th><th data-id="e012640e-5eb3-4140-ae3e-55ac74d452b1" colspan="1" rowspan="1" colwidth="575"><div class="textory-block-container"><p data-id="2e7b6e8a-92d6-46b0-84ab-f3a41ba15d6b">状态</p></div></th></tr><tr data-id="b0711291-d8a7-419f-a05b-22ee229e23ee"><td data-id="97cd3648-a4f6-426c-8306-79fa43f2e653" colspan="1" rowspan="1" class="textory-table-cell"><div class="textory-block-container"><p data-id="14178dca-904d-4d46-b534-37532b927f07">Table</p></div></td><td data-id="e038d7ad-ce19-43cc-9be4-e9347d4bc721" colspan="2" rowspan="1" colwidth="0,575" class="textory-table-cell"><div class="textory-block-container"><p data-id="d369286e-1099-42f2-8311-149524b8a0d5">可调整列宽、合并单元格</p></div><div class="textory-block-container"><p data-id="ae87be26-2d42-43a5-af07-f9d9b1d94b45">已内置</p></div></td></tr><tr data-id="224b73e3-2dd8-4636-9d75-e0ad94a54717"><td data-id="8d037102-72d8-4748-8432-0992fed727cc" colspan="1" rowspan="1" class="textory-table-cell"><div class="textory-block-container"><p data-id="66bc4a48-4c09-42f0-ac8e-255339fbe138">Image</p></div></td><td data-id="0ccb2a0c-84b3-439b-a835-5668b3c387ce" colspan="1" rowspan="1" class="textory-table-cell"><div class="textory-block-container"><p data-id="4a18c8c9-3855-418c-84fb-1beed636e172">上传、预览、缩放</p></div></td><td data-id="c35c8f50-b1b0-4621-9a23-237084343a19" colspan="1" rowspan="1" colwidth="575" class="textory-table-cell"><div class="textory-block-container"><p data-id="8ea0307b-77dc-4121-86d5-d58ea26b8587">已内置</p></div></td></tr><tr data-id="62061e5b-bdb9-4620-b570-1a323faf97d7"><td data-id="7be05752-66cd-4251-8832-9dce1cd83ec8" colspan="1" rowspan="1" class="textory-table-cell"><div class="textory-block-container"><p data-id="e36a2a2e-3a25-44de-a23a-c243fa3c8f2a">Outline</p></div></td><td data-id="89c05ff7-f983-4700-a496-aa223dc30dd0" colspan="1" rowspan="1" class="textory-table-cell"><div class="textory-block-container"><p data-id="579f7a64-13a8-4393-859a-a1be3474d611">大纲导航</p></div></td><td data-id="54ac4f47-6f73-4754-82c1-ce1d02ade04c" colspan="1" rowspan="1" colwidth="575" class="textory-table-cell"><div class="textory-block-container"><p data-id="6e53d92c-2c81-49e2-bf67-c2a909fbc628">已内置</p></div></td></tr></tbody></table><div class="textory-block-container"><h2 data-id="9d1e9f2d-50a7-41b2-a443-1d1c7b9e660b">视频示例</h2></div><video data-id="02fce8e8-ac35-4cd0-88ff-d57bfe7b04e6" width="470" height="264.375" textalign="left" id="02fce8e8-ac35-4cd0-88ff-d57bfe7b04e6" iserror="false" src="https://eduvod.fanruan.com/asset/3e4a59510999ddba8b0f3aa974f0004f/play_video/7392eda787318bcadaa84d3f0c4d3184.mp4" controls="true" data-video="1"></video><blockquote data-id="0ddb0107-2815-4d7e-a865-7910c5bf5c82"><div class="textory-block-container"><p data-id="92ca3f2f-afc6-495f-b4a3-7dc0132ee08f">专注内容，让编辑器替你处理格式。</p></div></blockquote><div class="textory-block-container"><h2 data-id="c8c37afb-9714-4905-a431-9b8005b1005c">图片实现</h2></div><div class="textory-block-container"><p data-id="1f5a86c9-72cd-48ae-af63-6cca015d973e"><img data-id="928e2b47-e202-45ef-a02e-7eba514f2d1b" iserror="false" textalign="left" hasborder="false" width="656" height="370" src="https://hwobs-sq.fanruan.com/shequ_forum/image/233f6f16775333a75b4bb4c5a3bc29a4.png" id="928e2b47-e202-45ef-a02e-7eba514f2d1b" uploadkey="f61350b1-f2af-4a76-8218-931dc5a31c63" style="text-align: left;"></p></div><div class="textory-block-container"><p data-id="abb9d0fa-5dcd-410f-b745-aa4c05137f00"></p></div><div class="textory-block-container"><p data-id="3f74dea6-50b4-4810-96dd-60a7777e3fd8"></p></div>`;
+
+    let inst = TextoryRender.create('#post-target', {
+      html,
+      headerOffsetPx: 60,
+      preview: true,
+    });
+
+    document.getElementById('rebuild').addEventListener('click', () => {
+      // 事件委托挂在 contentInner 上，setHTML 后无需重新绑定
+      inst.setHTML(`
+<h2>setHTML 后的内容</h2>
+<p>换一批图，验证预览仍正常工作。</p>
+<p><img src="https://placehold.co/700x420/8b5cf6/ffffff?text=New+1" alt="新图 1" width="700" height="420" /></p>
+<p><img src="https://placehold.co/500x500/ec4899/ffffff?text=New+2" alt="新图 2" width="500" height="500" /></p>
+      `);
+    });
+
+    console.log('[demo] render instance:', inst);
+  </script>
+</body>
+</html>
