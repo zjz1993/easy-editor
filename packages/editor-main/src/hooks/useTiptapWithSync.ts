@@ -1,7 +1,8 @@
-import {useEffect, useMemo} from 'react';
+import {useEffect, useMemo, useRef} from 'react';
 import {useEditor} from '@tiptap/react';
 import type {EditorEvents, JSONContent} from '@tiptap/core';
 import type {EditorProps} from '@tiptap/pm/view';
+import {isEqual} from 'lodash-es';
 
 interface UseTiptapWithSyncOptions {
   content: any;
@@ -88,15 +89,22 @@ export function useTiptapWithSync({
   }, [editable, editor]);
 
   // 👇 content 改变时同步
+  // 用 ref 记录上次应用到 editor 的 content，配合 deep equal 跳过语义相同的重复设置。
+  // 必要性：
+  //   1. 父组件受控回流：用户键入 → onUpdate → onChange({html,json}) → 父 setState
+  //      → 新 content 引用回流 → useEffect 触发 → setContent 抢断用户输入（IME 组合断、光标跳）。
+  //   2. JSON 对象 content：原 `editor.getHTML() !== content` 永远为 true（string vs object），
+  //      即便父不回流，每次 dependencies 变也会重复 setContent。
+  //   3. HTML 字符串 content：ProseMirror 序列化会规范化（属性顺序、自闭合、空白），
+  //      即使语义相同字符串也可能不同，导致重复 setContent 与光标抖动。
+  //   deep equal 在引用变化但语义等价时跳过，根治以上三种场景。
+  const lastAppliedContentRef = useRef<any>(undefined);
   useEffect(() => {
     if (!editor) return;
-
-    // 避免重复设置导致光标抖动
-    const current = editor.getHTML();
-    if (current !== content) {
-      const transformed = applyTransform(content, transformContent);
-      editor.commands.setContent(transformed, {});
-    }
+    if (isEqual(lastAppliedContentRef.current, content)) return;
+    const transformed = applyTransform(content, transformContent);
+    editor.commands.setContent(transformed, {});
+    lastAppliedContentRef.current = content;
   }, [content, editor, transformContent]);
 
   // 👇 placeholder 改变时同步

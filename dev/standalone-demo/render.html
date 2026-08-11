@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Textory Standalone — 渲染侧高亮</title>
+  <link rel="stylesheet" href="../../packages/standalone/dist/textory.min.css">
+  <link rel="stylesheet" href="../../packages/standalone/dist/highlight.min.css">
+  <style>
+    body { font-family: -apple-system, system-ui, sans-serif; max-width: 960px; margin: 20px auto; padding: 0 20px; color: #1f2328; }
+    h1, h2 { font-size: 20px; }
+    h2 { margin-top: 32px; border-top: 1px solid #d0d7de; padding-top: 16px; }
+    #editor { border: 1px solid #d0d7de; border-radius: 6px; min-height: 200px; }
+    #render-target { border: 1px solid #d0d7de; border-radius: 6px; padding: 16px 24px; }
+    /* 渲染侧必须套 .textory class，否则编辑器样式不生效（所有排版 scope 在 .textory 下）*/
+    /*pre { background: #f6f8fa; border-radius: 6px; font-size: 12px; overflow-x: auto; }*/
+    button { padding: 6px 12px; cursor: pointer; margin-right: 8px; }
+    a { color: #0969da; }
+    .note { background: #fff8c5; padding: 8px 12px; border-radius: 4px; font-size: 13px; margin: 12px 0; }
+  </style>
+</head>
+<body>
+  <h1>渲染侧语法高亮 — <code>highlight.min.js</code></h1>
+  <p>
+    <a href="index.html">← 返回</a>
+  </p>
+  <p>
+    Tiptap 内部高亮走 ProseMirror decoration（运行时注入），<code>editor.getHTML()</code> 只输出
+    <code>&lt;pre&gt;&lt;code class="language-xxx"&gt;</code> 外壳，不带 <code>&lt;span class="hljs-keyword"&gt;</code>。
+    渲染侧需重跑 lowlight。
+  </p>
+  <div class="note">
+    本 demo 同时引两份 CSS：编辑器 <code>textory.min.css</code> + 渲染侧 <code>highlight.min.css</code>。
+    生产环境渲染侧页若不需要编辑器，仅引 <code>highlight.min.css</code> + <code>highlight.min.js</code> 即可。
+  </div>
+
+  <h2>1. 编辑器（产出 HTML）</h2>
+  <p>
+    <button id="get-html">抓 getHTML() 注入下方</button>
+    <button id="load-sample">载入示例代码块</button>
+  </p>
+  <div id="editor"></div>
+
+  <h2>2. 渲染侧（highlightAll 重新高亮）</h2>
+  <p>下方 <code>#render-target</code> 套了 <code>class="textory"</code> —— 编辑器所有排版样式（段落、标题、列表、引用、表格、代码块外层等）都 scope 在 <code>.textory</code> 下，不套则裸 HTML 无样式。把编辑器 HTML 直接 <code>innerHTML</code> 进去，然后调
+    <code>TextoryHighlight.highlightAll(renderTarget)</code> 重新高亮代码块。</p>
+  <div id="render-target" class="textory">
+    <p style="color: #57606a; font-size: 13px;">点上方「抓 getHTML() 注入下方」按钮，编辑器内容会渲染到这里。</p>
+  </div>
+
+  <h2>3. getHTML 原始字符串</h2>
+  <pre id="output">（点 getHTML）</pre>
+
+  <script src="../../packages/standalone/dist/textory.standalone.min.js"></script>
+  <script src="../../packages/standalone/dist/highlight.min.js"></script>
+  <script>
+    // ───── 编辑器 ─────
+    const editor = Textory.create(document.getElementById('editor'), {
+      content: '<p>编辑器内部代码块已高亮（ProseMirror decoration）。</p>',
+      placeholder: '试着输入或粘贴代码...',
+      onChange(html) {
+        document.getElementById('output').textContent = html;
+      },
+    });
+
+    document.getElementById('load-sample').addEventListener('click', () => {
+      editor.setHTML([
+        '<p>以下是 TypeScript 代码块：</p>',
+        '<pre><code class="language-typescript">interface User {\n  id: number;\n  name: string;\n}\n\nfunction greet(user: User): string {\n  // 返回问候语\n  return `Hello, ${user.name}!`;\n}\n\nconst u: User = { id: 1, name: "Alice" };\nconsole.log(greet(u));</code></pre>',
+        '<p>以下是 SQL：</p>',
+        '<pre><code class="language-sql">SELECT id, name, created_at\nFROM users\nWHERE active = true\nORDER BY created_at DESC\nLIMIT 10;</code></pre>',
+        '<p>普通段落，<strong>加粗</strong> + <em>斜体</em>。</p>',
+      ].join('\n'));
+    });
+
+    // ───── 渲染侧 ─────
+    document.getElementById('get-html').addEventListener('click', () => {
+      const html = editor.getHTML();
+      document.getElementById('output').textContent = html;
+
+      const target = document.getElementById('render-target');
+      target.innerHTML = html;
+
+      // 关键：对渲染容器跑一次 highlight，重新生成 hljs-* spans
+      TextoryHighlight.highlightAll(target);
+    });
+
+    // ───── 验证 API ─────
+    console.log('[demo] TextoryHighlight global:', window.TextoryHighlight);
+    console.log('[demo] lowlight registered languages count: 见 highlight.min.js bundle');
+  </script>
+</body>
+</html>

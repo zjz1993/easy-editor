@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Textory Standalone — 渲染侧大纲导航</title>
+  <link rel="stylesheet" href="../../packages/standalone/dist/textory.min.css">
+  <link rel="stylesheet" href="../../packages/standalone/dist/highlight.min.css">
+  <style>
+    body { font-family: -apple-system, system-ui, sans-serif; margin: 0; color: #1f2328; }
+    .topbar { padding: 12px 24px; background: #f6f8fa; border-bottom: 1px solid #d0d7de; position: sticky; top: 0; z-index: 10; }
+    .topbar a { color: #0969da; }
+    .layout { display: flex; max-width: 1200px; margin: 0 auto; }
+    /* 渲染容器：套 .textory class，编辑器样式才会生效 */
+    .post-content { flex: 1; padding: 24px 32px; min-height: 200vh; /* 撑长，方便看滚动高亮 */ }
+    /* outline 挂载点：sticky 在视口右侧 */
+    #outline-host { width: 240px; flex-shrink: 0; padding: 24px 16px; }
+    #outline-host .textory-outline { position: sticky; top: 80px; }
+    button { padding: 6px 12px; cursor: pointer; }
+    .note { background: #fff8c5; padding: 8px 12px; border-radius: 4px; font-size: 13px; margin: 12px 24px; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    渲染侧大纲导航 demo —
+    <a href="index.html">← 返回</a>
+  </div>
+  <div class="note">
+    本页不含编辑器，只渲染 HTML + 挂 outline。编辑器产出的 HTML 套 <code>&lt;div class="textory"&gt;</code>
+    后注入，<code>TextoryOutline.create()</code> 扫描 h1-h6 自动构建 TOC。复用 outline.scss 的 class（已在 textory.min.css 里）。
+  </div>
+
+  <div class="layout">
+    <div class="post-content">
+      <div class="textory" id="render-target">
+        <h1>第一章 入门</h1>
+        <p>这是正文段落。编辑器产出的 HTML 通常包含 h1-h6、段落、列表、引用、代码块等。</p>
+
+        <h2>1.1 安装</h2>
+        <p>通过 script 标签引入 standalone bundle。</p>
+        <pre><code class="language-bash">npm install @textory/editor</code></pre>
+
+        <h3>1.1.1 环境要求</h3>
+        <p>Node.js 20+。</p>
+
+        <h3>1.1.2 浏览器兼容</h3>
+        <p>Chrome 90+ / Firefox 88+ / Safari 14+。</p>
+
+        <h2>1.2 快速开始</h2>
+        <p>创建一个 div 作为挂载点。</p>
+        <pre><code class="language-typescript">const instance = Textory.create(document.getElementById('editor'), {
+  content: '&lt;p&gt;Hello&lt;/p&gt;',
+});</code></pre>
+
+        <h1>第二章 进阶</h1>
+        <p>outline 面板支持展开/折叠、滚动同步高亮、点击跳转 + flash 动画。</p>
+
+        <h2>2.1 自定义上传</h2>
+        <p>imageProps / fileProps / videoProps。</p>
+
+        <h3>2.1.1 imageProps</h3>
+        <p>配置 <code>onImageUpload</code>。</p>
+
+        <h3>2.1.2 fileProps</h3>
+        <p>配置 <code>onFileUpload</code>。</p>
+
+        <h2>2.2 features 开关</h2>
+        <p>outline / importWord / textBubbleToolbar / fileUpload / videoUpload。</p>
+
+        <h1>第三章 部署</h1>
+        <p>UMD 两种 bundle：standalone（内置 React）和 externals（外置 React）。</p>
+
+        <h2>3.1 渲染侧 bundle</h2>
+        <p>highlight.min.js + outline.min.js 用于在不引入编辑器的页面复刻编辑器内部效果。</p>
+
+        <h3>3.1.1 语法高亮</h3>
+        <p>TextoryHighlight.highlightAll()。</p>
+
+        <h3>3.1.2 标题导航</h3>
+        <p>TextoryOutline.create()。</p>
+      </div>
+    </div>
+    <aside id="outline-host"></aside>
+  </div>
+
+  <script src="../../packages/standalone/dist/highlight.min.js"></script>
+  <script src="../../packages/standalone/dist/outline.min.js"></script>
+  <script>
+    // 1. 语法高亮（复用 render.html demo 的逻辑）
+    TextoryHighlight.highlightAll(document.getElementById('render-target'));
+
+    // 2. 标题导航
+    const outline = TextoryOutline.create({
+      content: document.getElementById('render-target'),
+      mount: document.getElementById('outline-host'),
+      scrollContainer: window,
+      headerOffsetPx: 60, // sticky topbar 高度，避免跳转时被遮挡
+    });
+
+    console.log('[demo] outline instance:', outline);
+  </script>
+</body>
+</html>

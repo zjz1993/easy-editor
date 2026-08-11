@@ -238,6 +238,50 @@ async function run() {
     },
   });
 
+  // 5. IIFE outline —— 仅标题导航 bundle，无 React/Tiptap 依赖
+  //    场景：渲染侧重新挂上右侧 TOC 面板。复用 outline.scss 的 class 名
+  //    （已包含在 textory.min.css 中），无需额外 CSS
+  await build({
+    bundle: true,
+    entryPoints: [resolve(pkgRoot, 'src/outline.ts')],
+    outfile: resolve(outDir, 'outline.min.js'),
+    format: 'iife',
+    globalName: 'TextoryOutline',
+    target: 'es2018',
+    platform: 'browser',
+    minify: true,
+    sourcemap: true,
+    external: [],
+    treeShaking: true,
+    legalComments: 'none',
+    loader: loaders,
+    footer: {
+      js: 'if(typeof window!=="undefined"){window.TextoryOutline=(TextoryOutline&&TextoryOutline.default)||TextoryOutline;}',
+    },
+  });
+
+  // 6. IIFE render —— facade bundle，内联 highlight + outline
+  //    场景：渲染侧一键安装。给 div id 自动出 .textory wrap + 高亮 + outline
+  //    体积 ~170KB（含 lowlight + 37 languages），单 script 单 API
+  await build({
+    bundle: true,
+    entryPoints: [resolve(pkgRoot, 'src/render.ts')],
+    outfile: resolve(outDir, 'render.min.js'),
+    format: 'iife',
+    globalName: 'TextoryRender',
+    target: 'es2018',
+    platform: 'browser',
+    minify: true,
+    sourcemap: true,
+    external: [],
+    treeShaking: true,
+    legalComments: 'none',
+    loader: loaders,
+    footer: {
+      js: 'if(typeof window!=="undefined"){window.TextoryRender=(TextoryRender&&TextoryRender.default)||TextoryRender;}',
+    },
+  });
+
   console.log('[build-umd] done');
 }
 

@@ -17,17 +17,24 @@
  */
 
 /* ────────────── 代码块容器 ────────────── */
+/* 注意：编辑器 root.scss line 103 `.textory .ProseMirror pre code { background: none !important }`
+   会覆盖此处的 background。编辑器内部 pre code 走 NodeView，背景由 .textory-code-block 容器提供；
+   渲染侧没 NodeView，必须用 !important 抢回 background。
+   specificity：`.textory pre code.hljs` = 0,0,3,2，与 root.scss 同级，
+   同 important 时后加载胜出——highlight.min.css 必须在 textory.min.css 之后 link。*/
 pre code.hljs,
-pre code {
-  background: #282c34;
-  color: #abb2bf;
-  padding: 16px;
-  border-radius: 6px;
-  font-size: 14px;
-  line-height: 1.6;
-  overflow-x: auto;
-  display: block;
-  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+pre code,
+.textory pre code.hljs,
+.textory pre code {
+  background: #282c34 !important;
+  color: #abb2bf !important;
+  padding: 16px !important;
+  border-radius: 6px !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  overflow-x: auto !important;
+  display: block !important;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
 }
 
 pre {

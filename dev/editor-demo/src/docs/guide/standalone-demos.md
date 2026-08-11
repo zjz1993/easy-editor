@@ -7,7 +7,7 @@ description: 在文档里直接体验 standalone UMD bundle 的 5 个场景
 
 # Standalone 在线示例
 
-下面 5 个示例直接复用 `dev/standalone-demo/` 下的 HTML，通过 iframe 嵌入到文档里。每个示例都是独立 HTML，复现真实 CDN 用户场景。
+下面 6 个示例直接复用 `dev/standalone-demo/` 下的 HTML，通过 iframe 嵌入到文档里。每个示例都是独立 HTML，复现真实 CDN 用户场景。
 
 > [!TIP]
 > 这些 iframe 加载的是同源 `/standalone-demo/*.html`，背后由 editor-demo 的 dev server 通过 middleware 直接服务 `dev/standalone-demo/` 目录与 `packages/standalone/dist/` 构建产物。
@@ -43,6 +43,10 @@ description: 在文档里直接体验 standalone UMD bundle 的 5 个场景
 `destroy()` 卸载编辑器、释放 React root。destroy 后任何方法调用仅 `console.warn`，不 throw。
 
 <standalone-iframe src="destroy.html" title="destroy 与重建" />
+
+## 6. 单独渲染html 脱离编辑器
+
+<standalone-iframe src="render.html" title="单独渲染html" />
 
 ## 离线本地运行
 

@@ -20,7 +20,9 @@
     "./externals": "./dist/textory.externals.min.js",
     "./style": "./dist/textory.min.css",
     "./highlight": "./dist/highlight.min.js",
-    "./highlight-style": "./dist/highlight.min.css"
+    "./highlight-style": "./dist/highlight.min.css",
+    "./outline": "./dist/outline.min.js",
+    "./render": "./dist/render.min.js"
   },
   "license": "ISC",
   "publishConfig": {
