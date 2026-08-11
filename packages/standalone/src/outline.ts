@@ -54,6 +54,8 @@ export interface OutlineOptions {
   defaultCollapsed?: boolean;
   /** 面板显示/隐藏状态切换回调（facade 用来调整外层 layout 宽度） */
   onCollapsedChange?: (collapsed: boolean) => void;
+  /** 内容空/非空切换回调（facade 用来彻底释放 outlineHost 宽度） */
+  onEmptyChange?: (empty: boolean) => void;
 }
 
 export interface OutlineInstance {
@@ -336,6 +338,7 @@ export function create(options: OutlineOptions): OutlineInstance {
   // 采集 + 建树
   let headings = collectHeadings(content);
   let tree = buildTree(headings);
+  let empty = headings.length === 0;
 
   const state: OutlineState = {
     scrollContainer,
@@ -413,6 +416,19 @@ export function create(options: OutlineOptions): OutlineInstance {
     }
   }
   renderTree();
+
+  // 空 outline 处理：无任何标题时彻底隐藏 mount，并通过 onEmptyChange 通知 facade
+  // 释放 outlineHost 宽度（让正文占满）。refresh 后若有标题出现则还原。
+  function applyEmptyState(nextEmpty: boolean) {
+    if (nextEmpty === empty) return;
+    empty = nextEmpty;
+    mount.style.display = empty ? 'none' : '';
+    options.onEmptyChange?.(empty);
+  }
+  if (empty) {
+    mount.style.display = 'none';
+    options.onEmptyChange?.(true);
+  }
 
   // 展开/折叠全部
   function allExpanded(): boolean {
@@ -511,7 +527,8 @@ export function create(options: OutlineOptions): OutlineInstance {
       tree = buildTree(headings);
       state.flatHeadings = headings;
       renderTree();
-      computeActive(state);
+      applyEmptyState(headings.length === 0);
+      if (headings.length > 0) computeActive(state);
     },
   };
 }

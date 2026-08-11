@@ -736,6 +736,17 @@ export function create(
         outlineHost.style.width = collapsed ? '0' : `${outlineWidth}px`;
         outlineHost.style.overflow = collapsed ? 'visible' : 'auto';
       },
+      // 内容无标题时彻底隐藏 outlineHost（display:none，宽度也释放）
+      onEmptyChange: (empty) => {
+        if (!outlineHost) return;
+        outlineHost.style.display = empty ? 'none' : '';
+        if (!empty) {
+          // 恢复时还原配置宽度（与 onCollapsedChange 协同）
+          outlineHost.style.width = outlineInst?.isCollapsed()
+            ? '0'
+            : `${outlineWidth}px`;
+        }
+      },
     });
   }
 
