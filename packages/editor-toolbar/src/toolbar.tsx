@@ -61,9 +61,9 @@ const Toolbar: FC<IToolbarProps> = props => {
       canItalic: editor.can().chain().focus().toggleItalic().run(),
       canUnderline: editor.can().chain().focus().toggleUnderline().run(),
       canStrike: editor.can().chain().focus().toggleStrike().run(),
-      canUL: editor.can().chain().focus().toggleBulletList?.().run(),
-      canOL: editor.can().chain().focus().toggleOrderedList?.().run(),
-      canCL: editor.can().chain().focus().toggleTaskList?.().run(),
+      canUL: editor.can().chain().toggleBulletList?.().run(),
+      canOL: editor.can().chain().toggleOrderedList?.().run(),
+      canCL: editor.can().chain().toggleTaskList?.().run(),
       canIndent: editor.can().chain().focus().indent().run(),
       canOutdent: editor.can().chain().focus().outdent().run(),
       canLink:
@@ -153,12 +153,12 @@ const Toolbar: FC<IToolbarProps> = props => {
       {
         key: BLOCK_TYPES.OL,
         component: <ListButton />,
-        disabled: disabled || !caps.canUL,
+        disabled: disabled || !caps.canOL,
       },
       {
         key: BLOCK_TYPES.UL,
         component: <ListButton />,
-        disabled: disabled || !caps.canOL,
+        disabled: disabled || !caps.canUL,
       },
       {
         key: BLOCK_TYPES.CL,
