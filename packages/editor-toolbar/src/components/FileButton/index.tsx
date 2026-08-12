@@ -1,4 +1,4 @@
-import {Iconfont, Upload} from '@textory/editor-common';
+import {Iconfont, IntlComponent, Upload} from '@textory/editor-common';
 import {type FC, useContext} from 'react';
 import type {TToolbarWrapperProps} from 'src/types/index.ts';
 import ToolbarContext from '../../context/toolbarContext.ts';
@@ -50,7 +50,7 @@ const FileButton: FC<TToolbarWrapperProps> = props => {
         editor={editor}
         uploaderKey="fileUploader"
         accept={accept ?? '*'}
-        acceptErrMsg="不支持的文件格式"
+        acceptErrMsg={IntlComponent.get('file.upload.unsupported.format')}
         multiple
         beforeUpload={onFileBeforeUpload}
         onError={(_, _a, file) => {

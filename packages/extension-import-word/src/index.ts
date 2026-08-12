@@ -1,4 +1,4 @@
-import {message} from '@textory/editor-common-ui';
+import {IntlComponent, message} from '@textory/editor-common-ui';
 
 import {
   base64ToFile,
@@ -58,7 +58,7 @@ export async function importWORD(options: ImportWORDOptions): Promise<void> {
   try {
     // Validate file type — mammoth only supports .docx, not legacy .doc
     if (!file.name.toLowerCase().endsWith('.docx')) {
-      throw new Error('仅支持 .docx 格式，不支持 .doc 或其他格式');
+      throw new Error(IntlComponent.get('word.import.unsupported.format') || '仅支持 .docx 格式，不支持 .doc 或其他格式');
     }
 
     const arrayBuffer = await file.arrayBuffer();
@@ -87,14 +87,14 @@ export async function importWORD(options: ImportWORDOptions): Promise<void> {
       const skipped = countDataImages(html);
       if (skipped > 0) {
         message.warning(
-          `未配置图片上传功能，${skipped} 张图片已跳过`,
+          IntlComponent.get('word.import.image.skipped', { count: skipped }),
         );
       }
     } else if (imageErrors.length > 0) {
       // Some images failed to upload but the rest of the document imported.
       // Failed images are kept as error-placeholder nodes in the editor.
       message.warning(
-        `${imageErrors.length} 张图片导入失败，已标记为错误占位，其余内容已导入`,
+        IntlComponent.get('word.import.image.partial.failed', { count: imageErrors.length }),
       );
     }
 
@@ -105,7 +105,7 @@ export async function importWORD(options: ImportWORDOptions): Promise<void> {
   } catch (error) {
     const err = error instanceof Error ? error : new Error(String(error));
     onImportFailed?.(err);
-    message.error(`导入 Word 文档失败: ${err.message}`);
+    message.error(IntlComponent.get('word.import.failed', { message: err.message }));
   }
 }
 

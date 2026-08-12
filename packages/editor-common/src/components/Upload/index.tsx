@@ -5,10 +5,12 @@ import {isEmpty, take} from 'lodash-es';
 import React, {type FC, type ReactNode, useRef, useState} from 'react';
 import type {RcFile, UploadProgressEvent, UploadRequestOption,} from 'rc-upload/es/interface';
 import type {Editor} from '@tiptap/core';
+import IntlComponent from 'react-intl-universal';
 import {checkMaxSize} from "../../utils/index.ts"; //import uuid from 'uuid/v4';
 //import uuid from 'uuid/v4';
 
-const uploadButton = <Button>点击上传</Button>;
+// render 时取值，保证 intl 初始化后能拿到正确文案
+const uploadButton = <Button>{IntlComponent.get('upload.button.text') || '点击上传'}</Button>;
 
 function attrAccept(
   file: { name: string; type: string },
@@ -122,7 +124,7 @@ const FileUpload: FC<IUploadProps> = props => {
     if (acceptFiles.length !== files.length) {
       message.error(
         <span>
-          上传附件格式不符合
+          {IntlComponent.get('upload.error.invalid.format') || '上传附件格式不符合'}
           <div style={{ color: 'rgba(0, 0, 0, 0.45)', fontSize: 12 }}>
             {acceptErrMsg}
           </div>
@@ -130,7 +132,7 @@ const FileUpload: FC<IUploadProps> = props => {
       );
     }
     if (maxFileNum && acceptFiles.length + fileList.length > maxFileNum) {
-      message.error(exceedMaxFileNumMsg || '超出文件数量限制');
+      message.error(exceedMaxFileNumMsg || (IntlComponent.get('upload.error.exceed.limit') || '超出文件数量限制'));
       acceptFiles = take(acceptFiles, maxFileNum - fileList.length);
     }
     if (uploader && !isEmpty(acceptFiles)) {
@@ -163,7 +165,7 @@ const FileUpload: FC<IUploadProps> = props => {
       try {
         await customRequest(option);
       } catch (err) {
-        option.onError?.(err as Error, { message: '上传失败' });
+        option.onError?.(err as Error, { message: IntlComponent.get('upload.error.failed') || '上传失败' });
       }
     })();
   };

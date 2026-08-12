@@ -5,7 +5,7 @@ import type React from 'react';
 import {useCallback, useMemo, useRef, useState} from 'react';
 import {getLanguageByValue, getLanguageByValueOrAlias, languages,} from './languages';
 import {BLOCK_TYPES, smartClipboardCopy} from '@textory/editor-utils';
-import {Dropdown, Iconfont, message} from '@textory/editor-common';
+import {Dropdown, Iconfont, IntlComponent, message} from '@textory/editor-common';
 import {get} from 'lodash-es';
 import {exportCode} from './utils.ts';
 
@@ -109,7 +109,7 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
           smartClipboardCopy(pureCode as string);
         }}
       >
-        复制
+        {IntlComponent.get('common.copy')}
       </button>
     );
     if (isEditable) {
@@ -122,7 +122,7 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
             }}
             className="textory-code-block__button_area__button"
           >
-            下载
+            {IntlComponent.get('codeblock.button.download')}
           </button>
           <button
             className="textory-code-block__button_area__button"
@@ -136,11 +136,11 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
                   .deleteRange({ from: res.from, to: res.to }) // 删除指定范围
                   .run();
               } catch (e) {
-                message.success('操作失败');
+                message.success(IntlComponent.get('codeblock.action.failed'));
               }
             }}
           >
-            清空代码块
+            {IntlComponent.get('codeblock.button.clear')}
           </button>
           <button
             className="textory-code-block__button_area__button"
@@ -155,14 +155,14 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
                     .deleteRange({ from: res.from - 1, to: res.to }) // 删除指定范围
                     .run();
                 } else {
-                  message.warning('操作失败');
+                  message.warning(IntlComponent.get('codeblock.action.failed'));
                 }
               } catch (e) {
-                message.warning('操作失败');
+                message.warning(IntlComponent.get('codeblock.action.failed'));
               }
             }}
           >
-            删除代码块
+            {IntlComponent.get('codeblock.button.delete')}
           </button>
         </>
       );
@@ -208,7 +208,7 @@ export const CodeBlockNodeView: React.FC<NodeViewProps> = ({
                       ref={inputRef}
                       type="text"
                       value={search}
-                      placeholder="搜索"
+                      placeholder={IntlComponent.get('common.search')}
                       onChange={e => setSearch(e.target.value)}
                     />
                     {search.length > 0 && (

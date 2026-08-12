@@ -1,4 +1,4 @@
-import {Dropdown, Iconfont} from '@textory/editor-common';
+import {Dropdown, Iconfont, IntlComponent} from '@textory/editor-common';
 import type {Editor} from '@tiptap/core';
 import {type FC, useState} from 'react';
 import {useEditorState} from '@tiptap/react';
@@ -47,7 +47,7 @@ const FontSizeDropdown: FC<FontSizeDropdownProps> = ({editor}) => {
               setOpen(false);
             }}
           >
-            默认
+            {IntlComponent.get('fontsize.default')}
           </div>
           {FONT_SIZE_PRESET.map(item => (
             <div
@@ -69,10 +69,10 @@ const FontSizeDropdown: FC<FontSizeDropdownProps> = ({editor}) => {
       <button
         type="button"
         className="textory-text-bubble__btn textory-text-bubble__btn--fontsize"
-        title="字号"
+        title={IntlComponent.get('fontsize.label')}
       >
         <span className="textory-text-bubble__fontsize-label">
-          {activeSize || '字号'}
+          {activeSize || IntlComponent.get('fontsize.label')}
         </span>
         <Iconfont type="icon-caret-down" />
       </button>

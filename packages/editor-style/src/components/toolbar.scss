@@ -163,7 +163,8 @@
       padding: 0;
       box-sizing: border-box;
       &__btn{
-        display: block;
+        display: flex;
+        align-items: center;
         line-height: 24px;
         width: 24px;
         height: 24px;

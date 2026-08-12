@@ -17,11 +17,16 @@ import {
   getImageTypeFromSrc,
   getImageWidth,
 } from '../utils';
+import { IntlComponent } from '@textory/editor-common-ui';
 
 /**
  * Default label shown when a video has neither poster nor src.
+ * Lazily resolved: the file-level const runs at module-load time when
+ * IntlComponent may not yet be initialised, so we fall back to the
+ * hardcoded string. Callers re-resolve via `getVideoLabel()` at render
+ * time so the active locale wins once intl is ready.
  */
-const DEFAULT_VIDEO_LABEL = '视频';
+const DEFAULT_VIDEO_LABEL = IntlComponent.get('export.video.default.label') || '视频';
 
 function mapTextAlign(
   align?: 'left' | 'center' | 'right' | null,

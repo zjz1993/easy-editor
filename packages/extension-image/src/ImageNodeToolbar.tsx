@@ -1,5 +1,5 @@
 import type {FC} from 'react';
-import {InputNumber, useControlledValue} from '@textory/editor-common';
+import {InputNumber, IntlComponent, useControlledValue} from '@textory/editor-common';
 import ToolbarButton from '../src/components/ToolbarButton';
 import type {AlignType} from '@textory/context';
 
@@ -30,7 +30,7 @@ const ImageNodeToolbar: FC<{
   return (
     <div className="textory-image-toolbar">
       <div className="textory-image-toolbar-item textory-image-toolbar-input-item">
-        <span>宽：</span>
+        <span>{IntlComponent.get('image.toolbar.width.label')}</span>
         <InputNumber
           suffix="px"
           min={1}

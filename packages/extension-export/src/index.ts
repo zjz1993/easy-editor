@@ -1,5 +1,5 @@
 import type { JSONContent } from '@tiptap/core';
-import { message } from '@textory/editor-common-ui';
+import { IntlComponent, message } from '@textory/editor-common-ui';
 import { generateDOCX } from './generator';
 import type { DocxOptions, ExportOptions } from './option';
 
@@ -10,13 +10,13 @@ export async function handleExportDOCX(
 ): Promise<void> {
   try {
     if (!json) {
-      message.warning('请先打开文档后再导出DOCX');
+      message.warning(IntlComponent.get('export.warning.no_document'));
 
       return;
     }
 
     if (!json?.content?.length) {
-      message.warning('文档内容为空');
+      message.warning(IntlComponent.get('export.warning.empty'));
 
       return;
     }
@@ -64,7 +64,11 @@ export async function handleExportDOCX(
       URL.revokeObjectURL(url);
     }, 100);
   } catch (error: any) {
-    message.error(`导出DOCX失败: ${error.message || '未知错误'}`);
+    message.error(
+      IntlComponent.get('export.error.failed', {
+        message: error?.message || IntlComponent.get('export.error.unknown'),
+      }),
+    );
   }
 }
 
@@ -103,7 +107,7 @@ export const exportWORD = async (options: ExportOptions = {}) => {
       onExportFailed?.();
     }
   } else {
-    message.warning('缺少标题或正文内容，无法导出');
+    message.warning(IntlComponent.get('export.warning.missing_required'));
   }
 };
 

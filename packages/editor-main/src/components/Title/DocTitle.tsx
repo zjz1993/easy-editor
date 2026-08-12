@@ -2,6 +2,7 @@ import { TitleTextArea } from '../TitleTextarea';
 import ClassNames from 'classnames';
 import { useEffect } from 'react';
 import type {ReactElement, FC} from 'react';
+import { IntlComponent } from '@textory/editor-common';
 
 type TDocTitleProps = {
   autoFocus?: boolean;
@@ -24,7 +25,7 @@ const DocTitle: FC<TDocTitleProps> = ({
   onChange,
   onFocus,
   onBlur,
-  placeholder = '输入文档的标题',
+  placeholder = IntlComponent.get('doc.title.placeholder') || '输入文档的标题',
 }) => {
   //const ref = useRef<any>();
 

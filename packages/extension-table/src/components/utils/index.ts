@@ -294,6 +294,7 @@ export const getTableWidth = (view: EditorView) => {
 };
 
 // 均分所选的列宽
+// posArray 里是单元格在文档中的绝对位置（含 table.start），见 getCellsInRow
 export const equalizeWidth = (view: EditorView, posArray: number[]) => {
   const { state } = view;
   const table = findTable(state.selection);
@@ -306,18 +307,21 @@ export const equalizeWidth = (view: EditorView, posArray: number[]) => {
   }
   if (!dom) return 0;
   const map = TableMap.get(table.node);
+  // 把绝对位置换算为相对 table.start 的位置，与 map.map 对齐
+  const relPosSet = new Set(posArray.map(p => p - table.start));
   let totalWidth = 0;
   for (let i = 0; i < map.width; i++) {
-    if (posArray.find(item => item === map.map[i] + 1)) {
-      const cell = view.state.doc.nodeAt(map.map[i] + 1)!;
-      const width = currentColWidth(view, map.map[i] + 1, cell.attrs);
+    if (relPosSet.has(map.map[i])) {
+      const cellPos = table.start + map.map[i];
+      const cell = view.state.doc.nodeAt(cellPos)!;
+      const width = currentColWidth(view, cellPos, cell.attrs);
       totalWidth += width;
     }
   }
   const width = totalWidth / posArray.length;
   for (let i = 0; i < map.width; i++) {
-    if (posArray.find(item => item === map.map[i] + 1)) {
-      updateColumnWidth(view, map.map[i] + 1, width);
+    if (relPosSet.has(map.map[i])) {
+      updateColumnWidth(view, table.start + map.map[i], width);
     }
   }
   return totalWidth;

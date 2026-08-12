@@ -1,4 +1,4 @@
-import {Iconfont, PRESET_COLORS} from '@textory/editor-common';
+import {Iconfont, IntlComponent, PRESET_COLORS} from '@textory/editor-common';
 import {chunk} from 'lodash-es';
 import type {FC} from 'react';
 import {useContext} from 'react';
@@ -22,7 +22,7 @@ const HighlightPickerDropdown: FC = () => {
     <div className="textory-color-picker">
       <div className="textory-color-picker-default-btn" onClick={() => {
         editor.chain().focus().unsetHighlight().run();
-      }}>恢复默认</div>
+      }}>{IntlComponent.get('common.reset')}</div>
       {chunk(PRESET_COLORS, 6).map((colorTempArray, index) => {
         const array = colorTempArray.map(color => {
           return (

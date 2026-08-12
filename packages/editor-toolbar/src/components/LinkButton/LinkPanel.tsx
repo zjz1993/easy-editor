@@ -1,7 +1,7 @@
 import type React from 'react';
 import {useForm} from 'react-hook-form';
 import cx from 'classnames';
-import {Button} from "@textory/editor-common";
+import {Button, IntlComponent} from "@textory/editor-common";
 
 export type LinkEditPopupProps = {
   text?: string;
@@ -32,12 +32,12 @@ export const LinkPanelPopup: React.FC<LinkEditPopupProps> = props => {
           )}
         >
           <div className="textory-link-panel__row__inner">
-            <label className="textory-link-panel__row__label">文字</label>
+            <label className="textory-link-panel__row__label">{IntlComponent.get('link.panel.text.label')}</label>
             <div>
               <input
                 className="textory-link-panel__row__input"
                 defaultValue={text}
-                {...register('text', { required: '请填写文字' })}
+                {...register('text', { required: IntlComponent.get('link.panel.text.required') })}
               />
               <div className="textory-link-panel__error__tips">
                 {errors?.href?.message}
@@ -53,12 +53,12 @@ export const LinkPanelPopup: React.FC<LinkEditPopupProps> = props => {
           )}
         >
           <div className="textory-link-panel__row__inner">
-            <label className="textory-link-panel__row__label">链接</label>
+            <label className="textory-link-panel__row__label">{IntlComponent.get('link.panel.href.label')}</label>
             <div>
               <input
                 className="textory-link-panel__row__input"
                 defaultValue={href}
-                {...register('href', { required: '请填写链接' })}
+                {...register('href', { required: IntlComponent.get('link.panel.href.required') })}
               />
               <div className="textory-link-panel__error__tips">
                 {errors?.href?.message}
@@ -67,9 +67,9 @@ export const LinkPanelPopup: React.FC<LinkEditPopupProps> = props => {
           </div>
         </div>
         <div className={cx('submit_row', 'textory-link-panel__row')}>
-          <Button onClick={onCancel}>取消</Button>
+          <Button onClick={onCancel}>{IntlComponent.get('common.cancel')}</Button>
           <Button type="primary" onClick={handleSubmit(onSubmit)}>
-            提交
+            {IntlComponent.get('common.submit')}
           </Button>
         </div>
       </form>

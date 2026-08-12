@@ -335,7 +335,7 @@ const FilePreview: FC<IFilePreviewProps> = ({
                 />
               </Tooltip>
 
-              <Tooltip content="向右旋转" placement="top">
+              <Tooltip content={IntlComponent.get('image.preview.rotate.right')} placement="top">
                 <IconFont
                   type="reload"
                   className="rotate"

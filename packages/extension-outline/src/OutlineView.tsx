@@ -364,7 +364,7 @@ export const OutlineView = ({editor}: OutlineViewProps) => {
       <div className="textory-outline-toolbar">
         {expandableIds.length > 0 && (
           <Tooltip
-            content={allExpanded ? '全部收起' : '全部展开'}
+            content={allExpanded ? IntlComponent.get('outline.collapse.all') : IntlComponent.get('outline.expand.all')}
             placement="left"
           >
             <Iconfont

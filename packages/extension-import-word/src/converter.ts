@@ -1,5 +1,6 @@
 import { parseDocx } from './docxParser';
 import type { DocxToHTMLOptions, ImageUploadHandler } from './types';
+import { IntlComponent } from '@textory/editor-common-ui';
 
 /**
  * Convert a .docx ArrayBuffer to clean HTML via the in-house parser.
@@ -65,12 +66,12 @@ export function uploadImage(
       if (settled) return;
       settled = true;
       if (url) resolve(url);
-      else reject(new Error('图片上传成功但未返回 URL'));
+      else reject(new Error(IntlComponent.get('word.import.image.upload.no.url') || '图片上传成功但未返回 URL'));
     };
     const rejectOnce = (err: unknown) => {
       if (settled) return;
       settled = true;
-      reject(err instanceof Error ? err : new Error('图片上传失败'));
+      reject(err instanceof Error ? err : new Error(IntlComponent.get('word.import.image.upload.failed') || '图片上传失败'));
     };
 
     const option = {

@@ -1,5 +1,5 @@
 import type {FC} from 'react';
-import {InputNumber, useControlledValue} from '@textory/editor-common';
+import {InputNumber, IntlComponent, useControlledValue} from '@textory/editor-common';
 import ToolbarButton from './components/ToolbarButton';
 import type {AlignType} from '@textory/context';
 
@@ -48,7 +48,7 @@ const VideoNodeToolbar: FC<{
   return (
     <div className="textory-video-toolbar">
       <div className="textory-video-toolbar-item textory-video-toolbar-input-item">
-        <span>宽：</span>
+        <span>{IntlComponent.get('video.toolbar.width.label')}</span>
         <InputNumber
           suffix="px"
           min={1}

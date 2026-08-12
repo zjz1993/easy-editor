@@ -114,7 +114,7 @@ export function checkMaxSize(file: RcFile, maxSize: number) {
   const checkFileSize =
     Number.parseFloat((file.size / 1024).toFixed(4)) <= maxSize;
   if (!checkFileSize) {
-    return Promise.reject(new Error(`文件大小不能大于${maxSize}Kb`));
+    return Promise.reject(new Error(IntlComponent.get('clipboard.file.size.exceed', { maxSize })));
   }
   return Promise.resolve(file);
 }

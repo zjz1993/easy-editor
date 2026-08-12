@@ -45,7 +45,7 @@ const CellBackgroundDropdown: FC<{ editor: Editor }> = ({ editor }) => {
               setOpen(false);
             }}
           >
-            恢复默认
+            {IntlComponent.get('common.reset')}
           </div>
           {chunk(PRESET_COLORS, 6).map((row, i) => (
             <div className="textory-color-picker__color_row" key={i}>
@@ -225,7 +225,7 @@ export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
     if (!selectedState.tableSelected && showSplitBtn) {
       return (
         <div className="textory-table-menu-item">
-          <Tooltip content={canMergeCells ? '合并单元格' : '拆分单元格'}>
+          <Tooltip content={canMergeCells ? IntlComponent.get('table.cell.merge') : IntlComponent.get('table.cell.split')}>
             <Iconfont
               type={canSplitCell ? 'icon-unmerge' : 'icon-merge'}
               onClick={() => {
@@ -264,7 +264,7 @@ export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
     if (!isCellSelection(editor.state.selection)) return null;
     return (
       <div className="textory-table-menu-item">
-        <Tooltip content="背景色">
+        <Tooltip content={IntlComponent.get('highlight')}>
           <CellBackgroundDropdown editor={editor} />
         </Tooltip>
       </div>
@@ -274,7 +274,7 @@ export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
     if (selectedState.columnSelected.length >= 2) {
       return (
         <div className="textory-table-menu-item">
-          <Tooltip content="均分">
+          <Tooltip content={IntlComponent.get('table.toolbar.junfen')}>
             <div
               onClick={() => {
                 const startPos = selectedState.columnSelected.map(
@@ -283,7 +283,7 @@ export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
                 equalizeWidth(editor.view, startPos);
               }}
             >
-              均分
+              <Iconfont type="junfenliekuan" />
             </div>
           </Tooltip>
         </div>

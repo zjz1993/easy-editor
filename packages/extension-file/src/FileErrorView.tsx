@@ -1,4 +1,4 @@
-import {Iconfont} from '@textory/editor-common';
+import {Iconfont, IntlComponent} from '@textory/editor-common';
 import type {FC} from 'react';
 
 interface FileErrorViewProps {
@@ -10,7 +10,7 @@ const FileErrorView: FC<FileErrorViewProps> = ({ onRemove }) => {
     <div className="textory-file-upload-error">
       <div className="inner-wrapper">
         <Iconfont type="icon-file" style={{ marginRight: 5 }} />
-        <span>文件上传失败</span>
+        <span>{IntlComponent.get('file.upload.failed')}</span>
       </div>
       <Iconfont
         type="icon-close"

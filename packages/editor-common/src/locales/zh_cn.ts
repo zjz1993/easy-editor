@@ -53,6 +53,7 @@ export default {
   'table.delete.col': '删除列',
   'table.delete.table': '删除表格',
   'table.copy.table': '复制表格',
+  'table.toolbar.junfen':'均分列宽',
   'outline':'大纲',
   'outline.hide':'隐藏大纲',
   'outline.show':'展开大纲',
@@ -77,5 +78,91 @@ export default {
   'video.poster.set':'设为封面',
   'video.poster.clear':'清除封面',
   'video.poster.capture.failed':'当前视频帧无法捕获,可能是跨域限制。请使用同源视频或配置 CORS。',
-  'video.poster.upload.failed':'封面上传失败,请稍后重试。'
+  'video.poster.upload.failed':'封面上传失败,请稍后重试。',
+
+  // ===== 通用文案 =====
+  'common.cancel': '取消',
+  'common.confirm': '确认',
+  'common.submit': '提交',
+  'common.reset': '恢复默认',
+  'common.search': '搜索',
+  'common.copy': '复制',
+
+  // ===== 编辑器占位符 =====
+  'editor.placeholder.default': '请输入',
+  'editor.placeholder.title': '请输入标题',
+  'doc.title.placeholder': '输入文档的标题',
+
+  // ===== 文本气泡菜单 =====
+  'textbubble.clear.format': '清除格式',
+  'fontsize.label': '字号',
+  'fontsize.default': '默认',
+  'image.preview.rotate.right': '向右旋转',
+
+  // ===== 通用上传组件 =====
+  'upload.button.text': '点击上传',
+  'upload.error.invalid.format': '上传附件格式不符合',
+  'upload.error.exceed.limit': '超出文件数量限制',
+  'upload.error.failed': '上传失败',
+
+  // ===== 表格气泡菜单 =====
+  'table.cell.merge': '合并单元格',
+  'table.cell.split': '拆分单元格',
+
+  // ===== 代码块 =====
+  'codeblock.button.download': '下载',
+  'codeblock.button.clear': '清空代码块',
+  'codeblock.button.delete': '删除代码块',
+  'codeblock.action.failed': '操作失败',
+
+  // ===== 大纲 =====
+  'outline.expand.all': '全部展开',
+  'outline.collapse.all': '全部收起',
+
+  // ===== 图片 =====
+  'image.upload.failed': '图片上传失败',
+  'image.toolbar.width.label': '宽：',
+  'image.modal.title': '插入图片',
+  'image.modal.url.label': '图片链接',
+  'image.modal.url.required': '请填写链接',
+  'image.modal.width.label': '图片宽度',
+  'image.modal.width.required': '请输入图片宽度',
+  'image.modal.height.label': '图片高度',
+  'image.modal.height.required': '请输入图片高度',
+  'image.modal.lockRatio.label': '是否锁定宽高',
+  'image.modal.lockRatio.yes': '是',
+  'image.modal.lockRatio.no': '否',
+  'image.modal.lockRatio.tooltip': '锁定时，将根据当前设置的宽度自动计算图片的高度，用户无法输入高度',
+
+  // ===== 视频 =====
+  'video.toolbar.width.label': '宽：',
+
+  // ===== 文件附件 =====
+  'file.upload.failed': '文件上传失败',
+  'file.upload.unsupported.format': '不支持的文件格式',
+
+  // ===== 链接面板 =====
+  'link.panel.text.label': '文字',
+  'link.panel.text.required': '请填写文字',
+  'link.panel.href.label': '链接',
+  'link.panel.href.required': '请填写链接',
+
+  // ===== 导出 =====
+  'export.video.default.label': '视频',
+  'export.warning.no_document': '请先打开文档后再导出DOCX',
+  'export.warning.empty': '文档内容为空',
+  'export.warning.missing_required': '缺少标题或正文内容，无法导出',
+  'export.error.failed': '导出DOCX失败: {message}',
+  'export.error.unknown': '未知错误',
+
+  // ===== Word 导入 =====
+  'word.import.image.upload.no.url': '图片上传成功但未返回 URL',
+  'word.import.image.upload.failed': '图片上传失败',
+  'word.import.unsupported.format': '仅支持 .docx 格式，不支持 .doc 或其他格式',
+  'word.import.image.skipped': '未配置图片上传功能，{count} 张图片已跳过',
+  'word.import.image.partial.failed': '{count} 张图片导入失败，已标记为错误占位，其余内容已导入',
+  'word.import.failed': '导入 Word 文档失败: {message}',
+
+  // ===== 剪贴板 / 拖拽限制 =====
+  'clipboard.file.size.exceed': '文件大小不能大于{maxSize}Kb'
 };

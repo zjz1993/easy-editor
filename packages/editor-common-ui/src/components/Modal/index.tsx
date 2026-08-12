@@ -2,6 +2,7 @@ import type {FC, ReactNode} from 'react';
 import {autoUpdate, offset, useClick, useDismiss, useFloating, useInteractions, useRole,} from '@floating-ui/react';
 import {AnimatePresence, motion} from 'framer-motion';
 import {createPortal} from 'react-dom';
+import IntlComponent from 'react-intl-universal';
 import Button from '../Button';
 import Iconfont from '../IconFont';
 import cx from 'classnames';
@@ -78,9 +79,9 @@ const Modal: FC<ModalProps> = ({
             <div className="textory-modal-body">{children}</div>
             <div className="textory-modal-footer">
               <Button type="primary" onClick={onSubmit}>
-                确认
+                {IntlComponent.get('common.confirm')}
               </Button>
-              <Button onClick={onClose}>取消</Button>
+              <Button onClick={onClose}>{IntlComponent.get('common.cancel')}</Button>
             </div>
           </motion.div>
         </motion.div>

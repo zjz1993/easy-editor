@@ -1,4 +1,4 @@
-import {BLOCK_TYPES, BubbleMenu} from '@textory/editor-common';
+import {BLOCK_TYPES, BubbleMenu, IntlComponent} from '@textory/editor-common';
 import type {Editor} from '@tiptap/core';
 import {type FC, useCallback} from 'react';
 import type {BubbleMenuProps} from '@tiptap/react/menus';
@@ -38,10 +38,10 @@ export const TextBubbleMenu: FC<TextBubbleMenuProps> = ({editor}) => {
       className="textory-text-bubble"
       updateDelay={150}
     >
-      <BubbleButton editor={editor} mark="bold" icon="icon-bold" tooltip="加粗" />
-      <BubbleButton editor={editor} mark="italic" icon="icon-italic" tooltip="斜体" />
-      <BubbleButton editor={editor} mark="underline" icon="icon-underline" tooltip="下划线" />
-      <BubbleButton editor={editor} mark="strike" icon="icon-strike" tooltip="删除线" />
+      <BubbleButton editor={editor} mark="bold" icon="icon-bold" tooltip={IntlComponent.get('bold')} />
+      <BubbleButton editor={editor} mark="italic" icon="icon-italic" tooltip={IntlComponent.get('italic')} />
+      <BubbleButton editor={editor} mark="underline" icon="icon-underline" tooltip={IntlComponent.get('underline')} />
+      <BubbleButton editor={editor} mark="strike" icon="icon-strike" tooltip={IntlComponent.get('strike')} />
       <span className="textory-text-bubble__divider" />
       <FontSizeDropdown editor={editor} />
       <ColorDropdown editor={editor} type="color" />
@@ -50,7 +50,7 @@ export const TextBubbleMenu: FC<TextBubbleMenuProps> = ({editor}) => {
       <BubbleButton
         editor={editor}
         icon="icon-geshishua"
-        tooltip="清除格式"
+        tooltip={IntlComponent.get('textbubble.clear.format')}
         onClick={() => editor.chain().focus().unsetAllMarks().run()}
       />
     </BubbleMenu>

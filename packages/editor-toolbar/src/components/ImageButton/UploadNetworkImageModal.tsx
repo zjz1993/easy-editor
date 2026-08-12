@@ -1,4 +1,4 @@
-import {Iconfont, InputNumber, Modal, Switch, Tooltip} from '@textory/editor-common';
+import {Iconfont, InputNumber, IntlComponent, Modal, Switch, Tooltip} from '@textory/editor-common';
 import {type FC, useEffect, useRef, useState} from 'react';
 import cx from 'classnames';
 import {Controller, useForm} from 'react-hook-form';
@@ -53,7 +53,7 @@ const UploadNetworkImageModal: FC<TUploadNetworkImageModalProps> = props => {
         onClose?.();
         reset();
       }}
-      title="插入图片"
+      title={IntlComponent.get('image.modal.title')}
       onSubmit={() => {
         handleSubmit(onSubmit)();
       }}
@@ -65,11 +65,11 @@ const UploadNetworkImageModal: FC<TUploadNetworkImageModalProps> = props => {
         >
           <div className={cx('row', errors.src && 'textory-link-panel__error')}>
             <div className="row__inner">
-              <label className="row__label required">图片链接</label>
+              <label className="row__label required">{IntlComponent.get('image.modal.url.label')}</label>
               <div className="row__input-wrapper">
                 <input
                   className="row__input"
-                  {...register('src', { required: '请填写链接' })}
+                  {...register('src', { required: IntlComponent.get('image.modal.url.required') })}
                 />
                 <div className="textory-link-panel__error__tips">
                   {errors?.src?.message}
@@ -86,12 +86,12 @@ const UploadNetworkImageModal: FC<TUploadNetworkImageModalProps> = props => {
                 )}
               >
                 <div className="row__inner">
-                  <label className="row__label required">图片宽度</label>
+                  <label className="row__label required">{IntlComponent.get('image.modal.width.label')}</label>
                   <div className="row__input-wrapper">
                     <Controller
                       name="width"
                       control={control}
-                      rules={{ required: '请输入图片宽度' }}
+                      rules={{ required: IntlComponent.get('image.modal.width.required') }}
                       render={({ field }) => (
                         <InputNumber {...field} suffix="px" min={1} />
                       )}
@@ -110,12 +110,12 @@ const UploadNetworkImageModal: FC<TUploadNetworkImageModalProps> = props => {
                 )}
               >
                 <div className="row__inner">
-                  <label className="row__label required">图片高度</label>
+                  <label className="row__label required">{IntlComponent.get('image.modal.height.label')}</label>
                   <div className="row__input-wrapper">
                     <Controller
                       name="height"
                       control={control}
-                      rules={{ required: '请输入图片高度' }}
+                      rules={{ required: IntlComponent.get('image.modal.height.required') }}
                       render={({ field }) => (
                         <InputNumber
                           {...field}
@@ -134,22 +134,22 @@ const UploadNetworkImageModal: FC<TUploadNetworkImageModalProps> = props => {
 
               <div className={cx('row')}>
                 <div className="row__inner">
-                  <label className="row__label">是否锁定宽高</label>
+                  <label className="row__label">{IntlComponent.get('image.modal.lockRatio.label')}</label>
                   <div className="row__input-wrapper input-wrapper-flex">
                     <Controller
                       name="isLockRatio"
                       control={control}
                       render={({ field }) => (
                         <Switch
-                          checkedChildren="是"
-                          unCheckedChildren="否"
+                          checkedChildren={IntlComponent.get('image.modal.lockRatio.yes')}
+                          unCheckedChildren={IntlComponent.get('image.modal.lockRatio.no')}
                           {...field}
                         />
                       )}
                     />
                     <Tooltip
                       className="icon"
-                      content="锁定时，将根据当前设置的宽度自动计算图片的高度，用户无法输入高度"
+                      content={IntlComponent.get('image.modal.lockRatio.tooltip')}
                     >
                       <Iconfont type="icon-icon-question" />
                     </Tooltip>
