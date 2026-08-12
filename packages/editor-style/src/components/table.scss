@@ -9,7 +9,9 @@ $name:#{var.$editor-name}-table;
   overflow: auto;
   margin: 0;
   box-sizing: border-box;
+  max-width: 100%;
   .textory-block-container{
+    max-width: 100%;
     & > *{
       margin: 0;
     }
@@ -313,5 +315,10 @@ $name:#{var.$editor-name}-table;
       color: styles.$primary-red;
     }
   }
+}
+
+.textory-table-scroll-wrapper {
+  max-width: 100%;
+  overflow-x: auto;
 }
 

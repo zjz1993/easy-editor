@@ -381,9 +381,9 @@ function openPreview(images: HTMLImageElement[], startIndex: number) {
   imgEl.draggable = false;
   // 点击图片本体不关闭（防止误触）；点击 wrap 空白处关闭
   imgEl.addEventListener('click', (e) => e.stopPropagation());
-  // 拖拽 pan（仅在 scale > 1 时生效，避免原图就拖动）
+  // 拖拽 pan：任意 scale 都可拖
   imgEl.addEventListener('mousedown', (e) => {
-    if (!previewState || previewState.scale <= 1) return;
+    if (!previewState) return;
     e.preventDefault();
     previewState.dragStart = {
       x: e.clientX, y: e.clientY,
@@ -591,18 +591,33 @@ function rotatePreview() {
   applyTransform(previewState);
 }
 
-function downloadImage(img: HTMLImageElement) {
+async function downloadImage(img: HTMLImageElement) {
   const url = img.src;
   if (!url) return;
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = deriveImageName(img) || 'image';
-  // 同源直接 download；跨域时浏览器会忽略 download 改为 navigate（仍能下载）
-  a.target = '_blank';
-  a.rel = 'noopener';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+  const name = deriveImageName(img) || 'image';
+  try {
+    const res = await fetch(url, { mode: 'cors' });
+    if (!res.ok) throw new Error(`status ${res.status}`);
+    const blob = await res.blob();
+    const objUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = objUrl;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(objUrl);
+  } catch {
+    // CORS 失败回退：新标签打开（浏览器 navigate，仍可右键另存）
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = name;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
 }
 
 // content root 上事件委托：点击 <img> 触发 lightbox

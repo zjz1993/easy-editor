@@ -253,6 +253,8 @@
       .#{var.$editor-name}-table-scroll-wrapper {
         overflow-y: hidden;
         overflow-x: auto;
+        max-width: 100%;
+        box-sizing: border-box;
         padding: 40px 8px 0px 40px;
         margin: -10px -8px 0px -10px;
       }
@@ -268,6 +270,8 @@
 
     .ProseMirror {
       flex:1;
+      min-width: 0;
+      max-width: 100%;
 
       &:focus {
         outline: none;
