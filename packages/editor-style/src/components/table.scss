@@ -9,7 +9,6 @@ $name:#{var.$editor-name}-table;
   overflow: auto;
   margin: 0;
   box-sizing: border-box;
-  max-width: 100%;
   .textory-block-container{
     max-width: 100%;
     & > *{
@@ -89,6 +88,11 @@ $name:#{var.$editor-name}-table;
     pointer-events: none;
     position: absolute;
     z-index: 2;
+  }
+
+  .textory-table-cell-resizing {
+    background: rgba(0, 130, 252, .08);
+    position: relative;
   }
 
   .column-resize-handle {

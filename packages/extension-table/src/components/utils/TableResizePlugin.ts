@@ -366,6 +366,8 @@ export function handleDecorations(
   const map = TableMap.get(table);
   const start = $cell.start(-1);
   const col = map.colCount($cell.pos - start) + $cell.nodeAfter!.attrs.colspan;
+  // 0-indexed column whose width is being changed (right edge of dragged handle)
+  const resizedCol = col - 1;
   for (let row = 0; row < map.height; row++) {
     // cell index
     const index = col + row * map.width - 1;
@@ -384,5 +386,35 @@ export function handleDecorations(
       decorations.push(Decoration.widget(pos, dom));
     }
   }
+
+  // While actively dragging, highlight every cell that spans the resized column.
+  const dragging = columnResizingPluginKey.getState(state)?.dragging;
+  if (dragging && resizedCol >= 0) {
+    const seen = new Set<number>();
+    for (let row = 0; row < map.height; row++) {
+      for (let c = 0; c < map.width; c++) {
+        const mapIndex = row * map.width + c;
+        const relPos = map.map[mapIndex];
+        if (seen.has(relPos)) continue;
+        seen.add(relPos);
+        const cellNode = table.nodeAt(relPos);
+        if (!cellNode) continue;
+        const cellColSpan = cellNode.attrs.colspan;
+        const cellColStart = map.colCount(relPos);
+        if (
+          resizedCol >= cellColStart &&
+          resizedCol < cellColStart + cellColSpan
+        ) {
+          const absPos = start + relPos;
+          decorations.push(
+            Decoration.node(absPos, absPos + cellNode.nodeSize, {
+              class: 'textory-table-cell-resizing',
+            }),
+          );
+        }
+      }
+    }
+  }
+
   return DecorationSet.create(state.doc, decorations);
 }
