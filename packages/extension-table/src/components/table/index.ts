@@ -1,8 +1,14 @@
 import type {TableOptions as OrigTableOptions} from '@tiptap/extension-table';
 import {Table as TTable} from '@tiptap/extension-table';
-import {CellSelection} from '@tiptap/pm/tables';
+import {
+  CellSelection,
+  columnResizingPluginKey as tiptapColumnResizingPluginKey,
+} from '@tiptap/pm/tables';
 import {TableView} from "./TableView.ts";
-import {columnResizing} from "../utils/TableResizePlugin.ts";
+import {
+  columnResizing,
+  columnResizingPluginKey,
+} from '../utils/TableResizePlugin.ts';
 import {getSelectedCells} from '../utils/index.ts';
 
 export type TableOptions = Partial<OrigTableOptions> & {
@@ -66,8 +72,9 @@ export const Table = TTable.extend<TableOptions>({
     const parentPlugins = this.parent?.() ?? [];
     return [
       ...parentPlugins.filter(
-        //@ts-ignore
-        p => !p.key.startsWith('custom_tableColumnResizing'),
+        plugin =>
+          plugin.spec.key !== tiptapColumnResizingPluginKey &&
+          plugin.spec.key !== columnResizingPluginKey,
       ),
       columnResizing({
         editor: this.editor,

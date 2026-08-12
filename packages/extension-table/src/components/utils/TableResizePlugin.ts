@@ -2,8 +2,9 @@ import type {Attrs} from '@tiptap/pm/model';
 import {type EditorState, Plugin, PluginKey, type Transaction} from '@tiptap/pm/state';
 import type {EditorView} from '@tiptap/pm/view';
 import {Decoration, DecorationSet} from '@tiptap/pm/view';
-import {cellAround, pointsAtCell, TableMap, updateColumnsOnResize,} from '@tiptap/pm/tables';
+import {cellAround, pointsAtCell, TableMap} from '@tiptap/pm/tables';
 import type {Editor} from '@tiptap/core';
+import {updateColumns} from '../table/TableView.ts';
 
 /**
  * @public
@@ -339,7 +340,7 @@ export function displayColumnWidth(
     dom = dom.parentNode;
   }
   if (!dom) return;
-  updateColumnsOnResize(
+  updateColumns(
     table,
     dom.firstChild as HTMLTableColElement,
     dom as HTMLTableElement,
