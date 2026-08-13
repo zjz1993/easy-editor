@@ -36,6 +36,7 @@ export default {
   'toolbar.header.quote': '{command} + {option} + 8',
   'toolbar.link.edit': '修改链接',
   'toolbar.link.unlink': '移除链接',
+  'toolbar.link.set': '插入链接',
   code: '插入代码',
   'code.inline.insert': '插入行内代码',
   'code.inline.remove': '清除行内代码',

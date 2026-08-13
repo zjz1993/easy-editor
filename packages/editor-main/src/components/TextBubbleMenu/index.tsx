@@ -6,6 +6,7 @@ import BubbleButton from './BubbleButton';
 import ColorDropdown from './ColorDropdown';
 import FontSizeDropdown from './FontSizeDropdown';
 import HeadingDropdown from './HeadingDropdown';
+import LinkButton from './LinkButton';
 
 export interface TextBubbleMenuProps {
   editor: Editor;
@@ -45,6 +46,7 @@ export const TextBubbleMenu: FC<TextBubbleMenuProps> = ({editor}) => {
       <BubbleButton editor={editor} mark="italic" icon="icon-italic" tooltip={IntlComponent.get('italic')} />
       <BubbleButton editor={editor} mark="underline" icon="icon-underline" tooltip={IntlComponent.get('underline')} />
       <BubbleButton editor={editor} mark="strike" icon="icon-strike" tooltip={IntlComponent.get('strike')} />
+      <LinkButton editor={editor} />
       <span className="textory-text-bubble__divider" />
       <FontSizeDropdown editor={editor} />
       <ColorDropdown editor={editor} type="color" />

@@ -132,6 +132,59 @@
     display: inline-block;
   }
 
+  &__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  &__link-popover {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    background: styles.$primary-white;
+    border-radius: 4px;
+    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 15%);
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    z-index: 1001;
+    white-space: nowrap;
+  }
+
+  &__link-input {
+    width: 200px;
+    height: 28px;
+    border: 1px solid #e5e7eb;
+    border-radius: 3px;
+    padding: 0 8px;
+    font-size: 12px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color .15s;
+
+    &:focus {
+      border-color: #0082fc;
+    }
+  }
+
+  &__link-submit {
+    height: 28px;
+    padding: 0 12px;
+    border: none;
+    border-radius: 3px;
+    background: #0082fc;
+    color: styles.$primary-white;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background .15s;
+
+    &:hover {
+      background: #0070d4;
+    }
+  }
+
   &__fontsize-list {
     background: styles.$primary-white;
     border-radius: 4px;
