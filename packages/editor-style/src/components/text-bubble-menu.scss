@@ -77,6 +77,53 @@
     text-align: center;
   }
 
+  &__btn--heading {
+    padding: 0 6px;
+  }
+
+  &__heading-current {
+    font-size: 12px;
+    line-height: 1;
+    margin-right: 2px;
+    white-space: nowrap;
+  }
+
+  &__heading-list {
+    background: styles.$primary-white;
+    border-radius: 4px;
+    padding: 4px 0;
+    min-width: 96px;
+    max-height: 320px;
+    overflow-y: auto;
+  }
+
+  &__heading-item {
+    height: 30px;
+    padding: 0 12px;
+    cursor: pointer;
+    transition: background .15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    &:hover {
+      background: #f2f2f2;
+    }
+
+    &.is-active {
+      color: #0082fc;
+      font-weight: 500;
+    }
+
+    // 让标题在弹层里也能体现字号层级
+    &--h1 .textory-text-bubble__heading-label { font-size: 18px; font-weight: 600; }
+    &--h2 .textory-text-bubble__heading-label { font-size: 16px; font-weight: 600; }
+    &--h3 .textory-text-bubble__heading-label { font-size: 15px; font-weight: 600; }
+    &--h4 .textory-text-bubble__heading-label { font-size: 14px; font-weight: 600; }
+    &--h5 .textory-text-bubble__heading-label { font-size: 13px; font-weight: 600; }
+    &--h6 .textory-text-bubble__heading-label { font-size: 12px; font-weight: 600; }
+  }
+
   &__divider {
     width: 1px;
     height: 16px;

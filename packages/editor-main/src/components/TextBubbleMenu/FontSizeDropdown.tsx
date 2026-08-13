@@ -37,7 +37,6 @@ const FontSizeDropdown: FC<FontSizeDropdownProps> = ({editor}) => {
     <Dropdown
       visible={open}
       onVisibleChange={setOpen}
-      showIcon={false}
       popup={
         <div className="textory-text-bubble__fontsize-list">
           <div
@@ -74,7 +73,6 @@ const FontSizeDropdown: FC<FontSizeDropdownProps> = ({editor}) => {
         <span className="textory-text-bubble__fontsize-label">
           {activeSize || IntlComponent.get('fontsize.label')}
         </span>
-        <Iconfont type="icon-caret-down" />
       </button>
     </Dropdown>
   );

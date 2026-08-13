@@ -345,9 +345,9 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
           isOutlineEnabled={isOutlineEnabled}
         />
         <MessageContainer />
-        <BubbleLayer editor={editor} />
-        {isTextBubbleEnabled && <TextBubbleLayer editor={editor} />}
-        <FilePreviewLayer editor={editor} />
+        {intlInit && <BubbleLayer editor={editor} />}
+        {intlInit && isTextBubbleEnabled && <TextBubbleLayer editor={editor} />}
+        {intlInit && <FilePreviewLayer editor={editor} />}
       </div>
     </EditorProvider>
   );

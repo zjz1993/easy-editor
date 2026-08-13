@@ -1,4 +1,4 @@
-import {Dropdown, Iconfont, PRESET_COLORS} from '@textory/editor-common';
+import {Dropdown, Iconfont, IntlComponent, PRESET_COLORS} from '@textory/editor-common';
 import type {Editor} from '@tiptap/core';
 import {chunk} from 'lodash-es';
 import {type FC, useState} from 'react';
@@ -61,7 +61,7 @@ const ColorDropdown: FC<ColorDropdownProps> = ({editor, type}) => {
             className="textory-color-picker-default-btn"
             onClick={handleClear}
           >
-            恢复默认
+            {IntlComponent.get('common.reset')}
           </div>
           {chunk(PRESET_COLORS, 6).map((row, i) => (
             <div className="textory-color-picker__color_row" key={i}>
@@ -92,7 +92,7 @@ const ColorDropdown: FC<ColorDropdownProps> = ({editor, type}) => {
           padding: '0 4px',
           height: '100%',
         }}
-        title={isColor ? '文字颜色' : '高亮颜色'}
+        title={isColor ? IntlComponent.get('color') : IntlComponent.get('highlight')}
       >
         <Iconfont type={isColor ? 'icon-font-color' : 'icon-fill'} />
         <span
