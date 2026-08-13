@@ -1,7 +1,7 @@
 import {BLOCK_TYPES, MARK_TYPES} from '@textory/editor-utils';
 import {Iconfont, IntlComponent, Tooltip} from '@textory/editor-common';
 import {useDebounceFn, useEventListener} from 'ahooks';
-import {useCallback, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {autoUpdate, flip, offset, shift, useFloating} from "@floating-ui/react";
 import {LinkPanelPopup} from "@textory/editor-toolbar";
 
@@ -72,8 +72,22 @@ const LinkToolbar = ({
     onClose?.();
   }, [onClose]);
 
+  // 已显示后用户开始拖选文字，立即关闭，避免与 TextBubble 共存
+  useEffect(() => {
+    const handler = () => {
+      if (editor.isDestroyed) return;
+      if (!editor.state.selection.empty) {
+        safeClose();
+      }
+    };
+    editor.on('selectionUpdate', handler);
+    return () => editor.off('selectionUpdate', handler);
+  }, [editor, safeClose]);
+
   const { run } = useDebounceFn(
     () => {
+      // debounce 期间用户开始拖选文字，则不弹出
+      if (!editor.isDestroyed && !editor.state.selection.empty) return;
       setShowToolbar(true);
     },
     {

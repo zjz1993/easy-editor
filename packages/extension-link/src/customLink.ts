@@ -47,6 +47,10 @@ const CustomLink = Link.extend({
             if (!this.editor.isEditable){
               return false;
             }
+            // 已有非空 selection（用户正在选中文字）时不弹出链接工具栏
+            if (!view.state.selection.empty) {
+              return false;
+            }
             const linkElement = target.closest('a');
 
             const textNode = [...linkElement.childNodes].find(
