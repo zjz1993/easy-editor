@@ -50,6 +50,13 @@ export interface RenderOptions {
    * 点击 content 内 <img> 弹出全屏预览，支持上/下张、缩放、旋转、下载。
    * 图片若在 <a> 内则不拦截（保留链接默认行为） */
   preview?: boolean;
+  /** 是否对入参 html 先做 XSS 净化（删 script/iframe/on* 事件属性/javascript: 协议等），默认 true。
+   * 渲染场景常接 DB 取出的帖子 HTML，开启后即便有人塞了 script 标签也不会执行 */
+  sanitize?: boolean;
+  /** 入参 html 是否来自 Discuz 这种服务端做过 htmlspecialchars 的存储。
+   * 开启后先把 &lt; &gt; &quot; &#039; &amp; 还原回原始字符，再交给 sanitize/渲染。
+   * 默认 false。Discuz/PHP BBCode 站点设 true */
+  fromDiscuz?: boolean;
 }
 
 export interface RenderInstance {
@@ -65,6 +72,161 @@ export interface RenderInstance {
   getOutline(): OutlineInstance | null;
   /** 拿 .textory 容器 element（业务侧自定义样式 hook） */
   getContentEl(): HTMLElement;
+}
+
+// ────────────── 入参预处理：Discuz 实体还原 + XSS 净化 ──────────────
+// Discuz 服务端默认对帖子内容跑 htmlspecialchars（allowhtml=0）：
+//   < > " ' &  →  &lt; &gt; &quot; &#039; &amp;
+// textory 编辑器产出的真实 HTML（<div class="textory-block-container">...）
+// 存库后也被转义，渲染时若直接 innerHTML，浏览器会把实体当成文本字符显示，
+// 用户看到的就是 "<div class="textory-block-container">..." 这种泄露的标签字符串。
+//
+// decodeDiscuzHtml：先把实体还原回真实 HTML 字符串。
+// 顺序关键：&amp; 必须第一个还原。否则 &amp;lt; 会被错误地二次解码成 <。
+//
+// sanitizeHtml：DOM-based 净化。建临时 div、parse 实体还原后的 HTML、
+// 删危险标签/属性。比纯正则鲁棒（浏览器 parser 已处理畸形标签）。
+//
+// 二者配合：DB 取出的转义串 → decode → 原始 HTML → sanitize → 安全 HTML → innerHTML。
+
+/**
+ * 还原 HTML 实体（包含 Discuz/PHP htmlspecialchars 产出 + textory 自产 &nbsp; 等）。
+ * 用浏览器 DOM parser 一次性解码，比正则列表可靠：
+ *   - 覆盖所有 named entity（&nbsp; &hellip; &mdash; &ldquo; ...）和 numeric entity（&#039; &#x27; ...）
+ *   - 不执行脚本（textarea 只接 text，<script> 会被当作文本字符）
+ *   - 不丢失任何实体（正则列表常漏 &nbsp; 这种非 htmlspecialchars 产出）
+ *
+ * 调用方拿到解码后的字符串后应再过 sanitizeHtml。
+ */
+export function decodeDiscuzHtml(input: unknown): string {
+  if (input == null) return '';
+  const s = String(input);
+  if (s.indexOf('&') === -1) return s; // 无实体快路径
+  const ta = document.createElement('textarea');
+  ta.innerHTML = s;
+  return ta.value;
+}
+
+/** 删除危险标签的 selector。这些标签要么直接执行 JS，要么能拉外部资源/重定向 */
+const SANITIZER_STRIP_SELECTOR =
+  'script,style,link,iframe,frame,object,embed,meta,base,form,button,input,textarea,svg,math';
+
+/** 危险属性前缀：on*（onerror/onclick/...）、formaction 等 */
+const SANITIZER_ATTR_DANGEROUS_NAME = /^on/i;
+/** formaction/onerror 等也可能落在非 on* 名字里，但 on* 已覆盖 95%。
+ *  下面这些单独列：它们不执行 JS，但可被钓鱼/重定向滥用 */
+const SANITIZER_ATTR_DROP_NAMES = new Set([
+  'formaction',
+  'xlink:href',
+  'xml:base',
+]);
+
+/**
+ * DOM-based XSS 净化。
+ *
+ * 思路：用浏览器 parser 把字符串变成 DOM 树，然后 walk 树删节点/属性。
+ * 比正则可靠——畸形标签、comments、CDATA、命名空间混淆都能被 parser 规整化。
+ *
+ * 处理：
+ *   0. 暂存 <pre>/<code> 子树内容并清空——代码块里的 <form>/<script>/<svg> 是
+ *      用户的代码示例文本，不是要执行的 HTML，sanitize 不应碰。
+ *      做法：存原始 innerHTML 到数组，textContent 置空，挂 data-textory-code-idx。
+ *   1. 删整个危险标签（script/iframe/object/...）—— 不保留子内容
+ *   2. 删所有 on* 属性
+ *   3. 删 formaction/xlink:href 等单独列的高危属性
+ *   4. 校验 href/src/action 的协议白名单：javascript:/vbscript:/data:（HTML 上下文）一律删
+ *      保留 http/https/mailto/tel/ftp/相对路径/锚点
+ *   5. 还原代码块原始内容
+ *
+ * @param html 原始 HTML 字符串
+ * @returns 净化后的 HTML 字符串，可直接赋给 innerHTML
+ */
+export function sanitizeHtml(html: string): string {
+  if (!html) return '';
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+
+  // 0. 暂存 pre/code 内容
+  //    textContent 置空避免子树里的 <script>/<form>/on* 被 1-3 步误删
+  //    pre 本身（容器）保留，仅清子节点
+  const codeStore: string[] = [];
+  tmp.querySelectorAll('pre, code').forEach((el) => {
+    const idx = codeStore.length;
+    codeStore.push(el.innerHTML);
+    el.textContent = '';
+    el.setAttribute('data-textory-code-idx', String(idx));
+  });
+
+  // 1. 删危险标签（整棵子树）
+  tmp.querySelectorAll(SANITIZER_STRIP_SELECTOR).forEach((n) => n.remove());
+
+  // 2. walk 所有剩余元素，清属性
+  const all = tmp.querySelectorAll('*');
+  all.forEach((el) => {
+    // 复制 attributes 列表再迭代——迭代中 removeAttribute 会破坏 live NodeList
+    const attrs = Array.from(el.attributes);
+    for (const attr of attrs) {
+      const name = attr.name.toLowerCase();
+      const value = attr.value;
+
+      // on* 事件属性
+      if (SANITIZER_ATTR_DANGEROUS_NAME.test(name)) {
+        el.removeAttribute(attr.name);
+        continue;
+      }
+      // 单独列的高危属性
+      if (SANITIZER_ATTR_DROP_NAMES.has(name)) {
+        el.removeAttribute(attr.name);
+        continue;
+      }
+      // URL 类属性：拦截 javascript:/vbscript:/data:text/html 等
+      if (name === 'href' || name === 'src' || name === 'action' || name === 'formaction' || name === 'poster' || name === 'background' || name === 'cite') {
+        if (isDangerousUrl(value)) {
+          el.removeAttribute(attr.name);
+        }
+      }
+    }
+  });
+
+  // 3. 删注释节点（IE conditional comments、`<!--[if IE]><script>` 之类）
+  const walker = document.createTreeWalker(tmp, NodeFilter.SHOW_COMMENT);
+  const comments: Comment[] = [];
+  while (walker.nextNode()) comments.push(walker.currentNode as Comment);
+  comments.forEach((c) => c.parentNode?.removeChild(c));
+
+  // 4. 还原代码块内容（容器已 sanitize 完，原始代码文本塞回）
+  tmp.querySelectorAll('[data-textory-code-idx]').forEach((el) => {
+    const idx = Number.parseInt(el.getAttribute('data-textory-code-idx') || '-1', 10);
+    el.removeAttribute('data-textory-code-idx');
+    if (idx >= 0 && codeStore[idx] !== undefined) {
+      el.innerHTML = codeStore[idx];
+    }
+  });
+
+  return tmp.innerHTML;
+}
+
+/** 判断 URL 是否危险（在 href/src/action 等位置上可执行脚本或加载恶意资源） */
+function isDangerousUrl(raw: string): boolean {
+  if (!raw) return false;
+  const v = raw.trim().toLowerCase();
+  // 协议白名单：常见无副作用 scheme + 相对/锚点
+  //  - http/https/mailto/tel/ftp/ftps 普通资源
+  //  - #/.///  锚点 / 相对路径 / 协议相对 URL
+  //  - data:image/*  仅图片 data URI 安全（SVG data URI 例外，但 SVG 标签已被 selector 删了）
+  const SAFE_URL = /^(https?:|mailto:|tel:|ftp:|ftps:|\/|#|\.|\?|data:image\/(?!svg))/i;
+  // javascript:/vbscript:/data:text/html 等 = 不在白名单 → 危险
+  // 也拦"  javascript:..." 这种带空白/控制字符的绕过尝试
+  return !SAFE_URL.test(v);
+}
+
+/** 入参 html 预处理管道：按需 decode → 按需 sanitize */
+function preprocessHtml(html: string | undefined, fromDiscuz: boolean, sanitize: boolean): string {
+  if (html === undefined) return '';
+  let out = html;
+  if (fromDiscuz) out = decodeDiscuzHtml(out);
+  if (sanitize) out = sanitizeHtml(out);
+  return out;
 }
 
 // ────────────── 复制按钮样式（幂等注入） ──────────────
@@ -668,7 +830,12 @@ export function create(
     outlineCollapsed = false,
     contentClassName,
     preview: previewEnabled = true,
+    sanitize: sanitizeEnabled = true,
+    fromDiscuz = false,
   } = options;
+
+  // 入参 html 预处理：Discuz 实体还原 + XSS 净化
+  const processedHtml = preprocessHtml(html, fromDiscuz, sanitizeEnabled);
 
   // 清空 target
   el.innerHTML = '';
@@ -703,8 +870,8 @@ export function create(
   contentInner.classList.add('tiptap', 'ProseMirror');
   contentInner.style.minWidth = '0';
   contentInner.style.overflowX = 'auto';
-  if (html !== undefined) {
-    contentInner.innerHTML = html;
+  if (processedHtml) {
+    contentInner.innerHTML = processedHtml;
     patchNodeViewClasses(contentInner);
   }
   content.appendChild(contentInner);
