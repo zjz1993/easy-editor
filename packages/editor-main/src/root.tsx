@@ -20,6 +20,7 @@ import {FileExtension} from '@textory/extension-file';
 import {VideoExtension} from '@textory/extension-video';
 import {UploadExtension} from '@textory/extension-upload';
 import {Table, TableBubbleMenu, TableCell, TableHeader, TableRow,} from '@textory/extension-table';
+import {TextoryDragHandle} from '@textory/extension-drag-handle';
 import {FontSize} from '@textory/extension-fontsize';
 import {Placeholder} from './extension/Placeholder';
 import {DocMetaExtension} from './extension/DocMeta';
@@ -108,6 +109,16 @@ const TextBubbleLayer = memo<{ editor: TiptapEditor }>(({ editor }) => (
   <TextBubbleMenu editor={editor} />
 ));
 TextBubbleLayer.displayName = 'TextBubbleLayer';
+
+/**
+ * 隔离 DragHandle —— 仅依赖 editor 实例。
+ * Block-level 节点拖动 handle,table 内部自动隐藏。
+ * 详见 .ai/docs/drag-handle.md
+ */
+const DragHandleLayer = memo<{ editor: TiptapEditor }>(({ editor }) => (
+  <TextoryDragHandle editor={editor} />
+));
+DragHandleLayer.displayName = 'DragHandleLayer';
 
 
 const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
@@ -345,8 +356,9 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
           isOutlineEnabled={isOutlineEnabled}
         />
         <MessageContainer />
-        {intlInit && <BubbleLayer editor={editor} />}
-        {intlInit && isTextBubbleEnabled && <TextBubbleLayer editor={editor} />}
+        {intlInit && editor.isEditable && <BubbleLayer editor={editor} />}
+        {intlInit && editor.isEditable && <DragHandleLayer editor={editor} />}
+        {intlInit && isTextBubbleEnabled && editor.isEditable && <TextBubbleLayer editor={editor} />}
         {intlInit && <FilePreviewLayer editor={editor} />}
       </div>
     </EditorProvider>

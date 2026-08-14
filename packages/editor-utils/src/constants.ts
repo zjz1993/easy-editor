@@ -654,6 +654,7 @@ export const BLOCK_TYPES = {
   TL: 'table',
   TR: 'table_row',
   TD: 'table_cell',
+  TH: 'tableHeader',
   H: 'heading',
   OL: 'orderedList',
   UL: 'unorderedList',

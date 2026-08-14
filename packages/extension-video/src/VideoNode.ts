@@ -22,9 +22,11 @@ import type {VideoOptions} from './types/index.ts';
 export const VideoNode = Node.create<VideoOptions>({
   name: BLOCK_TYPES.VIDEO,
   group: 'block',
-  draggable() {
-    return this.editor.isEditable;
-  },
+  // [drag-handle] 原生 draggable 关闭,统一由 @textory/extension-drag-handle 处理。
+  // 详见 .ai/docs/drag-handle.md。如需恢复,取消注释即可。
+  // draggable() {
+  //   return this.editor.isEditable;
+  // },
   selectable() {
     return this.editor.isEditable;
   },

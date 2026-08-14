@@ -1,0 +1,24 @@
+.textory-drag-handle-layer {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding-right: 6px;
+}
+
+.textory-drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10px;
+  height: 16px;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  svg {
+    display: block;
+    flex: none;
+  }
+}

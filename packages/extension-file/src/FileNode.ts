@@ -15,9 +15,11 @@ import type {FileNodeAttributes} from '@textory/context';
 export const FileNode = Node.create({
   name: BLOCK_TYPES.FILE,
   group: 'block',
-  draggable() {
-    return this.editor.isEditable;
-  },
+  // [drag-handle] 原生 draggable 关闭,统一由 @textory/extension-drag-handle 处理。
+  // 详见 .ai/docs/drag-handle.md。如需恢复,取消注释即可。
+  // draggable() {
+  //   return this.editor.isEditable;
+  // },
   selectable() {
     return this.editor.isEditable;
   },

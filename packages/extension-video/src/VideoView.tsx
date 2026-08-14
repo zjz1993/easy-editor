@@ -4,7 +4,7 @@ import cx from 'classnames';
 import {isViewEditable} from '@textory/editor-utils';
 import {IntlComponent, message, Popover} from '@textory/editor-common';
 import {useEditorContext} from '@textory/context';
-import {type FC, useCallback, useEffect, useRef, useState} from 'react';
+import {type FC, useCallback, useRef, useState} from 'react';
 import {isEmpty, isNil} from 'lodash-es';
 import useHandleChangeVideoSize from './hooks/useHandleChangeVideoSize.ts';
 import VideoNodeToolbar from './VideoNodeToolbar.tsx';
@@ -279,39 +279,39 @@ const VideoView: FC<NodeViewProps> = props => {
   };
 
   /**
-   * Re-enable native drag-and-drop of the node within the editor.
-   * Same approach as ImageView — listen on editor.view.dom and re-insert
-   * the node at the drop position.
+   * [drag-handle] 原生 drag-and-drop 已关闭,统一由 @textory/extension-drag-handle
+   * 处理 block 节点拖动。VideoNode 的 `draggable()` 也已注释。详见 .ai/docs/drag-handle.md。
+   * 如需恢复,取消下方 useEffect 注释,并在 VideoNode.ts 恢复 `draggable()`。
    */
-  useEffect(() => {
-    const editorDom = editor.view.dom;
-
-    const handleDragOver = (event: DragEvent) => {
-      event.preventDefault();
-    };
-
-    const handleDrop = (event: DragEvent) => {
-      const pos = editor.view.posAtCoords({
-        left: event.clientX,
-        top: event.clientY,
-      });
-      const currentPos = getPos?.();
-      if (!pos || typeof currentPos !== 'number') return;
-      event.preventDefault();
-      const insertPos = pos.pos > currentPos ? pos.pos - 1 : pos.pos;
-      const tr = editor.view.state.tr
-        .delete(currentPos, currentPos + 1)
-        .insert(insertPos, node);
-      editor.view.dispatch(tr);
-    };
-
-    editorDom.addEventListener('dragover', handleDragOver);
-    editorDom.addEventListener('drop', handleDrop);
-    return () => {
-      editorDom.removeEventListener('dragover', handleDragOver);
-      editorDom.removeEventListener('drop', handleDrop);
-    };
-  }, [editor, getPos, node]);
+  // useEffect(() => {
+  //   const editorDom = editor.view.dom;
+  //
+  //   const handleDragOver = (event: DragEvent) => {
+  //     event.preventDefault();
+  //   };
+  //
+  //   const handleDrop = (event: DragEvent) => {
+  //     const pos = editor.view.posAtCoords({
+  //       left: event.clientX,
+  //       top: event.clientY,
+  //     });
+  //     const currentPos = getPos?.();
+  //     if (!pos || typeof currentPos !== 'number') return;
+  //     event.preventDefault();
+  //     const insertPos = pos.pos > currentPos ? pos.pos - 1 : pos.pos;
+  //     const tr = editor.view.state.tr
+  //       .delete(currentPos, currentPos + 1)
+  //       .insert(insertPos, node);
+  //     editor.view.dispatch(tr);
+  //   };
+  //
+  //   editorDom.addEventListener('dragover', handleDragOver);
+  //   editorDom.addEventListener('drop', handleDrop);
+  //   return () => {
+  //     editorDom.removeEventListener('dragover', handleDragOver);
+  //     editorDom.removeEventListener('drop', handleDrop);
+  //   };
+  // }, [editor, getPos, node]);
 
   const progress = useEditorState({
     editor,
