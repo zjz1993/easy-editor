@@ -34,7 +34,7 @@
     "build": "node scripts/build-umd.mjs && node scripts/copy-css.mjs && tsc --emitDeclarationOnly",
     "dev": "node scripts/build-umd.mjs --watch"
   },
-  "description": "Easy Editor 的 UMD/CDN 入口包，用于非 React 环境通过 <script> 标签引入",
+  "description": "Textory 的 UMD/CDN 入口包，用于非 React 环境通过 <script> 标签引入",
   "peerDependencies": {
     "react": "^18 || ^19",
     "react-dom": "^18 || ^19"

@@ -85,4 +85,11 @@ export type TTextoryEditorProps = {
    * 在 editor 首次非空时触发一次；不会在 unmount 时再触发（unmount 由父组件自己处理）。
    */
   onEditorReady?: (editor: TiptapEditor) => void;
+  /**
+   * 字数统计变化时触发（需要 `features.characterCount` 未被关闭）。
+   *
+   * 每次文档内容更新后调用一次。计数规则：非空白字符数；
+   * CJK 每个汉字算一个词，拉丁字母/数字连续串算一个词。
+   */
+  onCharacterCount?: (count: {characters: number; words: number}) => void;
 };

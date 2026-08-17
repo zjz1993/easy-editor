@@ -29,6 +29,7 @@
     "@textory/editor-toolbar": "workspace:^",
     "@textory/editor-utils": "workspace:^",
     "@textory/extension-bold": "workspace:^",
+    "@textory/extension-character-count": "workspace:^",
     "@textory/extension-code-block": "workspace:^",
     "@textory/extension-drag-handle": "workspace:^",
     "@textory/extension-export": "workspace:^",

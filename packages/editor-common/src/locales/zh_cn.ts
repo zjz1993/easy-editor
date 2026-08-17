@@ -165,5 +165,9 @@ export default {
   'word.import.failed': '导入 Word 文档失败: {message}',
 
   // ===== 剪贴板 / 拖拽限制 =====
-  'clipboard.file.size.exceed': '文件大小不能大于{maxSize}Kb'
+  'clipboard.file.size.exceed': '文件大小不能大于{maxSize}Kb',
+
+  // ===== 字数统计 =====
+  'characterCount.characters': '{count} 字',
+  'characterCount.limit': '{count} / {max} 字'
 };

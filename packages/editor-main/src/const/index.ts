@@ -41,5 +41,6 @@ export const DEFAULT_PROPS: Partial<TTextoryEditorProps> = {
     importWord: true,
     fileUpload: true,
     videoUpload: true,
+    characterCount: true,
   },
 }

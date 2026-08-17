@@ -17,6 +17,7 @@ export const FEATURES = {
   TEXT_BUBBLE_TOOLBAR: 'textBubbleToolbar',
   FILE_UPLOAD: 'fileUpload',
   VIDEO_UPLOAD: 'videoUpload',
+  CHARACTER_COUNT: 'characterCount',
 } as const;
 
 export type FeatureName = (typeof FEATURES)[keyof typeof FEATURES];

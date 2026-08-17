@@ -331,6 +331,9 @@ importers:
       '@textory/extension-bold':
         specifier: workspace:^
         version: link:../extension-bold
+      '@textory/extension-character-count':
+        specifier: workspace:^
+        version: link:../extension-character-count
       '@textory/extension-code-block':
         specifier: workspace:^
         version: link:../extension-code-block
@@ -568,6 +571,21 @@ importers:
       '@tiptap/extension-bold':
         specifier: 3.28.0
         version: 3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))
+      tsup:
+        specifier: ^8.5.1
+        version: 8.5.1(@swc/core@1.15.43)(postcss@8.5.18)(typescript@6.0.3)(yaml@2.9.0)
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
+
+  packages/extension-character-count:
+    devDependencies:
+      '@tiptap/core':
+        specifier: 3.28.0
+        version: 3.28.0(@tiptap/pm@3.28.0)
+      '@tiptap/pm':
+        specifier: 3.28.0
+        version: 3.28.0
       tsup:
         specifier: ^8.5.1
         version: 8.5.1(@swc/core@1.15.43)(postcss@8.5.18)(typescript@6.0.3)(yaml@2.9.0)

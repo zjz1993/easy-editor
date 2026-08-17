@@ -1,0 +1,13 @@
+@use "../colors/colors" as styles;
+.textory-character-count {
+  display: flex;
+  justify-content: flex-end;
+  padding: 4px 12px;
+  font-size: 12px;
+  color: styles.$primary-grey;
+  user-select: none;
+
+  &[data-exceeded] {
+    color: styles.$primary-red;
+  }
+}

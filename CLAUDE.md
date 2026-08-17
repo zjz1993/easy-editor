@@ -4,7 +4,7 @@
 
 ## 项目概述
 
-Easy Editor 是一个基于 [Tiptap](https://www.tiptap.dev/) 的模块化富文本编辑器，采用 TypeScript + pnpm workspaces 的 monorepo 架构。每个功能以独立扩展包的形式存在，便于按需组合与扩展。
+Textory 是一个基于 [Tiptap](https://www.tiptap.dev/) 的模块化富文本编辑器，采用 TypeScript + pnpm workspaces 的 monorepo 架构。每个功能以独立扩展包的形式存在，便于按需组合与扩展。
 
 ## 环境前置（必读）
 
@@ -215,6 +215,7 @@ packages/extension-xxx/
 - 使用 SCSS
 - 共享样式放在 `@textory/styles`
 - 单包可在自己的 `src` 下放 SCSS，构建时自动编译
+- **颜色必须引用变量，禁止硬编码色值**：写样式文件时凡涉及颜色，优先引用 `packages/editor-style/src/colors/colors.scss` 中定义的颜色变量（SCSS 变量），不要直接写 `#fff`、`rgb(...)` 等颜色值。若现有变量不满足需求，先在该文件中新增变量再引用
 
 ## 新增扩展的步骤
 
@@ -385,6 +386,8 @@ pnpm check:external
 
 ## 改动后的验证
 
+**每次完成代码编辑（新功能、修 bug、重构 React/TS 代码）后，必须运行 `react-doctor` skill 进行检查**：覆盖 lint、可访问性、包体积、架构的扫描与回归检查。若发现问题需修复后再复检，不允许跳过此步骤直接汇报完成。纯文档、样式或配置改动可豁免。
+
 1. 构建受影响的包：`pnpm --filter @textory/包名 build`
 2. 全量构建：`pnpm build`
 3. 启动 demo 实测：`pnpm start`
@@ -399,5 +402,6 @@ pnpm check:external
 - [`tiptap-performance-guide.md`](./.ai/tiptap-performance-guide.md) — Tiptap 官方性能指南总结。涉及编辑器组件结构、`useEditor`、`useEditorState`、NodeView、flushSync 等，**改动编辑器相关代码前必读**。
 - [`performance-issues.md`](./.ai/performance-issues.md) — 本仓库已知性能问题清单（按 P0/P1/P2/P3 分级）。改动 Toolbar、`useTiptapWithSync`、`root.tsx`、OutlineView 等组件前先查这份清单，避免与既有问题冲突。修复完一项后，请把对应 `[ ]` 改成 `[x]` 并在文末「修复记录」表格补一行。
 - [`standalone-umd.md`](./.ai/standalone-umd.md) — `@textory/standalone` 包（UMD/CDN script 引入）的设计决策与构建约束。涉及 UMD 构建、`Textory.create()` API、双产物（standalone/externals）策略、esbuild 脚本时**必读**。改动 `packages/standalone/` 目录或相关构建脚本前先对照本文「反模式」清单。
+- [`docs/drag-handle.md`](./.ai/docs/drag-handle.md) — `@textory/extension-drag-handle` 包的设计约束。block 节点拖动由 drag-handle 统一处理,image 保持 inline 原生拖。改动 `packages/extension-drag-handle/`、Video/File 原生拖拽代码、`root.tsx` 渲染层前**必读**。
 
 新增规则：当本仓库出现新的长期约束（架构、性能、发布等），请把要点写进 `.ai/` 下的 Markdown，并在本节追加条目，不要只在对话里口头约定。

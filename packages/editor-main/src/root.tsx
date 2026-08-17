@@ -22,6 +22,7 @@ import {UploadExtension} from '@textory/extension-upload';
 import {Table, TableBubbleMenu, TableCell, TableHeader, TableRow,} from '@textory/extension-table';
 import {TextoryDragHandle} from '@textory/extension-drag-handle';
 import {FontSize} from '@textory/extension-fontsize';
+import {CharacterCount} from '@textory/extension-character-count';
 import {Placeholder} from './extension/Placeholder';
 import {DocMetaExtension} from './extension/DocMeta';
 import {TextAlign} from '@tiptap/extension-text-align';
@@ -40,6 +41,7 @@ import {exportWORD, type ExportOptions} from '@textory/extension-export';
 import HorizontalRule from '@tiptap/extension-horizontal-rule'
 import UniqueID from '@tiptap/extension-unique-id'
 import {DocTitle} from './components/Title';
+import CharacterCountBar from './components/CharacterCount';
 import {DEFAULT_PROPS} from "./const/index.ts";
 /**
  * Ref handle exposed by the Editor component.
@@ -120,6 +122,15 @@ const DragHandleLayer = memo<{ editor: TiptapEditor }>(({ editor }) => (
 ));
 DragHandleLayer.displayName = 'DragHandleLayer';
 
+/**
+ * 隔离 CharacterCountBar —— 仅依赖 editor 实例与 maxCount。
+ * 由 features.characterCount 控制是否挂载。
+ */
+const CharacterCountLayer = memo<{ editor: TiptapEditor; maxCount?: number }>(
+  ({ editor, maxCount }) => <CharacterCountBar editor={editor} maxCount={maxCount} />,
+);
+CharacterCountLayer.displayName = 'CharacterCountLayer';
+
 
 const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
   const imgUploader = useRef<any>();
@@ -148,6 +159,7 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
   const isTextBubbleEnabled = mergedProps.features?.textBubbleToolbar ?? true;
   const isFileUploadEnabled = mergedProps.features?.fileUpload ?? true;
   const isVideoUploadEnabled = mergedProps.features?.videoUpload ?? true;
+  const isCharacterCountEnabled = mergedProps.features?.characterCount ?? true;
   // DocMeta 初始 title：从顶层 title prop 拿。
   // 即便 DocTitle 不渲染（showTitle=false），export 仍能从 storage 读到这个回退值。
   const initialDocTitle = typeof title === 'string' ? title : '';
@@ -238,6 +250,9 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
       Placeholder.configure({
         placeholder,
       }),
+      ...(isCharacterCountEnabled
+        ? [CharacterCount.configure({onUpdate: mergedProps.onCharacterCount})]
+        : []),
     ],
     content,
     transformContent,
@@ -360,6 +375,9 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
         {intlInit && editor.isEditable && <DragHandleLayer editor={editor} />}
         {intlInit && isTextBubbleEnabled && editor.isEditable && <TextBubbleLayer editor={editor} />}
         {intlInit && <FilePreviewLayer editor={editor} />}
+        {isCharacterCountEnabled && (
+          <CharacterCountLayer editor={editor} maxCount={mergedProps.maxCount} />
+        )}
       </div>
     </EditorProvider>
   );
