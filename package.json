@@ -17,7 +17,10 @@
     "release": "pnpm pre:exit && pnpm changeset:version && turbo run build --filter=@textory/* && changeset publish",
     "check:external": "node scripts/check-external.mjs",
     "prepublish": "pnpm check:external",
-    "deploy:forum": "mkdir -p /Users/zhaojunzhe/shequweb/static/textory && cp packages/standalone/dist/textory.standalone.min.js packages/standalone/dist/textory.standalone.min.js.map packages/standalone/dist/textory.min.css packages/standalone/dist/highlight.min.js packages/standalone/dist/highlight.min.js.map packages/standalone/dist/highlight.min.css packages/standalone/dist/outline.min.js packages/standalone/dist/outline.min.js.map packages/standalone/dist/render.min.js packages/standalone/dist/render.min.js.map /Users/zhaojunzhe/shequweb/static/textory/"
+    "deploy:forum": "mkdir -p /Users/zhaojunzhe/shequweb/static/textory && cp packages/standalone/dist/textory.standalone.min.js packages/standalone/dist/textory.standalone.min.js.map packages/standalone/dist/textory.min.css packages/standalone/dist/highlight.min.js packages/standalone/dist/highlight.min.js.map packages/standalone/dist/highlight.min.css packages/standalone/dist/outline.min.js packages/standalone/dist/outline.min.js.map packages/standalone/dist/render.min.js packages/standalone/dist/render.min.js.map /Users/zhaojunzhe/shequweb/static/textory/",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "workspaces": [
     "packages/*"
@@ -29,12 +32,20 @@
     "@biomejs/biome": "1.9.4",
     "@changesets/cli": "^2.29.8",
     "@playwright/test": "^1.57.0",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.2",
     "@types/node": "^25.0.10",
     "@types/react": "^18.3.12",
+    "@vitest/coverage-v8": "^4.1.10",
     "esbuild-sass-plugin": "^3.3.1",
+    "happy-dom": "^20.11.2",
+    "react": "^18",
+    "react-dom": "^18",
     "tsup": "^8.5.1",
     "turbo": "^2.3.0",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "vitest": "^4.1.10"
   },
   "packageManager": "pnpm@9.13.0",
   "engines": {

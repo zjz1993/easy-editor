@@ -228,6 +228,7 @@ packages/extension-xxx/
 
 ## 重要约束
 
+- **新需求必须走 spec 模式**：先按 `.ai/specs/TEMPLATE.md` 起草 spec 并经用户确认，才能写实现代码；交付时逐条报告验收结果。详见 [`.ai/spec-workflow.md`](./.ai/spec-workflow.md)
 - 仅输出 ESM，不输出 CJS
 - 内部依赖必须使用 `workspace:^`
 - 扩展 `name` 必须与 `BLOCK_TYPES` 常量匹配
@@ -403,5 +404,7 @@ pnpm check:external
 - [`performance-issues.md`](./.ai/performance-issues.md) — 本仓库已知性能问题清单（按 P0/P1/P2/P3 分级）。改动 Toolbar、`useTiptapWithSync`、`root.tsx`、OutlineView 等组件前先查这份清单，避免与既有问题冲突。修复完一项后，请把对应 `[ ]` 改成 `[x]` 并在文末「修复记录」表格补一行。
 - [`standalone-umd.md`](./.ai/standalone-umd.md) — `@textory/standalone` 包（UMD/CDN script 引入）的设计决策与构建约束。涉及 UMD 构建、`Textory.create()` API、双产物（standalone/externals）策略、esbuild 脚本时**必读**。改动 `packages/standalone/` 目录或相关构建脚本前先对照本文「反模式」清单。
 - [`docs/drag-handle.md`](./.ai/docs/drag-handle.md) — `@textory/extension-drag-handle` 包的设计约束。block 节点拖动由 drag-handle 统一处理,image 保持 inline 原生拖。改动 `packages/extension-drag-handle/`、Video/File 原生拖拽代码、`root.tsx` 渲染层前**必读**。
+- [`spec-workflow.md`](./.ai/spec-workflow.md) + [`specs/TEMPLATE.md`](./.ai/specs/TEMPLATE.md) — **Spec 模式开发流程**。新需求（新功能、交互改版、涉及多包或 props 形态变更）必须先按模板起草 `.ai/specs/<日期>-<短名>/spec.md`，经 `grill-with-docs` 盘问补齐开放问题、用户确认后才能写实现代码；交付时逐条报告验收 checklist 结果。修 typo、明确的单点 bugfix、纯文档等可豁免。
+- [`test-backlog.md`](./.ai/test-backlog.md) — **单测补测追踪清单**。测试体系为根目录 Vitest（`pnpm test` / `test:coverage`，80% 门槛已启用）。涉及核心逻辑的改动应附带 `*.test.ts` 用例；补完一个包后更新此清单。
 
 新增规则：当本仓库出现新的长期约束（架构、性能、发布等），请把要点写进 `.ai/` 下的 Markdown，并在本节追加条目，不要只在对话里口头约定。
