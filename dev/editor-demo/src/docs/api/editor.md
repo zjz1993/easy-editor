@@ -38,6 +38,7 @@ import Editor from '@textory/editor';
 | `features.outline` | `boolean` | `true` | 是否启用文档大纲（含 `OutlineExtension` 与右侧大纲面板） |
 | `features.fileUpload` | `boolean` | `true` | 是否启用文件附件（含 `FileExtension`、工具栏附件按钮与 paste/drop 上传） |
 | `features.videoUpload` | `boolean` | `true` | 是否启用视频（含 `VideoExtension`、工具栏视频按钮与 paste/drop 上传） |
+| `features.markdown` | `boolean` | `true` | 是否启用 Markdown 支持（纯文本粘贴自动转换 + `[text](url)` 输入规则 + `getMarkdown()` 序列化，详见 [Markdown 支持](#markdown-支持)） |
 
 ```jsx
 // 关闭文档大纲：右侧不会出现大纲面板
@@ -45,6 +46,15 @@ import Editor from '@textory/editor';
   content="<h1>关闭大纲示例</h1><p>右侧不会出现大纲面板。</p>"
   editable
   features={{ outline: false }}
+/>
+```
+
+```jsx
+// 关闭 Markdown 粘贴转换：粘贴纯文本保持原样
+<Editor
+  content="<h1>关闭 Markdown 示例</h1><p>粘贴 Markdown 文本不再自动转换。</p>"
+  editable
+  features={{ markdown: false }}
 />
 ```
 
@@ -63,6 +73,57 @@ import Editor from '@textory/editor';
 > ```
 >
 > 注意 remount 会重置 undo/redo 历史与光标位置，仅适合真正需要切换的场景。
+
+## Markdown 支持
+
+由 `features.markdown`（默认 `true`）控制，基于官方 `@tiptap/markdown` 扩展，包含三块能力：
+
+### 1. 粘贴自动转换
+
+从 Typora、VSCode、GitHub、AI 对话窗口等来源复制 Markdown 文本，粘贴到编辑器时自动转换为富文本：
+
+| Markdown 语法 | 转换结果 |
+| --- | --- |
+| `# 标题` ~ `###### 标题` | H1–H6 |
+| `**加粗**` / `*斜体*` / `~~删除线~~` / `==高亮==` | 对应文字标记 |
+| `` `行内代码` `` | 行内代码 |
+| `- 列表` / `1. 列表` | 无序 / 有序列表（支持嵌套） |
+| `- [ ] 任务` / `- [x] 任务` | 任务清单（勾选状态保留） |
+| `> 引用` | 引用块 |
+| ` ```lang 代码块 ``` ` | 代码块（保留语言标注） |
+| `[文字](https://...)` | 超链接 |
+| `![图片](https://...)` | 图片（仅接受 http/https 外链） |
+| `---` | 分割线 |
+| GFM 表格 `\| a \| b \|` | 表格 |
+
+行为边界：
+
+- 剪贴板带富文本 HTML（从网页 / Word 复制）时不做转换，走原有 HTML 粘贴路径；
+- 纯文本但无任何 Markdown 特征语法时保持原样粘贴；
+- 代码块内粘贴保持纯文本；
+- 转换插入为单事务，一次 Ctrl/Cmd+Z 可整体撤销；
+- 链接与图片仅接受 `http(s)` 协议，`javascript:` 等非法 scheme 会被剥离（与链接输入校验策略一致）。
+
+### 2. 输入规则
+
+边打字边转：`# ` + 空格变标题、`- [ ] ` 变任务清单等由 Tiptap 内建规则支持；本功能额外补齐了行内链接——输入 `[文字](https://example.com)` + 空格，自动转为链接文本。
+
+### 3. 序列化（getMarkdown）
+
+挂载后 Tiptap 实例获得 Markdown 输出能力（任务清单会序列化为 `- [x] ...`）：
+
+```ts
+// 从 useEditorInstance() 或 ref 拿到 editor 实例
+const md = editor.getMarkdown();
+
+// 以 Markdown 作为初始内容 / 插入内容
+editor.commands.setContent('# 标题\n\n正文', {contentType: 'markdown'});
+editor.commands.insertContent('**加粗** 文本', {contentType: 'markdown'});
+
+// 更底层的 parse / serialize
+const json = editor.markdown.parse('# Hello');
+const mdText = editor.markdown.serialize(editor.getJSON());
+```
 
 ## 内容预处理（transformContent）
 

@@ -23,6 +23,8 @@ import {Table, TableBubbleMenu, TableCell, TableHeader, TableRow,} from '@textor
 import {TextoryDragHandle} from '@textory/extension-drag-handle';
 import {FontSize} from '@textory/extension-fontsize';
 import {CharacterCount} from '@textory/extension-character-count';
+import {Markdown as TiptapMarkdown} from '@tiptap/markdown';
+import {MarkdownListHandler, MarkdownPaste} from '@textory/extension-markdown';
 import {Placeholder} from './extension/Placeholder';
 import {DocMetaExtension} from './extension/DocMeta';
 import {TextAlign} from '@tiptap/extension-text-align';
@@ -160,6 +162,7 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
   const isFileUploadEnabled = mergedProps.features?.fileUpload ?? true;
   const isVideoUploadEnabled = mergedProps.features?.videoUpload ?? true;
   const isCharacterCountEnabled = mergedProps.features?.characterCount ?? true;
+  const isMarkdownEnabled = mergedProps.features?.markdown ?? true;
   // DocMeta 初始 title：从顶层 title prop 拿。
   // 即便 DocTitle 不渲染（showTitle=false），export 仍能从 storage 读到这个回退值。
   const initialDocTitle = typeof title === 'string' ? title : '';
@@ -250,6 +253,19 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
       Placeholder.configure({
         placeholder,
       }),
+      // Markdown 支持（features.markdown 门控）：@tiptap/markdown 提供
+      // parse/serialize 管线与 getMarkdown()；MarkdownListHandler 把列表
+      // token 解析为本编辑器节点名；MarkdownPaste 接管纯文本粘贴转换。
+      // MarkdownPaste priority=200 高于 CodeBlock（默认 100）——CodeBlock 会对
+      // 任意多行且 detectLanguage 命中的纯文本建代码块，必须让 Markdown 转换
+      // 优先；VSCode 源码复制（vscode-editor-data）在 MarkdownPaste 内部让位。
+      ...(isMarkdownEnabled
+        ? [
+            TiptapMarkdown.configure({markedOptions: {gfm: true, breaks: false}}),
+            MarkdownListHandler,
+            MarkdownPaste,
+          ]
+        : []),
       ...(isCharacterCountEnabled
         ? [CharacterCount.configure({onUpdate: mergedProps.onCharacterCount})]
         : []),

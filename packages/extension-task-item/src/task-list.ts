@@ -55,6 +55,18 @@ export const TaskList = Node.create<TaskListOptions>({
     ];
   },
 
+  // Markdown 序列化（@tiptap/markdown 的 getMarkdown()）：checkList 渲染为
+  // 连续的任务列表行，缩进行为与 bulletList 一致
+  renderMarkdown: (node, h) => {
+    if (!node.content) {
+      return '';
+    }
+    return h.renderChildren(node.content, '\n');
+  },
+  markdownOptions: {
+    indentsContent: true,
+  },
+
   addCommands() {
     return {
       toggleTaskList:

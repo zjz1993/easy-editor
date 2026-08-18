@@ -1,4 +1,4 @@
-import {getNodeType, mergeAttributes, Node, PasteRule} from '@tiptap/core';
+import {getNodeType, mergeAttributes, Node, PasteRule, renderNestedMarkdownContent} from '@tiptap/core';
 import type {Node as ProseMirrorNode} from '@tiptap/pm/model';
 
 // import { wrapInListInputRule, wrappingInputRule } from '@gitee/tide-common';
@@ -79,6 +79,13 @@ export const TaskItem = Node.create<TaskItemOptions>({
       ],
       ['div', 0],
     ];
+  },
+
+  // Markdown 序列化（@tiptap/markdown 的 getMarkdown()）：
+  // checkListItem → `- [x] content`，续行按缩进层级对齐
+  renderMarkdown: (node, h) => {
+    const checkedChar = node.attrs?.checked ? 'x' : ' ';
+    return renderNestedMarkdownContent(node, h, `- [${checkedChar}] `);
   },
 
   addKeyboardShortcuts() {

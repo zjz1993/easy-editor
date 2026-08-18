@@ -1,4 +1,4 @@
-import {BLOCK_TYPES} from '@textory/editor-utils';
+import {BLOCK_TYPES} from '@textory/editor-utils/constants';
 import type {CodeBlockLowlightOptions} from '@tiptap/extension-code-block-lowlight';
 import {CodeBlockLowlight} from '@tiptap/extension-code-block-lowlight';
 import {Plugin, PluginKey, TextSelection} from '@tiptap/pm/state';
@@ -103,6 +103,7 @@ export function detectLanguage(text: string): string {
 
 export const CodeBlock = CodeBlockLowlight.extend<CodeBlockOptions>({
   name: BLOCK_TYPES.CODE,
+  priority: 10,
 
   addOptions() {
     return {
@@ -255,6 +256,12 @@ export const CodeBlock = CodeBlockLowlight.extend<CodeBlockOptions>({
 
             const text = event.clipboardData.getData('text/plain');
             const vscode = event.clipboardData.getData('vscode-editor-data');
+            // 剪贴板带富文本（网页/Word/ChatGPT 渲染内容）时让位给默认
+            // HTML 粘贴路径，仅接管纯文本代码复制；VSCode 源码复制带
+            // 语法着色 html 但应以代码块落地，故 vscode 元数据优先
+            if (!vscode && event.clipboardData.getData('text/html')) {
+              return false;
+            }
             const vscodeData = vscode ? JSON.parse(vscode) : undefined;
             const language = vscodeData?.mode || detectLanguage(text);
             if (!text || !text.includes('\n') || !language) {

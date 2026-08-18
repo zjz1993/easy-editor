@@ -17,14 +17,22 @@ export function delay(delayTime: number = 2) {
 const EditorDemo: FC<EditorDemoProps> = ({ editorRef }) => {
   const [canEdit, setCanEdit] = useState(true);
   const [outlineEnabled, setOutlineEnabled] = useState(true);
-  const features = { outline: outlineEnabled, importWord: true, fileUpload: true, videoUpload: true };
+  const [markdownEnabled, setMarkdownEnabled] = useState(true);
+  const features = {
+    outline: outlineEnabled,
+    importWord: true,
+    fileUpload: true,
+    videoUpload: true,
+    markdown: markdownEnabled,
+  };
   return (
     <section className="intro-section" id="demo">
       <div className="intro-section__head">
         <span className="intro-section__tagline">LIVE DEMO</span>
         <h2 className="intro-section__title">所见即所得，开箱即用</h2>
         <p className="intro-section__desc">
-          直接在下方编辑器中尝试各类格式：标题、列表、表格、代码块、任务清单等，工具栏一键切换。
+          直接在下方编辑器中尝试各类格式：标题、列表、表格、代码块、任务清单等，工具栏一键切换；
+          也可以直接粘贴 Markdown 文本（如 <code># 标题</code>、<code>- [ ] 任务</code>），自动转换为富文本。
         </p>
       </div>
       <div className="intro-demo">
@@ -43,6 +51,14 @@ const EditorDemo: FC<EditorDemoProps> = ({ editorRef }) => {
           <label className="intro-demo__toggle">
             <input
               type="checkbox"
+              checked={markdownEnabled}
+              onChange={(e) => setMarkdownEnabled(e.target.checked)}
+            />
+            Markdown 粘贴
+          </label>
+          <label className="intro-demo__toggle">
+            <input
+              type="checkbox"
               checked={canEdit}
               onChange={(e) => setCanEdit(e.target.checked)}
             />
@@ -53,9 +69,9 @@ const EditorDemo: FC<EditorDemoProps> = ({ editorRef }) => {
           <Editor
             /**
              * features 只在 mount 时生效，
-             * 切换 outline 时通过 key 强制 remount。
+             * 切换 outline / markdown 时通过 key 强制 remount。
              */
-            key={outlineEnabled ? 'with-outline' : 'no-outline'}
+            key={`${outlineEnabled ? 'with-outline' : 'no-outline'}-${markdownEnabled ? 'md-on' : 'md-off'}`}
             ref={editorRef}
             content={DEMO_HTML}
             placeholder="开始你的创作..."

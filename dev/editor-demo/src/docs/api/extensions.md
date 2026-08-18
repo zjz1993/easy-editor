@@ -89,6 +89,21 @@ image、file、video 共享的上传基建包：
 
 超链接，支持工具栏添加 / 编辑链接。
 
+## @textory/extension-markdown
+
+Markdown 粘贴 / 输入支持。由 `features.markdown` 门控（默认开启），内部组合官方 `@tiptap/markdown`：
+
+- **粘贴转换**：纯文本剪贴板命中 Markdown 特征语法时自动解析为富文本（标题、列表、任务清单、引用、代码块、链接、图片、分割线、GFM 表格）；
+- **输入规则**：补齐行内链接 `[text](url)` + 空格 触发转换；
+- **schema 映射**：把官方解析产物的默认节点名映射到 Textory 自研命名（`unorderedList` / `checkList` / `divider` 等），并过滤非法 scheme 的链接与图片。
+
+| 导出 | 说明 |
+| --- | --- |
+| `MarkdownPaste` | 粘贴管线扩展（含输入规则），随 `features.markdown` 挂载 |
+| `MarkdownListHandler` | 列表 token 高优先级处理器，产出 Textory 列表节点名 |
+| `isMarkdownLike(text)` | 严格启发式检测纯函数 |
+| `convertMarkdownToContent(manager, text)` | 检测 → 解析 → 映射 管线纯函数 |
+
 ## @textory/extension-outline
 
 文档大纲视图，根据 H1/H2/H3 自动生成可点击导航。
