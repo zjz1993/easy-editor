@@ -8,6 +8,7 @@ import ColorDropdown from './ColorDropdown';
 import FontSizeDropdown from './FontSizeDropdown';
 import HeadingDropdown from './HeadingDropdown';
 import LinkButton from './LinkButton';
+import AlignDropdown from "./AlignDropdown.tsx";
 
 export interface TextBubbleMenuProps {
   editor: Editor;
@@ -51,13 +52,16 @@ export const TextBubbleMenu: FC<TextBubbleMenuProps> = ({editor}) => {
     >
       <HeadingDropdown editor={editor} />
       <span className="textory-text-bubble__divider" />
+      <AlignDropdown editor={editor}/>
+      <span className="textory-text-bubble__divider" />
+      <FontSizeDropdown editor={editor} />
+      <span className="textory-text-bubble__divider" />
       <BubbleButton editor={editor} mark="bold" icon="icon-bold" tooltip={IntlComponent.get('bold')} />
       <BubbleButton editor={editor} mark="italic" icon="icon-italic" tooltip={IntlComponent.get('italic')} />
       <BubbleButton editor={editor} mark="underline" icon="icon-underline" tooltip={IntlComponent.get('underline')} />
       <BubbleButton editor={editor} mark="strike" icon="icon-strike" tooltip={IntlComponent.get('strike')} />
       <LinkButton editor={editor} />
       <span className="textory-text-bubble__divider" />
-      <FontSizeDropdown editor={editor} />
       <ColorDropdown editor={editor} type="color" />
       <ColorDropdown editor={editor} type="highlight" />
       <span className="textory-text-bubble__divider" />

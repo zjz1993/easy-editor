@@ -165,8 +165,11 @@
 
   .#{var.$editor-name}-dropdown__content {
     .#{var.$editor-name}-dropdown__content__item {
-      padding: 6px 0px;
+      padding: 6px 0;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
 
       &:hover {
         background: styles.$hover-grey;
