@@ -1,5 +1,6 @@
 import {BubbleMenu, Dropdown, Iconfont, IntlComponent, PRESET_COLORS, Tooltip,} from '@textory/editor-common';
 import type {Editor} from '@tiptap/core';
+import {CellSelection} from '@tiptap/pm/tables';
 import {type FC, useCallback, useState} from 'react';
 import type {BubbleMenuProps} from '@tiptap/react/menus';
 import {
@@ -113,6 +114,13 @@ export const TableBubbleMenu: FC<TableBubbleMenuProps> = ({ editor }) => {
     props => {
       const { editor, state, from, to, view } = props;
       if (!editor.isEditable) {
+        return false;
+      }
+
+      // 菜单只在 CellSelection 下展示。tiptap v3 的 bubble menu 对折叠光标
+      // （打字）不做防抖，shouldShow 会在每个事务同步执行，因此必须在
+      // getCellsInColumn 等整表遍历之前提前返回，否则大表格内打字每键都是 O(行数)。
+      if (!(state.selection instanceof CellSelection)) {
         return false;
       }
 

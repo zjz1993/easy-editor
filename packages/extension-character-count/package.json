@@ -24,6 +24,9 @@
   },
   "devDependencies": {
     "@tiptap/core": "^3.28.0",
+    "@tiptap/extension-document": "^3.28.0",
+    "@tiptap/extension-paragraph": "^3.28.0",
+    "@tiptap/extension-text": "^3.28.0",
     "@tiptap/pm": "^3.28.0",
     "tsup": "^8.5.1",
     "typescript": "^6.0.3"

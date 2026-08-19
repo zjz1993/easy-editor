@@ -133,6 +133,13 @@ const CharacterCountLayer = memo<{ editor: TiptapEditor; maxCount?: number }>(
 CharacterCountLayer.displayName = 'CharacterCountLayer';
 
 
+/**
+ * onChange 的序列化防抖间隔。getHTML + toJSON 是 O(全文) 的操作，
+ * 逐键执行在大文档（尤其是巨型表格）下会造成打字卡顿；
+ * blur / getData() / 组件卸载时会同步 flush，不丢最后一次输入。
+ */
+const ON_CHANGE_DEBOUNCE_MS = 300;
+
 const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
   const imgUploader = useRef<any>();
   const fileUploader = useRef<any>();
@@ -154,6 +161,27 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
     transformContent,
     onEditorReady,
   } = mergedProps;
+  // onChange 防抖：timer + pending 标记 + 最新回调引用（避免闭包过期）
+  const onChangeTimerRef = useRef<number | undefined>(undefined);
+  const onChangePendingRef = useRef(false);
+  const onChangeRef = useRef(onChange);
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  }, [onChange]);
+
+  /**
+   * 立即序列化并触发 onChange。既是防抖的最终执行体，
+   * 也是 blur / getData / 卸载时的 flush 入口。
+   */
+  const flushOnChange = useCallback((ed: TiptapEditor) => {
+    window.clearTimeout(onChangeTimerRef.current);
+    if (!onChangePendingRef.current) return;
+    onChangePendingRef.current = false;
+    if (ed.isDestroyed) return;
+    const content = {html: ed.getHTML(), json: ed.state.doc.toJSON()};
+    contentRef.current = content;
+    onChangeRef.current?.(content, titleContentRef.current);
+  }, []);
   const isOutlineEnabled = mergedProps.features?.outline ?? true;
   const isImportWordEnabled = mergedProps.features?.importWord ?? false;
   const isTextBubbleEnabled = mergedProps.features?.textBubbleToolbar ?? true;
@@ -272,9 +300,14 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
     transformContent,
     editable: mergedProps.editable,
     onUpdate: ({ editor }) => {
-      const content = {html: editor.getHTML(), json: editor.state.doc.toJSON()}
-      contentRef.current = content;
-      onChange?.(content, titleContentRef.current);
+      // 大文档下逐键执行 getHTML/toJSON 会拖慢打字，防抖到输入停顿后统一 emit。
+      // 注意：不能在 composition 期间强制 flush，否则会打断 IME。
+      onChangePendingRef.current = true;
+      window.clearTimeout(onChangeTimerRef.current);
+      onChangeTimerRef.current = window.setTimeout(
+        () => flushOnChange(editor),
+        ON_CHANGE_DEBOUNCE_MS,
+      );
     },
   });
 
@@ -292,6 +325,8 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     getData: () => {
+      // 有 pending 的防抖内容时同步 flush，保证命令式读取不拿到旧值
+      flushOnChange(editor);
       return {
         title: titleContentRef.current,
         content: contentRef.current,
@@ -312,7 +347,19 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
       });
     },
     import: handleImportFile,
-  }), [editor, mergedProps.title, handleImportFile]);
+  }), [editor, mergedProps.title, handleImportFile, flushOnChange]);
+
+  // onChange 防抖的兜底：blur 时立即 flush（点击外部即拿到最新内容），
+  // 卸载时清掉 timer 并同步 flush，保证 autosave 场景不丢最后一段输入。
+  useEffect(() => {
+    if (!editor) return;
+    const handleBlur = () => flushOnChange(editor);
+    editor.on('blur', handleBlur);
+    return () => {
+      editor.off('blur', handleBlur);
+      flushOnChange(editor);
+    };
+  }, [editor, flushOnChange]);
 
   // 通知外部 editor 已就绪。供 @textory/standalone UMD 桥接层等非 React 集成场景使用。
   // editor 在 useTiptapWithSync 首次创建后不会重新创建，所以会触发一次。

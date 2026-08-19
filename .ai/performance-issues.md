@@ -90,20 +90,25 @@ useEditor({
 
 ---
 
-### P1-2 `onUpdate` 回调直接触发外部 setState（flushSync 风险）
+### P1-2 `onUpdate` 回调直接触发外部 setState（flushSync 风险 + 每键全文序列化）
 
 **位置**：
-- `packages/editor-main/src/root.tsx:154-160` — `onChange?.(editor.getHTML())`
+- `packages/editor-main/src/root.tsx` — `onChange?.(editor.getHTML())`
 - `packages/extension-outline/src/OutlineView.tsx` — `editor.on('update', syncData)` → `setTreeData`
 - `packages/extension-table/src/components/tableBubbleMenu/index.tsx` — `shouldShow` 里直接 `setSelectedState`
 
-**问题**：Tiptap 同步 dispatch，回调里直接 setState 可能撞上 React 渲染周期，触发 flushSync 警告。
+**问题**：
+- Tiptap 同步 dispatch，回调里直接 setState 可能撞上 React 渲染周期，触发 flushSync 警告。
+- `root.tsx` 的 `onUpdate` 每键执行 `getHTML()` + `toJSON()`，大文档（尤其巨型表格）下是打字卡顿主因之一。
+- `tableBubbleMenu` 的 `shouldShow` 在折叠光标（打字）时不走 tiptap 防抖，每个事务同步执行且包含整列遍历。
 
-**官方依据**：文档第 5 节「Avoid the flushSync warning」。
+**修复方向**：
+- 在 `onChange` 外层包 `queueMicrotask`，或在文档里要求调用方自行包裹。
 
-**修复方向**：在 `onChange` 外层包 `queueMicrotask`，或在文档里要求调用方自行包裹。
-
-- [ ] 未修复
+- [x] 已修复（2026-08-19）：
+  - `root.tsx`：onChange 序列化防抖 300ms（`flushOnChange`），blur / `getData()` / 卸载时同步 flush，`contentRef` 不再读到旧值；
+  - `OutlineView`：`syncData` 防抖 300ms（初始同步保持立即）；
+  - `tableBubbleMenu`：`shouldShow` 对非 `CellSelection` 提前返回，普通打字不再触发整列遍历与每键 setState。
 
 ---
 
@@ -120,6 +125,18 @@ useEditor({
 **修复方向**：用 `useMemo` 包裹 extensions 数组，依赖项只放真正影响配置的值。
 
 - [ ] 未修复
+
+### P1-4 字数统计每个 transaction 全文计数
+
+**位置**：
+- `packages/extension-character-count/src/character-count.ts` — `onUpdate` 每键跑 `textBetween` + 两个全文正则
+- `packages/editor-main/src/components/CharacterCount/index.tsx` — 监听 `transaction`（含纯光标移动）每事务调 `storage.characters()`
+
+**问题**：计数是 O(全文) 操作，4 万字级别文档逐键执行明显拖慢打字；`transaction` 监听还覆盖了与文档无关的事务。
+
+**修复方向**：计数与回调防抖；展示组件按 doc 引用跳过无关事务。
+
+- [x] 已修复（2026-08-19）：扩展侧 `onUpdate` 防抖 300ms（`onCreate` 初始计数保持立即，`storage.characters()` 仍为同步惰性求值）；`CharacterCountBar` 按 doc 引用去重 + 防抖，纯光标移动不再计数。单测见 `character-count.test.ts`。
 
 ---
 
@@ -139,7 +156,7 @@ useEditor({
 - heading 数量超阈值时启用虚拟列表
 - `convertOutlineToTree` memo 化
 
-- [ ] 未修复
+- [x] 部分修复（2026-08-19）：update 侧已处理 —— `OutlineView.syncData` 防抖 300ms（初始同步保持立即），且 `OutlineExtension.onUpdate` 的 `doc.descendants` 全文重算同样防抖并补了 `onCreate` 初始计算；大文档打字不再逐键重建大纲树。滚动侧（`getBoundingClientRect` 逐 heading 查询、>50 heading 虚拟列表）仍开放。
 
 ---
 
@@ -233,3 +250,5 @@ placeholder 同步通过 `dispatch(empty tr)` 触发重绘，开销不小。
 | ---- | ---- | ---- | ---- |
 | 2026-07-20 | P0-1 + P0-2 | 删除 `useEditorStateTrigger`；Toolbar 与每个 leaf 按钮改用 `useEditorState`；`useTiptapWithSync` 加 `immediatelyRender: false` + `shouldRerenderOnTransaction: false` | （未提交） |
 | 2026-07-24 | P1-1 | root.tsx 拆出 `EditorStage` / `BubbleLayer` / `FilePreviewLayer` 三个 `memo` 化子组件；`EditorProvider` 的 context value 用 `useMemo` 包裹 | （未提交） |
+| 2026-08-19 | P1-2（大文档打字卡顿） | `root.tsx` onChange 序列化防抖 300ms + blur/getData/卸载 flush；`OutlineView.syncData` 防抖；`tableBubbleMenu.shouldShow` 非 CellSelection 提前返回 | （未提交） |
+| 2026-08-19 | P1-4（新增条目） | 字数统计防抖：扩展 `onUpdate` 300ms 防抖 + `CharacterCountBar` 按 doc 引用去重；`OutlineExtension` 全文重算防抖 + 补 `onCreate` 初始计算 | （未提交） |

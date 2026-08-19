@@ -177,6 +177,9 @@ function flashHeading(editor: Editor, pos: number) {
   });
 }
 
+/** Debounce for outline re-sync. Matches OutlineExtension's recompute debounce. */
+const SYNC_DEBOUNCE_MS = 300;
+
 interface OutlineViewProps {
   editor: Editor | null;
 }
@@ -235,7 +238,7 @@ export const OutlineView = ({editor}: OutlineViewProps) => {
       rafId = requestAnimationFrame(compute);
     };
 
-    const syncData = () => {
+    const applyOutline = () => {
       const outline = (editor.storage as any).outline?.outline ?? [];
       const newTree = convertOutlineToTree(outline);
       flatRef.current = flatten(newTree);
@@ -243,8 +246,17 @@ export const OutlineView = ({editor}: OutlineViewProps) => {
       scheduleCompute();
     };
 
-    // Initial
-    syncData();
+    // 防抖：每个 update 只重建一次大纲树，避免大文档逐键重渲染。
+    // 注意 delay 与 OutlineExtension 的重算间隔一致，且 extension 的 onUpdate
+    // 钩子先于本组件的 'update' 监听注册，同延迟 timer 保证读到的是新 storage。
+    let syncTimer: number | undefined;
+    const syncData = () => {
+      window.clearTimeout(syncTimer);
+      syncTimer = window.setTimeout(applyOutline, SYNC_DEBOUNCE_MS);
+    };
+
+    // Initial — 立即同步一次
+    applyOutline();
 
     // Listeners
     container.addEventListener('scroll', scheduleCompute, {passive: true});
@@ -255,6 +267,7 @@ export const OutlineView = ({editor}: OutlineViewProps) => {
       container.removeEventListener('scroll', scheduleCompute);
       window.removeEventListener('resize', scheduleCompute);
       editor.off('update', syncData);
+      window.clearTimeout(syncTimer);
       if (rafId !== null) cancelAnimationFrame(rafId);
       ticking = false;
     };
