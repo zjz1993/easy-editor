@@ -88,7 +88,7 @@ const editor = useEditor({
 | 纯 CSR + 已有完整 null-safe 代码 | 推荐 `immediatelyRender: false`，避免首屏 flushSync 警告 |
 | 纯 CSR + 历史代码假设 editor 非 null | **不要**启用，先用 `shouldRerenderOnTransaction: false` 拿到主要收益，等代码改造完再说 |
 
-Easy Editor（本仓库）属于第三种：`TableBubbleMenu`、`OutlineView`、`EditorFilePreview` 等都假设 editor 非 null，所以 `useTiptapWithSync` 只设了 `shouldRerenderOnTransaction: false`。
+Textory（本仓库）属于第三种：`TableBubbleMenu`、`OutlineView`、`EditorFilePreview` 等都假设 editor 非 null，所以 `useTiptapWithSync` 只设了 `shouldRerenderOnTransaction: false`。
 
 ## 4. React NodeView 的代价
 

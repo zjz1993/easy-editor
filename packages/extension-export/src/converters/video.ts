@@ -26,7 +26,7 @@ import { IntlComponent } from '@textory/editor-common-ui';
  * hardcoded string. Callers re-resolve via `getVideoLabel()` at render
  * time so the active locale wins once intl is ready.
  */
-const DEFAULT_VIDEO_LABEL = IntlComponent.get('export.video.default.label') || '视频';
+const DEFAULT_VIDEO_LABEL = () => IntlComponent.get('export.video.default.label') || '视频';
 
 function mapTextAlign(
   align?: 'left' | 'center' | 'right' | null,
@@ -168,7 +168,7 @@ export async function convertVideo(
   options: DocxOptions['video'],
 ): Promise<Paragraph> {
   const src = node.attrs?.src || '';
-  const label = node.attrs?.name || DEFAULT_VIDEO_LABEL;
+  const label = node.attrs?.name || DEFAULT_VIDEO_LABEL();
   const alignment = mapTextAlign(node.attrs?.textAlign);
   const paragraphOptions: IParagraphOptions = options?.paragraph ?? {};
 

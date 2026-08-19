@@ -1,4 +1,4 @@
-# Easy Editor 已知性能问题清单
+# Textory 已知性能问题清单
 
 > 基于 Tiptap 官方性能指南对照本仓库代码梳理得到。
 > 配套阅读：`./tiptap-performance-guide.md`

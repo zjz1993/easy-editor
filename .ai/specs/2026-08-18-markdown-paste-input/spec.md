@@ -138,6 +138,8 @@ export const MarkdownSupport = Extension.create({
 
 - `@tiptap/markdown` 的 `Markdown.configure({markedOptions: {gfm: true}})` 常驻挂载（序列化能力与粘贴共用 parse 管线）；粘贴行为由 `MarkdownSupport` 门控。
 - 插件顺序（2026-08-18 交付后修订）：**MarkdownPaste 必须排在 CodeBlock 的 handlePaste 之前**（priority 200 > CodeBlock 默认 100）。原因：CodeBlock 的粘贴条件过宽——任意多行纯文本被 `detectLanguage()` 判定出语言即被截为代码块，Markdown 文本几乎必然命中，若 CodeBlock 在前则 Markdown 转换永远不生效。让位规则：剪贴板含 `vscode-editor-data`（VSCode 源码复制）或 `text/html` 时 MarkdownPaste 直接放行，交还 CodeBlock / 默认 HTML 路径。link 的 URL 处理不受影响（纯 URL 不命中 Markdown 特征，仍由 link 处理）。
+- **CodeBlock 的 html 盲区修复（2026-08-19 二次修订）**：用户反馈"粘贴 Markdown 仍变代码块"的第二路径——剪贴板同时带 `text/html` 与 markdown 纯文本（ChatGPT/网页/Typora 来源）时，MarkdownPaste 按 html 让位，但 CodeBlock 的处理器**不检查 text/html**、只嗅探 plain 文本照样抢占成代码块。修复：CodeBlock 的 handlePaste 在无 `vscode-editor-data` 时对带 `text/html` 的剪贴板放行（VSCode 带语法着色 html 但应以代码块落地，元数据优先）。注意：**不可**通过注释 MarkdownPaste 的 html 让位来绕过——那会让所有 plain 文本命中 Markdown 特征的富文本粘贴（如带 `1. ` 编号的邮件正文）被降级为 markdown 重解析，违反验收第 2 条（富文本粘贴保真）。
+- **html 让位的"裸原文"例外（2026-08-19 三次修订）**：用户复现第三路径——剪贴板 html flavor 是 markdown 原文的 `<pre>` 裸包装（聊天窗口代码块、IDE 复制均如此），让位给默认 HTML 粘贴后 `<pre>` 被 parseHTML 变成 plaintext 代码块。修复：`isRawSourceHtml(html)` 识别"主体仅 pre、pre 外无富文本块级结构与实质文本"的 html（容忍 style/script 噪音），命中且 plain 为 markdown 时继续走 markdown 解析；VSCode 复制 `.md` 文件（`vscode-editor-data.mode` 为 markdown/md）同理走 markdown 解析，mode 为其他语言仍让位给 code-block。
 
 ### API / props
 

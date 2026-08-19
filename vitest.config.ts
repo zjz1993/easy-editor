@@ -23,11 +23,11 @@ alias.push({
   find: /^@textory\/editor-utils\/constants$/,
   replacement: path.resolve(__dirname, 'packages/editor-utils/src/constants.ts'),
 });
-// iconfont 副作用脚本在 happy-dom 下崩溃，统一替换为空 stub
-//（样式渲染不受影响，仅跳过 SVG sprite 注入；alias 按导入说明符
-// './iconfont.js' 匹配，故不能带目录前缀）
+// iconfont 副作用脚本在 happy-dom 下崩溃，替换为空 stub。
+// alias 会对命中部分做整体替换，正则必须锚定完整说明符 './iconfont.js'
+//（唯一引用方是 editor-common-ui/src/components/IconFont/index.tsx）
 alias.push({
-  find: /(^|\/)iconfont\.js$/,
+  find: /^\.\/iconfont\.js$/,
   replacement: path.resolve(__dirname, 'test/stubs/iconfont.js'),
 });
 

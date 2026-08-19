@@ -5,7 +5,7 @@ import StarterKit from '@tiptap/starter-kit';
 import {Markdown} from '@tiptap/markdown';
 import {MarkdownListHandler} from './listParser';
 import {mapParsedMarkdown} from './mapParsedMarkdown';
-import {convertMarkdownToContent, MarkdownPaste} from './MarkdownPaste';
+import {convertMarkdownToContent, MarkdownPaste, isRawSourceHtml, isVscodeMarkdownSource, isVscodeCodeCopy} from './MarkdownPaste';
 import {MarkdownManager} from '@tiptap/markdown';
 
 /**
@@ -112,6 +112,66 @@ describe('convertMarkdownToContent', () => {
   });
 });
 
+describe('isRawSourceHtml', () => {
+  it('pre-only 包装识别为裸原文', () => {
+    expect(isRawSourceHtml('<pre># a\n- b</pre>')).toBe(true);
+    expect(isRawSourceHtml('<html><body><pre>x</pre></body></html>')).toBe(true);
+    // VSCode 常见的内联样式噪音
+    expect(
+      isRawSourceHtml('<style>.a{color:red}</style><pre><span>x</span></pre>'),
+    ).toBe(true);
+  });
+
+  it('JetBrains IDE 复制格式（html/head/meta 包装）识别为裸原文', () => {
+    // 用户实测格式：meta 声明 + pre 主体
+    expect(
+      isRawSourceHtml(
+        '<html><head><meta http-equiv="content-type" content="text/html; charset=UTF-8"></head><body><pre style="margin-top:0"><span style="color:#000080"># </span>标题</pre></body></html>',
+      ),
+    ).toBe(true);
+    // 部分版本 head 里带文件 title（文本内容需剥离，否则误判富文本）
+    expect(
+      isRawSourceHtml(
+        '<html><head><meta http-equiv="content-type" content="text/html; charset=UTF-8"><title>notes.md — IDE</title></head><body><pre># 标题</pre></body></html>',
+      ),
+    ).toBe(true);
+    // 用户真实载荷：div 深色主题包装 + 末尾 NUL 字符（trim 不视其为空白，
+    // 未剔除会导致误判为富文本 → 让位 → <pre> 被默认粘贴落成代码块）
+    expect(
+      isRawSourceHtml(
+        '<html><head><meta http-equiv="content-type" content="text/html; charset=UTF-8"></head><body><div style="background-color:#1e1f22;color:#bcbec4"><pre style="font-family:\'Source Code Pro\',monospace;font-size:15.8pt;"><span style="color:#597cc2"># </span>标题<br><br>正文</pre></div></body></html>\u0000',
+      ),
+    ).toBe(true);
+  });
+
+  it('含富文本块级结构时不识别', () => {
+    expect(isRawSourceHtml('<h1>标题</h1><p>正文</p>')).toBe(false);
+    expect(isRawSourceHtml('<ul><li>a</li></ul>')).toBe(false);
+    expect(isRawSourceHtml('<pre>code</pre><p>补充说明</p>')).toBe(false);
+    expect(isRawSourceHtml('')).toBe(false);
+  });
+});
+
+describe('isVscodeMarkdownSource', () => {
+  it('仅 markdown/md 文件为 true', () => {
+    expect(isVscodeMarkdownSource('{"mode":"markdown"}')).toBe(true);
+    expect(isVscodeMarkdownSource('{"mode":"md"}')).toBe(true);
+    expect(isVscodeMarkdownSource('{"mode":"Markdown"}')).toBe(true);
+    expect(isVscodeMarkdownSource('{"mode":"typescript"}')).toBe(false);
+    expect(isVscodeMarkdownSource('not json')).toBe(false);
+  });
+});
+
+describe('isVscodeCodeCopy', () => {
+  it('仅明确的非 markdown 语言视为代码复制', () => {
+    expect(isVscodeCodeCopy('{"mode":"typescript"}')).toBe(true);
+    expect(isVscodeCodeCopy('{"mode":"markdown"}')).toBe(false);
+    // mode 缺失（部分 IDE 分支不写）不作为代码复制信号
+    expect(isVscodeCodeCopy('{"copied":true}')).toBe(false);
+    expect(isVscodeCodeCopy('not json')).toBe(false);
+  });
+});
+
 describe('MarkdownPaste（真实 Editor 粘贴）', () => {
   it('粘贴 markdown 纯文本转换为富文本节点', () => {
     const editor = createEditor('<p>base</p>');
@@ -145,6 +205,24 @@ describe('MarkdownPaste（真实 Editor 粘贴）', () => {
       'text/plain': '# From Markdown',
     });
     expect(handled).toBe(false);
+    editor.destroy();
+  });
+
+  it('html 只是 markdown 原文的 pre 裸包装时仍按 markdown 解析', () => {
+    // 复现用户场景：从聊天窗口代码块/IDE 复制，html flavor 为 <pre> 包装的
+    // markdown 原文——若让位给默认 HTML 粘贴会被 parseHTML 变成 plaintext
+    // 代码块（见 .ai/specs/2026-08-18-markdown-paste-input/spec.md §4）
+    const editor = createEditor('<p></p>');
+    editor.commands.focus('end');
+    const handled = runPaste(editor, {
+      'text/html':
+        '<html><body><pre style="font-family:monospace"># 标题\n\n**加粗** 和 `代码`\n\n&gt; 引用</pre></body></html>',
+      'text/plain': '# 标题\n\n**加粗** 和 `代码`\n\n> 引用',
+    });
+    expect(handled).toBe(true);
+    const types = (editor.getJSON().content ?? []).map(n => n.type);
+    expect(types).toContain('heading');
+    expect(types).not.toContain('codeBlock');
     editor.destroy();
   });
 
@@ -202,12 +280,28 @@ describe('MarkdownPaste（真实 Editor 粘贴）', () => {
     editor.destroy();
   });
 
-  it('剪贴板带 vscode-editor-data 时让位（交还 code-block 处理器）', () => {
+  it('VSCode 复制 .md 文件（mode=markdown）按 markdown 解析', () => {
     const editor = createEditor('<p></p>');
     editor.commands.focus('end');
     const handled = runPaste(editor, {
-      'text/plain': '# 标题\n\nconst a = 1;',
+      'text/html': '<pre><span># 标题</span></pre>',
+      'text/plain': '# 标题\n\n**加粗**',
       'vscode-editor-data': '{"mode":"markdown","copied":true}',
+    });
+    expect(handled).toBe(true);
+    const types = (editor.getJSON().content ?? []).map(n => n.type);
+    expect(types).toContain('heading');
+    expect(types).not.toContain('codeBlock');
+    editor.destroy();
+  });
+
+  it('VSCode 复制代码（mode=typescript）让位给 code-block 处理器', () => {
+    const editor = createEditor('<p></p>');
+    editor.commands.focus('end');
+    const handled = runPaste(editor, {
+      'text/html': '<span style="color:#ccc">const a = 1;</span>',
+      'text/plain': 'const a = 1;\nconst b = 2;',
+      'vscode-editor-data': '{"mode":"typescript"}',
     });
     // 本扩展让位；StarterKit 自带的 code-block VSCode 处理器接管为代码块
     expect(handled).toBe(true);

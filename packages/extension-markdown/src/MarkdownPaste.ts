@@ -18,6 +18,58 @@ type MarkdownParseCapable = Pick<MarkdownManager, 'parse'>;
 export const LINK_INPUT_REGEX = /(?:^|\s)(\[[^\]\n]+\]\(https?:\/\/[^\s)]+\))\s$/;
 
 /**
+ * 判断 html 剪贴板内容是否只是 markdown 原文的"裸包装"：
+ * 主体为单个/多个 `<pre>`（如聊天窗口代码块、IDE 复制的 html flavor），
+ * pre 之外没有任何富文本块级结构（标题/列表/引用/表格）与实质文本。
+ * 这类剪贴板没有可保留的富文本格式，应按 plain 文本的 markdown 解析处理。
+ */
+export function isRawSourceHtml(html: string): boolean {
+  if (!/<pre[\s>]/i.test(html)) {
+    return false;
+  }
+  let remainder = html.replace(/<pre[\s\S]*?<\/pre>/gi, '');
+  // VSCode/JetBrains 等来源会附带内联样式块与文件标题，属于包装噪音
+  // 而非富文本内容（title 的文本内容若不剥离会导致误判为富文本）
+  remainder = remainder.replace(/<(style|script|title)[\s\S]*?<\/\1>/gi, '');
+  if (/<(h[1-6]|ul|ol|blockquote|table|p|img|iframe)\b/i.test(remainder)) {
+    return false;
+  }
+  // JetBrains 系剪贴板会在 html 末尾追加 NUL 字符，trim() 不视其为空白，
+  // 需连同控制字符一并剔除后再做空文本判定
+  const textOnly = remainder
+    .replace(/<[^>]+>/g, '')
+    .replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, '');
+  return textOnly.trim().length === 0;
+}
+
+/** VSCode 元数据（vscode-editor-data）的 mode 是否为 markdown 文件 */
+export function isVscodeMarkdownSource(vscodeData: string): boolean {
+  try {
+    const mode = JSON.parse(vscodeData)?.mode;
+    return typeof mode === 'string' && /^(markdown|md)$/i.test(mode);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * VSCode 元数据是否表示"代码复制"（应让位给 code-block 处理器）：
+ * mode 为明确的非 markdown 语言时才让位；mode 缺失（部分 IDE 分支
+ * 不写 mode）不视为代码复制信号，交由 html/纯文本路径决策。
+ */
+export function isVscodeCodeCopy(vscodeData: string): boolean {
+  try {
+    const mode = JSON.parse(vscodeData)?.mode;
+    if (typeof mode !== 'string' || mode.length === 0) {
+      return false;
+    }
+    return !/^(markdown|md)$/i.test(mode);
+  } catch {
+    return false;
+  }
+}
+
+/**
  * 粘贴转换管线（纯函数，便于单测）：
  * 检测 → 解析 → schema 映射。任何一步不满足都返回 null，走默认粘贴。
  */
@@ -105,13 +157,18 @@ export const MarkdownPaste = Extension.create<MarkdownPasteOptions>({
             if (!clipboard) {
               return false;
             }
-            // 富文本剪贴板（网页/Word/VSCode 带样式）走默认 HTML 粘贴路径
-            //if (clipboard.getData('text/html')) {
-            //  return false;
-            //}
-            // VSCode 源码复制（含编辑器元数据，可能无 html）让位给
-            // code-block 的 VSCode 处理器
-            if (clipboard.getData('vscode-editor-data')) {
+            // 富文本剪贴板（网页/Word/渲染后的内容）走默认 HTML 粘贴路径。
+            // 例外：html 只是 markdown 原文的 <pre> 裸包装（聊天窗口代码块、
+            // IDE 复制等）时没有可保留的格式，继续按 markdown 解析
+            const html = clipboard.getData('text/html');
+            console.log({html});
+            if (html && !isRawSourceHtml(html)) {
+              return false;
+            }
+            // VSCode 源码复制让位给 code-block 处理器；但复制 .md 文件
+            // （mode=markdown）或元数据无 mode 时不应据此让位
+            const vscode = clipboard.getData('vscode-editor-data');
+            if (vscode && isVscodeCodeCopy(vscode)) {
               return false;
             }
             const text = clipboard.getData('text/plain');

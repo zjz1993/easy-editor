@@ -10,7 +10,7 @@ import {checkMaxSize} from "../../utils/index.ts"; //import uuid from 'uuid/v4';
 //import uuid from 'uuid/v4';
 
 // render 时取值，保证 intl 初始化后能拿到正确文案
-const uploadButton = <Button>{IntlComponent.get('upload.button.text') || '点击上传'}</Button>;
+const uploadButton = () => <Button>{IntlComponent.get('upload.button.text') || '点击上传'}</Button>;
 
 function attrAccept(
   file: { name: string; type: string },
@@ -194,7 +194,7 @@ const FileUpload: FC<IUploadProps> = props => {
           onDragEnter={() => setDragOver(true)}
           onDragLeave={() => setDragOver(false)}
         >
-          {children || uploadButton}
+          {children || uploadButton()}
         </div>
       </Upload>
     </>

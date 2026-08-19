@@ -1,12 +1,13 @@
 import type {TTextoryEditorProps} from '@textory/context';
-import {IntlComponent} from '@textory/editor-common';
+import {initIntl, IntlComponent} from '@textory/editor-common';
 
-// 注意：DEFAULT_PROPS 在模块加载时取值，此时 IntlComponent 可能尚未 init
-// （init 在 root.tsx 的 useEffect 中异步执行）。为避免空字符串默认值，
-// 这里采用 `IntlComponent.get(...) || '中文兜底'` 的写法；intl 完成 init
-// 后，root.tsx 因 intlInit 状态变化 re-render，会重新读到 intl 的值。
+// DEFAULT_PROPS 是模块级常量，import 时即求值，因此 IntlComponent.get()
+// 必须在 intl 初始化之后执行。initIntl() 幂等且同步（locales 为构建期内联
+// 对象），保证此处读到真实文案，而不是 init 前的空字符串。
+initIntl();
+
 export const DEFAULT_PROPS: Partial<TTextoryEditorProps> = {
-  placeholder: IntlComponent.get('editor.placeholder.default') || '请输入',
+  placeholder: IntlComponent.get('editor.placeholder.default'),
   editable: true,
   imageProps: {
     minWidth: 100,
@@ -34,7 +35,7 @@ export const DEFAULT_PROPS: Partial<TTextoryEditorProps> = {
   },
   titleProps: {
     showTitle: true,
-    titlePlaceholder: IntlComponent.get('editor.placeholder.title') || '请输入标题'
+    titlePlaceholder: IntlComponent.get('editor.placeholder.title'),
   },
   features: {
     outline: true,

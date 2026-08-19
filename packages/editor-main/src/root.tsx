@@ -31,7 +31,6 @@ import {TextAlign} from '@tiptap/extension-text-align';
 import {TextStyle} from '@tiptap/extension-text-style';
 import BulletList from './BulletList/bullet-list.ts';
 import {ListItem} from './BulletList/list-item.ts'; // import {UniqueIDExtension} from './extension/UniqueIDExtension/index.ts';
-import useIntlLoaded from './hooks/useIntlLoaded.ts';
 import EditorFilePreview from './components/FilePreview/EditorFilePreview';
 import {TextBubbleMenu} from './components/TextBubbleMenu';
 import Underline from '@tiptap/extension-underline';
@@ -138,7 +137,6 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
   const imgUploader = useRef<any>();
   const fileUploader = useRef<any>();
   const videoUploader = useRef<any>();
-  const { intlInit } = useIntlLoaded();
   const { CL, OL, UL, P, H, CLI, LI, QUOTE, HR, TL, IMG, FILE, VIDEO, TABLE } = BLOCK_TYPES;
   const listGroup = `${UL}|${OL}|${CL}`;
   const mergedProps: TTextoryEditorProps = useEditorProps(props, DEFAULT_PROPS);
@@ -346,7 +344,7 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
   return (
     <EditorProvider editor={editor} props={mergedProps}>
       <div className={cx('textory', className)} style={style}>
-        {intlInit && editor.isEditable && (
+        {editor.isEditable && (
           <EditorToolbar
             editor={editor}
             imageProps={mergedProps.imageProps}
@@ -387,10 +385,10 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
           isOutlineEnabled={isOutlineEnabled}
         />
         <MessageContainer />
-        {intlInit && editor.isEditable && <BubbleLayer editor={editor} />}
-        {intlInit && editor.isEditable && <DragHandleLayer editor={editor} />}
-        {intlInit && isTextBubbleEnabled && editor.isEditable && <TextBubbleLayer editor={editor} />}
-        {intlInit && <FilePreviewLayer editor={editor} />}
+        {editor.isEditable && <BubbleLayer editor={editor} />}
+        {editor.isEditable && <DragHandleLayer editor={editor} />}
+        {isTextBubbleEnabled && editor.isEditable && <TextBubbleLayer editor={editor} />}
+        {<FilePreviewLayer editor={editor} />}
         {isCharacterCountEnabled && (
           <CharacterCountLayer editor={editor} maxCount={mergedProps.maxCount} />
         )}

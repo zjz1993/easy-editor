@@ -4,7 +4,7 @@
 
 ## 项目概述
 
-Easy Editor 是一个基于 [Tiptap](https://www.tiptap.dev/) 的模块化富文本编辑器，采用 TypeScript + pnpm workspaces 的 monorepo 架构。每个功能以独立扩展包的形式存在，便于按需组合与扩展。
+Textory 是一个基于 [Tiptap](https://www.tiptap.dev/) 的模块化富文本编辑器，采用 TypeScript + pnpm workspaces 的 monorepo 架构。每个功能以独立扩展包的形式存在，便于按需组合与扩展。
 
 ## 环境前置（必读）
 

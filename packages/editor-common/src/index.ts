@@ -7,3 +7,4 @@ export * from './utils';
 export * from './components';
 export * from './types';
 export { IntlComponent, Language_ZhCN };
+export { initIntl } from './locales/initIntl';

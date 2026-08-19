@@ -2,10 +2,10 @@
 title: 与 TinyMCE 对比
 category: 其他
 order: 9
-description: Easy Editor (Textory) 与 TinyMCE 的功能、架构、体积、开发体验对比
+description: Textory 与 TinyMCE 的功能、架构、体积、开发体验对比
 ---
 
-# Easy Editor (Textory) vs TinyMCE
+# Textory vs TinyMCE
 
 TinyMCE 是一款老牌的富文本编辑器，在企业应用、CMS、邮件客户端等场景广泛使用，生态成熟、插件丰富。Easy Editor（下称 Textory）则是基于 Tiptap/ProseMirror 的现代模块化编辑器，原生面向 React 生态。
 

@@ -35,3 +35,4 @@
 
 | 日期 | 包 / 文件 | 覆盖率 | 备注 |
 | ---- | --------- | ------ | ---- |
+| 2026-08-19 | `editor-common/src/locales/initIntl.test.ts` + `editor-main/src/const/index.test.ts` | 局部 | intl 同步初始化时序回归（修复 `locales data "null" not exists` 警告时补）；P0「键值完整性（防漏 key）」仍未完成，留待多语言落地时补 |
