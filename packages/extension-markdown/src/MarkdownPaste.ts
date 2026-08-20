@@ -38,6 +38,7 @@ export function isRawSourceHtml(html: string): boolean {
   // 需连同控制字符一并剔除后再做空文本判定
   const textOnly = remainder
     .replace(/<[^>]+>/g, '')
+    // biome-ignore lint/suspicious/noControlCharactersInRegex: <explanation>
     .replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, '');
   return textOnly.trim().length === 0;
 }

@@ -3,6 +3,7 @@ import type {Editor} from '@tiptap/core';
 import {TextSelection} from '@tiptap/pm/state';
 import {type FC, useCallback} from 'react';
 import type {BubbleMenuProps} from '@tiptap/react/menus';
+import {searchReplacePluginKey} from '@textory/extension-search-replace';
 import BubbleButton from './BubbleButton';
 import ColorDropdown from './ColorDropdown';
 import FontSizeDropdown from './FontSizeDropdown';
@@ -35,6 +36,9 @@ export const TextBubbleMenu: FC<TextBubbleMenuProps> = ({editor}) => {
     if (editor.view.dragging) return false;
     if (from === to) return false;
     if (!(state.selection instanceof TextSelection)) return false;
+    // 搜索替换跳转（goToMatch/replaceNext）设置的选区不是用户选择，
+    // 不唤起文字工具栏。读 plugin state（同步），用户下一次交互事务会重置该标记。
+    if (searchReplacePluginKey.getState(state)?.programmaticSelection) return false;
     if (editor.isActive(BLOCK_TYPES.VIDEO)) return false;
     if (editor.isActive(BLOCK_TYPES.CODE)) return false;
     if (editor.isActive(BLOCK_TYPES.TABLE)) return false;

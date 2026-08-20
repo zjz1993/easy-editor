@@ -169,5 +169,18 @@ export default {
 
   // ===== 字数统计 =====
   'characterCount.characters': '{count} 字',
-  'characterCount.limit': '{count} / {max} 字'
+  'characterCount.limit': '{count} / {max} 字',
+
+  // ===== 搜索替换 =====
+  'search.placeholder': '搜索',
+  'search.replace.placeholder': '替换',
+  'search.replace': '替换',
+  'search.replaceAll': '全部替换',
+  'search.replace.toggle': '切换替换 (⌘⌥F / Ctrl+Alt+F)',
+  'search.caseSensitive': '区分大小写',
+  'search.wholeWord': '全词匹配',
+  'search.prev': '上一个 (Shift+Enter)',
+  'search.next': '下一个 (Enter)',
+  'search.close': '关闭 (Esc)',
+  'search.noResult': '无结果'
 };

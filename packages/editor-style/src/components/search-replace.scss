@@ -1,0 +1,156 @@
+@use "sass:color";
+@use "../colors/colors" as styles;
+
+// 正文内匹配项高亮（decoration 注入的 span）
+.textory-search-match {
+  background: styles.$search-match-bg;
+  border-radius: 2px;
+
+  &--active {
+    background: styles.$search-match-active-bg;
+  }
+}
+
+// 右上角浮层面板（VSCode 风格）
+.textory-search-panel {
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  z-index: 1000;
+  background: styles.$primary-white;
+  border: 1px solid styles.$border-grey;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 12%);
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  &[hidden] {
+    display: none;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  &__replace-indent {
+    // 与首行的折叠按钮同宽，保证两个输入框左对齐
+    width: 24px;
+    flex-shrink: 0;
+  }
+
+  &__input-wrap {
+    display: flex;
+    align-items: center;
+    border: 1px solid styles.$border-grey;
+    border-radius: 4px;
+    background: styles.$primary-white;
+    height: 26px;
+    padding: 0 2px 0 0;
+    transition: border-color .15s;
+
+    &:focus-within {
+      border-color: styles.$primary-color;
+    }
+
+    &.is-empty-result {
+      border-color: styles.$primary-red;
+    }
+  }
+
+  &__input {
+    border: none;
+    outline: none;
+    height: 24px;
+    width: 160px;
+    padding: 0 6px;
+    font-size: 12px;
+    color: styles.$primary-black;
+    background: transparent;
+    box-sizing: border-box;
+  }
+
+  &__count {
+    font-size: 11px;
+    color: styles.$primary-grey;
+    padding: 0 6px;
+    white-space: nowrap;
+  }
+
+  &__toggle {
+    border: none;
+    background: transparent;
+    height: 24px;
+    width: 24px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 11px;
+    color: styles.$primary-grey;
+    padding: 0 3px;
+    transition: background .15s, color .15s;
+    margin-right: 5px;
+
+    &:hover {
+      background: styles.$hover-grey;
+    }
+
+    &.is-active {
+      background: rgba(0, 130, 252, .12);
+      color: styles.$primary-color;
+    }
+  }
+
+  &__icon-btn {
+    border: none;
+    background: transparent;
+    height: 24px;
+    min-width: 24px;
+    border-radius: 3px;
+    cursor: pointer;
+    color: styles.$primary-black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;
+    transition: background .15s;
+
+    &:hover:not(:disabled) {
+      background: styles.$hover-grey;
+    }
+
+    &.is-active {
+      background: rgba(0, 130, 252, .12);
+      color: styles.$primary-color;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: .4;
+    }
+  }
+
+  &__text-btn {
+    border: none;
+    height: 24px;
+    padding: 0 10px;
+    border-radius: 4px;
+    background: styles.$primary-color;
+    color: styles.$primary-white;
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background .15s;
+
+    &:hover:not(:disabled) {
+      background: color.scale(styles.$primary-color, $lightness: -8%);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: .5;
+    }
+  }
+}

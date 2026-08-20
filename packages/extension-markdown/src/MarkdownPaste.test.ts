@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import {Editor, Extension} from '@tiptap/core';
+import {Editor, Extension, type EditorOptions, type JSONContent} from '@tiptap/core';
 import {Plugin, PluginKey} from '@tiptap/pm/state';
 import StarterKit from '@tiptap/starter-kit';
 import {Markdown} from '@tiptap/markdown';
@@ -40,7 +40,7 @@ const GreedyCodeBlockStub = Extension.create({
   },
 });
 
-function createEditor(content?: Parameters<Editor['options']>[0]['content']) {
+function createEditor(content?: EditorOptions['content']) {
   return new Editor({
     extensions: [StarterKit, Markdown, MarkdownListHandler, MarkdownPaste],
     content,
@@ -92,7 +92,7 @@ describe('convertMarkdownToContent', () => {
   });
 
   it('超长文本短路', () => {
-    expect(convertMarkdownToContent(manager, '# ' + 'a'.repeat(10), 5)).toBeNull();
+    expect(convertMarkdownToContent(manager, `'# ${'a'.repeat(10)}`, 5)).toBeNull();
   });
 
   it('命中特征时产出映射后的节点数组', () => {
@@ -182,7 +182,7 @@ describe('MarkdownPaste（真实 Editor 粘贴）', () => {
     const types = (json.content ?? []).map(n => n.type);
     expect(types).toContain('heading');
     const para = (json.content ?? []).find(
-      n => n.type === 'paragraph' && n.content?.some(t => t.text === 'bold'),
+      n => n.type === 'paragraph' && n.content?.some(t => 'text' in t && t.text === 'bold'),
     );
     expect(para?.content?.some(t => t.marks?.some(m => m.type === 'bold'))).toBe(true);
     editor.destroy();
@@ -255,7 +255,7 @@ describe('MarkdownPaste（真实 Editor 粘贴）', () => {
     editor.commands.undo();
     const json = editor.getJSON();
     expect(json.content?.length).toBe(1);
-    expect(json.content?.[0]?.content?.[0]?.text).toBe('base');
+    expect((json.content?.[0]?.content?.[0] as JSONContent | undefined)?.text).toBe('base');
     editor.destroy();
   });
 
@@ -264,7 +264,7 @@ describe('MarkdownPaste（真实 Editor 粘贴）', () => {
     editor.commands.insertContent('[foo](https://a.com)');
     expect(typeText(editor, ' ')).toBe(true);
     const para = editor.getJSON().content?.[0];
-    const textNode = para?.content?.[0];
+    const textNode = para?.content?.[0] as JSONContent | undefined;
     expect(textNode?.text).toBe('foo');
     expect(textNode?.marks?.[0]?.type).toBe('link');
     expect(textNode?.marks?.[0]?.attrs?.href).toBe('https://a.com');

@@ -41,6 +41,7 @@
     "@textory/extension-link": "workspace:^",
     "@textory/extension-markdown": "workspace:^",
     "@textory/extension-outline": "workspace:^",
+    "@textory/extension-search-replace": "workspace:^",
     "@textory/extension-table": "workspace:^",
     "@textory/extension-task-item": "workspace:^",
     "@textory/extension-upload": "workspace:^",

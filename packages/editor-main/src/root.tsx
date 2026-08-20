@@ -23,6 +23,7 @@ import {Table, TableBubbleMenu, TableCell, TableHeader, TableRow,} from '@textor
 import {TextoryDragHandle} from '@textory/extension-drag-handle';
 import {FontSize} from '@textory/extension-fontsize';
 import {CharacterCount} from '@textory/extension-character-count';
+import {SearchReplace} from '@textory/extension-search-replace';
 import {Markdown as TiptapMarkdown} from '@tiptap/markdown';
 import {MarkdownListHandler, MarkdownPaste} from '@textory/extension-markdown';
 import {Placeholder} from './extension/Placeholder';
@@ -43,6 +44,7 @@ import HorizontalRule from '@tiptap/extension-horizontal-rule'
 import UniqueID from '@tiptap/extension-unique-id'
 import {DocTitle} from './components/Title';
 import CharacterCountBar from './components/CharacterCount';
+import SearchReplacePanel from './components/SearchReplace';
 import {DEFAULT_PROPS} from "./const/index.ts";
 /**
  * Ref handle exposed by the Editor component.
@@ -132,6 +134,28 @@ const CharacterCountLayer = memo<{ editor: TiptapEditor; maxCount?: number }>(
 );
 CharacterCountLayer.displayName = 'CharacterCountLayer';
 
+/**
+ * 隔离 SearchReplacePanel —— 面板常驻挂载（hidden 切换）以保留上次搜索词，
+ * 内部自持搜索/替换输入状态。
+ * 由 features.searchReplace 控制是否挂载。
+ */
+const SearchLayer = memo<{
+  editor: TiptapEditor;
+  open: boolean;
+  showReplace: boolean;
+  onClose: () => void;
+  onToggleReplace: (show: boolean) => void;
+}>(({ editor, open, showReplace, onClose, onToggleReplace }) => (
+  <SearchReplacePanel
+    editor={editor}
+    open={open}
+    showReplace={showReplace}
+    onClose={onClose}
+    onToggleReplace={onToggleReplace}
+  />
+));
+SearchLayer.displayName = 'SearchLayer';
+
 
 /**
  * onChange 的序列化防抖间隔。getHTML + toJSON 是 O(全文) 的操作，
@@ -148,6 +172,8 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
   const listGroup = `${UL}|${OL}|${CL}`;
   const mergedProps: TTextoryEditorProps = useEditorProps(props, DEFAULT_PROPS);
   const [isTitleFocused, setIsTitleFocused] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isSearchReplaceVisible, setIsSearchReplaceVisible] = useState(false);
   const titleContentRef = useRef('');
   const contentRef = useRef<{ html: string; json: JSONContent; }>({html:'', json: {}});
   const {
@@ -188,6 +214,7 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
   const isFileUploadEnabled = mergedProps.features?.fileUpload ?? true;
   const isVideoUploadEnabled = mergedProps.features?.videoUpload ?? true;
   const isCharacterCountEnabled = mergedProps.features?.characterCount ?? true;
+  const isSearchReplaceEnabled = mergedProps.features?.searchReplace ?? true;
   const isMarkdownEnabled = mergedProps.features?.markdown ?? true;
   // DocMeta 初始 title：从顶层 title prop 拿。
   // 即便 DocTitle 不渲染（showTitle=false），export 仍能从 storage 读到这个回退值。
@@ -295,6 +322,9 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
       ...(isCharacterCountEnabled
         ? [CharacterCount.configure({onUpdate: mergedProps.onCharacterCount})]
         : []),
+      // 搜索替换（features.searchReplace 门控）：关闭时不挂扩展与快捷键，
+      // 浏览器原生 Ctrl+F 不被拦截。
+      ...(isSearchReplaceEnabled ? [SearchReplace] : []),
     ],
     content,
     transformContent,
@@ -388,9 +418,34 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
     }
   }, [mergedProps.features]);
 
+  // Mod+F 打开搜索、Mod+Alt+F 打开并展开替换行。挂在整个编辑器容器上：
+  // 焦点在编辑区或面板内都会命中；features.searchReplace 关闭时不挂监听，
+  // 浏览器原生 Ctrl+F 不被劫持。preventDefault 阻止浏览器默认搜索行为。
+  const handleSearchHotkey = useCallback(
+    (event: React.KeyboardEvent) => {
+      if (!event.metaKey && !event.ctrlKey) return;
+      if (event.key.toLowerCase() !== 'f') return;
+      event.preventDefault();
+      if (event.altKey) {
+        setIsSearchReplaceVisible(true);
+      }
+      setIsSearchOpen(true);
+    },
+    [],
+  );
+  const handleCloseSearch = useCallback(() => setIsSearchOpen(false), []);
+  const handleToggleReplaceRow = useCallback(
+    (show: boolean) => setIsSearchReplaceVisible(show),
+    [],
+  );
+
   return (
     <EditorProvider editor={editor} props={mergedProps}>
-      <div className={cx('textory', className)} style={style}>
+      <div
+        className={cx('textory', className)}
+        style={style}
+        onKeyDown={isSearchReplaceEnabled && editor.isEditable ? handleSearchHotkey : undefined}
+      >
         {editor.isEditable && (
           <EditorToolbar
             editor={editor}
@@ -438,6 +493,15 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
         {<FilePreviewLayer editor={editor} />}
         {isCharacterCountEnabled && (
           <CharacterCountLayer editor={editor} maxCount={mergedProps.maxCount} />
+        )}
+        {isSearchReplaceEnabled && editor.isEditable && (
+          <SearchLayer
+            editor={editor}
+            open={isSearchOpen}
+            showReplace={isSearchReplaceVisible}
+            onClose={handleCloseSearch}
+            onToggleReplace={handleToggleReplaceRow}
+          />
         )}
       </div>
     </EditorProvider>

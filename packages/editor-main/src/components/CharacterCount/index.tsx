@@ -27,13 +27,14 @@ const CharacterCountBar = memo<CharacterCountBarProps>(({editor, maxCount}) => {
     let lastDoc: unknown = null;
     let timer: number | undefined;
 
+    const compute = () => editor.storage.characterCount?.characters() ?? 0;
+
     const update = () => {
       const doc = editor.state.doc;
       if (doc === lastDoc) return;
       if (lastDoc === null) {
-        // 首次进入 effect 立即计数（初始 content 不触发 update 事件）
         lastDoc = doc;
-        setCount(editor.storage.characterCount?.characters() ?? 0);
+        setCount(compute());
         return;
       }
       window.clearTimeout(timer);
@@ -41,16 +42,24 @@ const CharacterCountBar = memo<CharacterCountBarProps>(({editor, maxCount}) => {
         timer = undefined;
         if (editor.isDestroyed) return;
         lastDoc = editor.state.doc;
-        setCount(editor.storage.characterCount?.characters() ?? 0);
+        setCount(compute());
       }, COUNT_DEBOUNCE_MS);
     };
 
-    // create 兜底初始 content；transaction 覆盖 setContent 等不 emit update 的同步路径
-    editor.on('create', update);
+    // tiptap v3 的 'create' 是 setTimeout(0) 异步 emit：effect 首跑可能早于
+    // 扩展 onCreate，此时 storage.characters 还是占位 () => 0，而 create 到达时
+    // doc 引用未变会被上面的去重跳过——初始内容将永远显示 0。
+    // 因此 create 必须强制重算（storage 函数此时已就绪）。
+    const forceUpdate = () => {
+      lastDoc = editor.state.doc;
+      setCount(compute());
+    };
+
+    editor.on('create', forceUpdate);
     editor.on('transaction', update);
     update();
     return () => {
-      editor.off('create', update);
+      editor.off('create', forceUpdate);
       editor.off('transaction', update);
       window.clearTimeout(timer);
     };

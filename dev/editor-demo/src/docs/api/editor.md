@@ -39,6 +39,8 @@ import Editor from '@textory/editor';
 | `features.fileUpload` | `boolean` | `true` | 是否启用文件附件（含 `FileExtension`、工具栏附件按钮与 paste/drop 上传） |
 | `features.videoUpload` | `boolean` | `true` | 是否启用视频（含 `VideoExtension`、工具栏视频按钮与 paste/drop 上传） |
 | `features.markdown` | `boolean` | `true` | 是否启用 Markdown 支持（纯文本粘贴自动转换 + `[text](url)` 输入规则 + `getMarkdown()` 序列化，详见 [Markdown 支持](#markdown-支持)） |
+| `features.characterCount` | `boolean` | `true` | 是否启用字数统计（底部状态栏 + `onCharacterCount` 回调） |
+| `features.searchReplace` | `boolean` | `true` | 是否启用搜索替换（`⌘F` / `Ctrl+F` 呼出浮层面板，支持大小写 / 全词匹配、逐个与全部替换；关闭时浏览器原生 `Ctrl+F` 不被拦截） |
 
 ```jsx
 // 关闭文档大纲：右侧不会出现大纲面板

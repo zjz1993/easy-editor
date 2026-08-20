@@ -44,5 +44,6 @@ export const DEFAULT_PROPS: Partial<TTextoryEditorProps> = {
     videoUpload: true,
     characterCount: true,
     markdown: true,
+    searchReplace: true,
   },
 }

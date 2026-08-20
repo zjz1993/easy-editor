@@ -19,6 +19,7 @@ export const FEATURES = {
   VIDEO_UPLOAD: 'videoUpload',
   CHARACTER_COUNT: 'characterCount',
   MARKDOWN: 'markdown',
+  SEARCH_REPLACE: 'searchReplace',
 } as const;
 
 export type FeatureName = (typeof FEATURES)[keyof typeof FEATURES];
