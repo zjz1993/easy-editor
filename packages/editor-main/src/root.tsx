@@ -1,50 +1,27 @@
-import {BLOCK_TYPES, wrapBlockExtensions} from '@textory/editor-utils';
 import {MessageContainer} from '@textory/editor-common';
-import {extendWithoutDeprecatedDefaultOptions} from '@textory/editor-utils';
 import {get, isUndefined} from 'lodash-es';
 import {EditorToolbar} from '@textory/editor-toolbar';
-import {Bold} from '@textory/extension-bold';
-import {EditorContent} from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
 import cx from 'classnames';
-import {forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef, useState} from 'react';
-import type {Editor as TiptapEditor, JSONContent} from '@tiptap/core';
-import {CodeBlock} from '@textory/extension-code-block';
-import {Indent} from '@textory/extension-indent';
-import {CustomLink} from '@textory/extension-link';
-import {TaskItem, TaskList} from '@textory/extension-task-item';
-import {Color} from '@tiptap/extension-color';
-import {Highlight} from '@textory/extension-highlight';
-import {AttachmentExtension} from '@textory/extension-image';
-import {FileExtension} from '@textory/extension-file';
-import {VideoExtension} from '@textory/extension-video';
-import {UploadExtension} from '@textory/extension-upload';
-import {Table, TableBubbleMenu, TableCell, TableHeader, TableRow,} from '@textory/extension-table';
-import {TextoryDragHandle} from '@textory/extension-drag-handle';
-import {FontSize} from '@textory/extension-fontsize';
-import {CharacterCount} from '@textory/extension-character-count';
-import {SearchReplace} from '@textory/extension-search-replace';
-import {Markdown as TiptapMarkdown} from '@tiptap/markdown';
-import {MarkdownListHandler, MarkdownPaste} from '@textory/extension-markdown';
-import {Placeholder} from './extension/Placeholder';
-import {DocMetaExtension} from './extension/DocMeta';
-import {TextAlign} from '@tiptap/extension-text-align';
-import {TextStyle} from '@tiptap/extension-text-style';
-import BulletList from './BulletList/bullet-list.ts';
-import {ListItem} from './BulletList/list-item.ts'; // import {UniqueIDExtension} from './extension/UniqueIDExtension/index.ts';
-import EditorFilePreview from './components/FilePreview/EditorFilePreview';
-import {TextBubbleMenu} from './components/TextBubbleMenu';
-import Underline from '@tiptap/extension-underline';
-import {OutlineExtension, OutlineView} from '@textory/extension-outline';
+import {forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState} from 'react';
+import type {JSONContent} from '@tiptap/core';
 import {useEditorProps} from './hooks/useEditorProps.ts';
 import {EditorProvider, type TTextoryEditorProps} from '@textory/context';
 import {useTiptapWithSync} from './hooks/useTiptapWithSync.ts';
+import {useOnChangePipeline, useFlushOnChangeOnBlur} from './hooks/useOnChangePipeline.ts';
+import {useSearchReplaceUI} from './hooks/useSearchReplaceUI.ts';
+import {useFeaturesWarning} from './hooks/useFeaturesWarning.ts';
+import {useEditorExtensions} from './hooks/useEditorExtensions.ts';
 import {exportWORD, type ExportOptions} from '@textory/extension-export';
-import HorizontalRule from '@tiptap/extension-horizontal-rule'
-import UniqueID from '@tiptap/extension-unique-id'
 import {DocTitle} from './components/Title';
-import CharacterCountBar from './components/CharacterCount';
-import SearchReplacePanel from './components/SearchReplace';
+import {
+  BubbleLayer,
+  CharacterCountLayer,
+  DragHandleLayer,
+  EditorStage,
+  FilePreviewLayer,
+  SearchLayer,
+  TextBubbleLayer,
+} from './layers';
 import {DEFAULT_PROPS} from "./const/index.ts";
 /**
  * Ref handle exposed by the Editor component.
@@ -69,221 +46,46 @@ export interface EditorRef {
   import: (file: File) => Promise<void>;
 }
 
-/**
- * 隔离后的编辑器主舞台（EditorContent + OutlineView）。
- *
- * 这些子树本身不依赖 root.tsx 里的 UI state（如 isTitleFocused），用 memo
- * 避免父级无关 re-render 拖累 ProseMirror 同步渲染路径。
- *
- * 详见 .ai/tiptap-performance-guide.md 第 1 节「Isolate the editor in a
- * separate component」与 .ai/performance-issues.md P1-1。
- */
-interface EditorStageProps {
-  editor: TiptapEditor;
-  autoFocus?: boolean;
-  isOutlineEnabled: boolean;
-}
-const EditorStage = memo<EditorStageProps>(({ editor, autoFocus, isOutlineEnabled }) => (
-  <EditorContent autoFocus={autoFocus} editor={editor} className="textory-body">
-    {isOutlineEnabled && <OutlineView editor={editor} />}
-  </EditorContent>
-));
-EditorStage.displayName = 'EditorStage';
-
-/**
- * 隔离 TableBubbleMenu —— 仅依赖 editor 实例。
- */
-const BubbleLayer = memo<{ editor: TiptapEditor }>(({ editor }) => (
-  <TableBubbleMenu editor={editor} />
-));
-BubbleLayer.displayName = 'BubbleLayer';
-
-/**
- * 隔离 EditorFilePreview —— 仅依赖 editor 实例。
- */
-const FilePreviewLayer = memo<{ editor: TiptapEditor }>(({ editor }) => (
-  <EditorFilePreview editor={editor} />
-));
-FilePreviewLayer.displayName = 'FilePreviewLayer';
-
-/**
- * 隔离 TextBubbleMenu —— 仅依赖 editor 实例。
- * 由 features.textBubbleToolbar 控制是否挂载。
- */
-const TextBubbleLayer = memo<{ editor: TiptapEditor }>(({ editor }) => (
-  <TextBubbleMenu editor={editor} />
-));
-TextBubbleLayer.displayName = 'TextBubbleLayer';
-
-/**
- * 隔离 DragHandle —— 仅依赖 editor 实例。
- * Block-level 节点拖动 handle,table 内部自动隐藏。
- * 详见 .ai/docs/drag-handle.md
- */
-const DragHandleLayer = memo<{ editor: TiptapEditor }>(({ editor }) => (
-  <TextoryDragHandle editor={editor} />
-));
-DragHandleLayer.displayName = 'DragHandleLayer';
-
-/**
- * 隔离 CharacterCountBar —— 仅依赖 editor 实例与 maxCount。
- * 由 features.characterCount 控制是否挂载。
- */
-const CharacterCountLayer = memo<{ editor: TiptapEditor; maxCount?: number }>(
-  ({ editor, maxCount }) => <CharacterCountBar editor={editor} maxCount={maxCount} />,
-);
-CharacterCountLayer.displayName = 'CharacterCountLayer';
-
-/**
- * 隔离 SearchReplacePanel —— 面板常驻挂载（hidden 切换）以保留上次搜索词，
- * 内部自持搜索/替换输入状态。
- * 由 features.searchReplace 控制是否挂载。
- */
-const SearchLayer = memo<{
-  editor: TiptapEditor;
-  open: boolean;
-  showReplace: boolean;
-  onClose: () => void;
-  onToggleReplace: (show: boolean) => void;
-}>(({ editor, open, showReplace, onClose, onToggleReplace }) => (
-  <SearchReplacePanel
-    editor={editor}
-    open={open}
-    showReplace={showReplace}
-    onClose={onClose}
-    onToggleReplace={onToggleReplace}
-  />
-));
-SearchLayer.displayName = 'SearchLayer';
-
-
-/**
- * onChange 的序列化防抖间隔。getHTML + toJSON 是 O(全文) 的操作，
- * 逐键执行在大文档（尤其是巨型表格）下会造成打字卡顿；
- * blur / getData() / 组件卸载时会同步 flush，不丢最后一次输入。
- */
-const ON_CHANGE_DEBOUNCE_MS = 300;
-
 const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
   const imgUploader = useRef<any>();
   const fileUploader = useRef<any>();
   const videoUploader = useRef<any>();
-  const { CL, OL, UL, P, H, CLI, LI, QUOTE, HR, TL, IMG, FILE, VIDEO, TABLE } = BLOCK_TYPES;
-  const listGroup = `${UL}|${OL}|${CL}`;
   const mergedProps: TTextoryEditorProps = useEditorProps(props, DEFAULT_PROPS);
   const [isTitleFocused, setIsTitleFocused] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isSearchReplaceVisible, setIsSearchReplaceVisible] = useState(false);
-  const titleContentRef = useRef('');
-  const contentRef = useRef<{ html: string; json: JSONContent; }>({html:'', json: {}});
   const {
     content,
-    onChange,
     autoFocus,
-    placeholder,
     className,
     style,
     title,
     transformContent,
     onEditorReady,
   } = mergedProps;
-  // onChange 防抖：timer + pending 标记 + 最新回调引用（避免闭包过期）
-  const onChangeTimerRef = useRef<number | undefined>(undefined);
-  const onChangePendingRef = useRef(false);
-  const onChangeRef = useRef(onChange);
-  useEffect(() => {
-    onChangeRef.current = onChange;
-  }, [onChange]);
 
-  /**
-   * 立即序列化并触发 onChange。既是防抖的最终执行体，
-   * 也是 blur / getData / 卸载时的 flush 入口。
-   */
-  const flushOnChange = useCallback((ed: TiptapEditor) => {
-    window.clearTimeout(onChangeTimerRef.current);
-    if (!onChangePendingRef.current) return;
-    onChangePendingRef.current = false;
-    if (ed.isDestroyed) return;
-    const content = {html: ed.getHTML(), json: ed.state.doc.toJSON()};
-    contentRef.current = content;
-    onChangeRef.current?.(content, titleContentRef.current);
-  }, []);
-  const isOutlineEnabled = mergedProps.features?.outline ?? true;
-  const isImportWordEnabled = mergedProps.features?.importWord ?? false;
-  const isTextBubbleEnabled = mergedProps.features?.textBubbleToolbar ?? true;
-  const isFileUploadEnabled = mergedProps.features?.fileUpload ?? true;
-  const isVideoUploadEnabled = mergedProps.features?.videoUpload ?? true;
-  const isCharacterCountEnabled = mergedProps.features?.characterCount ?? true;
-  const isSearchReplaceEnabled = mergedProps.features?.searchReplace ?? true;
-  const isMarkdownEnabled = mergedProps.features?.markdown ?? true;
-  // DocMeta 初始 title：从顶层 title prop 拿。
-  // 即便 DocTitle 不渲染（showTitle=false），export 仍能从 storage 读到这个回退值。
-  const initialDocTitle = typeof title === 'string' ? title : '';
-  const extensions = [
-    StarterKit.configure({
-      bold: false,
-      codeBlock: false,
-      underline: false,
-      link: false,
-      horizontalRule: false,
-    }),
-    Bold,
-    UniqueID.configure({
-      types: 'all',
-    }),
-    HorizontalRule.extend({
-      name:BLOCK_TYPES.HR,
-    }).configure({
-      HTMLAttributes: {
-        class: 'textory-divider',
-      },
-    }),
-    Table.configure({
-      resizable: true,
-    }),
-    TableRow,
-    TableHeader,
-    TableCell,
-    TextStyle,
-    Color,
-    Highlight,
-    FontSize,
-    Underline,
-    CustomLink,
-    CodeBlock,
-    Indent.configure({
-      types: [P, H, CL, CLI, OL, UL, LI, QUOTE, HR],
-      itemTypeName: BLOCK_TYPES.CLI,
-      minLevel: 0,
-      maxLevel: 10,
-    }),
-    TextAlign.configure({
-      types: [BLOCK_TYPES.H, BLOCK_TYPES.P, BLOCK_TYPES.IMG],
-    }),
-    ListItem.extend({ name: BLOCK_TYPES.LI }),
-    BulletList.extend({ name: BLOCK_TYPES.UL }).configure({
-      keepMarks: true,
-      keepAttributes: true,
-      content: `(listItem|${listGroup}|checklistItem)+`,
-      itemTypeName: BLOCK_TYPES.LI,
-    }),
-    TaskList,
-    TaskItem,
-    AttachmentExtension.configure(props.imageProps),
-    // FileExtension gated by features.fileUpload. When disabled, neither
-    // the extension nor the toolbar button are mounted — paste/drop of
-    // non-image files becomes a no-op (fileUploader ref is not assigned).
-    ...(isFileUploadEnabled
-      ? [FileExtension.configure(mergedProps.fileProps)]
-      : []),
-    // VideoExtension gated by features.videoUpload. Same pattern as file:
-    // extension + toolbar button + videoUploader ref are all skipped when
-    // disabled, so paste/drop of video files becomes a no-op.
-    ...(isVideoUploadEnabled
-      ? [VideoExtension.configure(mergedProps.videoProps)]
-      : []),
-    // CustomParagraph,
-  ];
+  // onChange 防抖管线（须在 useTiptapWithSync 之前：onUpdate 需要 handleEditorUpdate）
+  const {contentRef, titleContentRef, handleEditorUpdate, flushOnChange} =
+    useOnChangePipeline(mergedProps.onChange);
+  const {
+    isSearchOpen,
+    isSearchReplaceVisible,
+    handleSearchHotkey,
+    handleCloseSearch,
+    handleToggleReplaceRow,
+  } = useSearchReplaceUI();
+  useFeaturesWarning(mergedProps.features);
+
+  // 扩展集合 + features 开关（memo 化，见 P1-3）
+  const {
+    extensions,
+    isOutlineEnabled,
+    isImportWordEnabled,
+    isTextBubbleEnabled,
+    isFileUploadEnabled,
+    isVideoUploadEnabled,
+    isCharacterCountEnabled,
+    isSearchReplaceEnabled,
+  } = useEditorExtensions(props, mergedProps);
+
   const editor = useTiptapWithSync({
     editorProps: {
       imgUploader,
@@ -291,55 +93,15 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
       videoUploader,
     },
     autofocus: !isUndefined(autoFocus) ? 'end' : undefined,
-    extensions: [
-      ...wrapBlockExtensions(
-        extensions,
-        [P, H, CL, OL, UL, QUOTE, HR, TL, IMG, BLOCK_TYPES.FILE, BLOCK_TYPES.VIDEO],
-        '',
-      ),
-      // UploadExtension must be registered once globally — image and file
-      // extensions both rely on its progress plugin + paste/drop dispatcher
-      // but neither registers their own (would cause plugin-key conflicts).
-      UploadExtension,
-      ...(isOutlineEnabled ? [OutlineExtension] : []),
-      DocMetaExtension.configure({ title: initialDocTitle }),
-      Placeholder.configure({
-        placeholder,
-      }),
-      // Markdown 支持（features.markdown 门控）：@tiptap/markdown 提供
-      // parse/serialize 管线与 getMarkdown()；MarkdownListHandler 把列表
-      // token 解析为本编辑器节点名；MarkdownPaste 接管纯文本粘贴转换。
-      // MarkdownPaste priority=200 高于 CodeBlock（默认 100）——CodeBlock 会对
-      // 任意多行且 detectLanguage 命中的纯文本建代码块，必须让 Markdown 转换
-      // 优先；VSCode 源码复制（vscode-editor-data）在 MarkdownPaste 内部让位。
-      ...(isMarkdownEnabled
-        ? [
-            TiptapMarkdown.configure({markedOptions: {gfm: true, breaks: false}}),
-            MarkdownListHandler,
-            MarkdownPaste,
-          ]
-        : []),
-      ...(isCharacterCountEnabled
-        ? [CharacterCount.configure({onUpdate: mergedProps.onCharacterCount})]
-        : []),
-      // 搜索替换（features.searchReplace 门控）：关闭时不挂扩展与快捷键，
-      // 浏览器原生 Ctrl+F 不被拦截。
-      ...(isSearchReplaceEnabled ? [SearchReplace] : []),
-    ],
+    extensions,
     content,
     transformContent,
     editable: mergedProps.editable,
-    onUpdate: ({ editor }) => {
-      // 大文档下逐键执行 getHTML/toJSON 会拖慢打字，防抖到输入停顿后统一 emit。
-      // 注意：不能在 composition 期间强制 flush，否则会打断 IME。
-      onChangePendingRef.current = true;
-      window.clearTimeout(onChangeTimerRef.current);
-      onChangeTimerRef.current = window.setTimeout(
-        () => flushOnChange(editor),
-        ON_CHANGE_DEBOUNCE_MS,
-      );
-    },
+    onUpdate: handleEditorUpdate,
   });
+
+  // onChange 防抖兜底（须在 useTiptapWithSync 之后：依赖 editor 实例）
+  useFlushOnChangeOnBlur(editor, flushOnChange);
 
   // Shared import handler — used by both EditorRef.import and the toolbar button.
   // Dynamic import keeps mammoth (~100KB+) out of the main bundle until first use.
@@ -377,19 +139,16 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
       });
     },
     import: handleImportFile,
-  }), [editor, mergedProps.title, handleImportFile, flushOnChange]);
-
-  // onChange 防抖的兜底：blur 时立即 flush（点击外部即拿到最新内容），
-  // 卸载时清掉 timer 并同步 flush，保证 autosave 场景不丢最后一段输入。
-  useEffect(() => {
-    if (!editor) return;
-    const handleBlur = () => flushOnChange(editor);
-    editor.on('blur', handleBlur);
-    return () => {
-      editor.off('blur', handleBlur);
-      flushOnChange(editor);
-    };
-  }, [editor, flushOnChange]);
+    // titleContentRef/contentRef 由 useOnChangePipeline 返回（引用恒定），
+    // 显式列入以通过 exhaustive-deps 静态检查
+  }), [
+    editor,
+    mergedProps.title,
+    handleImportFile,
+    flushOnChange,
+    contentRef,
+    titleContentRef,
+  ]);
 
   // 通知外部 editor 已就绪。供 @textory/standalone UMD 桥接层等非 React 集成场景使用。
   // editor 在 useTiptapWithSync 首次创建后不会重新创建，所以会触发一次。
@@ -402,42 +161,6 @@ const Editor = forwardRef<EditorRef, TTextoryEditorProps>((props, ref) => {
   if (process.env.NODE_ENV === 'development') {
     (window as any).__EASY_EDITOR__ = editor;
   }
-
-  // features 只在 mount 时生效，运行时变更不会重新加载扩展
-  const initialFeaturesRef = useRef<string | undefined>(undefined);
-  if (initialFeaturesRef.current === undefined) {
-    initialFeaturesRef.current = JSON.stringify(mergedProps.features ?? {});
-  }
-  useEffect(() => {
-    const current = JSON.stringify(mergedProps.features ?? {});
-    if (current !== initialFeaturesRef.current) {
-      console.warn(
-        '[EasyEditor] features 只在初始化时生效，运行时修改不会重新加载扩展。' +
-          '如需切换，请给 <Editor> 加 key 强制 remount，例如：<Editor key={JSON.stringify(features)} features={features} />',
-      );
-    }
-  }, [mergedProps.features]);
-
-  // Mod+F 打开搜索、Mod+Alt+F 打开并展开替换行。挂在整个编辑器容器上：
-  // 焦点在编辑区或面板内都会命中；features.searchReplace 关闭时不挂监听，
-  // 浏览器原生 Ctrl+F 不被劫持。preventDefault 阻止浏览器默认搜索行为。
-  const handleSearchHotkey = useCallback(
-    (event: React.KeyboardEvent) => {
-      if (!event.metaKey && !event.ctrlKey) return;
-      if (event.key.toLowerCase() !== 'f') return;
-      event.preventDefault();
-      if (event.altKey) {
-        setIsSearchReplaceVisible(true);
-      }
-      setIsSearchOpen(true);
-    },
-    [],
-  );
-  const handleCloseSearch = useCallback(() => setIsSearchOpen(false), []);
-  const handleToggleReplaceRow = useCallback(
-    (show: boolean) => setIsSearchReplaceVisible(show),
-    [],
-  );
 
   return (
     <EditorProvider editor={editor} props={mergedProps}>
