@@ -1,0 +1,12 @@
+@use "../colors/colors" as styles;
+
+// 工具栏「插入」分组按钮的触发器文字样式。
+// 菜单面板本体基于 TextoryMenu(rc-menu),样式见 menu.scss。
+.textory-toolbar__insert_btn_text {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 13px;
+  white-space: nowrap;
+  cursor: pointer;
+}

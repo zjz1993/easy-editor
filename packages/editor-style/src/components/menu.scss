@@ -1,0 +1,231 @@
+@use "../colors/colors" as styles;
+
+// ===== TextoryMenu(rc-menu 封装)=====
+// rc-menu 不带样式,这里按 textory 视觉补全结构样式。
+// 类名树(prefixCls=rc-menu):
+//   ul.rc-menu.rc-menu-root.rc-menu-vertical        根
+//   li.rc-menu-item / li.rc-menu-submenu            项 / 子菜单
+//   .rc-menu-submenu-popup                          子菜单弹层(可能 portal 出根节点)
+//   ul.rc-menu.rc-menu-sub                          子菜单列表
+//   .rc-menu-item-divider / *-disabled
+
+.rc-menu-hidden,
+.rc-menu-submenu-hidden {
+  display: none;
+}
+
+.textory-menu {
+  &.rc-menu {
+    outline: none;
+    margin: 0;
+    padding: 4px 0;
+    list-style: none;
+    box-sizing: border-box;
+    min-width: 176px;
+    background: styles.$primary-white;
+  }
+}
+
+.rc-menu-item,
+.rc-menu-submenu-title {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 12px;
+  font-size: 13px;
+  color: styles.$primary-black;
+  cursor: pointer;
+  transition: background .15s;
+
+  .textory-menu__content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+    height: 20px;
+  }
+
+  .textory-menu__icon {
+    display: inline-flex;
+    align-items: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    height: 100%;
+
+    .textory-icon {
+      font-size: 14px;
+    }
+  }
+
+  .textory-menu__label {
+    flex: 1;
+    height: 100%;
+  }
+
+  .textory-menu__shortcut {
+    font-size: 12px;
+    color: styles.$primary-grey;
+    margin-left: 12px;
+  }
+
+  &:hover {
+    background: styles.$hover-grey;
+  }
+}
+
+.rc-menu-item.rc-menu-item-selected {
+  color: styles.$primary-color;
+  background: rgba(0, 130, 252, .08);
+}
+
+.rc-menu-item.rc-menu-item-disabled,
+.rc-menu-submenu.rc-menu-submenu-disabled {
+  color: styles.$not-allow;
+  cursor: not-allowed;
+
+  .rc-menu-submenu-title,
+  .textory-menu__content {
+    color: styles.$not-allow;
+  }
+
+  &:hover {
+    background: transparent;
+  }
+}
+
+.rc-menu-item.textory-menu__item--danger {
+  color: styles.$primary-red;
+
+  &:hover {
+    color: styles.$primary-red;
+  }
+}
+
+.rc-menu-item-divider {
+  height: 1px;
+  margin: 4px 12px;
+  background: styles.$border-grey;
+  overflow: hidden;
+  line-height: 0;
+}
+
+// SubMenu 展开箭头(CSS 绘制,展开旋转 90°)
+.textory-menu__arrow {
+  width: 0;
+  height: 0;
+  border-top: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-left: 4px solid styles.$primary-grey;
+  transition: transform .15s;
+  margin-left: 4px;
+  flex-shrink: 0;
+
+  &.is-open {
+    transform: rotate(90deg);
+  }
+}
+
+.rc-menu-submenu-popup {
+  position: absolute;
+  z-index: 1050;
+  &:before {
+    content:'';
+    position:absolute;
+    left:-6px;
+    top:0;
+    width:6px;
+    height:100%;
+  }
+}
+
+.rc-menu-submenu-placement-rightTop,
+.rc-menu-submenu-placement-leftTop,
+.rc-menu-submenu-placement-bottomLeft {
+  .rc-menu {
+    overflow: hidden;
+  }
+}
+
+// 子菜单弹层(popup 可能 portal 出根节点,需全局类名)
+.rc-menu-submenu-popup.textory-menu__popup {
+  .rc-menu.rc-menu-sub {
+    padding: 4px 0;
+    min-width: 160px;
+    background: styles.$primary-white;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 12%);
+    list-style: none;
+    margin: 0;
+  }
+
+  // Upload 触发器作为菜单项 label
+  .rc-upload {
+    display: block;
+    width: 100%;
+  }
+
+  .uploader-trigger {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+// popupRender 自定义弹层:默认的 ul.rc-menu-sub 菜单结构被整体替换,
+// 内容(如表格选格网格)以独立浮层出现在菜单外部,自带浮层样式
+.rc-menu-submenu-popup.textory-menu__popup--custom {
+  .kms-tb-table-picker {
+    background: styles.$primary-white;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 12%);
+    padding: 4px 0 4px;
+    box-sizing: border-box;
+  }
+}
+
+// ===== 动画(rc-motion 类名规则:${motionName}-${state}(-active))=====
+// vertical: zoom
+.textory-menu-zoom-appear,
+.textory-menu-zoom-enter {
+  opacity: 0;
+}
+
+.textory-menu-zoom-appear-active,
+.textory-menu-zoom-enter-active {
+  opacity: 1;
+  transition: opacity .15s ease-out;
+}
+
+.textory-menu-zoom-leave {
+  opacity: 1;
+}
+
+.textory-menu-zoom-leave-active {
+  opacity: 0;
+  transition: opacity .1s ease-in;
+}
+
+// horizontal: slide up
+.textory-menu-slide-up-appear,
+.textory-menu-slide-up-enter {
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+.textory-menu-slide-up-appear-active,
+.textory-menu-slide-up-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity .15s ease-out, transform .15s ease-out;
+}
+
+.textory-menu-slide-up-leave {
+  opacity: 1;
+}
+
+.textory-menu-slide-up-leave-active {
+  opacity: 0;
+  transition: opacity .1s ease-in;
+}

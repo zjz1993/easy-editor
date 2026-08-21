@@ -33,6 +33,8 @@ export default defineConfig({
     "framer-motion",
     "ahooks",
     /^rc-.*/,
+    // rc-menu 的后续版本迁移到了 @rc-component/* 命名空间
+    /^@rc-component\/.*/,
     "lodash-es",
     "react-intl-universal",
     "@floating-ui/react",

@@ -12,22 +12,24 @@ import type {Editor} from '@tiptap/core';
 import {useEditorState} from '@tiptap/react';
 import Overflow from 'rc-overflow';
 import AlignButton from './components/AlignButton/index.tsx';
-import CodeButton from './components/CodeButton/index.tsx';
 import HeaderButton from './components/HeaderButton/index.tsx';
 import LinkButton from './components/LinkButton/index.tsx';
 import ListButton from './components/ListButton/index.tsx';
 import TextColorPicker from './components/TextColorPicker/index.tsx';
-import {Bold, IndentButton, Italic, Redo, Strike, ToolBarItemDivider, Underline, Undo,} from './components';
+import {Bold} from './components/ToolbarItem/Bold';
+import {Italic} from './components/ToolbarItem/Italic';
+import {Redo} from './components/ToolbarItem/Redo';
+import {Strike} from './components/ToolbarItem/Strike';
+import {Underline} from './components/ToolbarItem/Underline';
+import {Undo} from './components/ToolbarItem/Undo';
+import {ToolBarItemDivider} from './components/ToolbarItem/ToolBarItemDivider';
+import {IndentButton} from './components/IndentButton';
 import ToolbarContext from './context/toolbarContext.ts';
 import type {IToolbarCommonProps} from './types/index.ts';
-import ImageButton from './components/ImageButton/index.tsx';
-import VideoButton from './components/VideoButton/index.tsx';
-import FileButton from './components/FileButton/index.tsx';
-import TableButton from './components/TableButton/index.tsx';
 import ExportButton from "./components/ExportButton/index.tsx";
 import ImportButton from "./components/ImportButton/index.tsx";
 import HighlightColorPicker from "./components/HighlightColorPicker/index.tsx";
-import DividerButton from "./components/DividerButton/index.tsx";
+import InsertGroupButton from './components/InsertGroupButton/index.tsx';
 
 export interface IToolbarProps {
   editor: Editor | null;
@@ -48,7 +50,7 @@ const Toolbar: FC<IToolbarProps> = props => {
   const {
     props: { editable },
   } = useEditorContext();
-  const { editor, imageProps = {}, fileProps, videoProps, exportProps={}, onImportFile } = props;
+  const { editor, imageProps, fileProps, videoProps, exportProps, onImportFile } = props;
   // 用 useEditorState 订阅 Toolbar 自身需要的派生状态（disabled 计算）。
   // Tiptap 默认 deep compare，只在任一值变化时才触发本组件重渲染。
   // 详见 .ai/tiptap-performance-guide.md 第 2、3 节。
@@ -75,13 +77,21 @@ const Toolbar: FC<IToolbarProps> = props => {
     }),
   });
   const editorView = editor.view;
-  const commonProps: IToolbarCommonProps = {
-    dispatch: editorView.dispatch,
-    value: editorView.state,
-    view: editorView,
-    editor,
-    disabled: !editor.isEditable,
-  };
+  // memo 化 context value：Provider 每次渲染都构造新对象会拖累所有
+  // useEditorState 订阅的按钮组件（react-doctor jsx-no-constructed-context-values）
+  const contextValue = useMemo(
+    () => ({
+      dispatch: editorView.dispatch,
+      value: editorView.state,
+      view: editorView,
+      editor,
+      disabled: !editor.isEditable,
+      imageProps,
+      fileProps,
+      videoProps,
+    }),
+    [editor, editor.isEditable, editorView, editorView.dispatch, editorView.state, imageProps, fileProps, videoProps],
+  );
   const menuArray = useMemo(() => {
     if (!caps) return [];
     const disabled = !editable || !!props.disabled;
@@ -160,11 +170,7 @@ const Toolbar: FC<IToolbarProps> = props => {
         component: <ListButton />,
         disabled: disabled || !caps.canUL,
       },
-      {
-        key: BLOCK_TYPES.CL,
-        component: <ListButton />,
-        disabled: disabled || !caps.canCL,
-      },
+      // 任务列表(CheckList)已收进「插入」分组菜单
       {
         key: INDENT_TYPES.Inc,
         component: <IndentButton />,
@@ -191,59 +197,14 @@ const Toolbar: FC<IToolbarProps> = props => {
           !caps.canLink ||
           caps.isInCodeBlock,
       },
+      // 插入分组：任务列表/分割线/代码块/表格/图片/视频/附件收进一个
+      // 下拉菜单（见 InsertGroupButton，基于 TextoryMenu 多级子菜单）。
+      // video/file 的 feature 门控由 InsertGroupButton 内部按
+      // ToolbarContext 的 videoProps/fileProps 处理（未传则菜单项不渲染）。
       {
-        key: 'code',
-        component: <CodeButton editor={editor} />,
-        intlStr: 'code',
-        disabled:
-          disabled ||
-          caps.isInCodeBlock ||
-          // !editor.can().chain().focus().toggleCodeBlock?.().run() ||
-          !caps.canInlineCode,
-      },
-      {
-        key: BLOCK_TYPES.IMG,
-        component: <ImageButton editor={editor} />,
-        intlStr: 'image.insert',
-        disabled: disabled || caps.isInCodeBlock,
-      },
-      // Only render the video button when videoProps is provided (i.e. when
-      // features.videoUpload is enabled). VideoButton also self-guards
-      // against missing videoProps (returns null), but skipping here keeps
-      // the toolbar slot empty too.
-      ...(videoProps
-        ? [
-            {
-              key: 'video',
-              component: <VideoButton editor={editor} />,
-              intlStr: 'video.insert',
-              disabled: disabled || caps.isInCodeBlock,
-            },
-          ]
-        : []),
-      // Only render the file button when fileProps is provided (i.e. when
-      // features.fileUpload is enabled). Saves a slot in the toolbar when
-      // the feature is off.
-      ...(fileProps
-        ? [
-            {
-              key: BLOCK_TYPES.FILE,
-              component: <FileButton editor={editor} />,
-              intlStr: 'file.toolbar',
-              disabled: disabled || caps.isInCodeBlock,
-            },
-          ]
-        : []),
-      {
-        key: BLOCK_TYPES.TABLE,
-        component: <TableButton editor={editor} />,
-        intlStr: 'table',
-        disabled: disabled || caps.isCodeBlock,
-      },
-      {
-        key: 'divider',
-        component: <DividerButton editor={editor}/>,
-        intlStr: 'divider',
+        key: 'insertGroup',
+        component: <InsertGroupButton editor={editor} />,
+        intlStr: 'toolbar.insert',
         disabled: disabled,
       },
       {
@@ -259,9 +220,9 @@ const Toolbar: FC<IToolbarProps> = props => {
         disabled: disabled,
       }] : []),
     ];
-  }, [editor, editable, onImportFile, caps, props.disabled, fileProps, videoProps]);
+  }, [editor, editable, onImportFile, caps, props.disabled]);
   return (
-    <ToolbarContext.Provider value={{ ...commonProps, imageProps, fileProps, videoProps }}>
+    <ToolbarContext.Provider value={contextValue}>
       <div className="textory-toolbar" ref={toolbarRef}>
         <Overflow
           data={menuArray}

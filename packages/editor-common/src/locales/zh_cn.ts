@@ -182,5 +182,11 @@ export default {
   'search.prev': '上一个 (Shift+Enter)',
   'search.next': '下一个 (Enter)',
   'search.close': '关闭 (Esc)',
-  'search.noResult': '无结果'
+  'search.noResult': '无结果',
+
+  // ===== 工具栏「插入」分组 =====
+  'toolbar.insert': '插入',
+  'insert.taskList': '任务列表',
+  'insert.image.network': '插入网络图片',
+  'insert.image.local': '上传本地图片'
 };

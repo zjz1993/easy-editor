@@ -194,6 +194,9 @@
 
     li.check-list-item {
       list-style-type: none;
+      .textory-block-container > * {
+        margin: 0;
+      }
     }
 
     p[data-first-indent='true'] {
