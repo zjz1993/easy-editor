@@ -262,11 +262,18 @@ export const OutlineView = ({editor}: OutlineViewProps) => {
     container.addEventListener('scroll', scheduleCompute, {passive: true});
     window.addEventListener('resize', scheduleCompute);
     editor.on('update', syncData);
+    // tiptap v3 把 'create' 事件（触发 OutlineExtension.onCreate 的初始大纲
+    // 计算）放在 setTimeout(0) 里异步发出，而本 effect 在首挂载时先于它执行，
+    // 上面的立即读取只能读到空 storage —— 初始 content 的大纲因此丢失，
+    // 直到用户手动编辑触发 update 才出现。监听 create 补一次同步；
+    // remount / 后挂载（create 早已触发、storage 已就绪）仍由立即读取覆盖。
+    editor.on('create', applyOutline);
 
     return () => {
       container.removeEventListener('scroll', scheduleCompute);
       window.removeEventListener('resize', scheduleCompute);
       editor.off('update', syncData);
+      editor.off('create', applyOutline);
       window.clearTimeout(syncTimer);
       if (rafId !== null) cancelAnimationFrame(rafId);
       ticking = false;
