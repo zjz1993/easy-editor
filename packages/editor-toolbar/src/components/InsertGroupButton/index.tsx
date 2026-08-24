@@ -58,11 +58,12 @@ const InsertGroupButton: FC<TToolbarWrapperProps> = props => {
   const [imageModalOpen, setImageModalOpen] = useState(false);
   const [videoModalOpen, setVideoModalOpen] = useState(false);
 
-  const {isCodeBlock, isInCodeBlock, canCL, dividerDisabled} = useEditorState({
+  const {isCodeInline, isCodeBlock, isInCodeBlock, canCL, dividerDisabled} = useEditorState({
     editor,
     selector: ({editor}) => {
       const {state} = editor;
       return {
+        isCodeInline: editor.isActive(BLOCK_TYPES.CODE_INLINE),
         isCodeBlock: editor.isActive(BLOCK_TYPES.CODE),
         isInCodeBlock: isSelectionInsideBlockByType(editor, BLOCK_TYPES.CODE),
         canCL: editor.can().chain().toggleTaskList?.().run(),
@@ -233,12 +234,24 @@ const InsertGroupButton: FC<TToolbarWrapperProps> = props => {
       onClick: () => editor.chain().focus().setHorizontalRule().run(),
     },
     {
-      key: 'codeBlock',
+      key: 'codeBlockGroup',
       icon: <Iconfont type="icon-code"/>,
-      label: isCodeBlock
-        ? IntlComponent.get('codeBlock.inline.remove')
-        : IntlComponent.get('codeBlock.inline.insert'),
-      onClick: () => editor.chain().focus().toggleCodeBlock().run(),
+      label:IntlComponent.get('code'),
+      children:[{
+        key:'codeInline',
+        icon: <Iconfont type="icon-code-inline" />,
+        label: isCodeInline
+          ? IntlComponent.get('code.inline.remove')
+          : IntlComponent.get('code.inline.insert'),
+        onClick: () => editor?.chain().focus().toggleCode?.().run(),
+      }, {
+        key:'codeBlock',
+        icon: <Iconfont type="icon-code" />,
+        label: isCodeBlock
+          ? IntlComponent.get('codeBlock.inline.remove')
+          : IntlComponent.get('codeBlock.inline.insert'),
+        onClick: () => editor.chain().focus().toggleCodeBlock().run()
+      }]
     },
     {
       key: 'table',

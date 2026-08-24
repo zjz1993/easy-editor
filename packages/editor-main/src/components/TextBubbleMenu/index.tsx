@@ -1,4 +1,4 @@
-import {BLOCK_TYPES, BubbleMenu, IntlComponent} from '@textory/editor-common';
+import {MARK_TYPES, BLOCK_TYPES, BubbleMenu} from '@textory/editor-common';
 import type {Editor} from '@tiptap/core';
 import {TextSelection} from '@tiptap/pm/state';
 import {type FC, useCallback} from 'react';
@@ -10,6 +10,7 @@ import FontSizeDropdown from './FontSizeDropdown';
 import HeadingDropdown from './HeadingDropdown';
 import LinkButton from './LinkButton';
 import AlignDropdown from "./AlignDropdown.tsx";
+import {useEditorState} from "@tiptap/react";
 
 export interface TextBubbleMenuProps {
   editor: Editor;
@@ -29,6 +30,25 @@ export interface TextBubbleMenuProps {
  * 操作 DOM,触发 NotFoundError: removeChild。
  */
 export const TextBubbleMenu: FC<TextBubbleMenuProps> = ({editor}) => {
+  const caps = useEditorState({
+    editor,
+    selector: ({ editor }) => ({
+      canLink:
+        !!editor.state.schema.marks[MARK_TYPES.LK] &&
+        editor.can().chain().focus().toggleMark(MARK_TYPES.LK).run(),
+      canUndo: editor.can().chain().focus().undo?.().run(),
+      canRedo: editor.can().chain().focus().redo?.().run(),
+      canBold: editor.can().chain().focus().toggleBold().run(),
+      canItalic: editor.can().chain().focus().toggleItalic().run(),
+      canUnderline: editor.can().chain().focus().toggleUnderline().run(),
+      canStrike: editor.can().chain().focus().toggleStrike().run(),
+      canUL: editor.can().chain().toggleBulletList?.().run(),
+      canOL: editor.can().chain().toggleOrderedList?.().run(),
+      canCL: editor.can().chain().toggleTaskList?.().run(),
+      canIndent: editor.can().chain().focus().indent().run(),
+      canOutdent: editor.can().chain().focus().outdent().run(),
+    }),
+  });
   const shouldShow = useCallback<BubbleMenuProps['shouldShow']>(props => {
     const {editor, from, to, state} = props;
     if (!editor.isEditable) return false;
@@ -60,19 +80,21 @@ export const TextBubbleMenu: FC<TextBubbleMenuProps> = ({editor}) => {
       <span className="textory-text-bubble__divider" />
       <FontSizeDropdown editor={editor} />
       <span className="textory-text-bubble__divider" />
-      <BubbleButton editor={editor} mark="bold" icon="icon-bold" tooltip={IntlComponent.get('bold')} />
-      <BubbleButton editor={editor} mark="italic" icon="icon-italic" tooltip={IntlComponent.get('italic')} />
-      <BubbleButton editor={editor} mark="underline" icon="icon-underline" tooltip={IntlComponent.get('underline')} />
-      <BubbleButton editor={editor} mark="strike" icon="icon-strike" tooltip={IntlComponent.get('strike')} />
-      <LinkButton editor={editor} />
+      <BubbleButton id="bold" editor={editor} mark="bold" icon="icon-bold" tooltip="bold" disabled={!caps.canBold}/>
+      <BubbleButton id="italic" editor={editor} mark="italic" icon="icon-italic" tooltip="italic" disabled={!caps.canItalic}/>
+      <BubbleButton id="underline" editor={editor} mark="underline" icon="icon-underline" tooltip="underline" disabled={!caps.canUnderline}/>
+      <BubbleButton id="strike" editor={editor} mark="strike" icon="icon-strike" tooltip="strike" disabled={!caps.canStrike}/>
+      <LinkButton editor={editor} disabled={!caps.canLink}/>
+      <BubbleButton id="code" editor={editor} mark="code" icon="icon-code-inline" tooltip="code.inline"/>
       <span className="textory-text-bubble__divider" />
       <ColorDropdown editor={editor} type="color" />
       <ColorDropdown editor={editor} type="highlight" />
       <span className="textory-text-bubble__divider" />
       <BubbleButton
+        id="geshishua"
         editor={editor}
         icon="icon-geshishua"
-        tooltip={IntlComponent.get('textbubble.clear.format')}
+        tooltip="textbubble.clear.format"
         onClick={() => editor.chain().focus().unsetAllMarks().run()}
       />
     </BubbleMenu>

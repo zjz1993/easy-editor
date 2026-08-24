@@ -6,6 +6,7 @@ import cx from 'classnames';
 
 export interface LinkButtonProps {
   editor: Editor;
+  disabled?: boolean;
 }
 
 /**
@@ -17,7 +18,7 @@ export interface LinkButtonProps {
  * 性能：独立 useEditorState 只返回 link 是否激活的 boolean，
  * 选区变化时不会触发其他按钮重渲染。
  */
-const LinkButton: FC<LinkButtonProps> = ({editor}) => {
+const LinkButton: FC<LinkButtonProps> = ({editor, disabled}) => {
   const [open, setOpen] = useState(false);
   const [href, setHref] = useState('');
   const wrapperRef = useRef<HTMLSpanElement>(null);
@@ -44,6 +45,9 @@ const LinkButton: FC<LinkButtonProps> = ({editor}) => {
   useLayoutEffect(() => {
     if (!open) return;
     const handle = (e: MouseEvent) => {
+      if (disabled){
+        return;
+      }
       const target = e.target;
       if (!(target instanceof Node)) return;
       if (
@@ -56,7 +60,7 @@ const LinkButton: FC<LinkButtonProps> = ({editor}) => {
     };
     document.addEventListener('mousedown', handle);
     return () => document.removeEventListener('mousedown', handle);
-  }, [open]);
+  }, [open, disabled]);
 
   const submit = useCallback(() => {
     const url = href.trim();
@@ -73,11 +77,17 @@ const LinkButton: FC<LinkButtonProps> = ({editor}) => {
   }, [href, editor]);
 
   return (
-    <span ref={wrapperRef} className="textory-text-bubble__link">
+    <span ref={wrapperRef} className={cx("textory-text-bubble__link", disabled && "disabled")}>
       <button
         type="button"
+        disabled={disabled}
         className={cx('textory-text-bubble__btn', {'is-active': active})}
-        onClick={() => setOpen(v => !v)}
+        onClick={() => {
+          if (disabled){
+            return;
+          }
+          setOpen(v => !v)
+        }}
         title={IntlComponent.get('toolbar.link.set')}
       >
         <Iconfont type="icon-link" />

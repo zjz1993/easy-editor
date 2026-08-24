@@ -131,6 +131,10 @@
     margin: 0 4px;
     display: inline-block;
   }
+  .disabled.textory-text-bubble__link{
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 
   &__link {
     position: relative;

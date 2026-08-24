@@ -9,6 +9,7 @@ initIntl();
 export const DEFAULT_PROPS: Partial<TTextoryEditorProps> = {
   placeholder: IntlComponent.get('editor.placeholder.default'),
   editable: true,
+  autoFocus: true,
   imageProps: {
     minWidth: 100,
     minHeight: 100,
