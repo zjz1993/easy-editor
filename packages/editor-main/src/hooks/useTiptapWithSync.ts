@@ -69,12 +69,15 @@ export function useTiptapWithSync({
     [content, transformContent],
   );
 
+  // 可选字段仅在真的传入时才写进 options：显式传 undefined 会覆盖 Tiptap
+  // 默认值（editorProps 默认 {} 被覆盖后构造期即崩；autofocus 默认 false 被
+  // 覆盖后，mount 时 `!== false && !== null` 判断反而触发意外的自动聚焦）
   const editor = useEditor({
     content: initialContent,
     editable,
     extensions: [...extensions],
-    autofocus,
-    editorProps,
+    ...(autofocus !== undefined && {autofocus}),
+    ...(editorProps !== undefined && {editorProps}),
     shouldRerenderOnTransaction: false,
     onUpdate: ({ editor, appendedTransactions, transaction }) => {
       onUpdate?.({ appendedTransactions, transaction, editor });
@@ -90,6 +93,12 @@ export function useTiptapWithSync({
 
   // 👇 content 改变时同步
   // 用 ref 记录上次应用到 editor 的 content，配合 deep equal 跳过语义相同的重复设置。
+  // 初始值取首渲染的 content：useEditor 构造时已经应用过它（content option），
+  // 初始挂载必须跳过重复 setContent —— 否则该 dispatch 会全量重建 doc，
+  // 初始 content 含 React NodeView（图片/视频/代码块等）时，重建过程中
+  // ReactNodeViewRenderer 内部的 flushSync 撞上 React 提交阶段的 passive
+  // effects 同步 flush 上下文，触发 "flushSync was called from inside a
+  // lifecycle method" 警告（初始加载必现）。
   // 必要性：
   //   1. 父组件受控回流：用户键入 → onUpdate → onChange({html,json}) → 父 setState
   //      → 新 content 引用回流 → useEffect 触发 → setContent 抢断用户输入（IME 组合断、光标跳）。
@@ -98,7 +107,7 @@ export function useTiptapWithSync({
   //   3. HTML 字符串 content：ProseMirror 序列化会规范化（属性顺序、自闭合、空白），
   //      即使语义相同字符串也可能不同，导致重复 setContent 与光标抖动。
   //   deep equal 在引用变化但语义等价时跳过，根治以上三种场景。
-  const lastAppliedContentRef = useRef<any>(undefined);
+  const lastAppliedContentRef = useRef<any>(content);
   useEffect(() => {
     if (!editor) return;
     if (isEqual(lastAppliedContentRef.current, content)) return;
