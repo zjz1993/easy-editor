@@ -53,55 +53,53 @@ const CustomLink = Link.extend({
             }
             const linkElement = target.closest('a');
 
-            const textNode = [...linkElement.childNodes].find(
+            // 链接内必须存在直接文本节点，纯嵌套结构不弹
+            const hasTextNode = [...linkElement.childNodes].some(
               node => node.nodeType === Node.TEXT_NODE,
             );
-            if (!textNode) return false;
-            // 计算 pos
+            if (!hasTextNode) return false;
+
+            // 计算 a 的文档位置
             const pos = view.posAtDOM(linkElement, 0);
-            const resolvedPos = view.state.doc.resolve(pos);
-            // 获取 link mark
-            let linkMark = resolvedPos
-              .marks()
-              .find(mark => mark.type.name === MARK_TYPES.LK);
-            if (!linkMark) {
-              view.state.doc.nodesBetween(
-                resolvedPos.start(),
-                resolvedPos.end(),
-                node => {
-                  linkMark = node.marks.find(
-                    mark => mark.type.name === MARK_TYPES.LK,
-                  );
-                  if (linkMark) return false;
-                },
+
+            // 取锚点处的 link mark。不能用 resolve(pos).marks()：
+            // 链接与普通文本交界处该值为空；也不能用 nodesBetween 全段扫描
+            // 后赋值（回调返回 false 只是不下钻，后续无 mark 的节点会把结果
+            // 覆盖回 undefined）。nodeAt(pos) 命中的就是 a 内首个文本节点。
+            let linkMark = null;
+            for (const p of [pos, Math.max(0, pos - 1)]) {
+              const node = view.state.doc.nodeAt(p);
+              linkMark = node?.marks?.find(
+                mark => mark.type.name === MARK_TYPES.LK,
               );
+              if (linkMark) break;
             }
-            if (linkMark) {
-              const { from, to } = getLinkRange(view.state.doc, pos, linkMark);
-              // 创建容器并立即渲染工具栏
-              const container = document.createElement('div');
-              document.body.appendChild(container);
+            if (!linkMark) return false;
 
-              const component = new ReactRenderer(LinkToolbar, {
+            const { from, to } = getLinkRange(view.state.doc, pos, linkMark);
+            // 创建容器并立即渲染工具栏
+            const container = document.createElement('div');
+            document.body.appendChild(container);
+
+            const component = new ReactRenderer(LinkToolbar, {
+              editor: this.editor,
+              props: {
                 editor: this.editor,
-                props: {
-                  editor: this.editor,
-                  linkPos: pos,
-                  referenceEl: target,
-                  href: linkMark.attrs.href,
-                  text: this.editor.state.doc.textBetween(from, to),
-                  from,
-                  to,
-                  onClose: () => {
-                    component.destroy();
-                    container.remove();
-                  },
+                linkPos: pos,
+                referenceEl: target,
+                href: linkMark.attrs.href,
+                text: this.editor.state.doc.textBetween(from, to),
+                from,
+                to,
+                onClose: () => {
+                  component.destroy();
+                  container.remove();
                 },
-              });
+              },
+            });
 
-              // 立即将 React 组件渲染到容器中
-              container.appendChild(component.element);
-            }
+            // 立即将 React 组件渲染到容器中
+            container.appendChild(component.element);
 
             return false;
           },

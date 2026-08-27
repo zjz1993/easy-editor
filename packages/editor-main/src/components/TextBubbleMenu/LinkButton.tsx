@@ -76,6 +76,12 @@ const LinkButton: FC<LinkButtonProps> = ({editor, disabled}) => {
     setOpen(false);
   }, [href, editor]);
 
+  // 一键取消当前选区的链接，免去「关闭弹层 → 再点悬浮工具栏」的操作
+  const unlink = useCallback(() => {
+    editor.chain().focus().unsetLink().run();
+    setOpen(false);
+  }, [editor]);
+
   return (
     <span ref={wrapperRef} className={cx("textory-text-bubble__link", disabled && "disabled")}>
       <button
@@ -114,6 +120,13 @@ const LinkButton: FC<LinkButtonProps> = ({editor, disabled}) => {
               }
             }}
           />
+          <button
+            type="button"
+            className="textory-text-bubble__link-unlink"
+            onClick={unlink}
+          >
+            {IntlComponent.get('toolbar.link.unlink')}
+          </button>
           <button
             type="button"
             className="textory-text-bubble__link-submit"

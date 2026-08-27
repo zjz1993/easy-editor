@@ -189,6 +189,23 @@
     }
   }
 
+  &__link-unlink {
+    height: 28px;
+    padding: 0 12px;
+    border: 1px solid styles.$border-color;
+    border-radius: 3px;
+    background: styles.$primary-white;
+    color: styles.$primary-red;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all .15s;
+
+    &:hover {
+      border-color: styles.$primary-red;
+      background: rgba(styles.$primary-red, 0.06);
+    }
+  }
+
   &__fontsize-list {
     background: styles.$primary-white;
     border-radius: 4px;
