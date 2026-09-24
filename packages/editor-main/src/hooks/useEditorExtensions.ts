@@ -30,6 +30,7 @@ import BulletList from '../BulletList/bullet-list.ts';
 import {ListItem} from '../BulletList/list-item.ts';
 import {Placeholder} from '../extension/Placeholder';
 import {DocMetaExtension} from '../extension/DocMeta';
+import {SlashCommand} from '@textory/extension-slash-command'
 
 export interface EditorExtensionsInfo {
   /** memo 化的完整扩展数组（两段合一，可直接传 useTiptapWithSync） */
@@ -138,6 +139,7 @@ export function useEditorExtensions(
       ...(isVideoUploadEnabled
         ? [VideoExtension.configure(mergedProps.videoProps)]
         : []),
+      SlashCommand
     ];
 
     return [
