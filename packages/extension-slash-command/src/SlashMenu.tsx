@@ -48,7 +48,7 @@ const SlashMenu: FC<SlashMenuProps> = (props) => {
                 active ? 'is-active' : ''
               }`}
               onMouseEnter={(event) => {
-                setSelectedIndex(index);
+                // setSelectedIndex(index);
               }}
               onMouseDown={(event) => {
                 event.preventDefault()
@@ -59,7 +59,7 @@ const SlashMenu: FC<SlashMenuProps> = (props) => {
                 {item.title}
               </div>
 
-              <div className="slash-menu-item-description">
+              <div className="textory-slash-menu-item-description">
                 {item.description}
               </div>
             </button>

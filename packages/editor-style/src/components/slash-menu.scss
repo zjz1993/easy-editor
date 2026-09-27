@@ -28,7 +28,7 @@
     }
   }
 
-  &-item.is-active {
+  &-item:hover {
     background: styles.$hover-grey
   }
 }
