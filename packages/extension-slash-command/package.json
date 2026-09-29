@@ -22,9 +22,13 @@
     "dev": "tsup src/index.ts --format esm --watch --silent --dts",
     "build": "tsup --config tsup.config.ts"
   },
+  "dependencies": {
+    "@textory/editor-common": "workspace:^",
+    "@textory/editor-utils": "workspace:^"
+  },
   "devDependencies": {
     "@tiptap/core": "^3.28.0",
-    "@tiptap/extensions": "^3.28.0",
+    "@tiptap/suggestion": "^3.31.3",
     "tsup": "^8.5.1",
     "typescript": "^6.0.3",
     "@tiptap/react": "^3.28.0"

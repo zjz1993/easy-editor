@@ -189,5 +189,8 @@ export default {
   'toolbar.insert': '插入',
   'insert.taskList': '任务列表',
   'insert.image.network': '插入网络图片',
-  'insert.image.local': '上传本地图片'
+  'insert.image.local': '上传本地图片',
+
+  // ===== Slash 菜单 =====
+  'slashCommand.noResult': '未找到匹配命令'
 };

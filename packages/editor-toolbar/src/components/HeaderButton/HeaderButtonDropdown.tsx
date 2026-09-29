@@ -1,5 +1,10 @@
 import {type FC, useContext} from 'react';
-import {BLOCK_TYPES, headers} from '@textory/editor-utils';
+import {
+  BLOCK_TYPES,
+  headers,
+  toggleHeadingCommand,
+  type HeadingLevel,
+} from '@textory/editor-utils';
 import {Iconfont, IntlComponent} from '@textory/editor-common';
 import {useEditorState} from '@tiptap/react';
 import cx from 'classnames';
@@ -82,11 +87,11 @@ const HeaderButtonDropdown: FC<{ onClick?: () => void }> = props => {
               type === BLOCK_TYPES.H && `header-${name}`,
             )}
             onClick={() => {
-              editor
-                .chain()
-                .focus()
-                .toggleHeading({ level: attrs.level })
-                .run();
+              // headers 数组未做判别联合类型，H 分支的 level 必为 1-6
+              toggleHeadingCommand({
+                editor,
+                level: attrs.level as HeadingLevel,
+              });
               onClick?.();
             }}
           >

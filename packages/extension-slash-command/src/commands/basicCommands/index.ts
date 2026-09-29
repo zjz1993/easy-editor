@@ -1,38 +1,14 @@
-import type {SlashItem} from "../../SlashCommand";
+import type {SlashItem} from '../../types';
+import {toggleHeadingCommand} from '@textory/editor-utils';
 
 export const basicCommands: SlashItem[] = [
-  {
-    id: 'paragraph',
-    title: 'Text',
-    description: '普通文本',
-    keywords: ['text', 'paragraph', 'p'],
-
-    command: ({ editor, range }) => {
-      editor
-        .chain()
-        .focus()
-        .deleteRange(range)
-        .setParagraph()
-        .run()
+  ...([1, 2, 3] as const).map<SlashItem>((level) => ({
+    id: `heading-${level}`,
+    titleKey: 'header.level',
+    titleValues: {level},
+    keywords: [`h${level}`, 'heading'],
+    command: ({editor, range}) => {
+      toggleHeadingCommand({editor, level, range});
     },
-  },
-
-  {
-    id: 'heading-1',
-    title: 'Heading 1',
-    description: '一级标题',
-    keywords: ['h1', 'title'],
-
-    command: ({ editor, range }) => {
-      editor
-        .chain()
-        .focus()
-        .deleteRange(range)
-        .setHeading({
-          level: 1,
-        })
-        .run()
-    },
-  },
-]
-export default basicCommands;
+  })),
+];

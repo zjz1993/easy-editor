@@ -593,6 +593,9 @@ importers:
       '@tiptap/core':
         specifier: 3.28.0
         version: 3.28.0(@tiptap/pm@3.28.0)
+      '@tiptap/extension-heading':
+        specifier: 3.28.0
+        version: 3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))
       '@tiptap/pm':
         specifier: 3.28.0
         version: 3.28.0
@@ -1116,22 +1119,25 @@ importers:
 
   packages/extension-slash-command:
     dependencies:
+      '@textory/editor-common':
+        specifier: workspace:^
+        version: link:../editor-common
+      '@textory/editor-utils':
+        specifier: workspace:^
+        version: link:../editor-utils
       '@tiptap/pm':
         specifier: 3.28.0
         version: 3.28.0
-      '@tiptap/suggestion':
-        specifier: ^3.31.3
-        version: 3.31.3(@floating-ui/dom@1.8.0)(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)
     devDependencies:
       '@tiptap/core':
         specifier: 3.28.0
         version: 3.28.0(@tiptap/pm@3.28.0)
-      '@tiptap/extensions':
-        specifier: 3.28.0
-        version: 3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)
       '@tiptap/react':
         specifier: 3.28.0
         version: 3.28.0(@floating-ui/dom@1.8.0)(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@tiptap/suggestion':
+        specifier: ^3.31.3
+        version: 3.31.3(@floating-ui/dom@1.8.0)(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)
       tsup:
         specifier: ^8.5.1
         version: 8.5.1(@swc/core@1.16.1)(postcss@8.5.26)(typescript@6.0.3)(yaml@2.9.0)

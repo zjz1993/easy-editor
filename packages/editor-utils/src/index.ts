@@ -4,3 +4,4 @@ export * from './filePreview';
 export * from './convertToTable';
 export * from './clipboard';
 export * from './helpers';
+export * from './command';

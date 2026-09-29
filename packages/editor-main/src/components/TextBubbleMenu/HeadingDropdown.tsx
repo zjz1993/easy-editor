@@ -1,5 +1,9 @@
 import {Dropdown, Iconfont, IntlComponent} from '@textory/editor-common';
-import {BLOCK_TYPES} from '@textory/editor-utils';
+import {
+  BLOCK_TYPES,
+  toggleHeadingCommand,
+  type HeadingLevel,
+} from '@textory/editor-utils';
 import type {Editor} from '@tiptap/core';
 import {type FC, useState} from 'react';
 import {useEditorState} from '@tiptap/react';
@@ -12,7 +16,7 @@ export interface HeadingDropdownProps {
 interface HeadingItem {
   key: string;
   label: string;
-  level: number; // 0 = paragraph, -1 = blockquote, 1-6 = heading
+  level: -1 | 0 | HeadingLevel; // 0 = paragraph, -1 = blockquote, 1-6 = heading
 }
 
 const HEADING_ITEMS: HeadingItem[] = [
@@ -64,7 +68,7 @@ const HeadingDropdown: FC<HeadingDropdownProps> = ({editor}) => {
     } else if (item.level === -1) {
       editor.chain().focus().toggleBlockquote().run();
     } else {
-      editor.chain().focus().toggleHeading({level: item.level}).run();
+      toggleHeadingCommand({editor, level: item.level});
     }
     setOpen(false);
   };

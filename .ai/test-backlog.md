@@ -38,3 +38,4 @@
 | 2026-08-19 | `editor-common/src/locales/initIntl.test.ts` + `editor-main/src/const/index.test.ts` | 局部 | intl 同步初始化时序回归（修复 `locales data "null" not exists` 警告时补）；P0「键值完整性（防漏 key）」仍未完成，留待多语言落地时补 |
 | 2026-08-19 | `extension-character-count/src/character-count.test.ts` | 局部 | 初始计数即时上报、storage 惰性求值、防抖合并、destroy 清理（配合 P1-4 性能修复） |
 | 2026-08-19 | `extension-outline/src/OutlineExtension.test.ts` | 局部 | 大纲初始计算（含嵌套）、防抖重算、destroy 清理（配合 P1-2/P2-1 性能修复） |
+| 2026-09-29 | `extension-slash-command/src/SlashCommandRegistry.test.ts` | 局部 | 注册表搜索：visible 过滤、字面/intl 解析标题匹配、keywords 命中、前缀优先排序、空结果（配合 slash 菜单评审修复） |

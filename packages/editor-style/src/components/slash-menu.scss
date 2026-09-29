@@ -1,12 +1,20 @@
 @use "../variable/index" as var;
 @use "../colors/colors" as styles;
+
 .textory-slash-menu {
   width: 260px;
   padding: 6px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid styles.$border-grey;
   border-radius: 8px;
-  background: #fff;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  background: styles.$primary-white;
+  box-shadow: styles.$menu-shadow;
+
+  &-empty {
+    padding: 8px 10px;
+    font-size: 14px;
+    color: styles.$primary-grey;
+  }
+
   &-item {
     display: block;
     width: 100%;
@@ -16,19 +24,21 @@
     background: transparent;
     text-align: left;
     cursor: pointer;
-    transition: all .2s;
+    transition: background-color .2s;
+
     &-title {
       font-size: 14px;
       font-weight: 500;
     }
+
     &-description {
       margin-top: 2px;
       font-size: 12px;
-      color: #888;
+      color: styles.$primary-grey;
     }
   }
 
-  &-item:hover {
+  &-item:hover, &-item.is-active {
     background: styles.$hover-grey
   }
 }
