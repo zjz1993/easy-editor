@@ -37,14 +37,15 @@
   "description": "Textory 的 UMD/CDN 入口包，用于非 React 环境通过 <script> 标签引入",
   "peerDependencies": {
     "react": "^18 || ^19",
-    "react-dom": "^18 || ^19"
+    "react-dom": "^18 || ^19",
+    "@tiptap/core": "^3.28.0",
+    "@tiptap/react": "^3.28.0"
   },
   "dependencies": {
-    "@textory/editor": "workspace:^"
+    "@textory/editor": "workspace:^",
+    "@textory/context": "workspace:^"
   },
   "devDependencies": {
-    "@textory/context": "workspace:^",
-    "@textory/editor": "workspace:^",
     "@tiptap/core": "^3.28.0",
     "@tiptap/react": "^3.28.0",
     "@types/react": "^18",

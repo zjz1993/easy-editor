@@ -50,6 +50,7 @@ overrides:
   '@tiptap/extension-table-header': 3.28.0
   '@tiptap/extension-table-row': 3.28.0
   motion-dom: 12.23.23
+  '@tiptap/suggestion': 3.28.0
 
 importers:
 
@@ -374,6 +375,9 @@ importers:
       '@textory/extension-fontsize':
         specifier: workspace:^
         version: link:../extension-fontsize
+      '@textory/extension-highlight':
+        specifier: workspace:^
+        version: link:../extension-highlight
       '@textory/extension-image':
         specifier: workspace:^
         version: link:../extension-image
@@ -410,9 +414,6 @@ importers:
       '@textory/extension-video':
         specifier: workspace:^
         version: link:../extension-video
-      '@tiptap/markdown':
-        specifier: ^3.28.0
-        version: 3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -432,9 +433,6 @@ importers:
         specifier: ^11.1.0
         version: 11.1.0
     devDependencies:
-      '@textory/extension-highlight':
-        specifier: workspace:^
-        version: link:../extension-highlight
       '@textory/styles':
         specifier: workspace:^
         version: link:../editor-style
@@ -464,6 +462,9 @@ importers:
         version: 3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))
       '@tiptap/extension-unique-id':
         specifier: 3.28.0
+        version: 3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)
+      '@tiptap/markdown':
+        specifier: ^3.28.0
         version: 3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)
       '@tiptap/pm':
         specifier: 3.28.0
@@ -532,10 +533,10 @@ importers:
         specifier: ^1.4.1
         version: 1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
-        specifier: ^18.0.0
+        specifier: ^18 || ^19
         version: 18.3.1
       react-dom:
-        specifier: ^18.0.0
+        specifier: ^18 || ^19
         version: 18.3.1(react@18.3.1)
       react-hook-form:
         specifier: ^7.54.2
@@ -586,6 +587,9 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.18.0
+      rc-upload:
+        specifier: ^4.9.0
+        version: 4.9.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-intl-universal:
         specifier: ^2.12.0
         version: 2.12.0(react@18.3.1)
@@ -605,9 +609,6 @@ importers:
       '@types/react':
         specifier: ^18
         version: 18.3.12
-      rc-upload:
-        specifier: ^4.9.0
-        version: 4.9.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       tsup:
         specifier: ^8.5.1
         version: 8.5.1(@swc/core@1.16.1)(postcss@8.5.26)(typescript@6.0.3)(yaml@2.9.0)
@@ -1125,19 +1126,25 @@ importers:
       '@textory/editor-utils':
         specifier: workspace:^
         version: link:../editor-utils
-      '@tiptap/pm':
-        specifier: 3.28.0
-        version: 3.28.0
+      react:
+        specifier: ^18 || ^19
+        version: 18.3.1
     devDependencies:
       '@tiptap/core':
         specifier: 3.28.0
         version: 3.28.0(@tiptap/pm@3.28.0)
+      '@tiptap/pm':
+        specifier: 3.28.0
+        version: 3.28.0
       '@tiptap/react':
         specifier: 3.28.0
         version: 3.28.0(@floating-ui/dom@1.8.0)(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tiptap/suggestion':
-        specifier: ^3.31.3
-        version: 3.31.3(@floating-ui/dom@1.8.0)(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)
+        specifier: 3.28.0
+        version: 3.28.0(@floating-ui/dom@1.8.0)(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)
+      '@types/react':
+        specifier: ^18
+        version: 18.3.12
       tsup:
         specifier: ^8.5.1
         version: 8.5.1(@swc/core@1.16.1)(postcss@8.5.26)(typescript@6.0.3)(yaml@2.9.0)
@@ -1286,13 +1293,13 @@ importers:
 
   packages/standalone:
     dependencies:
+      '@textory/context':
+        specifier: workspace:^
+        version: link:../editor-context
       '@textory/editor':
         specifier: workspace:^
         version: link:../editor-main
     devDependencies:
-      '@textory/context':
-        specifier: workspace:^
-        version: link:../editor-context
       '@tiptap/core':
         specifier: 3.28.0
         version: 3.28.0(@tiptap/pm@3.28.0)
@@ -2785,8 +2792,8 @@ packages:
   '@tiptap/starter-kit@3.28.0':
     resolution: {integrity: sha512-pqvFpValV+ONtlu3l4s73ROm/tEjoGMmt6uHmSJaLbqTcMHkdWuR3flJ/5brr4IDHe1foxmNicMbRxlje7yBYw==}
 
-  '@tiptap/suggestion@3.31.3':
-    resolution: {integrity: sha512-z1OQ/Yx6seMZehi1AcmNkyJ8qkHQzybArmCyRdmreS4YL9C4bPMBe5lbMfFsArYs+KD5JyHwps5j7J/YE5BIuw==}
+  '@tiptap/suggestion@3.28.0':
+    resolution: {integrity: sha512-24k0CvvazBeHAK2+WrV1n0uDBZBHNbDAq1K8b5KkWSxcAU7zSCytmApS1u7clRW5wg2xKNBdDhNhvk7KSm1kIA==}
     peerDependencies:
       '@floating-ui/dom': ^1.0.0
       '@tiptap/core': 3.28.0
@@ -6318,7 +6325,7 @@ snapshots:
       '@tiptap/extensions': 3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)
       '@tiptap/pm': 3.28.0
 
-  '@tiptap/suggestion@3.31.3(@floating-ui/dom@1.8.0)(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)':
+  '@tiptap/suggestion@3.28.0(@floating-ui/dom@1.8.0)(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)':
     dependencies:
       '@floating-ui/dom': 1.8.0
       '@tiptap/core': 3.28.0(@tiptap/pm@3.28.0)

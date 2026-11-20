@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": false,
   "files": [
-    "dist"
+    "dist",
+    "src/**/*.scss"
   ],
   "style": "dist/index.css",
   "exports": {

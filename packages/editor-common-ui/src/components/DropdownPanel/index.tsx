@@ -28,6 +28,7 @@ const DropdownPanel: FC<IDropdownPanelProps> = props => {
   const childrenContainerSize = useSize(childrenRef);
   return (
     <Trigger
+      getTriggerDOMNode={() => childrenRef.current}
       {...otherProps}
       popupAlign={
         isUndefined(popupAlign)

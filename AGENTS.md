@@ -412,6 +412,7 @@ pnpm check:external
 
 当前文档：
 
+- [开源接入评估](./.ai/docs/open-source-readiness.md) — 记录功能优先级建议、发布前检查和接入场景。后续每项新功能均按下述 spec 流程开发。
 - [`tiptap-performance-guide.md`](./.ai/tiptap-performance-guide.md) — Tiptap 官方性能指南总结。涉及编辑器组件结构、`useEditor`、`useEditorState`、NodeView、flushSync 等，**改动编辑器相关代码前必读**。
 - [`performance-issues.md`](./.ai/performance-issues.md) — 本仓库已知性能问题清单（按 P0/P1/P2/P3 分级）。改动 Toolbar、`useTiptapWithSync`、`root.tsx`、OutlineView 等组件前先查这份清单，避免与既有问题冲突。修复完一项后，请把对应 `[ ]` 改成 `[x]` 并在文末「修复记录」表格补一行。
 - [`standalone-umd.md`](./.ai/standalone-umd.md) — `@textory/standalone` 包（UMD/CDN script 引入）的设计决策与构建约束。涉及 UMD 构建、`Textory.create()` API、双产物（standalone/externals）策略、esbuild 脚本时**必读**。改动 `packages/standalone/` 目录或相关构建脚本前先对照本文「反模式」清单。

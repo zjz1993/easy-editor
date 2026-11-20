@@ -47,13 +47,12 @@
     "@textory/extension-upload": "workspace:^",
     "@textory/extension-video": "workspace:^",
     "@textory/extension-slash-command": "workspace:^",
-    "@tiptap/markdown": "^3.28.0",
     "classnames": "^2.5.1",
     "lodash-es": "^4.18.0",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "@textory/extension-highlight": "workspace:^"
   },
   "devDependencies": {
-    "@textory/extension-highlight": "workspace:^",
     "@textory/styles": "workspace:^",
     "@tiptap/core": "^3.28.0",
     "@tiptap/extension-color": "^3.28.0",
@@ -88,6 +87,8 @@
     "@tiptap/starter-kit": "^3.28.0",
     "docx": "^9.6.1",
     "react": "^18 || ^19",
-    "react-dom": "^18 || ^19"
+    "react-dom": "^18 || ^19",
+    "@tiptap/markdown": "^3.28.0",
+    "@tiptap/react": "^3.28.0"
   }
 }
